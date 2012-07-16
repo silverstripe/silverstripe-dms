@@ -5,6 +5,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Filename" => "Text",
 	);
 
+	function delete() {
+		parent::delete();
+	}
+
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
 	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a has_many relation
