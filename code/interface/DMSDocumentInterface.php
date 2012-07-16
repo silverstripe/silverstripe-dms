@@ -8,10 +8,13 @@ interface DMSDocumentInterface {
 
 	/**
 	 * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument.
+	 *
+	 * @todo Can't be applied to classes which already implement the DataObjectInterface (naming conflict)
+	 * 
 	 * @abstract
 	 * @return null
 	 */
-	function delete();
+	// function delete();
 
 	/**
 	 * Associates this DMSDocument with a Page. This method does nothing if the association already exists.
