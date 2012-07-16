@@ -11,24 +11,52 @@
 interface DMSInterface {
 
 	/**
-	 * Factory method that returns an instance of the DMS. This could be anything that implements the DMSInterface
+	 * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
 	 * @static
 	 * @abstract
-	 * @return DMSinstance
+	 * @return DMSInterface An instance of the Document Management System
 	 */
 	static function getDMSInstance();
 
 	/**
+	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
 	 * When storing a document, sets the fields on the File has "tag" metadata. E.g: filename, path, etc. all become
 	 * single-value tags on the Document.
 	 * @abstract
-	 * @param File $file
-	 * @return mixed
+	 * @param $file File object, or String that is path to a file to store
+	 * @return boolean Success or Failure of the store operation
 	 */
-	function storeDocument(File $file);
+	function storeDocument($file);
 
-	function getByTag($category = null, $value = null);
-	function getByFullTextSearch($searchText);
-	function getByTitle($searchTitle);
+	/**
+	 *
+	 * Returns a number of Document objects based on the a search by tags. You can search by category alone,
+	 * by tag value alone, or by both. I.e: getByTag("fruits",null); getByTag(null,"banana"); getByTag("fruits","banana")
+	 * @abstract
+	 * @param null $category The metadata category to search for
+	 * @param null $value The metadata value to search for
+	 * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
+	 * @return DocumentInterface
+	 */
+	function getByTag($category = null, $value = null, $showEmbargoed = false);
 
+	/**
+	 * Returns a number of Document objects that match a full-text search of the Documents and their contents
+	 * (if contents is searchable and compatible search module is installed - e.g. FullTextSearch module)
+	 * @abstract
+	 * @param $searchText String to search for
+	 * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
+	 * @return DocumentInterface
+	 */
+	function getByFullTextSearch($searchText, $showEmbargoed = false);
+
+
+	/**
+	 * Returns a list of Document objects associated with a Page
+	 * @abstract
+	 * @param $page SiteTree to fetch the associated Documents from
+	 * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
+	 * @return DataList Document list associated with the Page
+	 */
+	function getByPage($page, $showEmbargoed = false);
 }
