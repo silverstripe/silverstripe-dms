@@ -24,7 +24,7 @@ interface DMSInterface {
 	 * single-value tags on the Document.
 	 * @abstract
 	 * @param $file File object, or String that is path to a file to store
-	 * @return boolean Success or Failure of the store operation
+	 * @return DMSDocumentInstance Document object that we just created
 	 */
 	function storeDocument($file);
 
@@ -36,7 +36,7 @@ interface DMSInterface {
 	 * @param null $category The metadata category to search for
 	 * @param null $value The metadata value to search for
 	 * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
-	 * @return DocumentInterface
+	 * @return DMSDocumentInterface
 	 */
 	function getByTag($category = null, $value = null, $showEmbargoed = false);
 
@@ -46,7 +46,7 @@ interface DMSInterface {
 	 * @abstract
 	 * @param $searchText String to search for
 	 * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
-	 * @return DocumentInterface
+	 * @return DMSDocumentInterface
 	 */
 	function getByFullTextSearch($searchText, $showEmbargoed = false);
 
