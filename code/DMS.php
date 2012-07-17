@@ -45,14 +45,15 @@ class DMS implements DMSInterface {
 		$fromFilename = basename($fromPath);
 		$toFilename = $docID . '~' . $fromFilename; //add the docID to the start of the Filename
 		$toFolder = self::getStorageFolder($docID);
-		$toPath = $toFolder . DIRECTORY_SEPARATOR . $toFilename;
-		$this->createStorageFolder($toFolder);
+		$toPath = self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+		$this->createStorageFolder(self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
-		copy($fromPath, self::$dmsPath . DIRECTORY_SEPARATOR . $toPath);
+		copy($fromPath, $toPath);
 
 		//write the filename of the stored document
-		$doc->Filename = $toPath;
+		$doc->Filename = $toFilename;
+		$doc->Folder = $toFolder;
 		$doc->write();
 
 		//set an initial title for the document from the filename
@@ -110,6 +111,6 @@ class DMS implements DMSInterface {
 	 */
 	static function getStorageFolder($id) {
 		$folderName = intval($id / self::$dmsFolderSize);
-		return self::$dmsPath . DIRECTORY_SEPARATOR . $folderName;
+		return $folderName;
 	}
 }

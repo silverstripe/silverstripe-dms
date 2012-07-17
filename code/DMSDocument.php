@@ -3,6 +3,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	static $db = array(
 		"Filename" => "Text",
+		"Folder" => "Text"
 	);
 
 	/**
@@ -182,6 +183,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 */
 	function getVersions() {
 		// TODO: Implement getVersions() method.
+	}
+
+	/**
+	 * Returns the full filename of the document stored in this object
+	 * @return string
+	 */
+	function getFullPath() {
+		return DMS::$dmsPath . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
 	}
 
 }

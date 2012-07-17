@@ -1,7 +1,7 @@
 <?php
 class DMSTest extends SapphireTest {
 
-	static $testFile = 'dms/tests/DMS-test-lorum-file';
+	static $testFile = 'dms/tests/DMS-test-lorum-file.pdf';
 
 	//store values to reset back to after this test runs
 	static $dmsFolderOld;
@@ -28,20 +28,22 @@ class DMSTest extends SapphireTest {
 	}
 
 	public function delete($path) {
-	    $it = new RecursiveIteratorIterator(
-	        new RecursiveDirectoryIterator($path),
-	        RecursiveIteratorIterator::CHILD_FIRST
-	    );
-	    foreach ($it as $file) {
-	        if (in_array($file->getBasename(), array('.', '..'))) {
-	            continue;
-	        } elseif ($file->isDir()) {
-	            rmdir($file->getPathname());
-	        } elseif ($file->isFile() || $file->isLink()) {
-	            unlink($file->getPathname());
-	        }
-	    }
-	    rmdir($path);
+		if (file_exists($path) || is_dir($path)) {
+		    $it = new RecursiveIteratorIterator(
+		        new RecursiveDirectoryIterator($path),
+		        RecursiveIteratorIterator::CHILD_FIRST
+		    );
+		    foreach ($it as $file) {
+		        if (in_array($file->getBasename(), array('.', '..'))) {
+		            continue;
+		        } elseif ($file->isDir()) {
+		            rmdir($file->getPathname());
+		        } elseif ($file->isFile() || $file->isLink()) {
+		            unlink($file->getPathname());
+		        }
+		    }
+		    rmdir($path);
+		}
 	}
 
 
@@ -52,7 +54,7 @@ class DMSTest extends SapphireTest {
 		$document = $dms->storeDocument($file);
 
 		$this->assertNotNull($document, "Document object created");
-		$this->assertTrue(file_exists(DMS::$dmsPath . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
+		$this->assertTrue(file_exists(DMS::$dmsPath . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
 
 		//$title = $document->getTag('title');
 	}
@@ -63,17 +65,26 @@ class DMSTest extends SapphireTest {
 
 		$file = BASE_PATH . DIRECTORY_SEPARATOR . self::$testFile;
 
+		$documents = array();
 		for($i = 0; $i <= 16; $i++) {
 			$document = $dms->storeDocument($file);
 			$this->assertNotNull($document, "Document object created on run number: $i");
+			$this->assertTrue(file_exists($document->getFullPath()));
+			$documents[] = $document;
+		}
+
+		//test document objects have their folders set
+		$folders = array();
+		for($i = 0; $i <= 16; $i++) {
+			$folderName = $documents[$i]->Folder;
+			$this->assertTrue(strpos($documents[$i]->getFullPath(), DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR) !== false, "Correct folder name for the documents. Document path contains reference to folder name '$folderName'");
+			$folders[] = $folderName;
 		}
 
 		//test we created 4 folder to contain the 17 files
-		$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . '1'));
-		$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . '2'));
-		$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . '3'));
-		$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . '4'));
-		$this->assertFalse(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . '5'));
+		foreach($folders as $f) {
+			$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . $f),"Document folder '$f' exists");
+		}
 	}
 
 
