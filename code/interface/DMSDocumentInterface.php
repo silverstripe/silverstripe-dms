@@ -41,6 +41,13 @@ interface DMSDocumentInterface {
 	function getPages();
 
 	/**
+	 * Removes all associated Pages from the DMSDocument
+	 * @abstract
+	 * @return null
+	 */
+	function removeAllPages();
+
+	/**
 	 * Adds a metadata tag to the DMSDocument. The tag has a category and a value.
 	 * Each category can have multiple values by default. So: addTag("fruit","banana") addTag("fruit", "apple") will add two items.
 	 * However, if the third parameter $multiValue is set to 'false', then all updates to a category only ever update a single value. So:

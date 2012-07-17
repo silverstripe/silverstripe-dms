@@ -6,6 +6,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Text"
 	);
 
+	static $has_many = array(
+		'Tags' => 'DMSTag'
+	);
+
+	static $many_many = array(
+		'Pages' => 'SiteTree'
+	);
+
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
 	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a has_many relation
@@ -13,7 +21,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function addPage($pageObject) {
-		// TODO: Implement addPage() method.
+		$this->Pages()->add($pageObject);
 	}
 
 	/**
@@ -22,7 +30,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return mixed
 	 */
 	function removePage($pageObject) {
-		// TODO: Implement removePage() method.
+		$this->Pages()->remove($pageObject);
 	}
 
 	/**
@@ -30,7 +38,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return DataList
 	 */
 	function getPages() {
-		// TODO: Implement getPages() method.
+		$this->Pages();
+	}
+
+	/**
+	 * Removes all associated Pages from the DMSDocument
+	 * @return null
+	 */
+	function removeAllPages() {
+		$this->Pages()->removeAll();
 	}
 
 	/**
@@ -46,7 +62,34 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function addTag($category, $value, $multiValue = true) {
-		// TODO: Implement addTag() method.
+		if ($multiValue) {
+			//check for a duplicate tag, don't add the duplicate
+			$currentTag = $this->Tags()->filter("Category = '$category' AND Value = '$value'");
+			if (!$currentTag) {
+				//multi value tag
+				$tag = new DMSTag();
+				$tag->Category = $category;
+				$tag->Value = $value;
+				$tag->DocumentID = $this->ID;
+				$tag->write();
+			}
+		} else {
+			//single value tag
+			$currentTag = $this->Tags()->filter("Category = '$category'");
+			if (!$currentTag) {
+				//create the single-value tag
+				$tag = new DMSTag();
+				$tag->Category = $category;
+				$tag->Value = $value;
+				$tag->DocumentID = $this->ID;
+				$tag->write();
+			} else {
+				//update the single value tag
+				$tag = $currentTag->first();
+				$tag->Value = $value;
+				$tag->write();
+			}
+		}
 	}
 
 	/**
@@ -191,6 +234,23 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 */
 	function getFullPath() {
 		return DMS::$dmsPath . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
+	}
+
+	/**
+	 * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument. Also calls the
+	 * parent DataObject's delete method.
+	 */
+	function delete() {
+		//remove tags
+		$this->removeAllTags();
+
+		//delete the file
+		unlink($this->getFullPath());
+
+		$this->removeAllPages();
+
+		//delete the dataobject
+		parent::delete();
 	}
 
 }

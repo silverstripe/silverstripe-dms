@@ -1,0 +1,49 @@
+SiteTree:
+  s1:
+    Title: testPage1
+    URLSegment: s1
+  s2:
+    Title: testPage2
+    URLSegment: s2
+  s3:
+    Title: testPage3
+    URLSegment: s3
+  s4:
+    Title: testPage4
+    URLSegment: s4
+  s5:
+    Title: testPage5
+    URLSegment: s5
+  s6:
+    Title: testPage6
+    URLSegment: s6
+DMSTag:
+  t1:
+    Category: tag1
+    Value: tag1value
+  t2:
+    Category: tag2
+    Value: tag2value
+  t3:
+    Category: tag3
+    Value: tag3value
+  t4:
+    Category: tag4
+    Value: tag4value
+  t5:
+    Category: tag5
+    Value: tag5value
+  t6:
+    Category: tag6
+    Value: tag6value
+DMSDocument:
+  d1:
+    Filename: test-file-file-doesnt-exist
+    Folder: 5
+    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
+    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+  d2:
+    Filename: test-file-file-doesnt-exist
+    Folder: 5
+    Tags: =>DMSTag.t5, =>DMSTag.t6
+    Pages: =>SiteTree.s5, =>SiteTree.s6
