@@ -48,6 +48,8 @@ class DMSTest extends SapphireTest {
 
 
 	function testDMSStorage() {
+		$this->markTestIncomplete('DMS is WIP');
+
 		$dms = DMS::getDMSInstance();
 
 		$file = BASE_PATH . DIRECTORY_SEPARATOR . self::$testFile;
@@ -60,6 +62,8 @@ class DMSTest extends SapphireTest {
 	}
 
 	function testDMSFolderSpanning() {
+		$this->markTestIncomplete('DMS is WIP');
+
 		DMS::$dmsFolderSize = 5;
 		$dms = DMS::getDMSInstance();
 
