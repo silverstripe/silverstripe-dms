@@ -24,7 +24,7 @@ class DMSDocumentTest extends SapphireTest {
 	}
 
 	function testAddPageRelation() {
-		$this->markTestIncomplete('DMS is WIP');
+		//$this->markTestIncomplete('DMS is WIP');
 
 		$s1 = $this->objFromFixture('SiteTree','s1');
 		$s2 = $this->objFromFixture('SiteTree','s2');
@@ -53,7 +53,7 @@ class DMSDocumentTest extends SapphireTest {
 
 		$documents = $s2->Documents();
 		$documentsArray = $documents->toArray();
-		$this->assertContains($documentsArray, $doc, "Document associated with page");
+		$this->assertDOSContains(array(array('Filename'=>$doc->Filename)), $documentsArray, "Document associated with page");
 
 		$doc->removeAllPages();
 		$pages = $doc->Pages();
