@@ -19,6 +19,6 @@ class DMSTagTest extends SapphireTest {
 		$fruits = $doc->getTags("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),3,"3 fruit tags returned");
-		$this->assertArrayHasKey("banana",$fruits,"correct fruit tags returned");
+		$this->assertTrue(in_array("banana",$fruits),"correct fruit tags returned");
 	}
 }
