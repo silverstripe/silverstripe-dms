@@ -24,8 +24,6 @@ class DMSDocumentTest extends SapphireTest {
 	}
 
 	function testAddPageRelation() {
-		//$this->markTestIncomplete('DMS is WIP');
-
 		$s1 = $this->objFromFixture('SiteTree','s1');
 		$s2 = $this->objFromFixture('SiteTree','s2');
 		$s3 = $this->objFromFixture('SiteTree','s3');
