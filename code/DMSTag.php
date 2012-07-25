@@ -9,7 +9,7 @@ class DMSTag extends DataObject {
 		'Value' => 'varchar(1024)'
 	);
 
-	static $has_one = array(
-		'Document' => 'DMSDocument'
+	static $belongs_many_many = array(
+		'Documents' => 'DMSDocument'
 	);
 }

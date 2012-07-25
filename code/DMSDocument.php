@@ -6,12 +6,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Text"
 	);
 
-	static $has_many = array(
-		'Tags' => 'DMSTag'
-	);
-
 	static $many_many = array(
-		'Pages' => 'SiteTree'
+		'Pages' => 'SiteTree',
+		'Tags' => 'DMSTag'
 	);
 
 	/**
