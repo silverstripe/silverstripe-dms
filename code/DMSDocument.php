@@ -2,8 +2,10 @@
 class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	static $db = array(
-		"Filename" => "Text",
-		"Folder" => "Text"
+		"Filename" => "Varchar(255)",
+		"Folder" => "Varchar(255)",
+		"Title" => 'Varchar(1024)',
+		"Description" => 'Text',
 	);
 
 	static $many_many = array(
@@ -45,6 +47,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	function removeAllPages() {
 		$this->Pages()->removeAll();
 	}
+
 
 	/**
 	 * Adds a metadata tag to the Document. The tag has a category and a value.
