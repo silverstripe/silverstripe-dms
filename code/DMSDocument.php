@@ -64,25 +64,25 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	function addTag($category, $value, $multiValue = true) {
 		if ($multiValue) {
 			//check for a duplicate tag, don't add the duplicate
-			$currentTag = $this->Tags()->filter("Category = '$category' AND Value = '$value'");
-			if (!$currentTag) {
+			$currentTag = $this->Tags()->filter(array('Category' => $category, 'Value' => $value));
+			if ($currentTag->Count() == 0) {
 				//multi value tag
 				$tag = new DMSTag();
 				$tag->Category = $category;
 				$tag->Value = $value;
-				$tag->DocumentID = $this->ID;
 				$tag->write();
+				$tag->Documents()->add($this);
 			}
 		} else {
 			//single value tag
-			$currentTag = $this->Tags()->filter("Category = '$category'");
+			$currentTag = $this->Tags()->filter(array('Category' => $category));
 			if (!$currentTag) {
 				//create the single-value tag
 				$tag = new DMSTag();
 				$tag->Category = $category;
 				$tag->Value = $value;
-				$tag->DocumentID = $this->ID;
 				$tag->write();
+				$tag->Documents()->add($this);
 			} else {
 				//update the single value tag
 				$tag = $currentTag->first();
@@ -90,6 +90,31 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$tag->write();
 			}
 		}
+	}
+
+	/**
+	 * Fetches all tags associated with this DMSDocument within a given category. If a value is specified this method
+	 * tries to fetch that specific tag.
+	 * @abstract
+	 * @param $category String of the metadata category to get
+	 * @param null $value String of the value of the tag to get
+	 * @return array of Strings of all the tags or null if there is no match found
+	 */
+	function getTags($category, $value = null) {
+		$valueFilter = array("Category" => $category);
+		if (!empty($value)) $valueFilter['Value'] = $value;
+
+		$tag = $this->Tags()->filter($valueFilter);
+
+		//convert DataList into array of Values
+		$returnArray = null;
+		if ($tag->Count() > 0) {
+			$returnArray = array();
+			foreach($tag as $t) {
+				$returnArray[] = $t->Value;
+			}
+		}
+		return $returnArray;
 	}
 
 	/**

@@ -63,6 +63,16 @@ interface DMSDocumentInterface {
 	function addTag($category, $value, $multiValue = true);
 
 	/**
+	 * Fetches all tags associated with this DMSDocument within a given category. If a value is specified this method
+	 * tries to fetch that specific tag.
+	 * @abstract
+	 * @param $category String of the metadata category to get
+	 * @param null $value String of the value of the tag to get
+	 * @return array of Strings of all the tags or null if there is no match found
+	 */
+	function getTags($category, $value = null);
+
+	/**
 	 * Quick way to add multiple tags to a DMSDocument. This takes a multidimensional array of category/value pairs.
 	 * The array should look like this:
 	 * $twoDimensionalArray = new array(
