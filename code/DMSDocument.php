@@ -2,9 +2,9 @@
 class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	static $db = array(
-		"Filename" => "Varchar(255)",
-		"Folder" => "Varchar(255)",
-		"Title" => 'Varchar(1024)',
+		"Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
+		"Folder" => "Varchar(255)",	// eg.	0
+		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
 	);
 
