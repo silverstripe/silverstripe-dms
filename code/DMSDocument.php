@@ -6,7 +6,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
-		"LastChanged" => 'DateTime' //when this document was created or last replaced (small changes like updating title don't count)
+		"LastChanged" => 'SS_DateTime' //when this document was created or last replaced (small changes like updating title don't count)
 	);
 
 	static $many_many = array(
