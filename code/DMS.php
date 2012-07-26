@@ -24,8 +24,7 @@ class DMS implements DMSInterface {
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
-	 * When storing a document, sets the fields on the File has "tag" metadata. E.g: filename, path, etc. all become
-	 * single-value tags on the Document.
+	 * When storing a document, sets the fields on the File has "tag" metadata.
 	 * @param $file File object, or String that is path to a file to store
 	 * @return DMSDocumentInstance Document object that we just created
 	 */
@@ -54,10 +53,9 @@ class DMS implements DMSInterface {
 		//write the filename of the stored document
 		$doc->Filename = $toFilename;
 		$doc->Folder = $toFolder;
+		$doc->Title=$fromFilename;
 		$doc->write();
 
-		//set an initial title for the document from the filename
-		$doc->addTag('title', $fromFilename, false);
 
 		return $doc;
 	}

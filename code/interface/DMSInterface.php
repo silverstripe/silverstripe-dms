@@ -20,8 +20,7 @@ interface DMSInterface {
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
-	 * When storing a document, sets the fields on the File has "tag" metadata. E.g: filename, path, etc. all become
-	 * single-value tags on the Document.
+	 * When storing a document, sets the fields on the File has "tag" metadata.
 	 * @abstract
 	 * @param $file File object, or String that is path to a file to store
 	 * @return DMSDocumentInstance Document object that we just created
