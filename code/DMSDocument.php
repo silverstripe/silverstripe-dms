@@ -6,6 +6,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
+		"LastChanged" => 'DateTime' //when this document was created or last replaced (small changes like updating title don't count)
 	);
 
 	static $many_many = array(
@@ -70,26 +71,49 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$tag = new DMSTag();
 				$tag->Category = $category;
 				$tag->Value = $value;
+				$tag->MultiValue = true;
 				$tag->write();
 				$tag->Documents()->add($this);
+			} else {
+				//add the relation between the tag and document
+				foreach($currentTag as $tagObj) {
+					$tagObj->Documents()->add($this);
+				}
 			}
 		} else {
 			//single value tag
 			$currentTag = $this->Tags()->filter(array('Category' => $category));
-			if (!$currentTag) {
+			$tag = null;
+			if ($currentTag->Count() == 0) {
 				//create the single-value tag
 				$tag = new DMSTag();
 				$tag->Category = $category;
 				$tag->Value = $value;
+				$tag->MultiValue = false;
 				$tag->write();
-				$tag->Documents()->add($this);
 			} else {
 				//update the single value tag
 				$tag = $currentTag->first();
 				$tag->Value = $value;
+				$tag->MultiValue = false;
 				$tag->write();
 			}
+
+			//regardless of whether we created a new tag or are just updating an existing one, add the relation
+			$tag->Documents()->add($this);
 		}
+	}
+
+	protected function getTagsObjects($category, $value = null) {
+		$valueFilter = array("Category" => $category);
+		if (!empty($value)) $valueFilter['Value'] = $value;
+
+		if ($this->ID == 2) {
+		Debug::Show($this);
+		Debug::Show($this->Tags());
+		}
+		$tags = $this->Tags()->filter($valueFilter);
+		return $tags;
 	}
 
 	/**
@@ -101,16 +125,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return array of Strings of all the tags or null if there is no match found
 	 */
 	function getTags($category, $value = null) {
-		$valueFilter = array("Category" => $category);
-		if (!empty($value)) $valueFilter['Value'] = $value;
-
-		$tag = $this->Tags()->filter($valueFilter);
+		$tags = $this->getTagsObjects($category, $value);
 
 		//convert DataList into array of Values
 		$returnArray = null;
-		if ($tag->Count() > 0) {
+		if ($tags->Count() > 0) {
 			$returnArray = array();
-			foreach($tag as $t) {
+			foreach($tags as $t) {
 				$returnArray[] = $t->Value;
 			}
 		}
@@ -141,7 +162,27 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function removeTag($category, $value = null) {
-		// TODO: Implement removeTag() method.
+		$tags = $this->getTagsObjects($category, $value);
+
+		if ($tags->Count() > 0) {
+			$tagsToDelete = array();
+
+			foreach($tags as $t) {
+				$documentList = $t->Documents();
+
+				//remove the relation between the tag and the document
+				$documentList->remove($this);
+
+				//delete the entire tag if it has no relations left
+				if ($documentList->Count() == 0) $tagsToDelete[] = $t->ID;
+			}
+
+			//delete after the loop, so it doesn't conflict with the loop of the $tags list
+			foreach($tagsToDelete as $tID) {
+				$tag = DataObject::get_by_id("DMSTag",$tID);
+				$tag->delete();
+			}
+		}
 	}
 
 	/**
@@ -149,7 +190,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function removeAllTags() {
-		// TODO: Implement removeAllTags() method.
+		$allTags = $this->Tags();
+		foreach($allTags as $tag) {
+			if ($tag->Documents()->Count() == 0) $tag->delete();
+		}
 	}
 
 	/**
@@ -276,6 +320,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		//delete the dataobject
 		parent::delete();
+	}
+
+	/**
+	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
+	 * but keeping the rest of the document unchanged.
+	 * @param $file File object, or String that is path to a file to store
+	 * @return DMSDocumentInstance Document object that we replaced the file in
+	 */
+	function replaceDocument($file) {
+		// TODO: Implement replace() method.
 	}
 
 }

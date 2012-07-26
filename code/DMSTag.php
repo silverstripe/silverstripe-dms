@@ -5,8 +5,9 @@
 class DMSTag extends DataObject {
 
 	static $db = array(
-		'Category' => 'varchar(1024)',
-		'Value' => 'varchar(1024)'
+		'Category' => 'Varchar(1024)',
+		'Value' => 'Varchar(1024)',
+		'MultiValue' => 'Boolean(1)'
 	);
 
 	static $belongs_many_many = array(

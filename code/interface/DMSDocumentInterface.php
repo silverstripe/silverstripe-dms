@@ -124,6 +124,14 @@ interface DMSDocumentInterface {
 	function downloadLink();
 
 	/**
+	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
+	 * but keeping the rest of the document unchanged.
+	 * @param $file File object, or String that is path to a file to store
+	 * @return DMSDocumentInstance Document object that we replaced the file in
+	 */
+	function replaceDocument($file);
+
+	/**
 	 * Hides the DMSDocument, so it does not show up when getByPage($myPage) is called
 	 * (without specifying the $showEmbargoed = true parameter). This is similar to expire, except that this method
 	 * should be used to hide DMSDocuments that have not yet gone live.
