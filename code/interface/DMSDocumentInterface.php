@@ -18,12 +18,21 @@ interface DMSDocumentInterface {
 
 	/**
 	 * Associates this DMSDocument with a Page. This method does nothing if the association already exists.
-	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a has_many relation
+	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a many_many relation
 	 * @abstract
 	 * @param $pageObject Page object to associate this DMSDocument with
 	 * @return null
 	 */
 	function addPage($pageObject);
+	
+	/**
+	 * Associates this DMSDocument with a set of Pages. This method loops through a set of page ids, and then associates this
+	 * DMSDocument with the individual Page with the each page id in the set
+	 * @abstract
+	 * @param $pageIDs array of page ids used for the page objects associate this DMSDocument with
+	 * @return null
+	 */
+	function addPages($pageIDs);
 
 	/**
 	 * Removes the association between this DMSDocument and a Page. This method does nothing if the association does not exist.
