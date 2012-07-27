@@ -19,6 +19,15 @@ class DMSTest extends SapphireTest {
 	}
 
 	function tearDown() {
+		$d = DataObject::get("DMSDocument");
+		foreach($d as $d1) {
+			$d1->delete();
+		}
+		$t = DataObject::get("DMSTag");
+		foreach($t as $t1) {
+			$t1->delete();
+		}
+
 		//delete the test folder after the test runs
 		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . DMS::$dmsFolder);
 
@@ -48,11 +57,9 @@ class DMSTest extends SapphireTest {
 
 
 	function testDMSStorage() {
-		$this->markTestIncomplete('DMS is WIP');
-
 		$dms = DMS::getDMSInstance();
 
-		$file = BASE_PATH . DIRECTORY_SEPARATOR . self::$testFile;
+		$file = self::$testFile;
 		$document = $dms->storeDocument($file);
 
 		$this->assertNotNull($document, "Document object created");
@@ -62,12 +69,10 @@ class DMSTest extends SapphireTest {
 	}
 
 	function testDMSFolderSpanning() {
-		$this->markTestIncomplete('DMS is WIP');
-
 		DMS::$dmsFolderSize = 5;
 		$dms = DMS::getDMSInstance();
 
-		$file = BASE_PATH . DIRECTORY_SEPARATOR . self::$testFile;
+		$file = self::$testFile;
 
 		$documents = array();
 		for($i = 0; $i <= 16; $i++) {

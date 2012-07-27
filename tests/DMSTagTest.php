@@ -3,6 +3,17 @@ class DMSTagTest extends SapphireTest {
 
 	//static $fixture_file = "dms/tests/dmstest.yml";
 
+	function tearDownOnce() {
+		$d = DataObject::get("DMSDocument");
+		foreach($d as $d1) {
+			$d1->delete();
+		}
+		$t = DataObject::get("DMSTag");
+		foreach($t as $t1) {
+			$t1->delete();
+		}
+	}
+
 	function testAddingTags() {
 		$doc = new DMSDocument();
 		$doc->Filename = "test file";

@@ -3,6 +3,17 @@ class DMSDocumentTest extends SapphireTest {
 
 	static $fixture_file = "dms/tests/dmstest.yml";
 
+	function tearDownOnce() {
+		$d = DataObject::get("DMSDocument");
+		foreach($d as $d1) {
+			$d1->delete();
+		}
+		$t = DataObject::get("DMSTag");
+		foreach($t as $t1) {
+			$t1->delete();
+		}
+	}
+
 	function testPageRelations() {
 		$s1 = $this->objFromFixture('SiteTree','s1');
 		$s2 = $this->objFromFixture('SiteTree','s2');
