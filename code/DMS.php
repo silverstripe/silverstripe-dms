@@ -13,6 +13,7 @@ class DMS implements DMSInterface {
 		self::$modelClass = $className;
 	}
 
+
 	/**
 	 * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
 	 * @static
@@ -22,8 +23,12 @@ class DMS implements DMSInterface {
 		self::$dmsPath = BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 
 		$dms = new DMS();
-		self::createStorageFolder(self::$dmsPath);
+		self::createStorageFolder(self::get_DMS_path());
 		return $dms;
+	}
+
+	static function get_DMS_path() {
+		return BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 	}
 
 	static function transformFileToFilePath($file) {

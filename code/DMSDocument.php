@@ -226,7 +226,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return String
 	 */
 	function downloadLink() {
-		// TODO: Implement downloadLink() method.
+		return Controller::join_links(Director::baseURL(),'dmsdocument/'.$this->ID);
 	}
 
 	/**
@@ -314,7 +314,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return string
 	 */
 	function getFullPath() {
-		return DMS::$dmsPath . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
+		return DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
 	}
 
 	/**
@@ -326,7 +326,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$this->removeAllTags();
 
 		//delete the file
-		unlink($this->getFullPath());
+		if (is_file($this->getFullPath())) unlink($this->getFullPath());
 
 		$this->removeAllPages();
 
@@ -341,8 +341,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$fromFilename = basename($filePath);
 		$toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
 		$toFolder = DMS::getStorageFolder($this->ID);
-		$toPath = DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
-		DMS::createStorageFolder(DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
+		$toPath = DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+		DMS::createStorageFolder(DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
 		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
@@ -371,4 +371,92 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return $doc;
 	}
 
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		return $fields;
+	}
+
 }
+
+class DMSDocument_Controller extends Controller {
+	static $allowed_actions = array(
+		'index'
+	);
+
+	protected static function get_file_extension($filename) {
+		return pathinfo($filename, PATHINFO_EXTENSION);
+	}
+
+	/**
+	 * Access the file download without redirecting user, so we can block direct access to documents.
+	 */
+	function index(SS_HTTPRequest $request) {
+		$id = Convert::raw2sql($this->getRequest()->param('ID'));
+		Debug::show($id);
+		if (!empty($id)) $doc = DataObject::get_by_id('DMSDocument', $id);
+		if (!empty($doc)) {
+			Debug::Show($doc);
+			$canView = false;
+
+			//Runs through all pages that this page links to and sets canView to true if the user can view ONE of these pages
+			$pages = $doc->Pages();
+			if ($pages->Count() > 0) {
+				foreach($pages as $page) {
+					if ($page->CanView()) {
+						$canView = true;    //just one canView is enough to know that we can view the file
+						break;
+					}
+				}
+			} else {
+				//if the document isn't on any page, then allow viewing of the document (because there is no canView() to consult)
+				$canView = true;
+			}
+
+			// TODO: add a check for embargo
+
+			if ($canView) {
+				$path = $doc->getFullPath();
+				Debug::Show($path);
+				if ( is_file($path) ) {
+					$fileBin = trim(`whereis file`);
+					Debug::Show($fileBin);
+					if ( function_exists('finfo_file') ) {
+						// discover the mime type properly
+						$finfo = finfo_open(FILEINFO_MIME_TYPE);
+						$mime = finfo_file($finfo, $path);
+					}
+					else if ( is_executable($fileBin) ) {
+						// try to use the system tool
+						$mime = `$fileBin -i -b $path`;
+						$mime = explode(';', $mime);
+						$mime = trim($mime[0]);
+					}
+					else {
+						// make do with what we have
+						$ext = self::get_file_extension($path);
+						if ( $ext =='pdf') {
+							$mime = 'application/pdf';
+						}elseif ($ext == 'html' || $ext =='htm') {
+							$mime = 'text/html';
+						}else {
+							$mime = 'application/octet-stream';
+						}
+					}
+					header('Content-Type: ' . $mime);
+					header('Content-Length: ' . filesize($path), null);
+					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.basename($path).'"');
+					header('Content-transfer-encoding: 8bit');
+					header('Expires: 0');
+					header('Pragma: cache');
+					header('Cache-Control: private');
+					flush();
+					readfile($path);
+					exit;
+				}
+			}
+		}
+
+		$this->httpError(404, 'This asset does not exist.');
+	}
+}
+
