@@ -23,6 +23,17 @@ class DMS implements DMSInterface {
 		return $dms;
 	}
 
+	function transformFileToFilePath($file) {
+		//confirm we have a file
+		$filePath = null;
+		if (is_string($file)) $filePath = $file;
+		elseif (is_object($file) && $file->is_a("File")) $filePath = $file->Filename;
+
+		if (!$filePath) throw new FileNotFoundException();
+
+		return $filePath;
+	}
+
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
 	 * When storing a document, sets the fields on the File has "tag" metadata.
@@ -30,35 +41,14 @@ class DMS implements DMSInterface {
 
 	 */
 	function storeDocument($file) {
-		//confirm we have a file
-		$filePath = null;
-		if (is_string($file)) $filePath = $file;
-		elseif (is_object($file) && $file->is_a("File")) $filePath = $file->Filename;
-
-		if (!$filePath) throw new FileNotFoundException();
+		$filePath = self::transformFileToFilePath($file);
 		
 		//create a new document and get its ID
 		$modelClass = $this->modelClass;
-		$doc = new $modelClass();
-		$docID = $doc->write();
-
-		//calculate all the path to copy the file to
-		$fromFilename = basename($filePath);
-		$toFilename = $docID . '~' . $fromFilename; //add the docID to the start of the Filename
-		$toFolder = self::getStorageFolder($docID);
-		$toPath = self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
-		$this->createStorageFolder(self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
-
-		//copy the file into place
-		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
-		copy($fromPath, $toPath);
-
-		//write the filename of the stored document
-		$doc->Filename = $toFilename;
-		$doc->Folder = $toFolder;
-		$doc->Title=$fromFilename;
-
+		$doc = new $modelClass($this);
 		$doc->write();
+		$doc->storeDocument($filePath);
+
 		return $doc;
 	}
 
@@ -109,7 +99,7 @@ class DMS implements DMSInterface {
 	/**
 	 * Calculates the storage path from a database DMSDocument ID
 	 */
-	static function getStorageFolder($id) {
+	function getStorageFolder($id) {
 		$folderName = intval($id / self::$dmsFolderSize);
 		return $folderName;
 	}

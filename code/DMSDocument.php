@@ -5,13 +5,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
-		"LastChanged" => 'SS_DateTime' //when this document was created or last replaced (small changes like updating title don't count)
+		"LastChanged" => 'SS_DateTime' //when this document's file was created or last replaced (small changes like updating title don't count)
 	);
 
 	static $many_many = array(
 		'Pages' => 'SiteTree',
 		'Tags' => 'DMSTag'
 	);
+
+	protected $dms; //this DMSDocument's associated DMS instance
+
+	function __construct($dms = null) {
+		$this->dms = $dms;
+	}
 
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
@@ -327,6 +333,32 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		parent::delete();
 	}
 
+	function storeDocument($filePath) {
+		if (empty($this->ID)) user_error("Document must be written to database before it can store documents",E_USER_ERROR);
+		if (empty($dms) || !(is_a($dms, 'DMS'))) user_error("You need to provide a DMS object when storing a document",E_USER_ERROR);
+
+		//calculate all the path to copy the file to
+		$fromFilename = basename($filePath);
+		$toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
+		$toFolder = $this->dms->getStorageFolder($this->ID);
+		$toPath = DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+		$this->dms->createStorageFolder(DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
+
+		//copy the file into place
+		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
+		copy($fromPath, $toPath);   //this will overwrite the existing file (if present)
+
+		//write the filename of the stored document
+		$this->Filename = $toFilename;
+		$this->Folder = $toFolder;
+		if (empty($this->Title)) $this->Title = $fromFilename; //don't overwrite existing document titles
+		$this->LastChanged = SS_Datetime::now()->Rfc2822();
+
+		$this->write();
+
+		return $this;
+	}
+
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
 	 * but keeping the rest of the document unchanged.
@@ -334,7 +366,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return DMSDocumentInstance Document object that we replaced the file in
 	 */
 	function replaceDocument($file) {
-		// TODO: Implement replace() method.
+		$filePath = $this->dms->transformFileToFilePath($file);
+		$doc = $this->storeDocument($filePath); //replace the document
+		return $doc;
 	}
 
 }

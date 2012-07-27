@@ -39,7 +39,7 @@ class DMSDocumentTest extends SapphireTest {
 		$s2 = $this->objFromFixture('SiteTree','s2');
 		$s3 = $this->objFromFixture('SiteTree','s3');
 
-		$doc = new DMSDocument();
+		$doc = new DMSDocument(DMS::getDMSInstance());
 		$doc->Filename = "test file";
 		$doc->Folder = "0";
 		$doc->write();

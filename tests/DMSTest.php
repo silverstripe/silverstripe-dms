@@ -2,6 +2,7 @@
 class DMSTest extends SapphireTest {
 
 	static $testFile = 'dms/tests/DMS-test-lorum-file.pdf';
+	static $testFile2 = 'dms/tests/DMS-test-document-2.pdf';
 
 	//store values to reset back to after this test runs
 	static $dmsFolderOld;
@@ -94,6 +95,25 @@ class DMSTest extends SapphireTest {
 		foreach($folders as $f) {
 			$this->assertTrue(is_dir(DMS::$dmsPath . DIRECTORY_SEPARATOR . $f),"Document folder '$f' exists");
 		}
+	}
+
+	function testReplaceDocument() {
+		$dms = DMS::getDMSInstance();
+
+		//store the first document
+		$document = $dms->storeDocument(self::$testFile);
+		$document->Title = "My custom title";
+		$document->Description = "My custom description";
+		$document->write();
+
+		//then overwrite with a second document
+		$document = $document->replaceDocument(self::$testFile2);
+
+		$this->assertNotNull($document, "Document object created");
+		$this->assertTrue(file_exists(DMS::$dmsPath . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
+		$this->assertContains($document->Filename, "DMS-test-document-2", "Original document filename is contain in the new filename");
+		$this->assertEquals($document->Title, "My custom title", "Custom title not modified");
+		$this->assertEquals($document->Description, "My custom description", "Custom description not modified");
 	}
 
 
