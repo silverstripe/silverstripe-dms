@@ -18,12 +18,12 @@ class DMS implements DMSInterface {
 		self::$dmsPath = BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 
 		$dms = new DMS();
-		$dms->createStorageFolder(self::$dmsPath);
+		self::createStorageFolder(self::$dmsPath);
 		$dms->modelClass = $className;
 		return $dms;
 	}
 
-	function transformFileToFilePath($file) {
+	static function transformFileToFilePath($file) {
 		//confirm we have a file
 		$filePath = null;
 		if (is_string($file)) $filePath = $file;
@@ -45,7 +45,7 @@ class DMS implements DMSInterface {
 		
 		//create a new document and get its ID
 		$modelClass = $this->modelClass;
-		$doc = new $modelClass($this);
+		$doc = new $modelClass();
 		$doc->write();
 		$doc->storeDocument($filePath);
 
@@ -90,7 +90,7 @@ class DMS implements DMSInterface {
 	 * Creates a storage folder for the given path
 	 * @param $path Path to create a folder for
 	 */
-	protected function createStorageFolder($path) {
+	static function createStorageFolder($path) {
 		if (!is_dir($path)) {
 			mkdir($path, 0777);
 		}
@@ -99,7 +99,7 @@ class DMS implements DMSInterface {
 	/**
 	 * Calculates the storage path from a database DMSDocument ID
 	 */
-	function getStorageFolder($id) {
+	static function getStorageFolder($id) {
 		$folderName = intval($id / self::$dmsFolderSize);
 		return $folderName;
 	}

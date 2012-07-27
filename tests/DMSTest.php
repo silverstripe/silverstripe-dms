@@ -111,9 +111,9 @@ class DMSTest extends SapphireTest {
 
 		$this->assertNotNull($document, "Document object created");
 		$this->assertTrue(file_exists(DMS::$dmsPath . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
-		$this->assertContains($document->Filename, "DMS-test-document-2", "Original document filename is contain in the new filename");
-		$this->assertEquals($document->Title, "My custom title", "Custom title not modified");
-		$this->assertEquals($document->Description, "My custom description", "Custom description not modified");
+		$this->assertContains("DMS-test-document-2",$document->Filename, "Original document filename is contain in the new filename");
+		$this->assertEquals("My custom title", $document->Title , "Custom title not modified");
+		$this->assertEquals("My custom description", $document->Description, "Custom description not modified");
 	}
 
 

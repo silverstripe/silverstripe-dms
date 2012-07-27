@@ -13,12 +13,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'Tags' => 'DMSTag'
 	);
 
-	protected $dms; //this DMSDocument's associated DMS instance
-
-	function __construct($dms = null) {
-		$this->dms = $dms;
-	}
-
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
 	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a many_many relation
@@ -335,14 +329,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	function storeDocument($filePath) {
 		if (empty($this->ID)) user_error("Document must be written to database before it can store documents",E_USER_ERROR);
-		if (empty($dms) || !(is_a($dms, 'DMS'))) user_error("You need to provide a DMS object when storing a document",E_USER_ERROR);
 
 		//calculate all the path to copy the file to
 		$fromFilename = basename($filePath);
 		$toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
-		$toFolder = $this->dms->getStorageFolder($this->ID);
+		$toFolder = DMS::getStorageFolder($this->ID);
 		$toPath = DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
-		$this->dms->createStorageFolder(DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
+		DMS::createStorageFolder(DMS::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
 		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
@@ -366,7 +359,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return DMSDocumentInstance Document object that we replaced the file in
 	 */
 	function replaceDocument($file) {
-		$filePath = $this->dms->transformFileToFilePath($file);
+		$filePath = DMS::transformFileToFilePath($file);
 		$doc = $this->storeDocument($filePath); //replace the document
 		return $doc;
 	}

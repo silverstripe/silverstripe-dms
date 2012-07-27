@@ -15,9 +15,7 @@ class DMSTagTest extends SapphireTest {
 	}
 
 	function testAddingTags() {
-		$dms = DMS::getDMSInstance();
-
-		$doc = new DMSDocument($dms);
+		$doc = new DMSDocument();
 		$doc->Filename = "test file";
 		$doc->Folder = "0";
 		$doc->write();
@@ -34,7 +32,7 @@ class DMSTagTest extends SapphireTest {
 		$this->assertTrue(in_array("banana",$fruits),"correct fruit tags returned");
 
 		//sneakily create another document and link one of the tags to that, too
-		$doc2 = new DMSDocument($dms);
+		$doc2 = new DMSDocument();
 		$doc2->Filename = "sneaky file";
 		$doc2->Folder = "0";
 		$doc2->write();
@@ -63,9 +61,7 @@ class DMSTagTest extends SapphireTest {
 	}
 
 	function testRemovingTags() {
-		$dms = DMS::getDMSInstance();
-
-		$doc = new DMSDocument($dms);
+		$doc = new DMSDocument();
 		$doc->Filename = "test file";
 		$doc->Folder = "0";
 		$doc->write();
