@@ -7,56 +7,58 @@ class DMS implements DMSInterface {
 	//The number should be a multiple of 10
 	static $dmsFolderSize = 1000;
 	static $dmsPath;    //DMS path set on creation
+	protected $modelClass;
 
 	/**
 	 * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
 	 * @static
 	 * @return DMSInterface An instance of the Document Management System
 	 */
-	static function getDMSInstance() {
+	static function getDMSInstance($className="DMSDocument") {
 		self::$dmsPath = BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 
 		$dms = new DMS();
 		$dms->createStorageFolder(self::$dmsPath);
-
+		$dms->modelClass = $className;
 		return $dms;
 	}
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
 	 * When storing a document, sets the fields on the File has "tag" metadata.
-	 * @param $file File object, or String that is path to a file to store
-	 * @return DMSDocumentInstance Document object that we just created
+	 * @param $file File object, or String that is path to a file to store, e.g. "assets/documents/industry/supplied-v1-0.pdf"
+
 	 */
 	function storeDocument($file) {
 		//confirm we have a file
-		$fromPath = null;
-		if (is_string($file)) $fromPath = $file;
-		elseif (is_object($file) && $file->is_a("File")) $fromPath = $file->Filename;
+		$filePath = null;
+		if (is_string($file)) $filePath = $file;
+		elseif (is_object($file) && $file->is_a("File")) $filePath = $file->Filename;
 
-		if (!$fromPath) throw new FileNotFoundException();
-
+		if (!$filePath) throw new FileNotFoundException();
+		
 		//create a new document and get its ID
-		$doc = new DMSDocument();
+		$modelClass = $this->modelClass;
+		$doc = new $modelClass();
 		$docID = $doc->write();
 
 		//calculate all the path to copy the file to
-		$fromFilename = basename($fromPath);
+		$fromFilename = basename($filePath);
 		$toFilename = $docID . '~' . $fromFilename; //add the docID to the start of the Filename
 		$toFolder = self::getStorageFolder($docID);
 		$toPath = self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
 		$this->createStorageFolder(self::$dmsPath . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
+		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
 		copy($fromPath, $toPath);
 
 		//write the filename of the stored document
 		$doc->Filename = $toFilename;
 		$doc->Folder = $toFolder;
 		$doc->Title=$fromFilename;
+
 		$doc->write();
-
-
 		return $doc;
 	}
 
