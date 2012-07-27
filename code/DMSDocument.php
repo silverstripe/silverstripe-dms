@@ -176,6 +176,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$tags = $this->getTagsObjects($category, $value);
 
 		if ($tags->Count() > 0) {
+			$tagsToDelete = array();
+
 			foreach($tags as $t) {
 				$documentList = $t->Documents();
 
@@ -185,6 +187,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				//delete the entire tag if it has no relations left
 				if ($documentList->Count() == 0) $t->delete();
 			}
+
+			//TODO: remove this comment if unit tests work fine
+			//delete after the loop, so it doesn't conflict with the loop of the $tags list
+//			foreach($tagsToDelete as $tID) {
+//				$tag = DataObject::get_by_id("DMSTag",$tID);
+//				$tag->delete();
+//			}
 		}
 	}
 
@@ -193,12 +202,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function removeAllTags() {
+		$tagsToDelete = array();
 		$allTags = $this->Tags();
 		foreach($allTags as $tag) {
 			$documentlist = $tag->Documents();
 			$documentlist->remove($this);
 			if ($tag->Documents()->Count() == 0) $tag->delete();
 		}
+
+		//TODO: remove this comment if unit tests work fine
+		//delete after the loop, so it doesn't conflict with the loop of the $tags list
+//		foreach($tagsToDelete as $tID) {
+//			$tag = DataObject::get_by_id("DMSTag",$tID);
+//			$tag->delete();
+//		}
 	}
 
 	/**
