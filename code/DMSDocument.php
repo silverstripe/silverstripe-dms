@@ -108,10 +108,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$valueFilter = array("Category" => $category);
 		if (!empty($value)) $valueFilter['Value'] = $value;
 
-		if ($this->ID == 2) {
-		Debug::Show($this);
-		Debug::Show($this->Tags());
-		}
 		$tags = $this->Tags()->filter($valueFilter);
 		return $tags;
 	}
@@ -174,14 +170,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$documentList->remove($this);
 
 				//delete the entire tag if it has no relations left
-				if ($documentList->Count() == 0) $tagsToDelete[] = $t->ID;
+				if ($documentList->Count() == 0) $t->delete();
 			}
 
+			//TODO: remove this comment if unit tests work fine
 			//delete after the loop, so it doesn't conflict with the loop of the $tags list
-			foreach($tagsToDelete as $tID) {
-				$tag = DataObject::get_by_id("DMSTag",$tID);
-				$tag->delete();
-			}
+//			foreach($tagsToDelete as $tID) {
+//				$tag = DataObject::get_by_id("DMSTag",$tID);
+//				$tag->delete();
+//			}
 		}
 	}
 
@@ -190,10 +187,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function removeAllTags() {
+		$tagsToDelete = array();
 		$allTags = $this->Tags();
 		foreach($allTags as $tag) {
+			$documentlist = $tag->Documents();
+			$documentlist->remove($this);
 			if ($tag->Documents()->Count() == 0) $tag->delete();
 		}
+
+		//TODO: remove this comment if unit tests work fine
+		//delete after the loop, so it doesn't conflict with the loop of the $tags list
+//		foreach($tagsToDelete as $tID) {
+//			$tag = DataObject::get_by_id("DMSTag",$tID);
+//			$tag->delete();
+//		}
 	}
 
 	/**

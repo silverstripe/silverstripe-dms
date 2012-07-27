@@ -27,7 +27,7 @@ class DMSTagTest extends SapphireTest {
 		$doc2->write();
 		$doc2->addTag("fruit","banana");
 
-		$fruits = $doc->getTags("fruit");
+		$fruits = $doc2->getTags("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),1,"Only 1 fruit tags returned");
 
@@ -35,7 +35,7 @@ class DMSTagTest extends SapphireTest {
 		$doc->removeAllTags();
 
 		//banana fruit remains
-		$doc2->getTags("fruit");
+		$fruits = $doc2->getTags("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),1,"Only 1 fruit tags returned");
 
