@@ -7,19 +7,22 @@ class DMS implements DMSInterface {
 	//The number should be a multiple of 10
 	static $dmsFolderSize = 1000;
 	static $dmsPath;    //DMS path set on creation
-	protected $modelClass;
+	static $modelClass = 'DMSDocument';
+	
+	static function set_model_class($className){
+		self::$modelClass = $className;
+	}
 
 	/**
 	 * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
 	 * @static
 	 * @return DMSInterface An instance of the Document Management System
 	 */
-	static function getDMSInstance($className="DMSDocument") {
+	static function getDMSInstance() {
 		self::$dmsPath = BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 
 		$dms = new DMS();
 		self::createStorageFolder(self::$dmsPath);
-		$dms->modelClass = $className;
 		return $dms;
 	}
 
@@ -44,7 +47,7 @@ class DMS implements DMSInterface {
 		$filePath = self::transformFileToFilePath($file);
 		
 		//create a new document and get its ID
-		$modelClass = $this->modelClass;
+		$modelClass = self::$modelClass;
 		$doc = new $modelClass();
 		$doc->write();
 		$doc->storeDocument($filePath);

@@ -12,6 +12,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'Pages' => 'SiteTree',
 		'Tags' => 'DMSTag'
 	);
+	
+	static $display_fields = array(
+		'ID'=>'ID',
+		'Title'=>'Title',
+		'Filename'=>'Filename',
+		'LastChanged'=>'LastChanged'
+	);
 
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
