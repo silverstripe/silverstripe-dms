@@ -79,7 +79,7 @@ interface DMSDocumentInterface {
 	 * @param null $value String of the value of the tag to get
 	 * @return array of Strings of all the tags or null if there is no match found
 	 */
-	function getTags($category, $value = null);
+	function getTagsList($category, $value = null);
 
 	/**
 	 * Quick way to add multiple tags to a DMSDocument. This takes a multidimensional array of category/value pairs.

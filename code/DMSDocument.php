@@ -142,7 +142,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @param null $value String of the value of the tag to get
 	 * @return array of Strings of all the tags or null if there is no match found
 	 */
-	function getTags($category, $value = null) {
+	function getTagsList($category, $value = null) {
 		$tags = $this->getTagsObjects($category, $value);
 
 		//convert DataList into array of Values
@@ -457,6 +457,10 @@ class DMSDocument_Controller extends Controller {
 		}
 
 		$this->httpError(404, 'This asset does not exist.');
+	}
+
+	function getCMSFields() {
+		return parent::getCMSFields();
 	}
 }
 

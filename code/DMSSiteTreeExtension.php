@@ -5,7 +5,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		'Documents' => 'DMSDocument'
 	);
 	
-	function updateCMSFields(&$fields){
+	function updateCMSFields(FieldList $fields){
 		$documentsListConfig = GridFieldConfig_RecordEditor::create();
 		$modelClass = DMS::$modelClass;
 		$documentsListConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields);
@@ -13,7 +13,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		$fields->addFieldToTab(
 			'Root.Documents', 
 			GridField::create(
-				'Documents', 
+				'Documents',
 				false, 
 				$this->owner->Documents(),
 				$documentsListConfig

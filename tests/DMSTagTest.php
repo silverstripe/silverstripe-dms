@@ -26,7 +26,7 @@ class DMSTagTest extends SapphireTest {
 		$doc->addTag("company","apple");
 		$doc->addTag("company","SilverStripe");
 
-		$fruits = $doc->getTags("fruit");
+		$fruits = $doc->getTagsList("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),3,"3 fruit tags returned");
 		$this->assertTrue(in_array("banana",$fruits),"correct fruit tags returned");
@@ -38,7 +38,7 @@ class DMSTagTest extends SapphireTest {
 		$doc2->write();
 		$doc2->addTag("fruit","banana");
 
-		$fruits = $doc2->getTags("fruit");
+		$fruits = $doc2->getTagsList("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),1,"Only 1 fruit tags returned");
 
@@ -46,7 +46,7 @@ class DMSTagTest extends SapphireTest {
 		$doc->removeAllTags();
 
 		//banana fruit remains
-		$fruits = $doc2->getTags("fruit");
+		$fruits = $doc2->getTagsList("fruit");
 		$this->assertNotNull($fruits,"Something returned for fruit tags");
 		$this->assertEquals(count($fruits),1,"Only 1 fruit tags returned");
 
@@ -72,41 +72,41 @@ class DMSTagTest extends SapphireTest {
 		$doc->addTag("company","apple");
 		$doc->addTag("company","SilverStripe");
 
-		$companies = $doc->getTags("company");
+		$companies = $doc->getTagsList("company");
 		$this->assertNotNull($companies,"Companies returned before deletion");
 		$this->assertEquals(count($companies),2,"Two companies returned before deletion");
 
 		//delete an entire category
 		$doc->removeTag("company");
 
-		$companies = $doc->getTags("company");
+		$companies = $doc->getTagsList("company");
 		$this->assertNull($companies,"All companies deleted");
 
-		$fruit = $doc->getTags("fruit");
+		$fruit = $doc->getTagsList("fruit");
 		$this->assertEquals(count($fruit),3,"Three fruits returned before deletion");
 
 		//delete a single tag
 		$doc->removeTag("fruit","apple");
 
-		$fruit = $doc->getTags("fruit");
+		$fruit = $doc->getTagsList("fruit");
 		$this->assertEquals(count($fruit),2,"Two fruits returned after deleting one");
 
 		//delete a single tag
 		$doc->removeTag("fruit","orange");
 
-		$fruit = $doc->getTags("fruit");
+		$fruit = $doc->getTagsList("fruit");
 		$this->assertEquals(count($fruit),1,"One fruits returned after deleting two");
 
 		//nothing happens when deleting tag that doesn't exist
 		$doc->removeTag("fruit","jellybean");
 
-		$fruit = $doc->getTags("fruit");
+		$fruit = $doc->getTagsList("fruit");
 		$this->assertEquals(count($fruit),1,"One fruits returned after attempting to delete non-existent fruit");
 
 		//delete the last fruit
 		$doc->removeTag("fruit","banana");
 
-		$fruit = $doc->getTags("fruit");
+		$fruit = $doc->getTagsList("fruit");
 		$this->assertNull($fruit,"All fruits deleted");
 
 		$tags = DataObject::get("DMSTag");
