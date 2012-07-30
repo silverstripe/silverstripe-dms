@@ -371,8 +371,121 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return $doc;
 	}
 
+
+	/**
+	 * Return the type of file for the given extension
+	 * on the current file name.
+	 *
+	 * @return string
+	 */
+	static function get_file_type($ext) {
+		$types = array(
+			'gif' => 'GIF image - good for diagrams',
+			'jpg' => 'JPEG image - good for photos',
+			'jpeg' => 'JPEG image - good for photos',
+			'png' => 'PNG image - good general-purpose format',
+			'ico' => 'Icon image',
+			'tiff' => 'Tagged image format',
+			'doc' => 'Word document',
+			'xls' => 'Excel spreadsheet',
+			'zip' => 'ZIP compressed file',
+			'gz' => 'GZIP compressed file',
+			'dmg' => 'Apple disk image',
+			'pdf' => 'Adobe Acrobat PDF file',
+			'mp3' => 'MP3 audio file',
+			'wav' => 'WAV audo file',
+			'avi' => 'AVI video file',
+			'mpg' => 'MPEG video file',
+			'mpeg' => 'MPEG video file',
+			'js' => 'Javascript file',
+			'css' => 'CSS file',
+			'html' => 'HTML file',
+			'htm' => 'HTML file'
+		);
+
+		return isset($types[$ext]) ? $types[$ext] : $ext;
+	}
+
+	function filenameWithoutID() {
+		$filenameParts = explode('~',$this->Filename);
+		//Debug::Show($filenameParts);
+		$filename = array_pop($filenameParts);
+		//Debug::Show($filename);die;
+		return $filename;
+	}
+
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
+
+		$fields->removeFieldsFromTab('Root.Main',array('Created','LastEdited','LastChanged','Filename','Folder'));
+
+		$fieldsTop = $this->getFieldsForFile();
+		$fields->addFieldToTab('Root.Main',$fieldsTop,'Title');
+
+		return $fields;
+	}
+
+	/**
+	 * Return the relative URL of an icon for the file type,
+	 * based on the {@link appCategory()} value.
+	 * Images are searched for in "framework/images/app_icons/".
+	 *
+	 * @return String
+	 */
+	function Icon($ext) {
+		if(!Director::fileExists(FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif")) {
+			$ext = File::get_app_category($ext);
+		}
+
+		if(!Director::fileExists(FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif")) {
+			$ext = "generic";
+		}
+
+		return FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif";
+	}
+
+
+	/**
+	 * @return FieldList
+	 */
+	protected function getFieldsForFile() {
+		$extension = DMSDocument_Controller::get_file_extension($this->Filename);
+
+		$previewField = new LiteralField("ImageFull",
+			"<img id='thumbnailImage' class='thumbnail-preview' src='{$this->Icon($extension)}?r=" . rand(1,100000)  . "' alt='{$this->Title}' />\n"
+		);
+
+		//count the number of pages this document is published on
+		$publishedOnCount = $this->Pages()->Count();
+		$publishedOnValue = "$publishedOnCount pages";
+		if ($publishedOnCount == 1) $publishedOnValue = "$publishedOnCount page";
+
+		$fields = new FieldGroup(
+			$filePreview = CompositeField::create(
+				CompositeField::create(
+					$previewField
+				)->setName("FilePreviewImage")->addExtraClass('cms-file-info-preview'),
+				CompositeField::create(
+					CompositeField::create(
+						new ReadonlyField("ID", "ID number". ':', $this->ID),
+						new ReadonlyField("FileType", _t('AssetTableField.TYPE','File type') . ':', self::get_file_type($extension)),
+						new ReadonlyField("Size", _t('AssetTableField.SIZE','File size') . ':', File::format_size(filesize($this->getFullPath()))),
+						$urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL','URL'),
+							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->downloadLink(), $this->downloadLink())
+						),
+						new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->filenameWithoutID()),
+						new DateField_Disabled("Created", _t('AssetTableField.CREATED','First uploaded') . ':', $this->Created),
+						new DateField_Disabled("LastEdited", _t('AssetTableField.LASTEDIT','Last changed') . ':', $this->LastEdited),
+						new DateField_Disabled("LastChanged", _t('AssetTableField.LASTCHANGED','Last replaced') . ':', $this->LastChanged),
+						new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue)
+					)
+				)->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
+			)->setName("FilePreview")->addExtraClass('cms-file-info')
+		);
+		$fields->Name = 'FileP';
+		$urlField->dontEscape = true;
+
 		return $fields;
 	}
 
@@ -383,7 +496,7 @@ class DMSDocument_Controller extends Controller {
 		'index'
 	);
 
-	protected static function get_file_extension($filename) {
+	static function get_file_extension($filename) {
 		return pathinfo($filename, PATHINFO_EXTENSION);
 	}
 
@@ -459,8 +572,6 @@ class DMSDocument_Controller extends Controller {
 		$this->httpError(404, 'This asset does not exist.');
 	}
 
-	function getCMSFields() {
-		return parent::getCMSFields();
-	}
+
 }
 
