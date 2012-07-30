@@ -18,7 +18,7 @@ class DMSTest extends FunctionalTest {
 		DMS::$dmsFolder = 'dms-assets-test-1234';
 
 		//clear out the test folder (in case a broken test doesn't delete it)
-		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . DMS::$dmsFolder);
+		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-1234');
 	}
 
 	function tearDown() {
@@ -34,7 +34,7 @@ class DMSTest extends FunctionalTest {
 		}
 
 		//delete the test folder after the test runs
-		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . DMS::$dmsFolder);
+		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-1234');
 
 		//set the old DMS folder back again
 		DMS::$dmsFolder = self::$dmsFolderOld;
