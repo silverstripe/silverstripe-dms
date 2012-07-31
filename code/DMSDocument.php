@@ -424,7 +424,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$fields->addFieldToTab('Root.Main',$fieldsTop,'Title');
 
 		//create upload field to replace document
-		$UploadField = new UploadField('file', 'Replace file');
+		$UploadField = new DMSUploadField('file', 'Replace file');
 		$UploadField->setConfig('allowedMaxFileNumber', 1);
 
 		$fields->addFieldToTab('Root.Main',$UploadField);
@@ -500,7 +500,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @param $file File to ingest
 	 */
 	function ingestFile($file) {
-
+		$this->replaceDocument($file);
+		$file->delete();
 	}
 
 }
