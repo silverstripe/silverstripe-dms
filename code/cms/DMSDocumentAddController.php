@@ -107,27 +107,27 @@ class DMSDocumentAddController extends LeftAndMain {
 	/**
 	 * @return ArrayList
 	 */
-	/*public function Breadcrumbs($unlinked = false) {
+	public function Breadcrumbs($unlinked = false) {
 		$items = parent::Breadcrumbs($unlinked);
 
 		// The root element should explicitly point to the root node.
-		$items[0]->Link = Controller::join_links(singleton('AssetAdmin')->Link('show'), 0);
+		$items[0]->Link = Controller::join_links(singleton('CMSPageEditController')->Link('show'), 0);
 
 		// Enforce linkage of hierarchy to AssetAdmin
 		foreach($items as $item) {
 			$baselink = $this->Link('show');
 			if(strpos($item->Link, $baselink) !== false) {
-				$item->Link = str_replace($baselink, singleton('AssetAdmin')->Link('show'), $item->Link);
+				$item->Link = str_replace($baselink, singleton('CMSPageEditController')->Link('show'), $item->Link);
 			}
 		}
 
 		$items->push(new ArrayData(array(
-			'Title' => _t('AssetAdmin.Upload', 'Upload'),
+			'Title' => 'Add Document',
 			'Link' => $this->Link()
 		)));
 		
 		return $items;
-	}*/
+	}
 
 }
 
