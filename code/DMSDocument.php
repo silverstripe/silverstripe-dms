@@ -423,6 +423,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$fieldsTop = $this->getFieldsForFile();
 		$fields->addFieldToTab('Root.Main',$fieldsTop,'Title');
 
+		//create upload field to replace document
+		$UploadField = new UploadField('file', 'Replace file');
+		$UploadField->setConfig('allowedMaxFileNumber', 1);
+
+		$fields->addFieldToTab('Root.Main',$UploadField);
+
 		return $fields;
 	}
 
