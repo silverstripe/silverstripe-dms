@@ -548,10 +548,8 @@ class DMSDocument_Controller extends Controller {
 	 */
 	function index(SS_HTTPRequest $request) {
 		$id = Convert::raw2sql($this->getRequest()->param('ID'));
-		Debug::show($id);
 		if (!empty($id)) $doc = DataObject::get_by_id('DMSDocument', $id);
 		if (!empty($doc)) {
-			Debug::Show($doc);
 			$canView = false;
 
 			//Runs through all pages that this page links to and sets canView to true if the user can view ONE of these pages
@@ -572,10 +570,8 @@ class DMSDocument_Controller extends Controller {
 
 			if ($canView) {
 				$path = $doc->getFullPath();
-				Debug::Show($path);
 				if ( is_file($path) ) {
 					$fileBin = trim(`whereis file`);
-					Debug::Show($fileBin);
 					if ( function_exists('finfo_file') ) {
 						// discover the mime type properly
 						$finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -600,7 +596,7 @@ class DMSDocument_Controller extends Controller {
 					}
 					header('Content-Type: ' . $mime);
 					header('Content-Length: ' . filesize($path), null);
-					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.basename($path).'"');
+					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.$doc->filenameWithoutID().'"');
 					header('Content-transfer-encoding: 8bit');
 					header('Expires: 0');
 					header('Pragma: cache');
