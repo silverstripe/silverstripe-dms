@@ -6,17 +6,41 @@ class DMSSiteTreeExtension extends DataExtension {
 	);
 	
 	function updateCMSFields(FieldList $fields){
-		$documentsListConfig = GridFieldConfig_RecordEditor::create();
+		// Document listing
+		$gridFieldConfig = GridFieldConfig::create()->addComponents(
+			new GridFieldToolbarHeader(),
+			new GridFieldFilterHeader(),
+			new GridFieldSortableHeader(),
+			new GridFieldDataColumns(),
+			new GridFieldPaginator(15),
+			new GridFieldEditButton(),
+			new GridFieldDeleteAction(),
+			new GridFieldDetailForm()
+			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
+		);
 		$modelClass = DMS::$modelClass;
-		$documentsListConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields);
-		
-		$fields->addFieldToTab(
-			'Root.Documents', 
-			GridField::create(
-				'Documents',
-				false, 
-				$this->owner->Documents(),
-				$documentsListConfig
+		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields);
+		$gridField = GridField::create(
+			'Documents', 
+			false, 
+			$this->owner->Documents(),
+			$gridFieldConfig
+		);
+
+		$uploadBtn = new LiteralField(
+			'UploadButton', 
+			sprintf(
+				'<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content" data-icon="add" href="%s">%s</a>',
+				Controller::join_links(singleton('DMSDocumentAddController')->Link(), '?ID=' . $this->owner->ID),
+				"Add Document"
+			)
+		);	
+
+		$fields->addFieldsToTab(
+			'Root.Documents',
+			array(
+				$uploadBtn,
+				$gridField
 			)
 		);
 	}
