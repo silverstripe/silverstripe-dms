@@ -16,7 +16,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	static $display_fields = array(
 		'ID'=>'ID',
 		'Title'=>'Title',
-		'Filename'=>'Filename',
+		'FilenameWithoutID'=>'Filename',
 		'LastChanged'=>'LastChanged'
 	);
 
@@ -406,7 +406,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return isset($types[$ext]) ? $types[$ext] : $ext;
 	}
 
-	function filenameWithoutID() {
+	function getFilenameWithoutID() {
 		$filenameParts = explode('~',$this->Filename);
 		$filename = array_pop($filenameParts);
 		return $filename;
@@ -508,7 +508,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 						$urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL','URL'),
 							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->downloadLink(), $this->downloadLink())
 						),
-						new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->filenameWithoutID()),
+						new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->getFilenameWithoutID()),
 						new DateField_Disabled("Created", _t('AssetTableField.CREATED','First uploaded') . ':', $this->Created),
 						new DateField_Disabled("LastEdited", _t('AssetTableField.LASTEDIT','Last changed') . ':', $this->LastEdited),
 						new DateField_Disabled("LastChanged", _t('AssetTableField.LASTCHANGED','Last replaced') . ':', $this->LastChanged),
