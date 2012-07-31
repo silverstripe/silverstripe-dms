@@ -58,20 +58,13 @@ class DMSDocumentAddController extends LeftAndMain {
 
 		$page = $this->currentPage();
 
-		$uploadField = UploadField::create('AssetUploadField', '');
+		$uploadField = DMSUploadField::create('AssetUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);
 		$uploadField->addExtraClass('ss-assetuploadfield');
 		$uploadField->removeExtraClass('ss-uploadfield');
 		$uploadField->setTemplate('AssetUploadField');
-
-		/*if ($folder->exists() && $folder->getFilename()) {
-			// The Upload class expects a folder relative *within* assets/
-			$path = preg_replace('/^' . ASSETS_DIR . '\//', '', $folder->getFilename());
-			$uploadField->setFolderName($path);
-		} else {
-			$uploadField->setFolderName(ASSETS_DIR);
-		}*/
+		$uploadField->setRecord($page);
 
 		$exts = $uploadField->getValidator()->getAllowedExtensions();
 		asort($exts);
@@ -80,6 +73,7 @@ class DMSDocumentAddController extends LeftAndMain {
 			$this,
 			'getEditForm',
 			new FieldList(
+				new HiddenField('ID', false, $page->ID),
 				$uploadField,
 				new LiteralField(
 					'AllowedExtensions',
@@ -88,8 +82,7 @@ class DMSDocumentAddController extends LeftAndMain {
 						_t('AssetAdmin.ALLOWEDEXTS', 'Allowed extensions'),
 						implode('<em>, </em>', $exts)
 					)
-				),
-				new HiddenField('ID')
+				)
 			),
 			new FieldList()
 		);

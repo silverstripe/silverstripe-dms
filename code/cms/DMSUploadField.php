@@ -21,8 +21,12 @@ class DMSUploadField extends UploadField {
 	 * @param File
 	 */
 	protected function attachFile($file) {
-		$dmsDocument = $this->getRecord();
-		$dmsDocument->ingestFile($file);
+		$page = $this->getRecord();
+
+		$dms = DMS::getDMSInstance();
+		$document = $dms->storeDocument($file);
+		$file->delete();
+		$document->addPage($page);
 	}
 
 
