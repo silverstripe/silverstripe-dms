@@ -408,26 +408,54 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	function filenameWithoutID() {
 		$filenameParts = explode('~',$this->Filename);
-		//Debug::Show($filenameParts);
 		$filename = array_pop($filenameParts);
-		//Debug::Show($filename);die;
 		return $filename;
 	}
 
 
 	function getCMSFields() {
-		$fields = parent::getCMSFields();
+		//include JS to handling showing and hiding of bottom "action" tabs
+		Requirements::javascript('dms/javascript/DMSDocumentCMSFields.js');
 
-		$fields->removeFieldsFromTab('Root.Main',array('Created','LastEdited','LastChanged','Filename','Folder'));
+		$fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 
 		$fieldsTop = $this->getFieldsForFile();
-		$fields->addFieldToTab('Root.Main',$fieldsTop,'Title');
+		$fields->add($fieldsTop);
+
+		$fields->add(new TextField('Title','Title'));
+		$fields->add(new TextareaField('Description','Description'));
 
 		//create upload field to replace document
-		$UploadField = new DMSUploadField('file', 'Replace file');
+		$UploadField = new DMSUploadField('ReplaceFile', 'Replace file');
 		$UploadField->setConfig('allowedMaxFileNumber', 1);
 
-		$fields->addFieldToTab('Root.Main',$UploadField);
+		$gridFieldConfig = GridFieldConfig::create()->addComponents(
+			new GridFieldSortableHeader(),
+			new GridFieldDataColumns(),
+			new GridFieldPaginator(30),
+			new GridFieldEditButton(),
+			new GridFieldDetailForm()
+		);
+		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(array('Title'=>'Title','ClassName'=>'Page Type','ID'=>'Page ID'));
+		$pagesGrid = GridField::create(
+			'Pages',
+			false,
+			$this->Pages(),
+			$gridFieldConfig
+		);
+
+		//create actions FieldGroup (bottom actions tabs)
+		/*$actions = new FieldGroup(
+			CompositeField::create(
+				$pagesGrid
+			)->setName("Usage")->addExtraClass('dms-usage-grid')
+		);
+		$actions->setName('DMSActions');
+		$fields->add($actions);*/
+
+		$fields->add($UploadField);
+		$fields->add($pagesGrid);
+
 
 		return $fields;
 	}
@@ -489,7 +517,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				)->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
 			)->setName("FilePreview")->addExtraClass('cms-file-info')
 		);
-		$fields->Name = 'FileP';
+		$fields->setName('FileP');
 		$urlField->dontEscape = true;
 
 		return $fields;
