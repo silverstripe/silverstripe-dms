@@ -6,6 +6,9 @@ class DMSSiteTreeExtension extends DataExtension {
 	);
 	
 	function updateCMSFields(FieldList $fields){
+		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
+		Requirements::javascript('dms/javascript/DMSGridField.js');
+
 		// Document listing
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldToolbarHeader(),
@@ -14,7 +17,7 @@ class DMSSiteTreeExtension extends DataExtension {
 			new GridFieldDataColumns(),
 			new GridFieldPaginator(15),
 			new GridFieldEditButton(),
-			new GridFieldDeleteAction(),
+			new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
 			new GridFieldDetailForm()
 			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
 		);

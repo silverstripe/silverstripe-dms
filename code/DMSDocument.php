@@ -325,8 +325,22 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//remove tags
 		$this->removeAllTags();
 
-		//delete the file
-		if (is_file($this->getFullPath())) unlink($this->getFullPath());
+		//delete the file (and previous versions of files)
+		$filesToDelete = array();
+		$storageFolder = DMS::get_DMS_path() . DIRECTORY_SEPARATOR . DMS::getStorageFolder($this->ID);
+		if ($handle = opendir($storageFolder)) { //Open directory
+			//List files in the directory
+			while (false !== ($entry = readdir($handle))) {
+				if(strpos($entry,$this->ID.'~') !== false) $filesToDelete[] = $entry;
+			}
+			closedir($handle);
+
+			//delete all this files that have the id of this document
+			foreach($filesToDelete as $file) {
+				$filePath = $storageFolder .DIRECTORY_SEPARATOR . $file;
+				if (is_file($filePath)) unlink($filePath);
+			}
+		}
 
 		$this->removeAllPages();
 
