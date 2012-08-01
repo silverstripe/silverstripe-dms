@@ -596,7 +596,7 @@ class DMSDocument_Controller extends Controller {
 					}
 					header('Content-Type: ' . $mime);
 					header('Content-Length: ' . filesize($path), null);
-					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.$doc->filenameWithoutID().'"');
+					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.$doc->getFilenameWithoutID().'"');
 					header('Content-transfer-encoding: 8bit');
 					header('Expires: 0');
 					header('Pragma: cache');
