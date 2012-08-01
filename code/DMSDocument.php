@@ -483,7 +483,25 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * Return the extension of the file associated with the document
 	 */
 	function getFileExt() {
-		return pathinfo($this->Filename, PATHINFO_EXTENSION);
+		return strtolower(pathinfo($this->Filename, PATHINFO_EXTENSION));
+	}
+	
+	/**
+	 * Return the size of the file associated with the document
+	 */
+	function getFileSize() {
+		return filesize($this->getFullPath());
+	}
+	
+	function getFileSizeFormatted(){
+		if($size = $this->getFileSize()){
+			if($size < 1024) return $size . ' bytes';
+			if($size < 1024*10) return (round($size/1024*10)/10). ' KB';
+			if($size < 1024*1024) return round($size/1024) . ' KB';
+			if($size < 1024*1024*10) return (round(($size/1024)/1024*10)/10) . ' MB';
+			if($size < 1024*1024*1024) return round(($size/1024)/1024) . ' MB';
+			return round($size/(1024*1024*1024)*10)/10 . ' GB';
+		}
 	}
 
 

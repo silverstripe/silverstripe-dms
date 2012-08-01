@@ -137,6 +137,11 @@ interface DMSDocumentInterface {
 	 */
 	function getFileExt();
 	
+	/**
+	 * Return the size of the file associated with the document
+	 */
+	function getFileSize();
+	
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
