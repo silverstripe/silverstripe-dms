@@ -524,7 +524,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * Takes a file an adds it to the DMSDocument storage, replacing the current file.
+	 * Takes a file and adds it to the DMSDocument storage, replacing the current file.
 	 * @param $file File to ingest
 	 */
 	function ingestFile($file) {
