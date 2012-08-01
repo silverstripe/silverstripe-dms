@@ -225,7 +225,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * Returns a link to download this document from the DMS store
 	 * @return String
 	 */
-	function downloadLink() {
+	function getDownloadLink() {
 		return Controller::join_links(Director::baseURL(),'dmsdocument/'.$this->ID);
 	}
 
@@ -506,7 +506,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 						new ReadonlyField("FileType", _t('AssetTableField.TYPE','File type') . ':', self::get_file_type($extension)),
 						new ReadonlyField("Size", _t('AssetTableField.SIZE','File size') . ':', File::format_size(filesize($this->getFullPath()))),
 						$urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL','URL'),
-							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->downloadLink(), $this->downloadLink())
+							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->getDownloadLink(), $this->getDownloadLink())
 						),
 						new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->getFilenameWithoutID()),
 						new DateField_Disabled("Created", _t('AssetTableField.CREATED','First uploaded') . ':', $this->Created),

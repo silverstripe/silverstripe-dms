@@ -130,7 +130,7 @@ interface DMSDocumentInterface {
 	 * @abstract
 	 * @return String
 	 */
-	function downloadLink();
+	function getDownloadLink();
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file

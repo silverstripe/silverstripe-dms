@@ -19,7 +19,9 @@ class DMSSiteTreeExtension extends DataExtension {
 			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
 		);
 		$modelClass = DMS::$modelClass;
-		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields);
+		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields)
+			->setFieldCasting(array('LastChanged'=>"Date->Ago"))
+ 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$DownloadLink\'>$FilenameWithoutID</a>'));
 		$gridField = GridField::create(
 			'Documents', 
 			false, 

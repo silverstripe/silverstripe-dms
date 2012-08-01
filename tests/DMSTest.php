@@ -125,7 +125,7 @@ class DMSTest extends FunctionalTest {
 //
 //		//store the first document
 //		$document = $dms->storeDocument(self::$testFile);
-//		$link = $document->downloadLink();
+//		$link = $document->getDownloadLink();
 //
 //		Debug::Show($link);
 //		$d=new DMSDocument_Controller();
