@@ -478,13 +478,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		return FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif";
 	}
+	
+	/**
+	 * Return the extension of the file associated with the document
+	 */
+	function getFileExt() {
+		return pathinfo($this->Filename, PATHINFO_EXTENSION);
+	}
 
 
 	/**
 	 * @return FieldList
 	 */
 	protected function getFieldsForFile() {
-		$extension = DMSDocument_Controller::get_file_extension($this->Filename);
+		$extension = $this->getFileExt();
 
 		$previewField = new LiteralField("ImageFull",
 			"<img id='thumbnailImage' class='thumbnail-preview' src='{$this->Icon($extension)}?r=" . rand(1,100000)  . "' alt='{$this->Title}' />\n"
@@ -539,10 +546,6 @@ class DMSDocument_Controller extends Controller {
 		'index'
 	);
 
-	static function get_file_extension($filename) {
-		return pathinfo($filename, PATHINFO_EXTENSION);
-	}
-
 	/**
 	 * Access the file download without redirecting user, so we can block direct access to documents.
 	 */
@@ -585,7 +588,7 @@ class DMSDocument_Controller extends Controller {
 					}
 					else {
 						// make do with what we have
-						$ext = self::get_file_extension($path);
+						$ext = $doc->getFileExt();
 						if ( $ext =='pdf') {
 							$mime = 'application/pdf';
 						}elseif ($ext == 'html' || $ext =='htm') {

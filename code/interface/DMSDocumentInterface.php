@@ -131,6 +131,12 @@ interface DMSDocumentInterface {
 	 * @return String
 	 */
 	function getDownloadLink();
+	
+	/**
+	 * Return the extension of the file associated with the document
+	 */
+	function getFileExt();
+	
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
