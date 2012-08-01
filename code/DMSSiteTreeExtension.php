@@ -25,6 +25,10 @@ class DMSSiteTreeExtension extends DataExtension {
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields($modelClass::$display_fields)
 			->setFieldCasting(array('LastChanged'=>"Date->Ago"))
  			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$DownloadLink\'>$FilenameWithoutID</a>'));
+
+		//override delete functionality with this class
+		$gridFieldConfig->getComponentByType('GridFieldDetailForm')->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
+
 		$gridField = GridField::create(
 			'Documents', 
 			false, 
