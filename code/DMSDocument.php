@@ -544,7 +544,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 					CompositeField::create(
 						new ReadonlyField("ID", "ID number". ':', $this->ID),
 						new ReadonlyField("FileType", _t('AssetTableField.TYPE','File type') . ':', self::get_file_type($extension)),
-						new ReadonlyField("Size", _t('AssetTableField.SIZE','File size') . ':', File::format_size(filesize($this->getFullPath()))),
+						new ReadonlyField("Size", _t('AssetTableField.SIZE','File size') . ':', $this->getFileSizeFormatted()),
 						$urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL','URL'),
 							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->getDownloadLink(), $this->getDownloadLink())
 						),
@@ -571,7 +571,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$this->replaceDocument($file);
 		$file->delete();
 	}
-
 }
 
 class DMSDocument_Controller extends Controller {
