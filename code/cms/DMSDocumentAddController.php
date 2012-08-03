@@ -68,7 +68,11 @@ class DMSDocumentAddController extends LeftAndMain {
 
 		$exts = $uploadField->getValidator()->getAllowedExtensions();
 		asort($exts);
-
+		$backlink = $this->Backlink();
+		$done = "
+		<a class=\"ss-ui-button ss-ui-action-constructive cms-panel-link ui-corner-all\" href=\"".$backlink."\">
+			Done!
+		</a>";
 		$form = new Form(
 			$this,
 			'getEditForm',
@@ -84,9 +88,12 @@ class DMSDocumentAddController extends LeftAndMain {
 					)
 				)
 			),
-			new FieldList()
+			new FieldList(
+				new LiteralField('doneButton', $done)
+			)
 		);
 		$form->addExtraClass('center cms-edit-form ' . $this->BaseCSSClasses());
+		$form->Backlink = $backlink;
 		// Don't use AssetAdmin_EditForm, as it assumes a different panel structure
 		$form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
 		/*$form->Fields()->push(
@@ -127,6 +134,11 @@ class DMSDocumentAddController extends LeftAndMain {
 		)));
 		
 		return $items;
+	}
+	
+	public function Backlink(){
+		$pageID = $this->currentPageID();
+		return singleton('CMSPagesController')->Link().'edit/show/'.$pageID;
 	}
 
 }
