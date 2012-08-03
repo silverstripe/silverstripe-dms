@@ -111,6 +111,10 @@ class DMSUploadField extends UploadField {
 
 					// Attach the file to the related record.
 					$document = $this->attachFile($file);
+					
+					//TODO: both $document->UploadFieldThumbnailURL and $document->UploadFieldFileButtons are null,
+					// check the code from UploadField.php where they use $file->UploadFieldThumbnailURL and $file->UploadFieldFileButtons
+					// and $file is_a File but in our case $document is a Document, that is why it doesn't work.
 
 					// Collect all output data.
 					$return = array_merge($return, array(
