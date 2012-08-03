@@ -1,3 +1,43 @@
-#test {
-	/* Test SCSS */
+#FileP{
+	.fieldgroup-field{
+		width:100%;
+		.cms-file-info-data{
+			width:400px;
+		}
+		.fieldholder-small{
+			margin-top: 5px;
+			label{
+				width:auto;
+				margin-left: 0;
+				padding-top: 0;
+				margin-right: 10px;
+				font-weight: bold;
+			}
+			.readonly{
+				font-style:italic;
+				color: #666;
+			}
+		}
+	}
+}
+
+#DocumentTypeID{
+	ul{
+		input[type="radio"]{
+			display:none;
+		}
+		li{
+			display:inline;
+			float: none;
+			padding:4px;
+			&.selected{
+				border-bottom:1px solid #555;
+				border-top:1px solid #e6e6e6;
+			}
+			label{
+				//display: inline-block;
+				//padding: 4px 10px;
+			}
+		}
+	}
 }

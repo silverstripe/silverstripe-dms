@@ -448,7 +448,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
 			new GridFieldPaginator(30),
-			new GridFieldEditButton(),
+			//new GridFieldEditButton(),
 			new GridFieldDetailForm()
 		);
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(array('Title'=>'Title','ClassName'=>'Page Type','ID'=>'Page ID'));
@@ -468,6 +468,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$actions->setName('DMSActions');
 		$fields->add($actions);*/
 
+		$fields->add(new LiteralField('BottomTaskSelection',"<div id=\"Actions\" class=\"field actions\"><label class=\"left\">Actions</label><ul><li class=\"ss-ui-button\">Replace</li><li class=\"ss-ui-button\">Embargo</li></ul></div>"));
 		$fields->add($UploadField);
 		$fields->add($pagesGrid);
 		$fields->add(FormAction::create('dod', _t('GridFieldDetailForm.Delete', 'Delete'))
@@ -480,20 +481,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	/**
 	 * Return the relative URL of an icon for the file type,
 	 * based on the {@link appCategory()} value.
-	 * Images are searched for in "framework/images/app_icons/".
+	 * Images are searched for in "dms/images/app_icons/".
 	 *
 	 * @return String
 	 */
 	function Icon($ext) {
-		if(!Director::fileExists(FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif")) {
+		if(!Director::fileExists("dms/images/app_icons/{$ext}_32.png")) {
 			$ext = File::get_app_category($ext);
 		}
 
-		if(!Director::fileExists(FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif")) {
+		if(!Director::fileExists("dms/images/app_icons/{$ext}_32.png")) {
 			$ext = "generic";
 		}
 
-		return FRAMEWORK_DIR . "/images/app_icons/{$ext}_32.gif";
+		return "dms/images/app_icons/{$ext}_32.png";
 	}
 	
 	/**
