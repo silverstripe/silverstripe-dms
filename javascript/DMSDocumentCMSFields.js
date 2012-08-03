@@ -5,6 +5,7 @@
 		$('#DocumentTypeID ul li').entwine({
 				onmatch: function() {
 					this.addClass('ss-ui-button');
+					this.parents('ul').removeClass('ui-tabs-nav');
 				},
 			});
 
@@ -28,7 +29,7 @@
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
 				e.preventDefault();
-				this.parents('fieldset').find('#ReplaceFile').hide();
+				this.parents('fieldset').find('#ReplaceFile').show();
 			}
 		});
 

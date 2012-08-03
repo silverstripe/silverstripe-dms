@@ -4,6 +4,11 @@
 #FileP .fieldgroup-field .fieldholder-small label { width: auto; margin-left: 0; padding-top: 0; margin-right: 10px; font-weight: bold; }
 #FileP .fieldgroup-field .fieldholder-small .readonly { font-style: italic; color: #666; }
 
+#DocumentTypeID ul { padding: 0; }
 #DocumentTypeID ul input[type="radio"] { display: none; }
 #DocumentTypeID ul li { display: inline; float: none; padding: 4px; }
 #DocumentTypeID ul li.selected { border-bottom: 1px solid #555; border-top: 1px solid #e6e6e6; }
+
+#ReplaceFile { display: none; }
+
+table.ss-gridfield-table { width: 400px; }
