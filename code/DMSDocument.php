@@ -348,6 +348,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		parent::delete();
 	}
 
+	/**
+	 * Relate an existing file on the filesystem to the document.
+	 * Copies the file to the new destination, as defined in {@link get_DMS_path()}.
+	 *
+	 * @param String Path to file, relative to webroot.
+	 */
 	function storeDocument($filePath) {
 		if (empty($this->ID)) user_error("Document must be written to database before it can store documents",E_USER_ERROR);
 
@@ -445,16 +451,28 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$UploadField->setConfig('allowedMaxFileNumber', 1);
 
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
+			new GridFieldToolbarHeader(),
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
 			new GridFieldPaginator(30),
 			//new GridFieldEditButton(),
 			new GridFieldDetailForm()
 		);
-		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(array('Title'=>'Title','ClassName'=>'Page Type','ID'=>'Page ID'));
+		$gridFieldConfig->getComponentByType('GridFieldDataColumns')
+			->setDisplayFields(array(
+				'Title'=>'Title',
+				'ClassName'=>'Page Type',
+				'ID'=>'Page ID'
+			))
+			->setFieldFormatting(array(
+				'Title'=>sprintf(
+					'<a class=\"cms-panel-link\" href=\"%s/$ID\">$Title</a>',
+					singleton('CMSPageEditController')->Link('show')
+				)
+			));
 		$pagesGrid = GridField::create(
 			'Pages',
-			false,
+			_t('DMSDocument.RelatedPages', 'Related Pages'),
 			$this->Pages(),
 			$gridFieldConfig
 		);
