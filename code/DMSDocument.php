@@ -314,7 +314,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return string
 	 */
 	function getFullPath() {
-		return DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
+		return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
 	}
 
 	/**
@@ -327,7 +327,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		//delete the file (and previous versions of files)
 		$filesToDelete = array();
-		$storageFolder = DMS::get_DMS_path() . DIRECTORY_SEPARATOR . DMS::getStorageFolder($this->ID);
+		$storageFolder = DMS::get_dms_path() . DIRECTORY_SEPARATOR . DMS::get_storage_folder($this->ID);
 		if ($handle = opendir($storageFolder)) { //Open directory
 			//List files in the directory
 			while (false !== ($entry = readdir($handle))) {
@@ -360,9 +360,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//calculate all the path to copy the file to
 		$fromFilename = basename($filePath);
 		$toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
-		$toFolder = DMS::getStorageFolder($this->ID);
-		$toPath = DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
-		DMS::createStorageFolder(DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $toFolder);
+		$toFolder = DMS::get_storage_folder($this->ID);
+		$toPath = DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+		DMS::create_storage_folder(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
 		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
@@ -386,7 +386,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return DMSDocumentInstance Document object that we replaced the file in
 	 */
 	function replaceDocument($file) {
-		$filePath = DMS::transformFileToFilePath($file);
+		$filePath = DMS::transform_file_to_file_path($file);
 		$doc = $this->storeDocument($filePath); //replace the document
 		return $doc;
 	}

@@ -19,11 +19,11 @@ class DMS implements DMSInterface {
 	 * @return DMSInterface An instance of the Document Management System
 	 */
 	static function inst() {
-		$dmsPath = self::get_DMS_path();
+		$dmsPath = self::get_dms_path();
 
 		$dms = new DMS();
 		if (!is_dir($dmsPath)) {
-			self::createStorageFolder($dmsPath);
+			self::create_storage_folder($dmsPath);
 		}
 
 		if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
@@ -34,11 +34,11 @@ class DMS implements DMSInterface {
 		return $dms;
 	}
 
-	static function get_DMS_path() {
+	static function get_dms_path() {
 		return BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
 	}
 
-	static function transformFileToFilePath($file) {
+	static function transform_file_to_file_path($file) {
 		//confirm we have a file
 		$filePath = null;
 		if (is_string($file)) $filePath = $file;
@@ -56,7 +56,7 @@ class DMS implements DMSInterface {
 
 	 */
 	function storeDocument($file) {
-		$filePath = self::transformFileToFilePath($file);
+		$filePath = self::transform_file_to_file_path($file);
 		
 		//create a new document and get its ID
 		$modelClass = self::$modelClass;
@@ -105,7 +105,7 @@ class DMS implements DMSInterface {
 	 * Creates a storage folder for the given path
 	 * @param $path Path to create a folder for
 	 */
-	static function createStorageFolder($path) {
+	static function create_storage_folder($path) {
 		if (!is_dir($path)) {
 			mkdir($path, 0777);
 		}
@@ -114,7 +114,7 @@ class DMS implements DMSInterface {
 	/**
 	 * Calculates the storage path from a database DMSDocument ID
 	 */
-	static function getStorageFolder($id) {
+	static function get_storage_folder($id) {
 		$folderName = intval($id / self::$dmsFolderSize);
 		return $folderName;
 	}

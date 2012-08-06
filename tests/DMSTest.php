@@ -68,7 +68,7 @@ class DMSTest extends FunctionalTest {
 		$document = $dms->storeDocument($file);
 
 		$this->assertNotNull($document, "Document object created");
-		$this->assertTrue(file_exists(DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
+		$this->assertTrue(file_exists(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
 
 		//$title = $document->getTag('title');
 	}
@@ -97,7 +97,7 @@ class DMSTest extends FunctionalTest {
 
 		//test we created 4 folder to contain the 17 files
 		foreach($folders as $f) {
-			$this->assertTrue(is_dir(DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $f),"Document folder '$f' exists");
+			$this->assertTrue(is_dir(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $f),"Document folder '$f' exists");
 		}
 	}
 
@@ -114,7 +114,7 @@ class DMSTest extends FunctionalTest {
 		$document = $document->replaceDocument(self::$testFile2);
 
 		$this->assertNotNull($document, "Document object created");
-		$this->assertTrue(file_exists(DMS::get_DMS_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
+		$this->assertTrue(file_exists(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename),"Document file copied into DMS folder");
 		$this->assertContains("DMS-test-document-2",$document->Filename, "Original document filename is contain in the new filename");
 		$this->assertEquals("My custom title", $document->Title , "Custom title not modified");
 		$this->assertEquals("My custom description", $document->Description, "Custom description not modified");
