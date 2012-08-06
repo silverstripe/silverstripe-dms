@@ -19,7 +19,7 @@ window.tmpl.cache['ss-uploadfield-downloadtemplate'] = tmpl(
 						'<div class="ss-uploadfield-item-cancel ss-uploadfield-item-cancelfailed"><button class="icon icon-16">' + ss.i18n._t('UploadField.CANCEL', 'Cancel') + '</button></div>' +
 					'</div>' +
 				'{% } else { %}' +
-					'<div class="ss-uploadfield-item-actions">(refresh the page to display new file information)</div>' +
+					'<div class="ss-uploadfield-item-actions">{% print(file.buttons, true); %}</div>' +
 				'{% } %}' +
 			'</div>' +
 			'{% if (!file.error) { %}' +

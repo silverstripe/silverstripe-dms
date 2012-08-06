@@ -123,7 +123,7 @@ class DMSUploadField extends UploadField {
 						'thumbnail_url' => $document->UploadFieldThumbnailURL,
 						'edit_url' => $this->getItemHandler($document->ID)->EditLink(),
 						'size' => $document->getFileSizeFormatted(),
-						'buttons' => $document->UploadFieldFileButtons,
+						'buttons' => $document->renderWith($this->getTemplateFileButtons()),
 						'showeditform' => true
 					));
 				}
