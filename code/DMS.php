@@ -6,7 +6,6 @@ class DMS implements DMSInterface {
 	//How many documents to store in a single folder. The square of this number is the maximum number of documents.
 	//The number should be a multiple of 10
 	static $dmsFolderSize = 1000;
-	static $dmsPath;    //DMS path set on creation
 	static $modelClass = 'DMSDocument';
 	
 	static function set_model_class($className){
@@ -20,10 +19,18 @@ class DMS implements DMSInterface {
 	 * @return DMSInterface An instance of the Document Management System
 	 */
 	static function getDMSInstance() {
-		self::$dmsPath = BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
+		$dmsPath = self::get_DMS_path();
 
 		$dms = new DMS();
-		self::createStorageFolder(self::get_DMS_path());
+		if (!is_dir($dmsPath)) {
+			self::createStorageFolder($dmsPath);
+		}
+
+		if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
+			//restrict access to the storage folder
+			copy(BASE_PATH . DIRECTORY_SEPARATOR . 'dms' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',  $dmsPath . DIRECTORY_SEPARATOR . '.htaccess');
+			copy(BASE_PATH . DIRECTORY_SEPARATOR . 'dms' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'web.config', $dmsPath . DIRECTORY_SEPARATOR . 'web.config');
+		}
 		return $dms;
 	}
 
