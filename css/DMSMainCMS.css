@@ -1,0 +1,5 @@
+#Root_Documents table { white-space: normal; }
+#Root_Documents table th.col-action_SetOrderTitle, #Root_Documents table th.col-FilenameWithoutID { width: 300px; }
+#Root_Documents table td { white-space: normal; }
+#Root_Documents table td.col-buttons { white-space: nowrap; }
+#Root_Documents table td.col-buttons .dms-delete-link-only .ui-icon { background: url(../images/chain-unchain.png) no-repeat; }

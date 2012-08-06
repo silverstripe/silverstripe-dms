@@ -8,6 +8,7 @@ class DMSSiteTreeExtension extends DataExtension {
 	function updateCMSFields(FieldList $fields){
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
 		Requirements::javascript('dms/javascript/DMSGridField.js');
+		Requirements::css('dms/css/DMSMainCMS.css');
 
 		// Document listing
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(

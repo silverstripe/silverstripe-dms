@@ -1,0 +1,23 @@
+//data-icon="cross-circle"
+
+#Root_Documents{
+	table{
+		white-space:normal;
+		th{
+			&.col-action_SetOrderTitle, &.col-FilenameWithoutID{
+				width: 300px;
+			}
+		}
+		td{
+			white-space:normal;
+		}
+		td.col-buttons{
+			white-space:nowrap;
+			.dms-delete-link-only{
+				.ui-icon{
+					background: url(../images/chain-unchain.png) no-repeat;
+				}
+			}
+		}
+	}
+}
