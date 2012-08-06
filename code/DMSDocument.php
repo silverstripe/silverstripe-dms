@@ -447,8 +447,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$fields->add(new TextareaField('Description','Description'));
 
 		//create upload field to replace document
-		$UploadField = new DMSUploadField('ReplaceFile', 'Replace file');
-		$UploadField->setConfig('allowedMaxFileNumber', 1);
+		$uploadField = new DMSUploadField('ReplaceFile', 'Replace file');
+		$uploadField->setConfig('allowedMaxFileNumber', 1);
+		$uploadField->setRecord($this);
+
 
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldToolbarHeader(),
@@ -478,7 +480,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		);
 
 		$fields->add(new LiteralField('BottomTaskSelection',"<div id=\"Actions\" class=\"field actions\"><label class=\"left\">Actions</label><ul><li class=\"ss-ui-button\">Replace</li><li class=\"ss-ui-button\">Embargo</li></ul></div>"));
-		$fields->add($UploadField);
+		$fields->add($uploadField);
 		$fields->add($pagesGrid);
 
 		return $fields;

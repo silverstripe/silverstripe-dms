@@ -2,11 +2,12 @@
 
 /**
  * Field for uploading files into a DMSDocument. Replacing the existing file.
+ * Not ideally suited for the purpose, as the base implementation
+ * assumes to operate on a {@link File} record. We only use this as
+ * a temporary container, which gets deleted as soon as the actual
+ * {@link DMSDocument} is created.
  *
  * <b>NOTE: this Field will call write() on the supplied record</b>
- *
- * <b>Features (some might not be available to old browsers):</b>
- *
  *
  * @author Julian Seidenberg
  * @package dms
@@ -21,14 +22,28 @@ class DMSUploadField extends UploadField {
 	 * @param File
 	 */
 	protected function attachFile($file) {
-		$page = $this->getRecord();
-
 		$dms = DMS::getDMSInstance();
-		$document = $dms->storeDocument($file);
-		$file->delete();
-		$document->addPage($page);
+		$record = $this->getRecord();
 
-		return $document;
+		if($record instanceof DMSDocument) {
+			// If the edited record is a document,
+			// assume we're replacing an existing file
+			$doc = $record;
+			$doc->ingestFile($file);
+		} else {
+			// Otherwise create it
+			$doc = $dms->storeDocument($file);
+			$file->delete();
+			// Relate to the underlying page being edited.
+			// Not applicable when editing the document itself and replacing it.
+			$doc->addPage($record);
+		}
+		
+		return $doc;
+	}
+
+	public function validate($validator) {
+		return true;
 	}
 
 	/**
@@ -39,6 +54,26 @@ class DMSUploadField extends UploadField {
 	 */
 	public function upload(SS_HTTPRequest $request) {
 		if($this->isDisabled() || $this->isReadonly()) return $this->httpError(403);
+
+		// CUSTOM Validate that the replaced file is of the same name,
+		// as we don't support altering the file attributes after initial upload
+		$record = $this->getRecord();
+		if($record instanceof DMSDocument) {
+			$tmpfile = $request->postVar($this->getName());
+			$suggestedFileName = basename(FileNameFilter::create()->filter($tmpfile['name']));
+			if($suggestedFileName != $record->getFilenameWithoutID()) {
+				$return = array(
+					'error' => _t(
+						'DMSUploadField.WRONGNAME', 
+						'The new file name needs to match the one being replaced'
+					)
+				);
+				$response = new SS_HTTPResponse(Convert::raw2json(array($return)));
+				$response->addHeader('Content-Type', 'text/plain');
+				return $response;
+			}
+		}
+		// CUSTOM END
 
 		// Protect against CSRF on destructive action
 		$token = $this->getForm()->getSecurityToken();
@@ -109,10 +144,10 @@ class DMSUploadField extends UploadField {
 				} else {
 					$file = $this->upload->getFile();
 
-					// Attach the file to the related record.
+					// CUSTOM Attach the file to the related record.
 					$document = $this->attachFile($file);
 					
-					//TODO: both $document->UploadFieldThumbnailURL and $document->UploadFieldFileButtons are null,
+					// TODO: both $document->UploadFieldThumbnailURL and $document->UploadFieldFileButtons are null,
 					// check the code from UploadField.php where they use $file->UploadFieldThumbnailURL and $file->UploadFieldFileButtons
 					// and $file is_a File but in our case $document is a Document, that is why it doesn't work.
 
@@ -126,6 +161,8 @@ class DMSUploadField extends UploadField {
 						'buttons' => $document->renderWith($this->getTemplateFileButtons()),
 						'showeditform' => true
 					));
+
+					// CUSTOM END
 				}
 			}
 		}
