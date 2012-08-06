@@ -73,18 +73,28 @@ class DMSDocumentAddController extends LeftAndMain {
 		<a class=\"ss-ui-button ss-ui-action-constructive cms-panel-link ui-corner-all\" href=\"".$backlink."\">
 			Done!
 		</a>";
+
+		$addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
+		$addExistingField->setRecord($page);
 		$form = new Form(
 			$this,
 			'getEditForm',
 			new FieldList(
-				new HiddenField('ID', false, $page->ID),
-				$uploadField,
-				new LiteralField(
-					'AllowedExtensions',
-					sprintf(
-						'<p>%s: %s</p>',
-						_t('AssetAdmin.ALLOWEDEXTS', 'Allowed extensions'),
-						implode('<em>, </em>', $exts)
+				new TabSet('Main',
+					new Tab('From your computer',
+						new HiddenField('ID', false, $page->ID),
+						$uploadField,
+						new LiteralField(
+							'AllowedExtensions',
+							sprintf(
+								'<p>%s: %s</p>',
+								_t('AssetAdmin.ALLOWEDEXTS', 'Allowed extensions'),
+								implode('<em>, </em>', $exts)
+							)
+						)
+					),
+					new Tab('From the CMS',
+						$addExistingField
 					)
 				)
 			),
