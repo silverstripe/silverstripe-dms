@@ -4,7 +4,7 @@
 
 		$('#DocumentTypeID ul li').entwine({
 				onmatch: function() {
-					this.addClass('ss-ui-button');
+					this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
 					this.parents('ul').removeClass('ui-tabs-nav');
 				},
 			});

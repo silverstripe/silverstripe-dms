@@ -1,3 +1,14 @@
+/* #Root_Documents{
+	table{
+		white-space:normal;
+	}
+} */
+@import "compass/css3";
+
+
+$color-button-generic: #e6e6e6 !default;
+
+
 #FileP{
 	.fieldgroup-field{
 		width:100%;
@@ -28,25 +39,58 @@
 			display:none;
 		}
 		li{
-			display:inline;
-			float: none;
-			padding:4px;
+			display:inline-block;
+			padding:0;
+			width:auto;
+			margin-right: 0;
+			border-radius:0;
+			border-left: 1px solid #C0C0C2;
+			border-right: 1px solid lighten(#C0C0C2, 20%);
+			&:first-child{
+				border-radius: 6px 0 0 6px;
+			}
+			&:last-child{
+				border-radius: 0 6px 6px 0;
+				border-right: 1px solid #C0C0C2;
+			}
 			&.selected{
-				border-bottom:1px solid #555;
-				border-top:1px solid #e6e6e6;
+				border-bottom:1px solid lighten($color-button-generic, 1%);
+				border-right: 1px solid #C0C0C2;
+				@include background(
+					linear-gradient(color-stops(
+						darken($color-button-generic, 15%),
+						$color-button-generic
+					))
+				);
+				box-shadow: 0 1px 1px 0 #555 inset;
+				:after{
+					box-shadow: 0 1px 1px 0 #DDD;
+				}
 			}
 			label{
-				//display: inline-block;
-				//padding: 4px 10px;
+				padding: .4em 1em;
+				display: block;
+				line-height: 1.4;
 			}
 		}
 	}
 }
-
+#Actions{
+	li{
+		margin-left: 2px;
+		&:first-child{
+			margin-left: 0;
+		}
+	}
+}
 #ReplaceFile{
 	display:none;
 }
 
-table.ss-gridfield-table{
-	width: 400px;
+.cms{
+	fieldset{
+		table.ss-gridfield-table{
+			width: 900px;
+		}
+	}
 }

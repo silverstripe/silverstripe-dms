@@ -1,3 +1,8 @@
+/* #Root_Documents{
+	table{
+		white-space:normal;
+	}
+} */
 #FileP .fieldgroup-field { width: 100%; }
 #FileP .fieldgroup-field .cms-file-info-data { width: 400px; }
 #FileP .fieldgroup-field .fieldholder-small { margin-top: 5px; }
@@ -6,9 +11,16 @@
 
 #DocumentTypeID ul { padding: 0; }
 #DocumentTypeID ul input[type="radio"] { display: none; }
-#DocumentTypeID ul li { display: inline; float: none; padding: 4px; }
-#DocumentTypeID ul li.selected { border-bottom: 1px solid #555; border-top: 1px solid #e6e6e6; }
+#DocumentTypeID ul li { display: inline-block; padding: 0; width: auto; margin-right: 0; border-radius: 0; border-left: 1px solid #C0C0C2; border-right: 1px solid #f4f4f4; }
+#DocumentTypeID ul li:first-child { border-radius: 6px 0 0 6px; }
+#DocumentTypeID ul li:last-child { border-radius: 0 6px 6px 0; border-right: 1px solid #C0C0C2; }
+#DocumentTypeID ul li.selected { border-bottom: 1px solid #e9e9e9; border-right: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: -ms-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); box-shadow: 0 1px 1px 0 #555 inset; }
+#DocumentTypeID ul li.selected :after { box-shadow: 0 1px 1px 0 #DDD; }
+#DocumentTypeID ul li label { padding: .4em 1em; display: block; line-height: 1.4; }
+
+#Actions li { margin-left: 2px; }
+#Actions li:first-child { margin-left: 0; }
 
 #ReplaceFile { display: none; }
 
-table.ss-gridfield-table { width: 400px; }
+.cms fieldset table.ss-gridfield-table { width: 900px; }
