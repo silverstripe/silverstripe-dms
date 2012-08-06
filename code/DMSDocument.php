@@ -472,7 +472,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$fields->add($UploadField);
 		$fields->add($pagesGrid);
 		$fields->add(FormAction::create('dod', _t('GridFieldDetailForm.Delete', 'Delete'))
-						->addExtraClass('ss-ui-action-destructive'));   //delete button
+						->addExtraClass('ss-ui-action-destructive'));   //delete button - move this to actions area above
 
 
 		return $fields;

@@ -90,7 +90,16 @@ $color-button-generic: #e6e6e6 !default;
 .cms{
 	fieldset{
 		table.ss-gridfield-table{
-			width: 900px;
+			width: auto;
+			tr{
+				th.main{
+					min-width:200px;
+					&.col-action_SetOrderID{
+						width:60px;
+						min-width:60px;
+					}
+				}
+			}
 		}
 	}
 }
