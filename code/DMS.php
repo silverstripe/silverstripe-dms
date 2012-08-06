@@ -18,7 +18,7 @@ class DMS implements DMSInterface {
 	 * @static
 	 * @return DMSInterface An instance of the Document Management System
 	 */
-	static function getDMSInstance() {
+	static function inst() {
 		$dmsPath = self::get_DMS_path();
 
 		$dms = new DMS();

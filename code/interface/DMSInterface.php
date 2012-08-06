@@ -16,7 +16,7 @@ interface DMSInterface {
 	 * @abstract
 	 * @return DMSInterface An instance of the Document Management System
 	 */
-	static function getDMSInstance();
+	static function inst();
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.

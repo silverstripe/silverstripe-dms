@@ -62,7 +62,7 @@ class DMSTest extends FunctionalTest {
 
 
 	function testDMSStorage() {
-		$dms = DMS::getDMSInstance();
+		$dms = DMS::inst();
 
 		$file = self::$testFile;
 		$document = $dms->storeDocument($file);
@@ -75,7 +75,7 @@ class DMSTest extends FunctionalTest {
 
 	function testDMSFolderSpanning() {
 		DMS::$dmsFolderSize = 5;
-		$dms = DMS::getDMSInstance();
+		$dms = DMS::inst();
 
 		$file = self::$testFile;
 
@@ -102,7 +102,7 @@ class DMSTest extends FunctionalTest {
 	}
 
 	function testReplaceDocument() {
-		$dms = DMS::getDMSInstance();
+		$dms = DMS::inst();
 
 		//store the first document
 		$document = $dms->storeDocument(self::$testFile);
@@ -121,7 +121,7 @@ class DMSTest extends FunctionalTest {
 	}
 
 	function testDownloadDocument() {
-//		$dms = DMS::getDMSInstance();
+//		$dms = DMS::inst();
 //
 //		//store the first document
 //		$document = $dms->storeDocument(self::$testFile);

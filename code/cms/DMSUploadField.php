@@ -22,7 +22,7 @@ class DMSUploadField extends UploadField {
 	 * @param File
 	 */
 	protected function attachFile($file) {
-		$dms = DMS::getDMSInstance();
+		$dms = DMS::inst();
 		$record = $this->getRecord();
 
 		if($record instanceof DMSDocument) {
