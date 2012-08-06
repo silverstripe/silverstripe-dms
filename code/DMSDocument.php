@@ -459,21 +459,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
-		//create actions FieldGroup (bottom actions tabs)
-		/*$actions = new FieldGroup(
-			CompositeField::create(
-				$pagesGrid
-			)->setName("Usage")->addExtraClass('dms-usage-grid')
-		);
-		$actions->setName('DMSActions');
-		$fields->add($actions);*/
-
 		$fields->add(new LiteralField('BottomTaskSelection',"<div id=\"Actions\" class=\"field actions\"><label class=\"left\">Actions</label><ul><li class=\"ss-ui-button\">Replace</li><li class=\"ss-ui-button\">Embargo</li></ul></div>"));
 		$fields->add($UploadField);
 		$fields->add($pagesGrid);
-		$fields->add(FormAction::create('dod', _t('GridFieldDetailForm.Delete', 'Delete'))
-						->addExtraClass('ss-ui-action-destructive'));   //delete button - move this to actions area above
-
 
 		return $fields;
 	}
