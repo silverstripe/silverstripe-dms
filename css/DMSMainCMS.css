@@ -1,3 +1,4 @@
+#Root_Documents { padding-left: 0; }
 #Root_Documents table { white-space: normal; }
 #Root_Documents table th.col-action_SetOrderTitle, #Root_Documents table th.col-FilenameWithoutID { width: 300px; }
 #Root_Documents table td { white-space: normal; }
