@@ -39,7 +39,7 @@
 				//we have page with DMSDocuments on it, and we have documents that only exist on this page
 				if (deleteButtons.length > 0) {
 					var message = "Are you sure you want to delete this page? Deleting this page will delete "+deleteButtons.length;
-					if (deleteButtons.length == 1) {
+					if (deleteButtons.length === 1) {
 						message += " document that is associated only with this page. This document is:\n\n";
 					} else {
 						message += " documents that are associated only with this page. These documents are:\n\n";
@@ -58,19 +58,28 @@
 
 				return true;
 			}
-		})
+		});
 
 		$('#Form_EditForm_action_deletefromlive').entwine({
 			onclick: function(e) {
-				if (this.confirmBeforeDelete()) this._super(e);
-				else return false;
+				if (this.confirmBeforeDelete()) {
+					this._super(e);
+				} else {
+					return false;
+				}
 			}
 		});
 
 		$('#Form_EditForm_action_delete').entwine({
 			onclick: function(e) {
-				if (this.confirmBeforeDelete()) this._super(e);
-				else return false;
+				if (this.confirmBeforeDelete()) {
+					this._super(e);
+				} else {
+					return false;
+				}
+			}
+		});
+
 			}
 		});
 
