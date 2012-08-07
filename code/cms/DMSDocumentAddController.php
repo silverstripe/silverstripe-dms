@@ -151,6 +151,22 @@ class DMSDocumentAddController extends LeftAndMain {
 		return singleton('CMSPagesController')->Link().'edit/show/'.$pageID;
 	}
 
+	public function documentautocomplete() {
+		$term = $_GET['term'];
+		$term_sql = Convert::raw2sql($term);
+		$data = DataList::create('DMSDocument');
+		$data->where("(\"ID\" LIKE '%$term_sql%' OR \"Filename\" LIKE '%$term_sql%' OR \"Title\" LIKE '%$term_sql%')");
+		$data->limit(20);
+		
+		$return = array();
+		foreach($data as $doc) {
+			$return[] = $doc->ID . ' - ' . $doc->Title;
+		}
+
+
+		return json_encode($return);
+	}
+
 }
 
 

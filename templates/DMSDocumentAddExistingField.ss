@@ -1,4 +1,4 @@
-<div class="field">
+<div class="document-add-existing field">
 
 	<h3>
 		<span class="step-label">
@@ -6,6 +6,8 @@
 			<span class="title">Link a Document</span>
 		</span>
 	</h3>
+
+	<input class="document-autocomplete" placeholder="Search by ID or filename" />
 </div>
 
 <div>

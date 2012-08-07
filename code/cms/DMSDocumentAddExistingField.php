@@ -30,6 +30,8 @@ class DMSDocumentAddExistingField extends FormField {
 	}
 
 	public function Field($properties = array()) {
+		Requirements::javascript('dms/javascript/DMSDocumentAddExistingField.js');
+
 		return $this->renderWith('DMSDocumentAddExistingField');
 	}
 }
