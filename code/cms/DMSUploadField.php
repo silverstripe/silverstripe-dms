@@ -16,6 +16,14 @@ class DMSUploadField extends UploadField {
 
 	protected $folderName = 'DMSTemporaryUploads';
 
+	public function __construct($name, $title = null, SS_List $items = null) {
+		parent::__construct($name, $title, $items);
+
+		//set default DMS replace template to false
+		$this->setConfig('useDMSReplaceTemplate', 0);
+	}
+
+
 	/**
 	 * Override the default behaviour of the UploadField and take the uploaded file (uploaded to assets) and
 	 * add it into the DMS storage, deleting the old/uploaded file.
@@ -163,8 +171,9 @@ class DMSUploadField extends UploadField {
 	public function Field($properties = array()) {
 		$fields = parent::Field($properties);
 
-		//replace the download template with a new one
-		if (!empty($this->getConfig('useDMSReplaceTemplate'))) {
+		//replace the download template with a new one only when access the upload field through a GridField
+		$useCustomTemplate = $this->getConfig('useDMSReplaceTemplate');
+		if (!empty($useCustomTemplate)) {
 			Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
 			Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
 		}
