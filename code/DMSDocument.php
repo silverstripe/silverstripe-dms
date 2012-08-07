@@ -586,16 +586,26 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 }
 
 class DMSDocument_Controller extends Controller {
+
 	static $allowed_actions = array(
 		'index'
 	);
 
 	/**
+	 * Returns the document object from the request object's ID parameter.
+	 * Returns null, if no document found
+	 */
+	protected function getDocumentFromID($request) {
+		$id = Convert::raw2sql($request->param('ID'));
+		return DataObject::get_by_id('DMSDocument', $id);
+	}
+
+	/**
 	 * Access the file download without redirecting user, so we can block direct access to documents.
 	 */
 	function index(SS_HTTPRequest $request) {
-		$id = Convert::raw2sql($this->getRequest()->param('ID'));
-		if (!empty($id)) $doc = DataObject::get_by_id('DMSDocument', $id);
+		$doc = $this->getDocumentFromID($request);
+
 		if (!empty($doc)) {
 			$canView = false;
 
