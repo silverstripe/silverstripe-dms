@@ -55,26 +55,6 @@ class DMSUploadField extends UploadField {
 	public function upload(SS_HTTPRequest $request) {
 		if($this->isDisabled() || $this->isReadonly()) return $this->httpError(403);
 
-		// CUSTOM Validate that the replaced file is of the same name,
-		// as we don't support altering the file attributes after initial upload
-		$record = $this->getRecord();
-		if($record instanceof DMSDocument) {
-			$tmpfile = $request->postVar($this->getName());
-			$suggestedFileName = basename(FileNameFilter::create()->filter($tmpfile['name']));
-			if($suggestedFileName != $record->getFilenameWithoutID()) {
-				$return = array(
-					'error' => _t(
-						'DMSUploadField.WRONGNAME', 
-						'The new file name needs to match the one being replaced'
-					)
-				);
-				$response = new SS_HTTPResponse(Convert::raw2json(array($return)));
-				$response->addHeader('Content-Type', 'text/plain');
-				return $response;
-			}
-		}
-		// CUSTOM END
-
 		// Protect against CSRF on destructive action
 		$token = $this->getForm()->getSecurityToken();
 		if(!$token->checkRequest($request)) return $this->httpError(400);
