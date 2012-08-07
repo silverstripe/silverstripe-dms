@@ -48,28 +48,28 @@ form.small .field .TreeDropdownField,
 		li{
 			display:inline-block;
 			padding:0;
-			width:auto;
-			margin-right: 0;
+			width:94px;
+			margin-right: -1px;
 			border-radius:0;
-			border-left: 1px solid #C0C0C2;
-			border-right: 1px solid lighten(#C0C0C2, 20%);
+			&.val1{
+				width:130px;
+			}
 			&:first-child{
 				border-radius: 6px 0 0 6px;
+				border-left: 1px solid #C0C0C2;
 			}
 			&:last-child{
 				border-radius: 0 6px 6px 0;
-				border-right: 1px solid #C0C0C2;
 			}
 			&.selected{
 				border-bottom:1px solid #C0C0C2;
-				border-right: 1px solid #C0C0C2;
 				@include background(
 					linear-gradient(color-stops(
 						darken($color-button-generic, 15%),
 						$color-button-generic
 					))
 				);
-				box-shadow: 0 1px 1px 0 #555 inset;
+				box-shadow: 0 1px 1px 0 #A0A0A0 inset;
 				:after{
 					box-shadow: 0 1px 1px 0 #DDD;
 				}
@@ -78,6 +78,7 @@ form.small .field .TreeDropdownField,
 				padding: .4em 1em;
 				display: block;
 				line-height: 1.4;
+				white-space:normal;
 			}
 		}
 	}
