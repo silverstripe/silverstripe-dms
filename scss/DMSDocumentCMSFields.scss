@@ -3,10 +3,21 @@
 
 $color-button-generic: #e6e6e6 !default;
 
+form.small .field input.text, 
+form.small .field textarea, 
+form.small .field select, 
+form.small .field .TreeDropdownField, 
+.field.small input.text, .field.small textarea, 
+.field.small select, .field.small .TreeDropdownField{
+	width: 100%;
+}
 
 #FileP{
 	.fieldgroup-field{
 		width:100%;
+		.cms-file-info-preview{
+			box-shadow:none;
+		}
 		.cms-file-info-data{
 			width:400px;
 		}
@@ -18,6 +29,7 @@ $color-button-generic: #e6e6e6 !default;
 				padding-top: 0;
 				margin-right: 10px;
 				font-weight: bold;
+				float: left;
 			}
 			.readonly{
 				font-style:italic;

@@ -1,7 +1,10 @@
+form.small .field input.text, form.small .field textarea, form.small .field select, form.small .field .TreeDropdownField, .field.small input.text, .field.small textarea, .field.small select, .field.small .TreeDropdownField { width: 100%; }
+
 #FileP .fieldgroup-field { width: 100%; }
+#FileP .fieldgroup-field .cms-file-info-preview { box-shadow: none; }
 #FileP .fieldgroup-field .cms-file-info-data { width: 400px; }
 #FileP .fieldgroup-field .fieldholder-small { margin-top: 5px; }
-#FileP .fieldgroup-field .fieldholder-small label { width: auto; margin-left: 0; padding-top: 0; margin-right: 10px; font-weight: bold; }
+#FileP .fieldgroup-field .fieldholder-small label { width: auto; margin-left: 0; padding-top: 0; margin-right: 10px; font-weight: bold; float: left; }
 #FileP .fieldgroup-field .fieldholder-small .readonly { font-style: italic; color: #666; }
 
 #DocumentTypeID ul { padding: 0; }
