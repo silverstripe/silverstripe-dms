@@ -39,3 +39,8 @@
 		}
 	}
 }
+
+
+#Form_EditForm_Documents input[name="filter[LastChanged]"] {
+	display: none;
+}
