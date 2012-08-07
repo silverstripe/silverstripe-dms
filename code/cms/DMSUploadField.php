@@ -164,8 +164,10 @@ class DMSUploadField extends UploadField {
 		$fields = parent::Field($properties);
 
 		//replace the download template with a new one
-		Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
-		Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+		if (!empty($this->getConfig('useDMSReplaceTemplate'))) {
+			Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
+			Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+		}
 
 		return $fields;
 	}
