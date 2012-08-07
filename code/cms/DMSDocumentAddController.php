@@ -160,13 +160,21 @@ class DMSDocumentAddController extends LeftAndMain {
 		
 		$return = array();
 		foreach($data as $doc) {
-			$return[] = $doc->ID . ' - ' . $doc->Title;
+			$return[] = array(
+				'label' => $doc->ID . ' - ' . $doc->Title,
+				'value' => $doc->ID
+			);
 		}
 
 
 		return json_encode($return);
 	}
 
+	public function linkdocument() {
+		$page = $this->currentPage();
+		$document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
+		$document->addPage($page);
+	}
 }
 
 
