@@ -55,6 +55,7 @@ class DMSDocumentAddController extends LeftAndMain {
 	public function getEditForm($id = null, $fields = null) {
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
 		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
+		Requirements::css('dms/css/DMSMainCMS.css');
 
 		$page = $this->currentPage();
 
