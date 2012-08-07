@@ -22,6 +22,6 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 
 #ReplaceFile { display: none; }
 
-.cms fieldset table.ss-gridfield-table { width: auto; }
-.cms fieldset table.ss-gridfield-table tr th.main { min-width: 200px; }
-.cms fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table { width: auto; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 200px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }
