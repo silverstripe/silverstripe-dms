@@ -54,4 +54,15 @@ class DMSSiteTreeExtension extends DataExtension {
 			)
 		);
 	}
+
+	function onBeforeDelete() {
+		$dmsDocuments = $this->owner->Documents();
+		foreach($dmsDocuments as $document) {
+			//if the document is only associated with one page, i.e. only associated with this page
+			if ($document->Pages()->Count() <= 1) {
+				//delete the document before deleting this page
+				$document->delete();
+			}
+		}
+	}
 }

@@ -72,4 +72,26 @@ class DMSDocumentTest extends SapphireTest {
 		$documentsArray = $documents->toArray();
 		$this->assertNotContains($doc, $documentsArray, "Document no longer associated with page");
 	}
+
+	function testDeletingPageWithAssociatedDocuments() {
+		$s1 = $this->objFromFixture('SiteTree','s1');
+		$s2 = $this->objFromFixture('SiteTree','s2');
+
+		$doc = new DMSDocument();
+		$doc->Filename = "delete test file";
+		$doc->Folder = "0";
+		$doc->write();
+
+		$doc->addPage($s1);
+		$doc->addPage($s2);
+
+		$s1->delete();
+
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$this->assertEquals($documents->Count(),'1',"Deleting one of the associated page doesn't affect the single document we created");
+
+		$s2->delete();
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$this->assertEquals($documents->Count(),'0',"However, deleting the last page that a document is associated with causes that document to be deleted as well");
+	}
 }
