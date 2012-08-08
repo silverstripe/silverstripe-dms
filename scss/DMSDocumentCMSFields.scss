@@ -88,6 +88,9 @@ form.small .field .TreeDropdownField,
 	}
 }
 #Actions{
+	box-shadow:none;
+	border:none;
+	padding:0;
 	li{
 		margin-left: 2px;
 		&:first-child{
@@ -97,6 +100,7 @@ form.small .field .TreeDropdownField,
 }
 
 #ActionsPanel{
+	display: none;
 	.middleColumn{
 		margin-left:184px;
 	}
@@ -125,9 +129,10 @@ form.small .field .TreeDropdownField,
 	fieldset{
 		table.ss-gridfield-table{
 			width: auto;
+			max-width:508px;
 			tr{
 				th.main{
-					min-width:200px;
+					min-width:175px;
 					&.col-action_SetOrderID{
 						width:60px;
 						min-width:60px;

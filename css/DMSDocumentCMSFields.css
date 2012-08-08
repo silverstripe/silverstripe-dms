@@ -18,15 +18,17 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 #DocumentTypeID ul li.selected :after { box-shadow: 0 1px 1px 0 #DDD; }
 #DocumentTypeID ul li label { padding: .4em 1em; display: inline-block; line-height: 1.4; white-space: normal; max-width: 60px; }
 
+#Actions { box-shadow: none; border: none; padding: 0; }
 #Actions li { margin-left: 2px; }
 #Actions li:first-child { margin-left: 0; }
 
+#ActionsPanel { display: none; }
 #ActionsPanel .middleColumn { margin-left: 184px; }
 #ActionsPanel label.fieldholder-small-label { display: none; }
 #ActionsPanel .fieldgroup-field { float: none; width: auto; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
 
-#Form_ItemEditForm fieldset table.ss-gridfield-table { width: auto; }
-#Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 200px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table { width: auto; max-width: 508px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 175px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }

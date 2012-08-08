@@ -31,7 +31,8 @@
 			onclick: function(e) {
 				//TODO - Fix so when clicking on an action it toggles the correct details inside the ActionsPanel
 				// Currently this just hides the whole ActionsPanel when you click an action button
-				this.parents('fieldset').find('#ActionsPanel').hide();
+				e.preventDefault();
+				this.parents('fieldset').find('#ActionsPanel').toggle();
 			}
 		});
 
