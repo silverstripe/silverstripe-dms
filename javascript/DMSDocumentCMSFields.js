@@ -12,13 +12,15 @@
 
 		$('#DocumentTypeID input[type=radio]').entwine({
 			onadd: function() {
+				// Checks to see what radio button is selected
 				if (this.is(':checked')) {
 					this.change();
 				}
 			},
 			onchange: function(e) {
+				// Remove selected class from radio buttons
 				$('#DocumentTypeID').find('li').removeClass('selected');
-
+				//If radio button is checked then add the selected class
 				if (this.is(':checked')) {
 					this.parent('li').addClass('selected');
 				}
@@ -27,8 +29,9 @@
 
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
-				e.preventDefault();
-				this.parents('fieldset').find('#ReplaceFile').show();
+				//TODO - Fix so when clicking on an action it toggles the correct details inside the ActionsPanel
+				// Currently this just hides the whole ActionsPanel when you click an action button
+				this.parents('fieldset').find('#ActionsPanel').hide();
 			}
 		});
 

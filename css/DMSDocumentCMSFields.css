@@ -9,18 +9,23 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 
 #DocumentTypeID ul { padding: 0; }
 #DocumentTypeID ul input[type="radio"] { display: none; }
-#DocumentTypeID ul li { display: inline-block; padding: 0; width: 94px; margin-right: -1px; border-radius: 0; }
+#DocumentTypeID ul li { display: inline-block; padding: 0; width: 90px; margin-right: -1px; border-radius: 0; }
 #DocumentTypeID ul li.val1 { width: 130px; }
+#DocumentTypeID ul li.val1 label { max-width: 105px; }
 #DocumentTypeID ul li:first-child { border-radius: 6px 0 0 6px; border-left: 1px solid #C0C0C2; }
 #DocumentTypeID ul li:last-child { border-radius: 0 6px 6px 0; }
 #DocumentTypeID ul li.selected { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: -ms-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
 #DocumentTypeID ul li.selected :after { box-shadow: 0 1px 1px 0 #DDD; }
-#DocumentTypeID ul li label { padding: .4em 1em; display: block; line-height: 1.4; white-space: normal; }
+#DocumentTypeID ul li label { padding: .4em 1em; display: inline-block; line-height: 1.4; white-space: normal; max-width: 60px; }
 
 #Actions li { margin-left: 2px; }
 #Actions li:first-child { margin-left: 0; }
 
-#ReplaceFile { display: none; }
+#ActionsPanel .middleColumn { margin-left: 184px; }
+#ActionsPanel label.fieldholder-small-label { display: none; }
+#ActionsPanel .fieldgroup-field { float: none; width: auto; }
+#ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
+#ActionsPanel .fieldgroup-field .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
 
 #Form_ItemEditForm fieldset table.ss-gridfield-table { width: auto; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 200px; }

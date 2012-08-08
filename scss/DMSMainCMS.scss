@@ -41,6 +41,9 @@
 }
 
 
-#Form_EditForm_Documents input[name="filter[LastChanged]"] {
-	display: none;
+#Form_EditForm_Documents {
+	padding: 1em 0;
+	input[name="filter[LastChanged]"] {
+		display: none;
+	}
 }

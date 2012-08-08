@@ -48,11 +48,14 @@ form.small .field .TreeDropdownField,
 		li{
 			display:inline-block;
 			padding:0;
-			width:94px;
+			width:90px;
 			margin-right: -1px;
 			border-radius:0;
 			&.val1{
 				width:130px;
+				label{
+					max-width:105px;
+				}
 			}
 			&:first-child{
 				border-radius: 6px 0 0 6px;
@@ -76,9 +79,10 @@ form.small .field .TreeDropdownField,
 			}
 			label{
 				padding: .4em 1em;
-				display: block;
+				display: inline-block;
 				line-height: 1.4;
 				white-space:normal;
+				max-width:60px;
 			}
 		}
 	}
@@ -91,8 +95,30 @@ form.small .field .TreeDropdownField,
 		}
 	}
 }
-#ReplaceFile{
-	display:none;
+
+#ActionsPanel{
+	.middleColumn{
+		margin-left:184px;
+	}
+	label.fieldholder-small-label{
+		display: none;
+	}
+	.fieldgroup-field{
+		float:none;
+		width:auto;
+ 		.fieldholder-small{
+			label{
+				float:none;
+				width:auto;
+				margin:0;
+				padding:0;
+				&.ss-ui-button{
+					float: left;
+					margin: 0 10px 0 0;
+				}
+			}
+		}
+	}
 }
 
 #Form_ItemEditForm{

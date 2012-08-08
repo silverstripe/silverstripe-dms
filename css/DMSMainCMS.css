@@ -9,4 +9,5 @@
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { padding-bottom: 1px; border: 1px solid #C0C0C2; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li a { padding: 8px 20px 8px; }
 
+#Form_EditForm_Documents { padding: 1em 0; }
 #Form_EditForm_Documents input[name="filter[LastChanged]"] { display: none; }
