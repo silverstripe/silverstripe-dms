@@ -175,6 +175,10 @@ class DMSDocumentAddController extends LeftAndMain {
 		$page = $this->currentPage();
 		$document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
 		$document->addPage($page);
+
+		return json_encode(array(
+			'iframe_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink()
+		));
 	}
 }
 

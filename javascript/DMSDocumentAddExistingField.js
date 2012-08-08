@@ -8,7 +8,15 @@
 						var page_id = $(this).closest('form').find(':input[name=ID]').val();
 						var document_id = ui.item.value;
 
-						jQuery.ajax('admin/pages/adddocument/linkdocument?ID=' + page_id + '&documentID=' + document_id);
+						jQuery.ajax(
+							'admin/pages/adddocument/linkdocument?ID=' + page_id + '&documentID=' + document_id,
+							{
+								dataType: 'json',
+								success: function(data, textstatus) {
+									alert(data.iframe_url);
+								}
+							}
+						);
 					}
 				}
 			});
