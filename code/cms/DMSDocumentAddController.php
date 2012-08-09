@@ -172,13 +172,30 @@ class DMSDocumentAddController extends LeftAndMain {
 	}
 
 	public function linkdocument() {
-		$page = $this->currentPage();
-		$document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
-		$document->addPage($page);
+		$return = array('error' => _t('UploadField.FIELDNOTSET', 'Could not add document to page'));
 
-		return json_encode(array(
-			'iframe_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink()
-		));
+		$page = $this->currentPage();
+		if (!empty($page)) {
+			$document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
+			$document->addPage($page);
+
+			// Collect all output data.
+			$return = array(
+				'id' => $document->ID,
+				'name' => $document->getTitle(),
+				'thumbnail_url' => $document->UploadFieldThumbnailURL,
+				'edit_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink(),
+				'size' => $document->getFileSizeFormatted(),
+				'buttons' => $document->renderWith('UploadField_FileButtons'),
+				'showeditform' => true
+			);
+		}
+
+		return json_encode($return);
+
+//			array(
+//			'iframe_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink()
+//		));
 	}
 }
 
