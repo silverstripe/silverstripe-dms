@@ -179,23 +179,22 @@ class DMSDocumentAddController extends LeftAndMain {
 			$document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
 			$document->addPage($page);
 
+			$buttonText = '<button class="ss-uploadfield-item-edit ss-ui-button ui-corner-all" title="Edit this document" data-icon="pencil">'.
+				'Edit<span class="toggle-details"><span class="toggle-details-icon"></span></span></button>';
+
 			// Collect all output data.
 			$return = array(
 				'id' => $document->ID,
 				'name' => $document->getTitle(),
-				'thumbnail_url' => $document->UploadFieldThumbnailURL,
+				'thumbnail_url' => $document->Icon($document->getFileExt()),
 				'edit_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink(),
 				'size' => $document->getFileSizeFormatted(),
-				'buttons' => $document->renderWith('UploadField_FileButtons'),
+				'buttons' => $buttonText,
 				'showeditform' => true
 			);
 		}
 
 		return json_encode($return);
-
-//			array(
-//			'iframe_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink()
-//		));
 	}
 }
 

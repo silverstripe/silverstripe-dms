@@ -15,7 +15,7 @@
 		<h3>
 			<span class="step-label">
 				<span class="flyout">2</span><span class="arrow"></span>
-				<span class="title">Edit details</span>
+				<span class="title">Edit Document Details</span>
 			</span>
 		</h3>
 		<div class="fileOverview">

@@ -18,7 +18,7 @@
 							{
 								dataType: 'json',
 								success: function(data, textstatus) {
-									var fn = window.tmpl.cache['ss-uploadfield-downloadtemplate'];
+									var fn = window.tmpl.cache['ss-uploadfield-addtemplate'];
 									var fnout = fn({
 										files: [data],
 											formatFileSize: function (bytes) {

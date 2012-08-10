@@ -135,15 +135,11 @@ class DMSUploadField extends UploadField {
 					// CUSTOM Attach the file to the related record.
 					$document = $this->attachFile($file);
 					
-					// TODO: both $document->UploadFieldThumbnailURL and $document->UploadFieldFileButtons are null,
-					// check the code from UploadField.php where they use $file->UploadFieldThumbnailURL and $file->UploadFieldFileButtons
-					// and $file is_a File but in our case $document is a Document, that is why it doesn't work.
-
 					// Collect all output data.
 					$return = array_merge($return, array(
 						'id' => $document->ID,
 						'name' => $document->getTitle(),
-						'thumbnail_url' => $document->UploadFieldThumbnailURL,
+						'thumbnail_url' => $document->Icon($document->getFileExt()),
 						'edit_url' => $this->getItemHandler($document->ID)->EditLink(),
 						'size' => $document->getFileSizeFormatted(),
 						'buttons' => $document->renderWith($this->getTemplateFileButtons()),
@@ -176,6 +172,9 @@ class DMSUploadField extends UploadField {
 		if (!empty($useCustomTemplate)) {
 			Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
 			Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+		} else {
+			//in the add dialog, add the addtemplate into the set of file that load
+			Requirements::javascript('dms/javascript/DMSUploadField_addtemplate.js');
 		}
 
 		return $fields;
