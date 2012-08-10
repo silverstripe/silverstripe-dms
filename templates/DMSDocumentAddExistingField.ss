@@ -18,7 +18,7 @@
 				<span class="title">Edit Document Details</span>
 			</span>
 		</h3>
-		<div class="fileOverview">
+		<!-- <div class="fileOverview"></div> -->
 		<ul class="files ss-uploadfield-files ss-add-files"></ul>
 	</div>
 </div>

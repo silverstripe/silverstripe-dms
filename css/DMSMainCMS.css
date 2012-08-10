@@ -1,4 +1,4 @@
-#Main_FromtheCMS .ss-uploadfield-item-edit { position: relative; }
+.ui-autocomplete { border: 1px solid #DDD; box-shadow: 0 1px 2px 0px #AFAFAF; }
 
 #Root_Documents { padding-left: 0; }
 #Root_Documents table { white-space: normal; }
