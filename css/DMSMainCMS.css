@@ -1,3 +1,5 @@
+#Main_FromtheCMS .ss-uploadfield-item-edit { position: relative; }
+
 #Root_Documents { padding-left: 0; }
 #Root_Documents table { white-space: normal; }
 #Root_Documents table th.col-action_SetOrderTitle, #Root_Documents table th.col-FilenameWithoutID { width: 300px; }

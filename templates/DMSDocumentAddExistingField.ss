@@ -1,4 +1,4 @@
-<div class="ss-add">
+<div class="ss-add ss-upload">
 	<div class="document-add-existing field">
 
 		<h3>
@@ -8,7 +8,7 @@
 			</span>
 		</h3>
 
-		<input class="document-autocomplete" placeholder="Search by ID or filename" />
+		<input class="document-autocomplete text" type="text" placeholder="Search by ID or filename" />
 	</div>
 
 	<div class="ss-assetuploadfield">
