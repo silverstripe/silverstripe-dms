@@ -522,12 +522,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		elseif ($this->EmbargoedUntilPublished) $embargoValue = 1;
 		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 3;
 		$embargo = new OptionsetField('Embargo','Embargo',array('None','Hide document until page is published','Hide document forever','Hide until set date'),$embargoValue);
-		$embargoDatetime = new DatetimeField('EmbargoedUntilDate','');
+		$embargoDatetime = DatetimeField::create('EmbargoedUntilDate','');
+		$embargoDatetime->getDateField()->setConfig('showcalendar', true);
 
 		$expiryValue = 0;
 		if (!empty($this->ExpireAtDate)) $expiryValue = 1;
 		$expiry = new OptionsetField('Expiry','Expiry',array('None','Set document to expire on'),$expiryValue);
-		$expiryDatetime = new DatetimeField('ExpireAtDate','');
+		$expiryDatetime = DatetimeField::create('ExpireAtDate','');
+		$expiryDatetime->getDateField()->setConfig('showcalendar', true);;
 
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
