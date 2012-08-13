@@ -82,6 +82,10 @@
 
 				//show the replace panel when the page loads
 				$('li[data-panel="embargo"]').click();
+
+				//set the initial state of the radio button and the associated dropdown hiding
+				$('#Form_ItemEditForm_Embargo input').change();
+				$('#Form_ItemEditForm_Expiry input').change();
 			}
 		});
 

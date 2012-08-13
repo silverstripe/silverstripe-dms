@@ -566,8 +566,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			if ($this->Embargo == 3) $this->embargoUntilDate($this->EmbargoedUntilDate, false);
 		}
 
-		if (isset($this->Expire)) {
-			if ($this->Expire == 1) $this->expireAtDate($this->ExpireAtDate, false);
+		if (isset($this->Expiry)) {
+			if ($this->Expiry == 1) $this->expireAtDate($this->ExpireAtDate, false);
 			else $this->clearExpiry(false); //clear all previous settings
 		}
 	}
