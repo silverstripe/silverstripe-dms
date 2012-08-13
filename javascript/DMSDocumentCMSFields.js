@@ -32,6 +32,7 @@
 				//add active state to the current button
 				$('#Actions ul li').removeClass('dms-active');
 				this.addClass('dms-active');
+				//$('li.dms-active').append('<span class="arrow"></span>');
 
 				//hide all inner field sections
 				var panel = $('#ActionsPanel');

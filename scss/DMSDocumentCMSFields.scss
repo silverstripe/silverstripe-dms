@@ -96,11 +96,42 @@ form.small .field .TreeDropdownField,
 		&:first-child{
 			margin-left: 0;
 		}
+		&.delete-button-appended{
+			display: inline-block;
+			position: relative;
+			margin-left: 0;
+		}
+		&.dms-active{
+			border-bottom:1px solid #C0C0C2;
+			@include background(
+				linear-gradient(color-stops(
+					darken($color-button-generic, 15%),
+					$color-button-generic
+				))
+			);
+			box-shadow: 0 1px 1px 0 #A0A0A0 inset;
+			&:after{
+				content: '';
+				display: block;
+				position: absolute;
+				top: 33px;
+				left: 50%;
+				margin-left: -6px;
+				width: 12px;
+				height: 12px;
+				background: #F8F8F8;
+				border-right: 1px solid #B3B3B3;
+				border-top: 1px solid #B3B3B3;
+				-moz-transform:rotate(-45deg);
+				-webkit-transform:rotate(-45deg);
+				pointer-events:none;
+			}
+		}
 	}
 }
 
 #ActionsPanel{
-	display: none;
+	//display: none;
 	.middleColumn{
 		margin-left:184px;
 	}
