@@ -1,8 +1,6 @@
 <?php
 class DMSTagTest extends SapphireTest {
 
-	//static $fixture_file = "dms/tests/dmstest.yml";
-
 	function tearDownOnce() {
 		$d = DataObject::get("DMSDocument");
 		foreach($d as $d1) {

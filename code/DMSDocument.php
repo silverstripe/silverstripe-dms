@@ -5,7 +5,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
-		"LastChanged" => 'SS_DateTime' //when this document's file was created or last replaced (small changes like updating title don't count)
+		"LastChanged" => 'SS_DateTime', //when this document's file was created or last replaced (small changes like updating title don't count)
+
+		"EmbargoedForever" => 'Boolean(false)',
+		"EmbargoedUntilPublished" => 'Boolean(false)',
+		"EmbargoedUntilDate" => 'SS_DateTime',
+		"ExpireAtDate" => 'SS_DateTime'
 	);
 
 	static $many_many = array(
@@ -235,8 +240,26 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * should be used to hide documents that have not yet gone live.
 	 * @return null
 	 */
-	function embargo() {
-		// TODO: Implement embargo() method.
+	function embargoForever() {
+		$this->EmbargoedForever = true;
+		$this->write();
+	}
+
+	/**
+	 * Hides the document until any page it is linked to is published
+	 * @return null
+	 */
+	function embargoUntilPublished() {
+		$this->EmbargoedUntilPublished = true;
+		$this->write();
+	}
+
+	/**
+	 * Returns if this is Document is embargoed or expired.
+	 * @return bool True or False depending on whether this document is embargoed
+	 */
+	function isHidden() {
+		return $this->isEmbargoed() || $this->isExpired();
 	}
 
 	/**
@@ -244,7 +267,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return bool True or False depending on whether this document is embargoed
 	 */
 	function isEmbargoed() {
-		// TODO: Implement isEmbargoed() method.
+		$embargoed = false;
+		if ($this->EmbargoedForever) $embargoed = true;
+		elseif ($this->EmbargoedUntilPublished) $embargoed = true;
+		elseif (!empty($this->EmbargoedUntilDate) && SS_Datetime::now()->Value < $this->EmbargoedUntilDate->Value) $embargoed = true;
+
+		return $embargoed;
 	}
 
 	/**
@@ -254,7 +282,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function embargoUntilDate($datetime) {
-		// TODO: Implement embargoUntilDate() method.
+		$this->EmbargoedUntilDate = DBField::create_field('SS_Datetime', $datetime);;
+		$this->write();
 	}
 
 	/**
@@ -262,17 +291,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function clearEmbargo() {
-		// TODO: Implement clearEmbargo() method.
-	}
-
-	/**
-	 * Hides the document, so it does not show up when getByPage($myPage) is called.
-	 * (without specifying the $showEmbargoed = true parameter). This is similar to embargo, except that it should be
-	 * used to hide documents that are no longer useful.
-	 * @return null
-	 */
-	function expire() {
-		// TODO: Implement expire() method.
+		$this->EmbargoedForever = false;
+		$this->EmbargoedUntilPublished = false;
+		$this->EmbargoedUntilDate = null;
+		$this->write();
 	}
 
 	/**
@@ -280,7 +302,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return bool True or False depending on whether this document is expired
 	 */
 	function isExpired() {
-		// TODO: Implement isExpired() method.
+		$expired = false;
+		if (!empty($this->ExpireAtDate) && SS_Datetime::now()->Value >= $this->ExpireAtDate->Value) $expired = true;
+
+		return $expired;
 	}
 
 	/**
@@ -289,7 +314,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function expireAtDate($datetime) {
-		// TODO: Implement expireAtDate() method.
+		$this->ExpireAtDate = DBField::create_field('SS_Datetime', $datetime);
+		$this->write();
 	}
 
 	/**
@@ -297,7 +323,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function clearExpiry() {
-		// TODO: Implement clearExpiry() method.
+		$this->ExpireAtDate = null;
+		$this->write();
 	}
 
 	/**
@@ -328,17 +355,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//delete the file (and previous versions of files)
 		$filesToDelete = array();
 		$storageFolder = DMS::get_dms_path() . DIRECTORY_SEPARATOR . DMS::get_storage_folder($this->ID);
-		if ($handle = opendir($storageFolder)) { //Open directory
-			//List files in the directory
-			while (false !== ($entry = readdir($handle))) {
-				if(strpos($entry,$this->ID.'~') !== false) $filesToDelete[] = $entry;
-			}
-			closedir($handle);
+		if (file_exists($storageFolder)) {
+			if ($handle = opendir($storageFolder)) { //Open directory
+				//List files in the directory
+				while (false !== ($entry = readdir($handle))) {
+					if(strpos($entry,$this->ID.'~') !== false) $filesToDelete[] = $entry;
+				}
+				closedir($handle);
 
-			//delete all this files that have the id of this document
-			foreach($filesToDelete as $file) {
-				$filePath = $storageFolder .DIRECTORY_SEPARATOR . $file;
-				if (is_file($filePath)) unlink($filePath);
+				//delete all this files that have the id of this document
+				foreach($filesToDelete as $file) {
+					$filePath = $storageFolder .DIRECTORY_SEPARATOR . $file;
+					if (is_file($filePath)) unlink($filePath);
+				}
 			}
 		}
 
@@ -594,6 +623,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 class DMSDocument_Controller extends Controller {
 
+	static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
+
 	static $allowed_actions = array(
 		'index'
 	);
@@ -603,8 +634,10 @@ class DMSDocument_Controller extends Controller {
 	 * Returns null, if no document found
 	 */
 	protected function getDocumentFromID($request) {
-		$id = Convert::raw2sql($request->param('ID'));
-		return DataObject::get_by_id('DMSDocument', $id);
+		$doc = null;
+		$id = Convert::raw2sql(intval($request->param('ID')));
+		$doc = DataObject::get_by_id('DMSDocument', $id);
+		return $doc;
 	}
 
 	/**
@@ -630,7 +663,8 @@ class DMSDocument_Controller extends Controller {
 				$canView = true;
 			}
 
-			// TODO: add a check for embargo
+			// check for embargo or expiry
+			if ($doc->isHidden()) $canView = false;
 
 			if ($canView) {
 				$path = $doc->getFullPath();
@@ -658,6 +692,9 @@ class DMSDocument_Controller extends Controller {
 							$mime = 'application/octet-stream';
 						}
 					}
+
+					if (self::$testMode) return $path;
+
 					header('Content-Type: ' . $mime);
 					header('Content-Length: ' . filesize($path), null);
 					if (!empty($mime) && $mime != "text/html") header('Content-Disposition: attachment; filename="'.$doc->getFilenameWithoutID().'"');
@@ -672,6 +709,7 @@ class DMSDocument_Controller extends Controller {
 			}
 		}
 
+		if (self::$testMode) return 'This asset does not exist.';
 		$this->httpError(404, 'This asset does not exist.');
 	}
 

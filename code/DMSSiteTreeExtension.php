@@ -65,4 +65,15 @@ class DMSSiteTreeExtension extends DataExtension {
 			}
 		}
 	}
+
+	function onBeforePublish() {
+		$embargoedDocuments = $this->owner->Documents()->filter('EmbargoedUntilPublished',true);
+		if ($embargoedDocuments->Count() > 0) {
+			foreach($embargoedDocuments as $doc) {
+				$doc->EmbargoedUntilPublished = false;
+				$doc->write();
+			}
+		}
+
+	}
 }

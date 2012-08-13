@@ -158,7 +158,15 @@ interface DMSDocumentInterface {
 	 * @abstract
 	 * @return null
 	 */
-	function embargo();
+	function embargoForever();
+
+	/**
+	 * Returns if this is DMSDocument is embargoed or expired.
+	 * @abstract
+	 * @return bool True or False depending on whether this DMSDocument is embargoed or expired
+	 */
+	function isHidden();
+
 
 	/**
 	 * Returns if this is DMSDocument is embargoed.
@@ -177,20 +185,17 @@ interface DMSDocumentInterface {
 	function embargoUntilDate($datetime);
 
 	/**
+	 * Hides the document until any page it is linked to is published
+	 * @return null
+	 */
+	function embargoUntilPublished();
+
+	/**
 	 * Clears any previously set embargos, so the DMSDocument always shows up in all queries.
 	 * @abstract
 	 * @return null
 	 */
 	function clearEmbargo();
-
-	/**
-	 * Hides the DMSDocument, so it does not show up when getByPage($myPage) is called.
-	 * (without specifying the $showEmbargoed = true parameter). This is similar to embargo, except that it should be
-	 * used to hide DMSDocuments that are no longer useful.
-	 * @abstract
-	 * @return null
-	 */
-	function expire();
 
 	/**
 	 * Returns if this is DMSDocument is expired.

@@ -1,0 +1,10 @@
+SiteTree:
+  s1:
+    Title: testPage1
+    URLSegment: s1
+  s2:
+    Title: testPage2
+    URLSegment: s2
+  s3:
+    Title: testPage3
+    URLSegment: s3
