@@ -76,4 +76,8 @@ class DMSSiteTreeExtension extends DataExtension {
 		}
 
 	}
+
+	function getTitleWithNumberOfDocuments() {
+		return $this->owner->Title . ' (' . $this->owner->Documents()->Count() . ')';
+	}
 }

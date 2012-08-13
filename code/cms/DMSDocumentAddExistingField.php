@@ -4,8 +4,8 @@ class DMSDocumentAddExistingField extends CompositeField {
 	function __construct($name, $title = null) {
 		$this->name = $name;
 		$this->title = ($title === null) ? $name : $title;
-		
-		parent::__construct(new TreeDropdownField('PageSelector', 'Add from another page', 'SiteTree'));
+
+		parent::__construct(new TreeDropdownField('PageSelector', 'Add from another page', 'SiteTree', 'ID', 'TitleWithNumberOfDocuments'));
 	}
 
 	/**
