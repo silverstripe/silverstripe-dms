@@ -43,6 +43,28 @@
 			}
 		});
 
+		$('#Form_ItemEditForm_Embargo input').entwine({
+			onchange: function() {
+				//selected the date options
+				if (this.attr('value') == 3) {
+					$('.embargoDatetime').show();
+				} else {
+					$('.embargoDatetime').hide();
+				}
+			}
+		});
+
+		$('#Form_ItemEditForm_Expiry input').entwine({
+			onchange: function() {
+				//selected the date options
+				if (this.attr('value') == 1) {
+					$('.expiryDatetime').show();
+				} else {
+					$('.expiryDatetime').hide();
+				}
+			}
+		});
+
 		$('#ActionsPanel').entwine({
 			onadd: function() {
 				//do an initial show of the entire panel
@@ -52,8 +74,14 @@
 				$('#Actions ul').append('<li class="delete-button-appended"></li>');
 				$('.delete-button-appended').append($('#Form_ItemEditForm_action_doDelete'));
 
+				//add some extra classes to the replace field containers to make it work with drag and drop uploading
+				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
+
+				$('#Form_ItemEditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
+				$('#Form_ItemEditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
+
 				//show the replace panel when the page loads
-				$('li[data-panel="replace"]').click();
+				$('li[data-panel="embargo"]').click();
 			}
 		});
 

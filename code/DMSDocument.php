@@ -240,18 +240,18 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * should be used to hide documents that have not yet gone live.
 	 * @return null
 	 */
-	function embargoForever() {
+	function embargoForever($write = true) {
 		$this->EmbargoedForever = true;
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
 	 * Hides the document until any page it is linked to is published
 	 * @return null
 	 */
-	function embargoUntilPublished() {
+	function embargoUntilPublished($write = true) {
 		$this->EmbargoedUntilPublished = true;
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
@@ -281,20 +281,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @param $datetime String date time value when this Document should expire
 	 * @return null
 	 */
-	function embargoUntilDate($datetime) {
+	function embargoUntilDate($datetime, $write = true) {
 		$this->EmbargoedUntilDate = DBField::create_field('SS_Datetime', $datetime);;
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
 	 * Clears any previously set embargos, so the Document always shows up in all queries.
 	 * @return null
 	 */
-	function clearEmbargo() {
+	function clearEmbargo($write = true) {
 		$this->EmbargoedForever = false;
 		$this->EmbargoedUntilPublished = false;
 		$this->EmbargoedUntilDate = null;
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
@@ -313,18 +313,18 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @param $datetime String date time value when this Document should expire
 	 * @return null
 	 */
-	function expireAtDate($datetime) {
+	function expireAtDate($datetime, $write = true) {
 		$this->ExpireAtDate = DBField::create_field('SS_Datetime', $datetime);
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
 	 * Clears any previously set expiry.
 	 * @return null
 	 */
-	function clearExpiry() {
+	function clearExpiry($write = true) {
 		$this->ExpireAtDate = null;
-		$this->write();
+		if ($write) $this->write();
 	}
 
 	/**
@@ -511,21 +511,54 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		$fields->add(new LiteralField('BottomTaskSelection',
 			'<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
-			'<li class="ss-ui-button" data-panel="replace">Replace</li>'.
 			'<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
+			'<li class="ss-ui-button" data-panel="expiry">Expiry</li>'.
+			'<li class="ss-ui-button" data-panel="replace">Replace</li>'.
 			'<li class="ss-ui-button" data-panel="find-usage">Find usage</li>'.
 			'</ul></div>'));
-		//$fields->add($uploadField);
+
+		$embargoValue = 0;
+		if ($this->EmbargoedForever) $embargoValue = 2;
+		elseif ($this->EmbargoedUntilPublished) $embargoValue = 1;
+		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 3;
+		$embargo = new OptionsetField('Embargo','Embargo',array('None','Hide document until page is published','Hide document forever','Hide until set date'),$embargoValue);
+		$embargoDatetime = new DatetimeField('EmbargoedUntilDate','');
+
+		$expiryValue = 0;
+		if (!empty($this->ExpireAtDate)) $expiryValue = 1;
+		$expiry = new OptionsetField('Expiry','Expiry',array('None','Set document to expire on'),$expiryValue);
+		$expiryDatetime = new DatetimeField('ExpireAtDate','');
 
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
 		// These are toggled on and off via the Actions Buttons above
-		$fields->add($group = new FieldGroup(
+		$fields->add(FieldGroup::create(
+				FieldGroup::create(
+					$embargo,
+					$embargoDatetime
+				)->addExtraClass('embargo'),
+				FieldGroup::create(
+					$expiry,
+					$expiryDatetime
+				)->addExtraClass('expiry'),
 				$uploadField->addExtraClass('replace'),
 				$pagesGrid->addExtraClass('find-usage')
-		));
-		$group->setName("ActionsPanel")->addExtraClass('dmsupload ss-upload ss-uploadfield');
+		)->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
 		return $fields;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+
+		//set the embargo options from the OptionSetField created in the getCMSFields method
+		//do not write after clearing the embargo (write happens automatically)
+		$this->clearEmbargo(false); //clear all previous settings and re-apply them on save
+		if ($this->Embargo == 1) $this->embargoUntilPublished(false);
+		if ($this->Embargo == 2) $this->embargoForever(false);
+		if ($this->Embargo == 3) $this->embargoUntilDate($this->EmbargoDatetime, false);
+
+		$this->clearExpiry(false); //clear all previous settings and re-apply them on save
+		if ($this->Expire == 1) $this->expireAtDate($this->ExpiryDatetime, false);
 	}
 
 	/**
