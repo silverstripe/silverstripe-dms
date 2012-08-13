@@ -26,6 +26,7 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 #Actions li.dms-active:after { content: ''; display: block; position: absolute; top: 33px; left: 50%; margin-left: -6px; width: 12px; height: 12px; background: #F8F8F8; border-right: 1px solid #B3B3B3; border-top: 1px solid #B3B3B3; -moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); pointer-events: none; }
 
 #ActionsPanel .middleColumn { margin-left: 184px; }
+form.small #ActionsPanel .middleColumn { margin-left: 120px; }
 #ActionsPanel label.fieldholder-small-label { display: none; }
 #ActionsPanel .fieldgroup-field { float: none; width: auto; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }

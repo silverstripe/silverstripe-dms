@@ -131,9 +131,11 @@ form.small .field .TreeDropdownField,
 }
 
 #ActionsPanel{
-	//display: none;
 	.middleColumn{
 		margin-left:184px;
+		form.small &{
+			margin-left: 120px;
+		}
 	}
 	label.fieldholder-small-label{
 		display: none;
