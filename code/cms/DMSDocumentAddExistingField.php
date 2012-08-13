@@ -1,6 +1,13 @@
 <?php
 
-class DMSDocumentAddExistingField extends FormField {
+class DMSDocumentAddExistingField extends CompositeField {
+	function __construct($name, $title = null) {
+		$this->name = $name;
+		$this->title = ($title === null) ? $name : $title;
+		
+		parent::__construct(new TreeDropdownField('PageSelector', 'Add from another page', 'SiteTree'));
+	}
+
 	/**
 	 * Force a record to be used as "Parent" for uploaded Files (eg a Page with a has_one to File)
 	 * @param DataObject $record
