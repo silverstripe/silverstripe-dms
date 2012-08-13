@@ -267,10 +267,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return bool True or False depending on whether this document is embargoed
 	 */
 	function isEmbargoed() {
+		if (is_object($this->EmbargoedUntilDate)) $this->EmbargoedUntilDate = $this->EmbargoedUntilDate->Value;
+
 		$embargoed = false;
 		if ($this->EmbargoedForever) $embargoed = true;
 		elseif ($this->EmbargoedUntilPublished) $embargoed = true;
-		elseif (!empty($this->EmbargoedUntilDate) && SS_Datetime::now()->Value < $this->EmbargoedUntilDate->Value) $embargoed = true;
+		elseif (!empty($this->EmbargoedUntilDate) && SS_Datetime::now()->Value < $this->EmbargoedUntilDate) $embargoed = true;
 
 		return $embargoed;
 	}
@@ -302,8 +304,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return bool True or False depending on whether this document is expired
 	 */
 	function isExpired() {
+		if (is_object($this->ExpireAtDate)) $this->ExpireAtDate = $this->ExpireAtDate->Value;
+
 		$expired = false;
-		if (!empty($this->ExpireAtDate) && SS_Datetime::now()->Value >= $this->ExpireAtDate->Value) $expired = true;
+		if (!empty($this->ExpireAtDate) && SS_Datetime::now()->Value >= $this->ExpireAtDate) $expired = true;
 
 		return $expired;
 	}
@@ -523,13 +527,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 3;
 		$embargo = new OptionsetField('Embargo','Embargo',array('None','Hide document until page is published','Hide document forever','Hide until set date'),$embargoValue);
 		$embargoDatetime = DatetimeField::create('EmbargoedUntilDate','');
-		$embargoDatetime->getDateField()->setConfig('showcalendar', true);
+		$embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
 
 		$expiryValue = 0;
 		if (!empty($this->ExpireAtDate)) $expiryValue = 1;
 		$expiry = new OptionsetField('Expiry','Expiry',array('None','Set document to expire on'),$expiryValue);
 		$expiryDatetime = DatetimeField::create('ExpireAtDate','');
-		$expiryDatetime->getDateField()->setConfig('showcalendar', true);;
+		$expiryDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
 
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
@@ -552,15 +556,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 
-		//set the embargo options from the OptionSetField created in the getCMSFields method
-		//do not write after clearing the embargo (write happens automatically)
-		$this->clearEmbargo(false); //clear all previous settings and re-apply them on save
-		if ($this->Embargo == 1) $this->embargoUntilPublished(false);
-		if ($this->Embargo == 2) $this->embargoForever(false);
-		if ($this->Embargo == 3) $this->embargoUntilDate($this->EmbargoDatetime, false);
+		if (isset($this->Embargo)) {
+			//set the embargo options from the OptionSetField created in the getCMSFields method
+			//do not write after clearing the embargo (write happens automatically)
+			if ($this->Embargo != 3) $this->clearEmbargo(false); //clear all previous settings and re-apply them on save
 
-		$this->clearExpiry(false); //clear all previous settings and re-apply them on save
-		if ($this->Expire == 1) $this->expireAtDate($this->ExpiryDatetime, false);
+			if ($this->Embargo == 1) $this->embargoUntilPublished(false);
+			if ($this->Embargo == 2) $this->embargoForever(false);
+			if ($this->Embargo == 3) $this->embargoUntilDate($this->EmbargoedUntilDate, false);
+		}
+
+		if (isset($this->Expire)) {
+			if ($this->Expire == 1) $this->expireAtDate($this->ExpireAtDate, false);
+			else $this->clearExpiry(false); //clear all previous settings
+		}
 	}
 
 	/**
