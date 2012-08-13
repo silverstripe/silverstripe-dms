@@ -28,7 +28,13 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 #ActionsPanel .fieldgroup-field { float: none; width: auto; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
+#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-preview { background: url("../images/app_icons/generic_32.png") -10px -6px no-repeat; }
+#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-name span.name { width: 260px; }
+#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel { width: auto; text-indent: 0; }
+#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight { background-position: 0 -128px; display: inline-block; }
+#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text { display: block; position: relative; float: right; color: #555; padding: 0; padding-left: 2em; }
 
-#Form_ItemEditForm fieldset table.ss-gridfield-table { width: auto; max-width: 508px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table { width: 508px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 175px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table tr td { white-space: normal; }

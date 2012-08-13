@@ -123,13 +123,41 @@ form.small .field .TreeDropdownField,
 			}
 		}
 	}
+	.ss-uploadfield-files{
+		.ss-uploadfield-item-preview{
+			background: url('../images/app_icons/generic_32.png') -10px -6px no-repeat;
+		}
+		.ss-uploadfield-item-name{
+			span.name{
+				width: 260px;
+			}
+		}
+		.ss-uploadfield-item-actions{
+			.ss-uploadfield-item-cancel{
+				width: auto;
+				text-indent:0;
+				.btn-icon-deleteLight{
+					background-position: 0 -128px;
+					display: inline-block;
+				}
+				.ui-button-text{
+					display: block;
+					position: relative;
+					float: right;
+					color: #555;
+					padding:0;
+					padding-left: 2em;
+				}
+			}
+		}
+	}
 }
 
 #Form_ItemEditForm{
 	fieldset{
 		table.ss-gridfield-table{
-			width: auto;
-			max-width:508px;
+			width: 508px;
+			//max-width:508px;
 			tr{
 				th.main{
 					min-width:175px;
@@ -137,6 +165,9 @@ form.small .field .TreeDropdownField,
 						width:60px;
 						min-width:60px;
 					}
+				}
+				td{
+					white-space:normal;
 				}
 			}
 		}
