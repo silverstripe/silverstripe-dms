@@ -509,15 +509,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
-		$fields->add(new LiteralField('BottomTaskSelection',"<div id=\"Actions\" class=\"field actions\"><label class=\"left\">Actions</label><ul><li class=\"ss-ui-button\">Replace</li><li class=\"ss-ui-button\">Embargo</li></ul></div>"));
+		$fields->add(new LiteralField('BottomTaskSelection',
+			'<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
+			'<li class="ss-ui-button" data-panel="replace">Replace</li>'.
+			'<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
+			'<li class="ss-ui-button" data-panel="find-usage">Find usage</li>'.
+			'</ul></div>'));
 		//$fields->add($uploadField);
 
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
 		// These are toggled on and off via the Actions Buttons above
 		$fields->add($group = new FieldGroup(
-				$uploadField,
-				$pagesGrid
+				$uploadField->addExtraClass('replace'),
+				$pagesGrid->addExtraClass('find-usage')
 		));
 		$group->setName("ActionsPanel")->addExtraClass('dmsupload ss-upload ss-uploadfield');
 		return $fields;

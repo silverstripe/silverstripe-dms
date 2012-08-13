@@ -29,10 +29,30 @@
 
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
-				//TODO - Fix so when clicking on an action it toggles the correct details inside the ActionsPanel
-				// Currently this just hides the whole ActionsPanel when you click an action button
-				e.preventDefault();
-				this.parents('fieldset').find('#ActionsPanel').toggle();
+				//add active state to the current button
+				$('#Actions ul li').removeClass('dms-active');
+				this.addClass('dms-active');
+
+				//hide all inner field sections
+				var panel = $('#ActionsPanel');
+				panel.find('div.fieldgroup-field').hide();
+
+				//show the correct group of controls
+				panel.find('.'+this.data('panel')).closest('div.fieldgroup-field').show();
+			}
+		});
+
+		$('#ActionsPanel').entwine({
+			onadd: function() {
+				//do an initial show of the entire panel
+				this.show();
+
+				//move the delete button into the panel
+				$('#Actions ul').append('<li class="delete-button-appended"></li>');
+				$('.delete-button-appended').append($('#Form_ItemEditForm_action_doDelete'));
+
+				//show the replace panel when the page loads
+				$('li[data-panel="replace"]').click();
 			}
 		});
 
