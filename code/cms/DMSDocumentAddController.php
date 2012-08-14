@@ -203,7 +203,9 @@ class DMSDocumentAddController extends LeftAndMain {
 			$list = '<ul>';
 
 			foreach($page->Documents() as $document) {
-				$list .= '<li>' . $document->ID . ' - ' . Convert::raw2xml($document->Title) . '</li>';
+				$list .= '<li><a class="add-document" data-document-id="' . $document->ID . '">';
+				$list .= $document->ID . ' - ' . Convert::raw2xml($document->Title);
+				$list .= '</a></li>';
 			}
 
 			$list .= '</ul>';
