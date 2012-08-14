@@ -196,6 +196,23 @@ class DMSDocumentAddController extends LeftAndMain {
 
 		return json_encode($return);
 	}
+
+	public function documentlist() {
+		$page = DataObject::get_by_id('SiteTree', (int) $_GET['pageID']);
+		if($page && $page->Documents()) {
+			$list = '<ul>';
+
+			foreach($page->Documents() as $document) {
+				$list .= '<li>' . $document->ID . ' - ' . Convert::raw2xml($document->Title) . '</li>';
+			}
+
+			$list .= '</ul>';
+
+			return $list;
+		} else {
+			return '<p>There are no documents attached to the selected page.</p>';
+		}
+	}
 }
 
 

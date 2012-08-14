@@ -12,6 +12,10 @@
 		<span>or Add from page</span>
 		$fieldByName(PageSelector)
 
+		<div class="document-list">
+
+		</div>
+
 	</div>
 
 	<div class="ss-assetuploadfield">

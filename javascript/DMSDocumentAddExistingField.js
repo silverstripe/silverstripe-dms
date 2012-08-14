@@ -40,5 +40,11 @@
 			}
 		});
 
+		$('.document-add-existing input[name=PageSelector]').entwine({
+			onchange: function(event) {
+				$(this).closest('.document-add-existing').find('.document-list').load('admin/pages/adddocument/documentlist?pageID=' + $(this).val());
+			}
+		});
+
 	});
 }(jQuery));
