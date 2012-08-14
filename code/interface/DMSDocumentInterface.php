@@ -158,7 +158,7 @@ interface DMSDocumentInterface {
 	 * @abstract
 	 * @return null
 	 */
-	function embargoForever();
+	function embargoIndefinitely();
 
 	/**
 	 * Returns if this is DMSDocument is embargoed or expired.

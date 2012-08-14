@@ -35,7 +35,7 @@ class DMSEmbargoTest extends SapphireTest {
 		$result = $controller->index($this->createFakeHTTPRequest($docID));
 		$this->assertEquals($doc->getFullPath(),$result,"Correct underlying file returned (in test mode)");
 
-		$doc->embargoForever();
+		$doc->embargoIndefinitely();
 
 		$result = $controller->index($this->createFakeHTTPRequest($docID));
 		$this->assertNotEquals($doc->getFullPath(),$result,"File no longer returned (in test mode)");
@@ -43,13 +43,13 @@ class DMSEmbargoTest extends SapphireTest {
 		DMS::$dmsFolder = $oldDMSFolder;
 	}
 
-	function testEmbargoForever() {
+	function testEmbargoIndefinitely() {
 		$doc = new DMSDocument();
 		$doc->Filename = "DMS-test-lorum-file.pdf";
 		$doc->Folder = "tests";
 		$doc->write();
 
-		$doc->embargoForever();
+		$doc->embargoIndefinitely();
 		$this->assertTrue($doc->isHidden(),"Document is hidden");
 		$this->assertTrue($doc->isEmbargoed(),"Document is embargoed");
 		$this->assertFalse($doc->isExpired(),"Document is not expired");
@@ -165,7 +165,7 @@ class DMSEmbargoTest extends SapphireTest {
 		$this->assertTrue($doc->isEmbargoed(),"Document is embargoed");
 		$this->assertFalse($doc->isExpired(),"Document is not expired");
 
-		$doc->embargoForever();
+		$doc->embargoIndefinitely();
 		$doc = DataObject::get_by_id("DMSDocument",$dID);
 		$this->assertTrue($doc->isHidden(),"Document is hidden");
 		$this->assertTrue($doc->isEmbargoed(),"Document is embargoed");
@@ -174,7 +174,7 @@ class DMSEmbargoTest extends SapphireTest {
 		$s1->publish('Stage','Live');
 		$s1->doPublish();
 		$doc = DataObject::get_by_id("DMSDocument",$dID);
-		$this->assertTrue($doc->isHidden(),"Document is still hidden because although the untilPublish flag is cleared, the forever flag is still there");
+		$this->assertTrue($doc->isHidden(),"Document is still hidden because although the untilPublish flag is cleared, the indefinitely flag is still there");
 		$this->assertTrue($doc->isEmbargoed(),"Document is embargoed");
 		$this->assertFalse($doc->isExpired(),"Document is not expired");
 

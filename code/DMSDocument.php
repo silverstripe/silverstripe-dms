@@ -7,7 +7,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Description" => 'Text',
 		"LastChanged" => 'SS_DateTime', //when this document's file was created or last replaced (small changes like updating title don't count)
 
-		"EmbargoedForever" => 'Boolean(false)',
+		"EmbargoedIndefinitely" => 'Boolean(false)',
 		"EmbargoedUntilPublished" => 'Boolean(false)',
 		"EmbargoedUntilDate" => 'SS_DateTime',
 		"ExpireAtDate" => 'SS_DateTime'
@@ -240,8 +240,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * should be used to hide documents that have not yet gone live.
 	 * @return null
 	 */
-	function embargoForever($write = true) {
-		$this->EmbargoedForever = true;
+	function embargoIndefinitely($write = true) {
+		$this->EmbargoedIndefinitely = true;
 		if ($write) $this->write();
 	}
 
@@ -270,7 +270,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		if (is_object($this->EmbargoedUntilDate)) $this->EmbargoedUntilDate = $this->EmbargoedUntilDate->Value;
 
 		$embargoed = false;
-		if ($this->EmbargoedForever) $embargoed = true;
+		if ($this->EmbargoedIndefinitely) $embargoed = true;
 		elseif ($this->EmbargoedUntilPublished) $embargoed = true;
 		elseif (!empty($this->EmbargoedUntilDate) && SS_Datetime::now()->Value < $this->EmbargoedUntilDate) $embargoed = true;
 
@@ -293,7 +293,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function clearEmbargo($write = true) {
-		$this->EmbargoedForever = false;
+		$this->EmbargoedIndefinitely = false;
 		$this->EmbargoedUntilPublished = false;
 		$this->EmbargoedUntilDate = null;
 		if ($write) $this->write();
@@ -522,10 +522,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			'</ul></div>'));
 
 		$embargoValue = 'None';
-		if ($this->EmbargoedForever) $embargoValue = 'Forever';
+		if ($this->EmbargoedIndefinitely) $embargoValue = 'Indefinitely';
 		elseif ($this->EmbargoedUntilPublished) $embargoValue = 'Published';
 		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 'Date';
-		$embargo = new OptionsetField('Embargo','Embargo',array('None'=>'None','Published'=>'Hide document until page is published','Forever'=>'Hide document forever','Date'=>'Hide until set date'),$embargoValue);
+		$embargo = new OptionsetField('Embargo','Embargo',array('None'=>'None','Published'=>'Hide document until page is published','Indefinitely'=>'Hide document indefinitely','Date'=>'Hide until set date'),$embargoValue);
 		$embargoDatetime = DatetimeField::create('EmbargoedUntilDate','');
 		$embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
 
@@ -563,7 +563,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$this->clearEmbargo(false); //clear all previous settings and re-apply them on save
 
 			if ($this->Embargo == 'Published') $this->embargoUntilPublished(false);
-			if ($this->Embargo == 'Forever') $this->embargoForever(false);
+			if ($this->Embargo == 'Indefinitely') $this->embargoIndefinitely(false);
 			if ($this->Embargo == 'Date') $this->embargoUntilDate($savedDate, false);
 		}
 
