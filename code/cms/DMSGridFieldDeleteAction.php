@@ -49,6 +49,11 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridFiel
 		if ($numberOfRelations > 1) $field->addExtraClass('dms-delete-link-only');
 		else $field->addExtraClasS('dms-delete-last-warning');
 
+		//set a class to show if the document is hidden
+		if ($record->isHidden()) {
+			$field->addExtraClass('dms-document-hidden');
+		}
+
 		return $field->Field();
 	}
 

@@ -6,6 +6,9 @@
 #Root_Documents table td { white-space: normal; }
 #Root_Documents table td.col-buttons { white-space: nowrap; }
 #Root_Documents table td.col-buttons .dms-delete-link-only .ui-icon { background: url(../images/chain-unchain.png) no-repeat; }
+#Root_Documents table tr.dms-document-hidden-row.odd { background-color: rgba(241, 220, 222, 0.6); }
+#Root_Documents table tr.dms-document-hidden-row.even { background-color: rgba(242, 201, 203, 0.675); }
+#Root_Documents table tr.dms-document-hidden-row:hover { background-color: rgba(244, 171, 172, 0.8) !important; }
 
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav { border-bottom: none; float: right; margin: 8px 0 -1px 0; padding: 0 24px 0 0; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { padding-bottom: 1px; border: 1px solid #C0C0C2; }

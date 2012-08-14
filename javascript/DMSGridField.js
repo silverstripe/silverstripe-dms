@@ -32,6 +32,12 @@
 			}
 		});
 
+		$('.ss-gridfield .dms-document-hidden').entwine({
+			onadd: function() {
+				this.closest('tr').addClass('dms-document-hidden-row');
+			}
+		});
+
 		$('.cms-content-actions.south .ss-ui-action-destructive').entwine({
 			confirmBeforeDelete: function() {
 				var deleteButtons = $('button.dms-delete[data-pages-count=1]');

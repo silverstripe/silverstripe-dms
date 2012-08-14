@@ -1,4 +1,5 @@
 //data-icon="cross-circle"
+$gf_colour_zebra: #F0F4F7;
 
 .ui-autocomplete{
 	border: 1px solid #DDD;
@@ -23,6 +24,17 @@
 				.ui-icon{
 					background: url(../images/chain-unchain.png) no-repeat;
 				}
+			}
+		}
+		tr.dms-document-hidden-row {
+			&.odd {
+				background-color: mix($gf_colour_zebra, rgba(255, 4, 0, 0.2));
+			}
+			&.even {
+				background-color: mix($gf_colour_zebra, rgba(255, 4, 0, 0.35));
+			}
+			&:hover {
+				background-color: mix($gf_colour_zebra, rgba(255, 4, 0, 0.6)) !important;
 			}
 		}
 	}
