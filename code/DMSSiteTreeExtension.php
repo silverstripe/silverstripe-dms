@@ -42,7 +42,7 @@ class DMSSiteTreeExtension extends DataExtension {
 			sprintf(
 				'<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content" data-icon="add" href="%s">%s</a>',
 				Controller::join_links(singleton('DMSDocumentAddController')->Link(), '?ID=' . $this->owner->ID),
-				"Add Document"
+				"Add Documents"
 			)
 		);	
 
