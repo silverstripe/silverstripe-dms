@@ -46,7 +46,7 @@
 		$('#Form_ItemEditForm_Embargo input').entwine({
 			onchange: function() {
 				//selected the date options
-				if (this.attr('value') === '3') {
+				if (this.attr('value') == 3) {
 					$('.embargoDatetime').show();
 				} else {
 					$('.embargoDatetime').hide();
@@ -57,7 +57,7 @@
 		$('#Form_ItemEditForm_Expiry input').entwine({
 			onchange: function() {
 				//selected the date options
-				if (this.attr('value') === '1') {
+				if (this.attr('value') == 1) {
 					$('.expiryDatetime').show();
 				} else {
 					$('.expiryDatetime').hide();
@@ -84,8 +84,8 @@
 				$('li[data-panel="embargo"]').click();
 
 				//set the initial state of the radio button and the associated dropdown hiding
-				$('#Form_ItemEditForm_Embargo input').change();
-				$('#Form_ItemEditForm_Expiry input').change();
+				$('#Form_ItemEditForm_Embargo input[checked]').change();
+				$('#Form_ItemEditForm_Expiry input[checked]').change();
 			}
 		});
 
