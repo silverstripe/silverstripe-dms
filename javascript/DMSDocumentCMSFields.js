@@ -46,7 +46,7 @@
 		$('#Form_ItemEditForm_Embargo input').entwine({
 			onchange: function() {
 				//selected the date options
-				if (this.attr('value') == 3) {
+				if (this.attr('value') === 'Date') {
 					$('.embargoDatetime').show();
 				} else {
 					$('.embargoDatetime').hide();
@@ -57,7 +57,7 @@
 		$('#Form_ItemEditForm_Expiry input').entwine({
 			onchange: function() {
 				//selected the date options
-				if (this.attr('value') == 1) {
+				if (this.attr('value') === 'Date') {
 					$('.expiryDatetime').show();
 				} else {
 					$('.expiryDatetime').hide();

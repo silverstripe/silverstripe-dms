@@ -521,17 +521,17 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			'<li class="ss-ui-button" data-panel="find-usage">Find usage</li>'.
 			'</ul></div>'));
 
-		$embargoValue = 0;
-		if ($this->EmbargoedForever) $embargoValue = 2;
-		elseif ($this->EmbargoedUntilPublished) $embargoValue = 1;
-		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 3;
-		$embargo = new OptionsetField('Embargo','Embargo',array('None','Hide document until page is published','Hide document forever','Hide until set date'),$embargoValue);
+		$embargoValue = 'None';
+		if ($this->EmbargoedForever) $embargoValue = 'Forever';
+		elseif ($this->EmbargoedUntilPublished) $embargoValue = 'Published';
+		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 'Date';
+		$embargo = new OptionsetField('Embargo','Embargo',array('None'=>'None','Published'=>'Hide document until page is published','Forever'=>'Hide document forever','Date'=>'Hide until set date'),$embargoValue);
 		$embargoDatetime = DatetimeField::create('EmbargoedUntilDate','');
 		$embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
 
-		$expiryValue = 0;
-		if (!empty($this->ExpireAtDate)) $expiryValue = 1;
-		$expiry = new OptionsetField('Expiry','Expiry',array('None','Set document to expire on'),$expiryValue);
+		$expiryValue = 'None';
+		if (!empty($this->ExpireAtDate)) $expiryValue = 'Date';
+		$expiry = new OptionsetField('Expiry','Expiry',array('None'=>'None','Date'=>'Set document to expire on'),$expiryValue);
 		$expiryDatetime = DatetimeField::create('ExpireAtDate','');
 		$expiryDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
 
@@ -559,15 +559,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		if (isset($this->Embargo)) {
 			//set the embargo options from the OptionSetField created in the getCMSFields method
 			//do not write after clearing the embargo (write happens automatically)
-			if ($this->Embargo != 3) $this->clearEmbargo(false); //clear all previous settings and re-apply them on save
+			$savedDate = $this->EmbargoedUntilDate;
+			$this->clearEmbargo(false); //clear all previous settings and re-apply them on save
 
-			if ($this->Embargo == 1) $this->embargoUntilPublished(false);
-			if ($this->Embargo == 2) $this->embargoForever(false);
-			if ($this->Embargo == 3) $this->embargoUntilDate($this->EmbargoedUntilDate, false);
+			if ($this->Embargo == 'Published') $this->embargoUntilPublished(false);
+			if ($this->Embargo == 'Forever') $this->embargoForever(false);
+			if ($this->Embargo == 'Date') $this->embargoUntilDate($savedDate, false);
 		}
 
 		if (isset($this->Expiry)) {
-			if ($this->Expiry == 1) $this->expireAtDate($this->ExpireAtDate, false);
+			if ($this->Expiry == 'Date') $this->expireAtDate($this->ExpireAtDate, false);
 			else $this->clearExpiry(false); //clear all previous settings
 		}
 	}
