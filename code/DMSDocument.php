@@ -669,6 +669,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$this->replaceDocument($file);
 		$file->delete();
 	}
+
+
+	/**
+	 * Returns if the document should be displayed on the front-end. Respecting the current reading mode
+	 * of the site and the embargo status.
+	 * I.e. if a document is embargoed until published, then it should still show up in draft mode.
+	 */
+	function getDisplayDocument() {
+		$display = !$this->isHidden();
+		$readingMode = Versioned::get_reading_mode();
+		if ($readingMode == "Stage.Stage" && $this->EmbargoedUntilPublished == true) $display = true;
+		return $display;
+	}
 }
 
 class DMSDocument_Controller extends Controller {
