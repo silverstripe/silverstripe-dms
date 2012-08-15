@@ -256,10 +256,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	/**
 	 * Returns if this is Document is embargoed or expired.
+	 * Also, returns if the document should be displayed on the front-end. Respecting the current reading mode
+     * of the site and the embargo status.
+     * I.e. if a document is embargoed until published, then it should still show up in draft mode.
 	 * @return bool True or False depending on whether this document is embargoed
 	 */
 	function isHidden() {
-		return $this->isEmbargoed() || $this->isExpired();
+		$hidden = $this->isEmbargoed() || $this->isExpired();
+		$readingMode = Versioned::get_reading_mode();
+		if ($readingMode == "Stage.Stage" && $this->EmbargoedUntilPublished == true) $hidden = false;
+		return $hidden;
 	}
 
 	/**
@@ -670,18 +676,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$file->delete();
 	}
 
-
-	/**
-	 * Returns if the document should be displayed on the front-end. Respecting the current reading mode
-	 * of the site and the embargo status.
-	 * I.e. if a document is embargoed until published, then it should still show up in draft mode.
-	 */
-	function getDisplayDocument() {
-		$display = !$this->isHidden();
-		$readingMode = Versioned::get_reading_mode();
-		if ($readingMode == "Stage.Stage" && $this->EmbargoedUntilPublished == true) $display = true;
-		return $display;
-	}
 }
 
 class DMSDocument_Controller extends Controller {
