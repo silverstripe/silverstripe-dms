@@ -31,6 +31,14 @@ form.small #ActionsPanel .middleColumn { margin-left: 120px; }
 #ActionsPanel .fieldgroup-field { float: none; width: auto; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
 #ActionsPanel .fieldgroup-field .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
+#ActionsPanel .fieldgroup-field .embargo li, #ActionsPanel .fieldgroup-field .expiry li { float: none; width: 100%; margin-left: 8px; }
+#ActionsPanel .fieldgroup-field .embargo li label, #ActionsPanel .fieldgroup-field .expiry li label { padding-left: 10px; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime { margin-top: 0; margin-left: 34px; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.date, #ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.time, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.date, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.time, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.date, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.time, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.date, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.time { display: inline-block; width: auto; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.date .middleColumn { background: url("../images/calendar-month.png") 90px 7px no-repeat; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.time .middleColumn { background: url("../images/clock-frame.png") 90px 7px no-repeat; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .middleColumn { margin-left: 0; width: auto; border: none; }
+#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .middleColumn input { width: 80px; margin-right: 40px; }
 #ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-preview { background: url("../images/app_icons/generic_32.png") -10px -6px no-repeat; }
 #ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-name span.name { width: 260px; }
 #ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel { width: auto; text-indent: 0; }
@@ -41,3 +49,5 @@ form.small #ActionsPanel .middleColumn { margin-left: 120px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 175px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr td { white-space: normal; }
+
+#ui-datepicker-div { border: 1px solid #DDD; }

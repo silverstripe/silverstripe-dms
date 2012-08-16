@@ -155,6 +155,45 @@ form.small .field .TreeDropdownField,
 				}
 			}
 		}
+		.embargo, .expiry{
+			li{
+				float: none;
+				width: 100%;
+				margin-left: 8px;
+				label{
+					padding-left: 10px;
+				}	
+			}
+			.embargoDatetime, .expiryDatetime{
+				margin-top: 0;
+				margin-left: 34px;
+				.field{
+					&.date, &.time{
+						display: inline-block;
+						width: auto;
+					}
+					&.date{
+						.middleColumn{
+							background: url('../images/calendar-month.png') 90px 7px no-repeat;
+						}
+					}
+					&.time{
+						.middleColumn{
+							background: url('../images/clock-frame.png') 90px 7px no-repeat;
+						}
+					}
+				}
+				.middleColumn{
+					margin-left: 0;
+					width: auto;
+					border: none;
+					input{
+						width: 80px;
+						margin-right: 40px;
+					}
+				}
+			}
+		}
 	}
 	.ss-uploadfield-files{
 		.ss-uploadfield-item-preview{
@@ -205,4 +244,8 @@ form.small .field .TreeDropdownField,
 			}
 		}
 	}
+}
+
+#ui-datepicker-div{
+	border: 1px solid #DDD;
 }

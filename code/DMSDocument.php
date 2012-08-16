@@ -533,13 +533,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		elseif (!empty($this->EmbargoedUntilDate)) $embargoValue = 'Date';
 		$embargo = new OptionsetField('Embargo','Embargo',array('None'=>'None','Published'=>'Hide document until page is published','Indefinitely'=>'Hide document indefinitely','Date'=>'Hide until set date'),$embargoValue);
 		$embargoDatetime = DatetimeField::create('EmbargoedUntilDate','');
-		$embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
+		$embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'dd-MM-yyyy')->setConfig('datavalueformat', 'dd-MM-yyyy');
 
 		$expiryValue = 'None';
 		if (!empty($this->ExpireAtDate)) $expiryValue = 'Date';
 		$expiry = new OptionsetField('Expiry','Expiry',array('None'=>'None','Date'=>'Set document to expire on'),$expiryValue);
 		$expiryDatetime = DatetimeField::create('ExpireAtDate','');
-		$expiryDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'yyyy-MM-dd')->setConfig('datavalueformat', 'yyyy-MM-dd');
+		$expiryDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'dd-MM-yyyy')->setConfig('datavalueformat', 'dd-MM-yyyy');
 
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
