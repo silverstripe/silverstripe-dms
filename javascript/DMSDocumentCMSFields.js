@@ -43,7 +43,7 @@
 			}
 		});
 
-		$('#Form_ItemEditForm_Embargo input').entwine({
+		$('#Form_ItemEditForm_Embargo input, #Form_EditForm_Embargo input').entwine({
 			onchange: function() {
 				//selected the date options
 				if (this.attr('value') === 'Date') {
@@ -54,7 +54,7 @@
 			}
 		});
 
-		$('#Form_ItemEditForm_Expiry input').entwine({
+		$('#Form_ItemEditForm_Expiry input, #Form_EditForm_Expiry input').entwine({
 			onchange: function() {
 				//selected the date options
 				if (this.attr('value') === 'Date') {
@@ -80,12 +80,20 @@
 				$('#Form_ItemEditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
 				$('#Form_ItemEditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
 
+				// We need to duplicate the above functions to work when Adding documents
+				$('#Form_EditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
+				$('#Form_EditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
+
 				//show the replace panel when the page loads
 				$('li[data-panel="embargo"]').click();
 
 				//set the initial state of the radio button and the associated dropdown hiding
 				$('#Form_ItemEditForm_Embargo input[checked]').change();
 				$('#Form_ItemEditForm_Expiry input[checked]').change();
+
+				//Again we need to duplicate the above function to work when adding documents
+				$('#Form_EditForm_Embargo input[checked]').change();
+				$('#Form_EditForm_Expiry input[checked]').change();
 			}
 		});
 
