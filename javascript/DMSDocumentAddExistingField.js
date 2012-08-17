@@ -45,9 +45,79 @@
 			}
 		});
 
+		// Add label to tree drop down button
+		$('.document-add-existing .treedropdownfield-toggle-panel-link').entwine({
+			onmatch: function() {
+				this.prepend('<span>Browse by page</span>');
+			}
+		});
+
+		// TODO - If the treedropdown field is open then disable the search field
+		//		  else, make this search field enabled 
+		$('.document-add-existing .TreeDropdownField').entwine({
+			onmatch: function(event) {
+				// Not really sure what var self = this does, but thought it looked cool :)
+				var self = this;
+				console.log('Ive found you');
+				// If dropdownfield-panel is visible
+				if ($(this).find('.treedropdownfield-panel').is(':visible')) {
+					// Add border for testing
+					$(this).css('border', '2px solid blue');
+					// Then disable search field
+					self.closest('.document-add-existing').find('.document-autocomplete').prop('disabled', true);
+					console.log('Disabling');
+				}
+				else{
+					// Add border colour for testing purposes only
+					self.css('border', '2px solid red');
+					// Enable search field
+					$(this).closest('.document-add-existing').find('.document-autocomplete').prop('disabled', false);
+					console.log('Ok you can work');
+				}
+			}
+		});
+
+		//These are some test but I don't think they work or accomplish the function that I want
+
+		// When clicking on the tree dropdown button
+		// Disable the search input
+/*		$('.treedropdownfield-toggle-panel-link').entwine({
+			onclick: function() {
+				//$(this).closest('.document-add-existing').find('.document-autocomplete').addClass('disable');
+				$(this).closest('.document-add-existing').find('.document-autocomplete').prop('disabled', true);
+			}
+		});*/
+
+/*		$('.treedropdownfield-toggle-panel-link').entwine({
+			onclick: function() {
+				var self = this;
+
+				if ($(this).hasClass('treedropdownfield-open-tree')) {
+					$(this).css('border', '2px solid blue');
+					self.closest('.document-add-existing').find('.document-autocomplete').prop('disabled', true);
+					console.log('Disabling');
+				}
+				else{
+					self.css('border', '2px solid red');
+					$(this).closest('.document-add-existing').find('.document-autocomplete').prop('disabled', false);
+					console.log('Ok you can work');
+				}
+			}
+		});*/
+
+		// TODO - This will become redundant if the above function works
+		// When clicking on the search input this removes the disabled state
+		$('.document-add-existing .document-autocomplete').entwine({
+			onclick: function() {
+				this.removeClass('disable');
+			}
+		});
+
+		//TODO - When documents load in the document list. Toggle the visibilty of this. By default it should be hidden
 		$('.document-add-existing input[name=PageSelector]').entwine({
 			onchange: function(event) {
 				$(this).closest('.document-add-existing').find('.document-list').load('admin/pages/adddocument/documentlist?pageID=' + $(this).val());
+				$(this).closest('.document-add-existing').find('.document-list').toggle();
 			}
 		});
 

@@ -9,7 +9,7 @@
 		</h3>
 
 		<input class="document-autocomplete text" type="text" placeholder="Search by ID or filename" />
-		<span>or Add from page</span>
+		<!-- <span>or Add from page</span> -->
 		$fieldByName(PageSelector)
 
 		<div class="document-list">

@@ -57,6 +57,62 @@ $gf_colour_zebra: #F0F4F7;
 	}
 }
 
+#Main_FromtheCMS{
+	.document-add-existing{
+		input{
+			position: absolute;
+			z-index: 9999;
+			top: 70px;
+			width: 388px;
+			padding: 9px 7px;
+			border-bottom-right-radius:0;
+			border-top-right-radius:0;
+			&.disable{
+				color: #C0C0C2;
+				text-shadow: 0 -1px 0 #FFF;
+				background: #EEE;
+				box-shadow: inset 0 1px 8px 0 #C4C4C4;
+			}
+		}
+		.treedropdownfield-toggle-panel-link{
+			padding: 5px 9px 9px;
+		}
+		.treedropdownfield-title{
+			width: auto;
+		}
+		.treedropdownfield-toggle-panel-link a{
+			display: inline-block;
+			top: 4px;
+			position: relative;
+		}
+		.document-list{
+			position: absolute;
+			z-index: 9999;
+			width: 386px;
+			border: 1px solid #DDD;
+			background: #ffffff;
+			//display: none;
+			box-shadow:0 2px 4px 1px #DDD;
+			max-height:300px;
+			overflow:scroll;
+			ul{
+				li{
+					display: block;
+					line-height:18px;
+					padding: 4px 8px;
+					border: 1px solid #FFF;
+					&:hover{
+						border: 1px solid #CCC;
+						border-radius: 4px;
+						background: rgba(203, 203, 203, 0.4);
+						//background: #DADADA url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+						//background: rgba(0,255,0,0.6);
+					}
+				}
+			}
+		}
+	}
+}
 
 #Form_EditForm_Documents {
 	padding: 1em 0;
