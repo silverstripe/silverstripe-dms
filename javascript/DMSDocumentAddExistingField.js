@@ -39,6 +39,9 @@
 							var document_id = ui.item.value;
 
 							$(this).closest('.document-add-existing').adddocument(document_id);
+							$(this).val('');
+
+							return false;
 						}
 					}
 				});
@@ -52,23 +55,22 @@
 			}
 		});
 
-		// TODO - This will become redundant if the above function works
-		// When clicking on the search input this removes the disabled state
-		$('.document-add-existing .treedropdownfield-toggle-panel-link').entwine({
-			onclick: function() {
+		$('.document-add-existing .TreeDropdownField').entwine({
+			onpanelshow: function() {
 				$(this).closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', true);
+			},
+			onpanelhide: function() {
+				$(this).closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', $(this).closest('.document-add-existing').find('.document-list:visible').length > 0);
 			}
 		});
 
-		//TODO - When documents load in the document list. Toggle the visibilty of this. By default it should be hidden
 		$('.document-add-existing input[name=PageSelector]').entwine({
 			onchange: function(event) {
-				$(this).closest('.document-add-existing').find('.document-list').load(
-					'admin/pages/adddocument/documentlist?pageID=' + $(this).val(),
-					null,
-					function () {
-						$(this).show();
-					}
+				var doclist = $(this).closest('.document-add-existing').find('.document-list');
+				doclist.html('<span>Loading...</span>');
+				doclist.show();
+				doclist.load(
+					'admin/pages/adddocument/documentlist?pageID=' + $(this).val()
 				);
 				
 			}
@@ -84,7 +86,14 @@
 
 				return false;
 			}
-		})
+		});
+
+		$('body').entwine({
+			onclick: function(event) {
+				$('.document-list:visible').hide()
+					.closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', false);
+			}
+		});
 
 	});
 }(jQuery));
