@@ -19,7 +19,7 @@
 #Main_FromtheCMS .document-add-existing .treedropdownfield-toggle-panel-link { padding: 5px 9px 9px; }
 #Main_FromtheCMS .document-add-existing .treedropdownfield-title { width: auto; }
 #Main_FromtheCMS .document-add-existing .treedropdownfield-toggle-panel-link a { display: inline-block; top: 4px; position: relative; }
-#Main_FromtheCMS .document-add-existing .document-list { position: absolute; z-index: 9999; width: 386px; border: 1px solid #DDD; background: #ffffff; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; overflow: scroll; }
+#Main_FromtheCMS .document-add-existing .document-list { position: absolute; z-index: 9999; width: 386px; border: 1px solid #DDD; background: #ffffff; display: none; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; overflow: scroll; }
 #Main_FromtheCMS .document-add-existing .document-list ul li { display: block; line-height: 18px; padding: 4px 8px; border: 1px solid #FFF; }
 #Main_FromtheCMS .document-add-existing .document-list ul li:hover { border: 1px solid #CCC; border-radius: 4px; background: rgba(203, 203, 203, 0.4); }
 
