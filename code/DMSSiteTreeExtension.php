@@ -23,6 +23,7 @@ class DMSSiteTreeExtension extends DataExtension {
 			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
 		);
 
+		// HACK: Create a singleton of DMSDocument to ensure extensions are applied before we try to get display fields.
 		singleton('DMSDocument');
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
 			->setFieldCasting(array('LastChanged'=>"Date->Ago"))
