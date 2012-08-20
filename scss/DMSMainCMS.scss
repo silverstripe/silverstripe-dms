@@ -63,19 +63,26 @@ $gf_colour_zebra: #F0F4F7;
 			position: absolute;
 			z-index: 9999;
 			top: 70px;
-			width: 388px;
+			width: 390px;
 			padding: 9px 7px;
 			border-bottom-right-radius:0;
 			border-top-right-radius:0;
-			&.disable{
+			&[disabled]{
 				color: #C0C0C2;
 				text-shadow: 0 -1px 0 #FFF;
 				background: #EEE;
+				background-image:none;
 				box-shadow: inset 0 1px 8px 0 #C4C4C4;
+				border-bottom-left-radius:0;
+				border-bottom-right-radius:0;
 			}
+		}
+		.TreeDropdownField{
+			border:none;
 		}
 		.treedropdownfield-toggle-panel-link{
 			padding: 5px 9px 9px;
+			border: 1px solid #B3B3B3;
 		}
 		.treedropdownfield-title{
 			width: auto;
@@ -88,12 +95,15 @@ $gf_colour_zebra: #F0F4F7;
 		.document-list{
 			position: absolute;
 			z-index: 9999;
-			width: 386px;
+			width: 510px;
 			border: 1px solid #DDD;
+			border-top:none;
 			background: #ffffff;
 			display: none;
 			box-shadow:0 2px 4px 1px #DDD;
 			max-height:300px;
+			border-radius: 6px;
+			background-clip: padding-box;
 			overflow:scroll;
 			ul{
 				li{
@@ -105,10 +115,20 @@ $gf_colour_zebra: #F0F4F7;
 						border: 1px solid #CCC;
 						border-radius: 4px;
 						background: rgba(203, 203, 203, 0.4);
-						//background: #DADADA url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
-						//background: rgba(0,255,0,0.6);
 					}
 				}
+			}
+		}
+	}
+}
+
+// Hack for Firefox to fix padding on adding document input. 
+// FF renders the size different and pushes it out by 2px compared to webkit
+@-moz-document url-prefix() {
+	#Main_FromtheCMS{
+		.document-add-existing{
+			input{
+				padding: 10px 7px;
 			}
 		}
 	}
