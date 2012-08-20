@@ -6,11 +6,6 @@ class DMS implements DMSInterface {
 	//How many documents to store in a single folder. The square of this number is the maximum number of documents.
 	//The number should be a multiple of 10
 	static $dmsFolderSize = 1000;
-	static $modelClass = 'DMSDocument';
-	
-	static function set_model_class($className){
-		self::$modelClass = $className;
-	}
 
 
 	/**
@@ -59,8 +54,7 @@ class DMS implements DMSInterface {
 		$filePath = self::transform_file_to_file_path($file);
 		
 		//create a new document and get its ID
-		$modelClass = self::$modelClass;
-		$doc = new $modelClass();
+		$doc = new DMSDocument();
 		$doc->write();
 		$doc->storeDocument($filePath);
 

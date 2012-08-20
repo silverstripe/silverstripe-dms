@@ -556,6 +556,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$uploadField->addExtraClass('replace'),
 				$pagesGrid->addExtraClass('find-usage')
 		)->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
+
+		$this->extend('updateCMSFields', $fields);
+
 		return $fields;
 	}
 
