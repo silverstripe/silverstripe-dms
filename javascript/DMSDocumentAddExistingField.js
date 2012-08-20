@@ -95,5 +95,11 @@
 			}
 		});
 
+		$('.document-add-existing .treedropdownfield-toggle-panel-link').entwine({
+			onclick: function(event) {
+				$('.document-list:visible').hide();
+			}
+		});
+
 	});
 }(jQuery));
