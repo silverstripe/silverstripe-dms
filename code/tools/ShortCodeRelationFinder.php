@@ -30,6 +30,11 @@ class ShortCodeRelationFinder {
 		return $found;
 	}
 
+	function findPageCount($number) {
+		$list = $this->getList($number);
+		return $list->count();
+	}
+
 	/**
 	 * @return DataList
 	 */

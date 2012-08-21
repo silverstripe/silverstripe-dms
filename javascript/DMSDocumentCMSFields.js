@@ -114,11 +114,27 @@
 				//work out how many pages are left attached to this document
 				var form = this.closest('form');
 				var pagesCount = form.data('pages-count');
+				var relationCount = form.data('relation-count');
 
 				//display an appropriate message
 				var message = '';
-				if (pagesCount > 1) {
-					message = "Permanently delete this document and remove it from all pages where it is referenced?\n\nWarning: this document is attached to a total of "+pagesCount+" pages. Deleting it here will permanently delete it from this page and all other pages where it is referenced.";
+				if (pagesCount > 1 || relationCount > 0) {
+					var pages = '';
+					if (pagesCount > 1) {
+						pages = "\nWarning: doc is attached to a total of "+pagesCount+" pages. ";
+					}
+					var references = '';
+					var referencesWarning = '';
+					if (relationCount > 0) {
+						var pname = 'pages';
+						referencesWarning = "\n\nBefore deleting: please update the content on the pages where this document is referenced, otherwise the links on those pages will break.";
+						if (relationCount === 1) {
+							pname = 'page';
+							referencesWarning = "\n\nBefore deleting: please update the content on the page where this document is referenced, otherwise the links on that page will break.";
+						}
+						references = "\nWarning: doc is referenced in the text of "+relationCount +" "+pname+".";
+					}
+					message = "Permanently delete this document and remove it from all pages where it is referenced?\n"+pages+references+"\n\nDeleting it here will permanently delete it from this page and all other pages where it is referenced."+referencesWarning;
 				} else {
 					message = "Permanently delete this document and remove it from this page?\n\nNotice: this document is only attached to this page, so deleting it won't affect any other pages.";
 				}
