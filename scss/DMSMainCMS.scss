@@ -57,16 +57,18 @@ $gf_colour_zebra: #F0F4F7;
 	}
 }
 
-#Main_FromtheCMS{
+.ss-add{
 	.document-add-existing{
 		input{
 			position: absolute;
 			z-index: 9999;
-			top: 70px;
+			//top: 70px;
 			width: 390px;
 			padding: 9px 7px;
 			border-bottom-right-radius:0;
 			border-top-right-radius:0;
+			outline:none;
+			box-sizing:border-box;
 			&[disabled]{
 				color: #C0C0C2;
 				text-shadow: 0 -1px 0 #FFF;
@@ -79,6 +81,11 @@ $gf_colour_zebra: #F0F4F7;
 		}
 		.TreeDropdownField{
 			border:none;
+			width: 100%;
+			max-width: 512px;
+			box-sizing: border-box;
+			cursor:pointer;
+			overflow:hidden;
 		}
 		.treedropdownfield-toggle-panel-link{
 			padding: 5px 9px 9px;
