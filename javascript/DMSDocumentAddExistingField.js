@@ -51,8 +51,9 @@
 								$(this).closest('.document-add-existing').selectdocument(ui.item.value, ui.item.label);
 							} else {
 								$(this).closest('.document-add-existing').adddocument(ui.item.value);
-								$(this).val('');
 							}
+
+							$(this).val('');
 
 							return false;
 						}
@@ -94,15 +95,14 @@
 				var document_id = this.data('document-id');
 				var dae = this.closest('.document-add-existing');
 
-				$(this).closest('.document-add-existing').adddocument(document_id);
-				$(this).closest('.document-list').hide();
-				$(this).closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', false);
-
 				if (dae.hasClass('link-editor-context')) {
 					dae.selectdocument(document_id, this.text());
 				} else {
 					dae.adddocument(document_id);
 				}
+
+				$(this).closest('.document-list').hide();
+				$(this).closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', false);
 
 				return false;
 			}
