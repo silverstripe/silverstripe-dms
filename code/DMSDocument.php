@@ -479,7 +479,11 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		$fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 
-		$fieldsTop = $this->getFieldsForFile();
+		//get list of shortcode page relations
+		$relationFinder = new ShortCodeRelationFinder();
+		$relationList = $relationFinder->getList($this->ID);
+
+		$fieldsTop = $this->getFieldsForFile($relationList->count());
 		$fields->add($fieldsTop);
 
 		$fields->add(new TextField('Title','Title'));
@@ -519,11 +523,11 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
-		$relationFinder = new ShortCodeRelationFinder();
+
 		$referencesGrid = GridField::create(
 			'References',
 			_t('DMSDocument.RelatedReferences', 'Related References'),
-			$relationFinder->getList($this->ID),
+			$relationList,
 			$gridFieldConfig
 		);
 
@@ -640,7 +644,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	/**
 	 * @return FieldList
 	 */
-	protected function getFieldsForFile() {
+	protected function getFieldsForFile($relationListCount) {
 		$extension = $this->getFileExt();
 
 		$previewField = new LiteralField("ImageFull",
@@ -651,6 +655,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$publishedOnCount = $this->Pages()->Count();
 		$publishedOnValue = "$publishedOnCount pages";
 		if ($publishedOnCount == 1) $publishedOnValue = "$publishedOnCount page";
+
+		$relationListCountValue = "$relationListCount pages";
+		if ($relationListCount == 1) $relationListCountValue = "$relationListCount page";
 
 		$fields = new FieldGroup(
 			$filePreview = CompositeField::create(
@@ -669,7 +676,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 						new DateField_Disabled("Created", _t('AssetTableField.CREATED','First uploaded') . ':', $this->Created),
 						new DateField_Disabled("LastEdited", _t('AssetTableField.LASTEDIT','Last changed') . ':', $this->LastEdited),
 						new DateField_Disabled("LastChanged", _t('AssetTableField.LASTCHANGED','Last replaced') . ':', $this->LastChanged),
-						new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue)
+						new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue),
+						new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue)
 					)
 				)->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
 			)->setName("FilePreview")->addExtraClass('cms-file-info')
