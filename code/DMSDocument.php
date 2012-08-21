@@ -17,7 +17,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'Pages' => 'SiteTree',
 		'Tags' => 'DMSTag'
 	);
-	
+
+	static $many_many_extraFields = array(
+		'Pages' => array(
+			'DocumentSort' => 'Int'
+		),
+	);
+
 	static $display_fields = array(
 		'ID'=>'ID',
 		'Title'=>'Title',

@@ -45,6 +45,7 @@ Example:
 ### Requirements
 
  * PHP 5.3 with the "fileinfo" module (or alternatively the "whereis" and "file" Unix commands)
+ * (optional) [https://github.com/UndefinedOffset/SortableGridField]("SortableGridField" module)
 
 ### Configuration
 

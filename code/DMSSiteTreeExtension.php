@@ -4,7 +4,7 @@ class DMSSiteTreeExtension extends DataExtension {
 	static $belongs_many_many = array(
 		'Documents' => 'DMSDocument'
 	);
-	
+
 	function updateCMSFields(FieldList $fields){
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
 		Requirements::javascript('dms/javascript/DMSGridField.js');
@@ -19,12 +19,17 @@ class DMSSiteTreeExtension extends DataExtension {
 			new GridFieldFilterHeader(),
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
-			new GridFieldPaginator(15),
+			$paginatorComponent = new GridFieldPaginator(15),
 			new GridFieldEditButton(),
 			new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
 			new GridFieldDetailForm()
 			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
 		);
+		if(class_exists('GridFieldSortableRows')) {
+			$sortableComponent = new GridFieldSortableRows('DocumentSort');
+			$sortableComponent->setUsePagination(false)->setForceRedraw(true);
+			$gridFieldConfig->addComponent($sortableComponent);
+		}
 
 		// HACK: Create a singleton of DMSDocument to ensure extensions are applied before we try to get display fields.
 		singleton('DMSDocument');
@@ -58,6 +63,13 @@ class DMSSiteTreeExtension extends DataExtension {
 				$gridField
 			)
 		);
+	}
+
+	/**
+	 * Overloaded to enforce sorting
+	 */
+	function Documents() {
+		return $this->owner->getManyManyComponents('Documents')->sort('DocumentSort');
 	}
 
 	function onBeforeDelete() {
