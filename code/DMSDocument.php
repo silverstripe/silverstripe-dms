@@ -697,6 +697,7 @@ class DMSDocument_Controller extends Controller {
 		$doc = null;
 		$id = Convert::raw2sql(intval($request->param('ID')));
 		$doc = DataObject::get_by_id('DMSDocument', $id);
+		$this->extend('updateDocumentFromID', $doc, $request);
 		return $doc;
 	}
 
