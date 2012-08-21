@@ -45,7 +45,7 @@ form.small #ActionsPanel .middleColumn { margin-left: 120px; }
 #ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight { background-position: 0 -128px; display: inline-block; }
 #ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text { display: block; position: relative; float: right; color: #555; padding: 0; padding-left: 2em; }
 
-#Form_ItemEditForm fieldset table.ss-gridfield-table { width: 508px; }
+#Form_ItemEditForm fieldset table.ss-gridfield-table { width: 494px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 175px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID { width: 60px; min-width: 60px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr td { white-space: normal; }

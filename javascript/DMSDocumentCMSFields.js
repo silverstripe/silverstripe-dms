@@ -76,6 +76,18 @@
 
 				//add some extra classes to the replace field containers to make it work with drag and drop uploading
 				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
+				
+				//Add placeholder attribute to date and time fields
+				$('#Form_ItemEditForm_EmbargoedUntilDate-date').attr('placeholder', 'dd-mm-yyyy');
+				$('#Form_ItemEditForm_EmbargoedUntilDate-time').attr('placeholder', 'hh:mm:ss');
+				$('#Form_ItemEditForm_ExpireAtDate-date').attr('placeholder', 'dd-mm-yyyy');
+				$('#Form_ItemEditForm_ExpireAtDate-time').attr('placeholder', 'hh:mm:ss');
+				// We need to duplicate to work when adding documents
+				$('#Form_EditForm_EmbargoedUntilDate-date').attr('placeholder', 'dd-mm-yyyy');
+				$('#Form_EditForm_EmbargoedUntilDate-time').attr('placeholder', 'hh:mm:ss');
+				$('#Form_EditForm_ExpireAtDate-date').attr('placeholder', 'dd-mm-yyyy');
+				$('#Form_EditForm_ExpireAtDate-time').attr('placeholder', 'hh:mm:ss');
+
 
 				$('#Form_ItemEditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
 				$('#Form_ItemEditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
