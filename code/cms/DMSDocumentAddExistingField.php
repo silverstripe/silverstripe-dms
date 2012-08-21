@@ -1,6 +1,9 @@
 <?php
 
 class DMSDocumentAddExistingField extends CompositeField {
+
+	public $useFieldContext = true;
+
 	function __construct($name, $title = null) {
 		$this->name = $name;
 		$this->title = ($title === null) ? $name : $title;
@@ -40,6 +43,14 @@ class DMSDocumentAddExistingField extends CompositeField {
 		Requirements::javascript('dms/javascript/DMSDocumentAddExistingField.js');
 
 		return $this->renderWith('DMSDocumentAddExistingField');
+	}
+
+	/**
+	 * Sets or unsets the use of the "field" class in the template. The "field" class adds Javascript behaviour
+	 * that causes unwelcome hiding side-effects when this Field is used within the link editor pop-up
+	 */
+	public function setUseFieldClass($use = false) {
+		$this->useFieldContext = $use;
 	}
 }
 

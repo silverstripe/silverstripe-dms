@@ -10,6 +10,9 @@ class DMSSiteTreeExtension extends DataExtension {
 		Requirements::javascript('dms/javascript/DMSGridField.js');
 		Requirements::css('dms/css/DMSMainCMS.css');
 
+		//javascript for the link editor pop-up in TinyMCE
+		Requirements::javascript("dms/javascript/DocumentHtmlEditorFieldToolbar.js");
+
 		// Document listing
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldToolbarHeader(),

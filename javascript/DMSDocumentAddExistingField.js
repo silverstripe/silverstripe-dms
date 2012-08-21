@@ -26,6 +26,17 @@
 						}
 					}
 				);
+			},
+			selectdocument: function(documentID, documentName) {
+				if (typeof(documentID) !== "undefined") {
+					//substitute the ID for the full document name, if no name is present
+					if (typeof(documentName) === "undefined") {
+						documentName = documentID;
+					}
+					$('.ss-add-files').html('<div class="selected-document" data-document-id="'+documentID+'">'+documentName+'</div>');
+				} else {
+					$('.ss-add-files').html('');
+				}
 			}
 		});
 
@@ -36,10 +47,12 @@
 					source: 'admin/pages/adddocument/documentautocomplete',
 					select: function(event, ui) {
 						if(ui.item) {
-							var document_id = ui.item.value;
-
-							$(this).closest('.document-add-existing').adddocument(document_id);
-							$(this).val('');
+							if (self.closest('.document-add-existing').hasClass('link-editor-context')) {
+								$(this).closest('.document-add-existing').selectdocument(ui.item.value, ui.item.label);
+							} else {
+								$(this).closest('.document-add-existing').adddocument(ui.item.value);
+								$(this).val('');
+							}
 
 							return false;
 						}
@@ -78,11 +91,18 @@
 
 		$('.document-add-existing a.add-document').entwine({
 			onclick: function(event) {
-				var document_id = $(this).data('document-id');
+				var document_id = this.data('document-id');
+				var dae = this.closest('.document-add-existing');
 
 				$(this).closest('.document-add-existing').adddocument(document_id);
 				$(this).closest('.document-list').hide();
 				$(this).closest('.document-add-existing').find('input.document-autocomplete').prop('disabled', false);
+
+				if (dae.hasClass('link-editor-context')) {
+					dae.selectdocument(document_id, this.text());
+				} else {
+					dae.adddocument(document_id);
+				}
 
 				return false;
 			}

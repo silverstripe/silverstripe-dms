@@ -519,12 +519,21 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
+		$relationFinder = new ShortCodeRelationFinder();
+		$referencesGrid = GridField::create(
+			'References',
+			_t('DMSDocument.RelatedReferences', 'Related References'),
+			$relationFinder->getList($this->ID),
+			$gridFieldConfig
+		);
+
 		$fields->add(new LiteralField('BottomTaskSelection',
 			'<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
 			'<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
 			'<li class="ss-ui-button" data-panel="expiry">Expiry</li>'.
 			'<li class="ss-ui-button" data-panel="replace">Replace</li>'.
 			'<li class="ss-ui-button" data-panel="find-usage">Find usage</li>'.
+			'<li class="ss-ui-button" data-panel="find-references">Find references</li>'.
 			'</ul></div>'));
 
 		$embargoValue = 'None';
@@ -554,7 +563,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 					$expiryDatetime
 				)->addExtraClass('expiry'),
 				$uploadField->addExtraClass('replace'),
-				$pagesGrid->addExtraClass('find-usage')
+				$pagesGrid->addExtraClass('find-usage'),
+				$referencesGrid->addExtraClass('find-references')
 		)->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
 
 		$this->extend('updateCMSFields', $fields);
@@ -774,6 +784,33 @@ class DMSDocument_Controller extends Controller {
 		$this->httpError(404, 'This asset does not exist.');
 	}
 
+
+	/**
+	 * Handles dms_document_link shortcode
+	 * @return string
+	 */
+	public static function dms_link_shortcode_handler($arguments, $content = null, $parser = null) {
+		$linkText = null;
+		if(isset($arguments['id']) && is_numeric($arguments['id'])) {
+			// get the document object
+			$document = DataObject::get_by_id('DMSDocument', Convert::raw2sql($arguments['id']));
+			if ($document && !$document->isHidden()) {
+				if( $content ) {
+					$linkText = sprintf('<a href="%s">%s</a>', $document->Link(), $parser->parse($content));
+				} else {
+					$extension = $document->getFileExt();
+					$size = "data:{size:'{$document->getFileSizeFormatted()}'}";
+					$linkText = $document->getDownloadLink()."\" class=\"$size documentLink $extension";
+				}
+			}
+		}
+
+		if (!$linkText) {
+			$errorPage = DataObject::get_one('ErrorPage', '"ErrorCode" = \'404\'');
+			if ($errorPage) $linkText = $errorPage->Link();
+		}
+		return $linkText;
+	}
 
 }
 
