@@ -17,7 +17,7 @@
 #Main_FromtheCMS .document-add-existing input { position: absolute; z-index: 9999; top: 70px; width: 390px; padding: 9px 7px; border-bottom-right-radius: 0; border-top-right-radius: 0; }
 #Main_FromtheCMS .document-add-existing input[disabled] { color: #C0C0C2; text-shadow: 0 -1px 0 white; background: #EEE; background-image: none; box-shadow: inset 0 1px 8px 0 #C4C4C4; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 #Main_FromtheCMS .document-add-existing .TreeDropdownField { border: none; }
-#Main_FromtheCMS .document-add-existing .treedropdownfield-toggle-panel-link { padding: 5px 9px 9px; border: 1px solid #B3B3B3; }
+#Main_FromtheCMS .document-add-existing .treedropdownfield-toggle-panel-link { padding: 5px 9px 9px; border: 1px solid #B3B3B3; float: right; }
 #Main_FromtheCMS .document-add-existing .treedropdownfield-title { width: auto; }
 #Main_FromtheCMS .document-add-existing .treedropdownfield-toggle-panel-link a { display: inline-block; top: 4px; position: relative; }
 #Main_FromtheCMS .document-add-existing .document-list { position: absolute; z-index: 9999; width: 510px; border: 1px solid #DDD; border-top: none; background: #ffffff; display: none; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; border-radius: 6px; background-clip: padding-box; overflow: scroll; }
