@@ -86,6 +86,7 @@ $gf_colour_zebra: #F0F4F7;
 			box-sizing: border-box;
 			cursor:pointer;
 			overflow:hidden;
+			margin-bottom: 20px;
 		}
 		.treedropdownfield-toggle-panel-link{
 			padding: 5px 9px 9px;
@@ -99,6 +100,13 @@ $gf_colour_zebra: #F0F4F7;
 			display: inline-block;
 			top: 4px;
 			position: relative;
+		}
+		.treedropdownfield-panel{
+			li{
+				&:hover{
+					cursor: pointer;
+				}
+			}
 		}
 		.document-list{
 			position: absolute;
