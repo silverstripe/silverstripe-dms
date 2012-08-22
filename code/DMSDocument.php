@@ -236,7 +236,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * Returns a link to download this document from the DMS store
 	 * @return String
 	 */
-	function getDownloadLink() {
+	function getLink() {
 		return Controller::join_links(Director::baseURL(),'dmsdocument/'.$this->ID);
 	}
 
@@ -624,14 +624,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	/**
 	 * Return the extension of the file associated with the document
 	 */
-	function getFileExt() {
+	function getExtension() {
 		return strtolower(pathinfo($this->Filename, PATHINFO_EXTENSION));
+	}
+
+	function getSize() {
+		$size = $this->getAbsoluteSize();
+		return ($size) ? File::format_size($size) : false;
 	}
 	
 	/**
 	 * Return the size of the file associated with the document
 	 */
-	function getFileSize() {
+	function getAbsoluteSize() {
 		return filesize($this->getFullPath());
 	}
 	

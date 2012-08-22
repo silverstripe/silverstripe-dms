@@ -130,17 +130,26 @@ interface DMSDocumentInterface {
 	 * @abstract
 	 * @return String
 	 */
-	function getDownloadLink();
+	function getLink();
 	
 	/**
 	 * Return the extension of the file associated with the document
 	 */
-	function getFileExt();
+	function getExtension();
 	
 	/**
-	 * Return the size of the file associated with the document
+	 * Returns the size of the file type in an appropriate format.
+	 *
+	 * @return string
 	 */
-	function getFileSize();
+	function getSize();
+
+	/**
+	 * Return the size of the file associated with the document, in bytes.
+	 *
+	 * @return int
+	 */
+	function getAbsoluteSize();
 	
 
 	/**
