@@ -7,10 +7,16 @@
 			onadd: function() {
 				this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
 				this.parents('ul').removeClass('ui-tabs-nav');
+				if(this.find('input').is(':checked')) this.addClass('selected');
+			},
+			onclick: function(e){
+				$('#DocumentTypeID').find('li.selected').removeClass('selected');
+				this.find('input').prop("checked", true);
+				this.addClass('selected');
 			}
 		});
 
-		$('#DocumentTypeID input[type=radio]').entwine({
+/*		$('#DocumentTypeID input[type=radio]').entwine({
 			onadd: function() {
 				// Checks to see what radio button is selected
 				if (this.is(':checked')) {
@@ -25,7 +31,7 @@
 					this.parent('li').addClass('selected');
 				}
 			}
-		});
+		});*/
 
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
