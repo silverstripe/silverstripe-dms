@@ -3,6 +3,43 @@
 
 	$.entwine('ss', function($) {
 
+		$('#Form_ItemEditForm ul.selectiongroup li').entwine({
+			onadd: function() {
+				this.closest('ul').removeClass('ui-tabs-nav ui-widget-header');
+				this.find('label').first().addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
+			}
+		});
+
+		$('#Form_ItemEditForm ul.selectiongroup li input').entwine({
+			onclick: function(){
+				this.closest('ul').animate({height: '110px'}, 100);
+			}
+		});
+
+		$('#LinkSectionID ul li').entwine({
+			onadd: function() {
+				this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
+				this.parents('ul').removeClass('ui-tabs-nav');
+			}
+		});
+
+		$('#LinkSectionID input[type=radio]').entwine({
+			onadd: function() {
+				// Checks to see what radio button is selected
+				if (this.is(':checked')) {
+					this.change();
+				}
+			},
+			onchange: function(e) {
+				// Remove selected class from radio buttons
+				$('#LinkSectionID').find('li').removeClass('selected');
+				//If radio button is checked then add the selected class
+				if (this.is(':checked')) {
+					this.parent('li').addClass('selected');
+				}
+			}
+		});
+
 		$('.ss-gridfield .action.dms-delete').entwine({
 			onclick: function(e){
 				//work out how many pages are left attached to this document

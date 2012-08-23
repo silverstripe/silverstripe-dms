@@ -1,3 +1,5 @@
+@import '_mixins';
+
 //data-icon="cross-circle"
 $gf_colour_zebra: #F0F4F7;
 
@@ -8,7 +10,7 @@ $gf_colour_zebra: #F0F4F7;
 	overflow: scroll;
 }
 
-#Root_Documents{
+#Root_Documents, #Root_RelatedLinks{
 	padding-left: 0;
 	table{
 		white-space:normal;
@@ -88,7 +90,6 @@ $gf_colour_zebra: #F0F4F7;
 			box-sizing: border-box;
 			cursor:pointer;
 			overflow:hidden;
-			//margin-bottom: 20px;
 		}
 		.treedropdownfield-toggle-panel-link{
 			padding: 5px 9px 9px;
@@ -176,9 +177,73 @@ $gf_colour_zebra: #F0F4F7;
 	}
 }
 
-#Form_EditForm_Documents {
+#Form_EditForm_Documents{
 	padding: 1em 0;
 	input[name="filter[LastChanged]"] {
 		display: none;
+	}
+}
+
+#Form_EditForm_RelatedLinks{
+	table{
+		padding: 1em 0;
+		thead{
+			h2{
+				display: none;
+			}
+		}
+	}
+}
+
+#LinkSectionID{
+	@include tabButtons;
+}
+
+#Form_ItemEditForm{
+	h3:first-child{
+		display: inline-block;
+		float: left;
+	}
+	ul.SelectionGroup{
+		//height: 90px;
+		display: inline-block;
+		position: relative;
+		padding: 0;
+		margin-top: 9px;
+		margin-left: 10px;
+		li{
+			width: auto;
+			clear: none;
+			display: inline;
+			margin-right: 4px;
+			input{
+				&.selector{
+					display:none;
+				}
+			}
+			label{
+				&.ui-button{
+					padding: 0.4em 0.8em;
+				}
+			}
+			div.field{
+				margin-left: 0px;
+				margin-bottom: 1em;
+				width: 600px;
+				position: absolute;
+				left:0;
+				margin-top: 13px;
+				padding: 10px;
+				background: white;
+				border: 1px solid #B3B3B3;
+				@include border-radius(4px);
+				@include background-image(linear-gradient(#efefef, #fff 10%, #fff 90%, #efefef));
+			}
+			&.selected{
+				label.ui-button{
+					@include active-actions-btn;
+				}
+			}
+		}
 	}
 }
