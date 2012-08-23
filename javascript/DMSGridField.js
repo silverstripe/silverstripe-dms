@@ -16,14 +16,14 @@
 			}
 		});
 
-		$('#LinkSectionID ul li').entwine({
+		$('#SectionID ul li').entwine({
 			onadd: function() {
 				this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
 				this.parents('ul').removeClass('ui-tabs-nav');
 			}
 		});
 
-		$('#LinkSectionID input[type=radio]').entwine({
+		$('#SectionID input[type=radio]').entwine({
 			onadd: function() {
 				// Checks to see what radio button is selected
 				if (this.is(':checked')) {
@@ -32,7 +32,7 @@
 			},
 			onchange: function(e) {
 				// Remove selected class from radio buttons
-				$('#LinkSectionID').find('li').removeClass('selected');
+				$('#SectionID').find('li').removeClass('selected');
 				//If radio button is checked then add the selected class
 				if (this.is(':checked')) {
 					this.parent('li').addClass('selected');
