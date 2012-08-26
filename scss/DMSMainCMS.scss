@@ -203,14 +203,17 @@ $gf_colour_zebra: #F0F4F7;
 	h3:first-child{
 		display: inline-block;
 		float: left;
+		width: 184px;
 	}
 	ul.SelectionGroup{
-		//height: 90px;
 		display: inline-block;
 		position: relative;
 		padding: 0;
 		margin-top: 9px;
-		margin-left: 10px;
+		margin-left: 0;
+		height: 110px;
+		background: none;
+		border: none;
 		li{
 			width: auto;
 			clear: none;
@@ -242,6 +245,14 @@ $gf_colour_zebra: #F0F4F7;
 			&.selected{
 				label.ui-button{
 					@include active-actions-btn;
+				}
+			}
+		}
+		.treedropdownfield-panel{
+			ul{
+				li{
+					display: block;
+					clear: both;
 				}
 			}
 		}

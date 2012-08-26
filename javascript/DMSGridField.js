@@ -4,15 +4,13 @@
 	$.entwine('ss', function($) {
 
 		$('#Form_ItemEditForm ul.selectiongroup li').entwine({
-			onadd: function() {
-				this.closest('ul').removeClass('ui-tabs-nav ui-widget-header');
+			onmatch: function() {
+				this.closest('ul').removeClass('ui-tabs-nav ui-widget ui-widget-header');
+				//this.closest('form').removeClass('ui-tabs ss-tabset ui-widget-header');
 				this.find('label').first().addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
-			}
-		});
-
-		$('#Form_ItemEditForm ul.selectiongroup li input').entwine({
-			onclick: function(){
-				this.closest('ul').animate({height: '110px'}, 100);
+/*				if ((this).hasClass('ui-state-active')){
+					this.removeClass()
+				}*/
 			}
 		});
 
