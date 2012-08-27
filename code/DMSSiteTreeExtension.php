@@ -5,7 +5,26 @@ class DMSSiteTreeExtension extends DataExtension {
 		'Documents' => 'DMSDocument'
 	);
 
+	static $noDocumentsList = array(
+	);
+
+	/**
+	 * Do not show the documents tab on the array of pages set here
+	 * @static
+	 * @param $mixed Array of page types to not show the Documents tab on
+	 */
+	static function no_documents_tab($array) {
+		if (is_array($array)) {
+			self::$noDocumentsList = $array;
+		} else {
+			self::$noDocumentsList = array($array);
+		}
+	}
+
 	function updateCMSFields(FieldList $fields){
+		//prevent certain pages from having a Document tab in the CMS
+		if (in_array($this->owner->ClassName,self::$noDocumentsList)) return;
+
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
 		Requirements::javascript('dms/javascript/DMSGridField.js');
 		Requirements::css('dms/css/DMSMainCMS.css');
