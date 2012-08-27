@@ -3,17 +3,6 @@
 
 	$.entwine('ss', function($) {
 
-		$('#Form_ItemEditForm ul.selectiongroup li').entwine({
-			onmatch: function() {
-				this.closest('ul').removeClass('ui-tabs-nav ui-widget ui-widget-header');
-				//this.closest('form').removeClass('ui-tabs ss-tabset ui-widget-header');
-				this.find('label').first().addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
-/*				if ((this).hasClass('ui-state-active')){
-					this.removeClass()
-				}*/
-			}
-		});
-
 		$('#SectionID ul li').entwine({
 			onadd: function() {
 				this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
