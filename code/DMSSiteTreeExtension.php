@@ -54,7 +54,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		singleton('DMSDocument');
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
 			->setFieldCasting(array('LastChanged'=>"Date->Ago"))
- 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$DownloadLink\'>$FilenameWithoutID</a>'));
+ 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
 
 		//override delete functionality with this class
 		$gridFieldConfig->getComponentByType('GridFieldDetailForm')->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');

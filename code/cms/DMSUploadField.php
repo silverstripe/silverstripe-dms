@@ -139,7 +139,7 @@ class DMSUploadField extends UploadField {
 					$return = array_merge($return, array(
 						'id' => $document->ID,
 						'name' => $document->getTitle(),
-						'thumbnail_url' => $document->Icon($document->getFileExt()),
+						'thumbnail_url' => $document->Icon($document->getExtension()),
 						'edit_url' => $this->getItemHandler($document->ID)->EditLink(),
 						'size' => $document->getFileSizeFormatted(),
 						'buttons' => $document->renderWith($this->getTemplateFileButtons()),

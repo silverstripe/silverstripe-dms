@@ -186,7 +186,7 @@ class DMSDocumentAddController extends LeftAndMain {
 			$return = array(
 				'id' => $document->ID,
 				'name' => $document->getTitle(),
-				'thumbnail_url' => $document->Icon($document->getFileExt()),
+				'thumbnail_url' => $document->Icon($document->getExtension()),
 				'edit_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink(),
 				'size' => $document->getFileSizeFormatted(),
 				'buttons' => $buttonText,

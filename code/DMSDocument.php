@@ -641,7 +641,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 	
 	function getFileSizeFormatted(){
-		if($size = $this->getFileSize()){
+		if($size = $this->getSize()){
 			if($size < 1024) return $size . ' bytes';
 			if($size < 1024*10) return (round($size/1024*10)/10). ' KB';
 			if($size < 1024*1024) return round($size/1024) . ' KB';
@@ -656,7 +656,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return FieldList
 	 */
 	protected function getFieldsForFile($relationListCount) {
-		$extension = $this->getFileExt();
+		$extension = $this->getExtension();
 
 		$previewField = new LiteralField("ImageFull",
 			"<img id='thumbnailImage' class='thumbnail-preview' src='{$this->Icon($extension)}?r=" . rand(1,100000)  . "' alt='{$this->Title}' />\n"
@@ -681,7 +681,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 						new ReadonlyField("FileType", _t('AssetTableField.TYPE','File type') . ':', self::get_file_type($extension)),
 						new ReadonlyField("Size", _t('AssetTableField.SIZE','File size') . ':', $this->getFileSizeFormatted()),
 						$urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL','URL'),
-							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->getDownloadLink(), $this->getDownloadLink())
+							sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->getLink(), $this->getLink())
 						),
 						new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->getFilenameWithoutID()),
 						new DateField_Disabled("Created", _t('AssetTableField.CREATED','First uploaded') . ':', $this->Created),
@@ -773,7 +773,7 @@ class DMSDocument_Controller extends Controller {
 					}
 					else {
 						// make do with what we have
-						$ext = $doc->getFileExt();
+						$ext = $doc->getExtension();
 						if ( $ext =='pdf') {
 							$mime = 'application/pdf';
 						}elseif ($ext == 'html' || $ext =='htm') {
@@ -817,9 +817,9 @@ class DMSDocument_Controller extends Controller {
 				if( $content ) {
 					$linkText = sprintf('<a href="%s">%s</a>', $document->Link(), $parser->parse($content));
 				} else {
-					$extension = $document->getFileExt();
+					$extension = $document->getExtension();
 					$size = "data:{size:'{$document->getFileSizeFormatted()}'}";
-					$linkText = $document->getDownloadLink()."\" class=\"$size documentLink $extension";
+					$linkText = $document->getLink()."\" class=\"$size documentLink $extension";
 				}
 			}
 		}

@@ -31,7 +31,7 @@ subfolders, in order to avoid exceeding filesystem limits.
 The file name is a composite based on its database ID
 and the original file name. The exact location shouldn't
 be relied on by custom logic, but rather retrieved through
-the API (`DMSDocument->getDownloadLink()`).
+the API (`DMSDocument->getLink()`).
 
 Example:
 
@@ -72,7 +72,7 @@ Note: Both operations copy the existing file.
 
 	$dms = DMS::getDMSInstance();
 	$docs = $dms->getByTag('priority', 'important')->First();
-	$link = $doc->getDownloadLink();
+	$link = $doc->getLink();
 
 #### Manage Page Relations
 
