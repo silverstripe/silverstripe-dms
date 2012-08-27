@@ -21,15 +21,17 @@
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link.treedropdownfield-open-tree { background: transparent; border: 1px solid #B3B3B3; border-bottom: none; border-bottom-right-radius: 0; }
 .ss-add .document-add-existing .treedropdownfield-title { width: auto; }
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link a { display: inline-block; top: 4px; position: relative; }
-.ss-add .document-add-existing .treedropdownfield-panel { margin: -1px 0 0 0; box-sizing: border-box; }
-.ss-add .document-add-existing .treedropdownfield-panel ul { padding: 5px 0; }
-.ss-add .document-add-existing .treedropdownfield-panel ul li { border: 1px solid #ffffff; }
-.ss-add .document-add-existing .treedropdownfield-panel ul li:hover { border: 1px solid #CCC; border-radius: 4px; background: rgba(203, 203, 203, 0.4); cursor: pointer; }
-.ss-add .document-add-existing .treedropdownfield-panel ul li:hover a { outline: none; border: none; }
-.ss-add .document-add-existing .treedropdownfield-panel ul li a:hover { background: transparent; }
 .ss-add .document-add-existing .document-list { position: absolute; z-index: 9999; width: 510px; border: 1px solid #DDD; border-top: none; background: #ffffff; display: none; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; border-radius: 6px; background-clip: padding-box; overflow: scroll; }
-.ss-add .document-add-existing .document-list ul li { display: block; line-height: 18px; padding: 4px 8px; border: 1px solid #FFF; }
-.ss-add .document-add-existing .document-list ul li:hover { border: 1px solid #CCC; border-radius: 4px; background: rgba(203, 203, 203, 0.4); }
+.ss-add .document-add-existing .document-list ul { padding: 4px 0; }
+.ss-add .document-add-existing .document-list ul li { line-height: 18px; }
+.ss-add .document-add-existing .document-list ul li a { display: block; padding: 4px 8px; border: 1px solid #FFF; color: black; }
+.ss-add .document-add-existing .document-list ul li a:hover { border: 1px solid #CCC; border-radius: 4px; background: rgba(203, 203, 203, 0.4); cursor: pointer; text-decoration: none; outline: none; text-shadow: none; }
+
+.cms .ss-add .treedropdownfield-panel, .cms .selectiongroup .treedropdownfield-panel { margin: -1px 0 0 0; box-sizing: border-box; }
+.cms .ss-add .treedropdownfield-panel ul, .cms .selectiongroup .treedropdownfield-panel ul { padding: 4px 0; }
+.cms .ss-add .treedropdownfield-panel ul li, .cms .selectiongroup .treedropdownfield-panel ul li { border: 1px solid #ffffff; }
+.cms .ss-add .treedropdownfield-panel ul li a, .cms .selectiongroup .treedropdownfield-panel ul li a { display: block; padding: 4px 2px; }
+.cms .ss-add .treedropdownfield-panel ul li a.jstree-hovered, .cms .selectiongroup .treedropdownfield-panel ul li a.jstree-hovered { background: rgba(203, 203, 203, 0.4); border: 1px solid #CCC; }
 
 @-moz-document url-prefix() { .ss-add .document-add-existing input { padding: 10px 7px; } }
 
@@ -57,4 +59,5 @@
 #Form_ItemEditForm ul.SelectionGroup li div.field { margin-left: 0px; margin-bottom: 1em; width: 600px; position: absolute; left: 0; margin-top: 13px; padding: 10px; background: white; border: 1px solid #B3B3B3; -webkit-border-radius: 4px; -moz-border-radius: 4px; -ms-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #efefef), color-stop(10%, #ffffff), color-stop(90%, #ffffff), color-stop(100%, #efefef)); background-image: -webkit-linear-gradient(#efefef, #ffffff 10%, #ffffff 90%, #efefef); background-image: -moz-linear-gradient(#efefef, #ffffff 10%, #ffffff 90%, #efefef); background-image: -o-linear-gradient(#efefef, #ffffff 10%, #ffffff 90%, #efefef); background-image: -ms-linear-gradient(#efefef, #ffffff 10%, #ffffff 90%, #efefef); background-image: linear-gradient(#efefef, #ffffff 10%, #ffffff 90%, #efefef); }
 #Form_ItemEditForm ul.SelectionGroup li.selected label.ui-button { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: -ms-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */ box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
 #Form_ItemEditForm ul.SelectionGroup li.selected label.ui-button:after { content: ''; display: block; position: absolute; top: 33px; left: 50%; margin-left: -6px; width: 12px; height: 12px; background: #F8F8F8; border-right: 1px solid #B3B3B3; border-top: 1px solid #B3B3B3; -moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); pointer-events: none; z-index: 10; }
-#Form_ItemEditForm ul.SelectionGroup .treedropdownfield-panel ul li { display: block; clear: both; }
+#Form_ItemEditForm ul.SelectionGroup .treedropdownfield-panel { margin: 1px 0 0 -1px; box-sizing: content-box; }
+#Form_ItemEditForm ul.SelectionGroup .treedropdownfield-panel ul li { display: block; clear: both; width: 100%; margin: 0; }

@@ -110,31 +110,6 @@ $gf_colour_zebra: #F0F4F7;
 			top: 4px;
 			position: relative;
 		}
-		.treedropdownfield-panel{
-			margin: -1px 0 0 0;
-			box-sizing: border-box;
-			ul{
-				padding: 5px 0;
-				li{
-					border: 1px solid #ffffff;
-					&:hover{
-						border: 1px solid #CCC;
-						border-radius: 4px;
-						background: rgba(203, 203, 203, 0.4);
-						cursor: pointer;
-						a{
-							outline:none;
-							border: none;
-						}
-					}
-					a{
-						&:hover{
-							background:transparent;
-						}
-					}
-				}
-			}
-		}
 		.document-list{
 			position: absolute;
 			z-index: 9999;
@@ -149,21 +124,54 @@ $gf_colour_zebra: #F0F4F7;
 			background-clip: padding-box;
 			overflow:scroll;
 			ul{
+				padding: 4px 0;
 				li{
-					display: block;
 					line-height:18px;
-					padding: 4px 8px;
-					border: 1px solid #FFF;
-					&:hover{
-						border: 1px solid #CCC;
-						border-radius: 4px;
-						background: rgba(203, 203, 203, 0.4);
+					a{
+						display: block;
+						padding: 4px 8px;
+						border: 1px solid #FFF;
+						color: black;
+						&:hover{
+							border: 1px solid #CCC;
+							border-radius: 4px;
+							background: rgba(203, 203, 203, 0.4);
+							cursor: pointer;
+							text-decoration:none;
+							outline:none;
+							text-shadow:none;
+						}
 					}
 				}
 			}
 		}
 	}
 }
+
+//Styling for tree dropdown field
+.cms{
+	.ss-add, .selectiongroup{
+		.treedropdownfield-panel{
+			margin: -1px 0 0 0;
+			box-sizing: border-box;
+			ul{
+				padding: 4px 0;
+				li{
+					border: 1px solid #ffffff;
+					a{
+						display: block;
+						padding: 4px 2px;
+						&.jstree-hovered{
+							background: rgba(203, 203, 203, 0.4);
+							border: 1px solid #CCC;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 
 // Hack for Firefox to fix padding on adding document input. 
 // FF renders the size different and pushes it out by 2px compared to webkit
@@ -249,10 +257,14 @@ $gf_colour_zebra: #F0F4F7;
 			}
 		}
 		.treedropdownfield-panel{
+			margin: 1px 0 0 -1px;
+			box-sizing: content-box;
 			ul{
 				li{
 					display: block;
 					clear: both;
+					width: 100%;
+					margin: 0;
 				}
 			}
 		}
