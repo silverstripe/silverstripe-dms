@@ -1,4 +1,4 @@
-<div class="ss-add ss-upload">
+<div class="ss-add">
 	<div class="document-add-existing <% if useFieldContext %>field<% else %>link-editor-context<% end_if %>">
 
 		<h3>
