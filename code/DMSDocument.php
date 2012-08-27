@@ -32,6 +32,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'LastChanged'=>'LastChanged'
 	);
 
+	static $singular_name = 'Document';
+
+	static $plural_name = 'Documents';
+
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
 	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a many_many relation
