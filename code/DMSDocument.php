@@ -5,6 +5,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
 		"Description" => 'Text',
+		"ViewCount" => 'Int',
 		"LastChanged" => 'SS_DateTime', //when this document's file was created or last replaced (small changes like updating title don't count)
 
 		"EmbargoedIndefinitely" => 'Boolean(false)',
@@ -80,6 +81,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 */
 	function removeAllPages() {
 		$this->Pages()->removeAll();
+	}
+
+	/**
+	 * increase ViewCount by 1, without update any other record fields such as LastEdited
+	 */
+	function viewd(){
+		if ($this->ID > 0) {
+			$count = $this->ViewCount + 1;
+			DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
+		}
 	}
 
 
@@ -784,6 +795,10 @@ class DMSDocument_Controller extends Controller {
 					}
 
 					if (self::$testMode) return $path;
+
+					//if a DMSDocument can be downlaoded and all the permissions/privileges has passed, 
+					//its ViewCount should be increased by 1 just before the browser sending the file to front.
+					$doc->viewd();
 
 					header('Content-Type: ' . $mime);
 					header('Content-Length: ' . filesize($path), null);
