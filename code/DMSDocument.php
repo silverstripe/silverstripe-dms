@@ -90,7 +90,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	/**
 	 * increase ViewCount by 1, without update any other record fields such as LastEdited
 	 */
-	function viewd(){
+	function trackView(){
 		if ($this->ID > 0) {
 			$count = $this->ViewCount + 1;
 			DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
@@ -802,7 +802,7 @@ class DMSDocument_Controller extends Controller {
 
 					//if a DMSDocument can be downlaoded and all the permissions/privileges has passed, 
 					//its ViewCount should be increased by 1 just before the browser sending the file to front.
-					$doc->viewd();
+					$doc->trackView();
 
 					header('Content-Type: ' . $mime);
 					header('Content-Length: ' . filesize($path), null);
