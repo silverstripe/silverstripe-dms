@@ -71,12 +71,18 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$this->Pages()->remove($pageObject);
 	}
 
+	function Pages() {
+		$pages = $this->getManyManyComponents('Pages');
+		$this->extend('updatePages', $pages);
+		return $pages;
+	}
+
 	/**
 	 * Returns a list of the Page objects associated with this Document
 	 * @return DataList
 	 */
 	function getPages() {
-		$this->Pages();
+		return $this->Pages();
 	}
 
 	/**
