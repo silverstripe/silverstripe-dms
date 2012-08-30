@@ -311,7 +311,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function embargoUntilDate($datetime, $write = true) {
-		$this->EmbargoedUntilDate = DBField::create_field('SS_Datetime', $datetime);;
+		$this->EmbargoedUntilDate = DBField::create_field('SS_Datetime', $datetime)->Format('Y-m-d H:i:s');
 		if ($write) $this->write();
 	}
 
@@ -345,7 +345,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return null
 	 */
 	function expireAtDate($datetime, $write = true) {
-		$this->ExpireAtDate = DBField::create_field('SS_Datetime', $datetime);
+		$this->ExpireAtDate = DBField::create_field('SS_Datetime', $datetime)->Format('Y-m-d H:i:s');
 		if ($write) $this->write();
 	}
 
