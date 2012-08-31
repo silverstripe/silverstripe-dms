@@ -234,7 +234,21 @@ $gf_colour_zebra: #F0F4F7;
 			}
 			label{
 				&.ui-button{
-					padding: 0.4em 0.8em;
+					@include background(
+						linear-gradient(color-stops(
+							lighten($color-button-generic, 10%),
+							darken($color-button-generic, 5%)
+						))
+					);
+					font-weight: bold;
+					border: 1px solid #C0C0C2;
+					border-radius: 3px;
+					padding: 0.8em 1.5em;
+					
+
+					&:hover {
+						box-shadow: 0 0 5px rgba(0,0,0,0.3);	
+					}
 				}
 			}
 			div.field{
@@ -253,6 +267,10 @@ $gf_colour_zebra: #F0F4F7;
 			&.selected{
 				label.ui-button{
 					@include active-actions-btn;
+
+					&:after {
+						top: 43px;
+					}
 				}
 			}
 		}
@@ -265,6 +283,10 @@ $gf_colour_zebra: #F0F4F7;
 					clear: both;
 					width: 100%;
 					margin: 0;
+
+					li {
+						padding-left: 20px;
+					}
 				}
 			}
 		}
