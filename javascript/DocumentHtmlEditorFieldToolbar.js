@@ -18,9 +18,9 @@
 
 				//hide or show the additional document link addition tool
 				if (show) {
-					form.find('.ss-add.ss-upload').show();
+					form.find('.ss-add').show();
 				} else {
-					form.find('.ss-add.ss-upload').hide();
+					form.find('.ss-add').hide();
 				}
 			},
 			onadd: function(e){
