@@ -38,7 +38,7 @@ class DMSSiteTreeExtension extends DataExtension {
 			new GridFieldFilterHeader(),
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
-			$paginatorComponent = new GridFieldPaginator(15),
+			$paginatorComponent = new GridFieldPaginator(10),
 			new GridFieldEditButton(),
 			new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
 			new GridFieldDetailForm()
