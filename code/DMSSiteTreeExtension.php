@@ -76,7 +76,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		);	
 
 		$fields->addFieldsToTab(
-			'Root.Documents',
+			'Root.Documents (' . $this->owner->Documents()->Count() . ')',
 			array(
 				$uploadBtn,
 				$gridField
