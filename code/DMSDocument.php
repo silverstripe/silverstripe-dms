@@ -661,15 +661,11 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return filesize($this->getFullPath());
 	}
 	
+	/**
+	 * An alias to DMSDocument::getSize()
+	 */
 	function getFileSizeFormatted(){
-		if($size = $this->getSize()){
-			if($size < 1024) return $size . ' bytes';
-			if($size < 1024*10) return (round($size/1024*10)/10). ' KB';
-			if($size < 1024*1024) return round($size/1024) . ' KB';
-			if($size < 1024*1024*10) return (round(($size/1024)/1024*10)/10) . ' MB';
-			if($size < 1024*1024*1024) return round(($size/1024)/1024) . ' MB';
-			return round($size/(1024*1024*1024)*10)/10 . ' GB';
-		}
+		return $this->getSize();
 	}
 
 
