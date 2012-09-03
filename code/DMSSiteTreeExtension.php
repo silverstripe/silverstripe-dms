@@ -53,7 +53,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		// HACK: Create a singleton of DMSDocument to ensure extensions are applied before we try to get display fields.
 		singleton('DMSDocument');
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
-			->setFieldCasting(array('LastChanged'=>"Date->Ago"))
+			->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
  			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
 
 		//override delete functionality with this class
