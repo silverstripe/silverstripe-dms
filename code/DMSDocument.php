@@ -262,6 +262,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
+	 * The dummy functioin for the {@see:getLink()}
+	 * RSSFeed need the data object to have a function called Link()
+	 */
+	function Link(){
+		return $this->getLink();
+	}
+
+	/**
 	 * Hides the document, so it does not show up when getByPage($myPage) is called
 	 * (without specifying the $showEmbargoed = true parameter). This is similar to expire, except that this method
 	 * should be used to hide documents that have not yet gone live.
