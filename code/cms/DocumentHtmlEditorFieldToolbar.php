@@ -23,7 +23,7 @@ class DocumentHtmlEditorFieldToolbar extends Extension {
 		$addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
 		$addExistingField->setForm($form);
 		$addExistingField->setUseFieldClass(false);
-		$fieldList->insertAfter($addExistingField,'Locale');
+		$fieldList->insertAfter($addExistingField,'Description');
 
 //		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
 //		Requirements::javascript(SAPPHIRE_DIR . "/javascript/tiny_mce_improvements.js");

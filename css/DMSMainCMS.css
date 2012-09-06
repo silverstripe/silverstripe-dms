@@ -14,10 +14,10 @@
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { padding-bottom: 1px; border: 1px solid #C0C0C2; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li a { padding: 8px 20px 8px; }
 
-.ss-add .document-add-existing input { position: absolute; z-index: 9999; width: 390px; padding: 9px 7px; border-bottom-right-radius: 0; border-top-right-radius: 0; outline: none; box-sizing: border-box; }
+.ss-add .document-add-existing input { position: absolute; z-index: 9999; width: 390px; padding: 9px 7px; border-bottom-right-radius: 0; border-top-right-radius: 0; outline: none; box-sizing: border-box; -moz-box-sizing: border-box; }
 .ss-add .document-add-existing input[disabled] { color: #C0C0C2; text-shadow: 0 -1px 0 white; background: #EEE; background-image: none; box-shadow: inset 0 1px 8px 0 #C4C4C4; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 .ss-add .document-add-existing .TreeDropdownField { border: none; width: 100%; max-width: 512px; box-sizing: border-box; cursor: pointer; overflow: hidden; }
-.ss-add .document-add-existing .treedropdownfield-toggle-panel-link { padding: 5px 9px 9px; border: 1px solid #B3B3B3; float: right; }
+.ss-add .document-add-existing .treedropdownfield-toggle-panel-link { padding: 5px 9px 9px; border: 1px solid #B3B3B3; float: right; z-index: 99999; position: relative; }
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link.treedropdownfield-open-tree { background: transparent; border: 1px solid #B3B3B3; border-bottom: none; border-bottom-right-radius: 0; }
 .ss-add .document-add-existing .treedropdownfield-title { width: auto; }
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link a { display: inline-block; top: 4px; position: relative; }
@@ -26,6 +26,11 @@
 .ss-add .document-add-existing .document-list ul li { line-height: 18px; }
 .ss-add .document-add-existing .document-list ul li a { display: block; padding: 4px 8px; border: 1px solid #FFF; color: black; }
 .ss-add .document-add-existing .document-list ul li a:hover { border: 1px solid #CCC; border-radius: 4px; background: rgba(203, 203, 203, 0.4); cursor: pointer; text-decoration: none; outline: none; text-shadow: none; }
+.ss-add .document-add-existing.link-editor-context label { float: left; display: block; width: 176px; padding: 8px 8px 8px 0; line-height: 16px; font-weight: bold; text-shadow: 1px 1px 0 white; }
+.ss-add .document-add-existing.link-editor-context .middleColumn { margin-left: 184px; }
+.ss-add .document-add-existing.link-editor-context .middleColumn input { background: white; border: 1px solid #B3B3B3; line-height: 16px; margin: 0; border-radius: 4px; background-size: 100%; max-width: 512px; }
+.ss-add .ss-assetuploadfield.link-editor-context label { float: left; display: block; width: 176px; padding: 8px 8px 8px 0; line-height: 16px; font-weight: bold; text-shadow: 1px 1px 0 white; }
+.ss-add .ss-assetuploadfield.link-editor-context .middleColumn { margin-left: 184px; display: block; padding: 8px 8px 8px 0; font-style: italic; min-height: 20px; }
 
 .cms .ss-add .treedropdownfield-panel, .cms .selectiongroup .treedropdownfield-panel { margin: -1px 0 0 0; box-sizing: border-box; }
 .cms .ss-add .treedropdownfield-panel ul, .cms .selectiongroup .treedropdownfield-panel ul { padding: 4px 0; }

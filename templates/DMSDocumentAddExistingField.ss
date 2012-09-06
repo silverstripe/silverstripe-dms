@@ -1,41 +1,65 @@
 <div class="ss-add">
 	<div class="document-add-existing <% if useFieldContext %>field<% else %>link-editor-context<% end_if %>">
-
+	<% if useFieldContext %>
 		<h3>
+	<% else %>
+		<div class="step3">
+	<% end_if %>
 			<span class="step-label">
 				<% if useFieldContext %>
-				<span class="flyout">1</span><span class="arrow"></span>
+					<span class="flyout">1</span><span class="arrow"></span>
+					<strong class="title">Link a Document</strong>
 				<% else %>
-				<span class="flyout">3</span><span class="arrow"></span>
 				<% end_if %>
-				<span class="title">Link a Document</span>
 			</span>
+	<% if useFieldContext %>
 		</h3>
-
-		<input class="document-autocomplete text" type="text" placeholder="Search by ID or filename" />
-		<!-- <span>or Add from page</span> -->
-		$fieldByName(PageSelector)
-
-		<div class="document-list">
-
+	<% else %>
 		</div>
+	<% end_if %>
+
+	<% if useFieldContext %>
+	<% else %>
+		<label>Link a Document</label>
+		<div class="middleColumn">
+	<% end_if %>
+		
+			<input class="document-autocomplete text" type="text" placeholder="Search by ID or filename" />
+			<!-- <span>or Add from page</span> -->
+			$fieldByName(PageSelector)
+
+		<div class="document-list"></div>
+
+	<% if useFieldContext %>
+	<% else %>
+		</div>
+	<% end_if %>
 
 	</div>
 
-	<div class="ss-assetuploadfield">
-		<h3>
+	<div class="ss-assetuploadfield <% if useFieldContext %>field<% else %>link-editor-context<% end_if %>">
+		<div class="step4">
 			<span class="step-label">
 				<% if useFieldContext %>
 				<span class="flyout">2</span><span class="arrow"></span>
 				<span class="title">Edit Document Details</span>
 				<% else %>
-				<span class="flyout">4</span><span class="arrow"></span>
-				<span class="title">Selected Document</span>
+				<label>Selected Document</strong>
 				<% end_if %>
 
 			</span>
-		</h3>
+		</div>
 		<!-- <div class="fileOverview"></div> -->
-		<ul class="files ss-uploadfield-files ss-add-files"></ul>
+
+		<% if useFieldContext %>
+		<% else %>
+			<div class="middleColumn">
+		<% end_if %>
+			<ul class="files ss-uploadfield-files ss-add-files"></ul>
+		<% if useFieldContext %>
+		<% else %>
+			</div>
+		<% end_if %>
+
 	</div>
 </div>
