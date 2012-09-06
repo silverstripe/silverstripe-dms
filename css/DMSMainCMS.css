@@ -31,6 +31,7 @@
 .ss-add .document-add-existing.link-editor-context .middleColumn input { background: white; border: 1px solid #B3B3B3; line-height: 16px; margin: 0; border-radius: 4px; background-size: 100%; max-width: 512px; }
 .ss-add .ss-assetuploadfield.link-editor-context label { float: left; display: block; width: 176px; padding: 8px 8px 8px 0; line-height: 16px; font-weight: bold; text-shadow: 1px 1px 0 white; }
 .ss-add .ss-assetuploadfield.link-editor-context .middleColumn { margin-left: 184px; display: block; padding: 8px 8px 8px 0; font-style: italic; min-height: 20px; }
+.ss-add .ss-assetuploadfield .step4 { margin-bottom: 10px; }
 
 .cms .ss-add .treedropdownfield-panel, .cms .selectiongroup .treedropdownfield-panel { margin: -1px 0 0 0; box-sizing: border-box; }
 .cms .ss-add .treedropdownfield-panel ul, .cms .selectiongroup .treedropdownfield-panel ul { padding: 4px 0; }

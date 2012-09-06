@@ -3,7 +3,7 @@
 	<% if useFieldContext %>
 		<h3>
 	<% else %>
-		<div class="step3">
+		<div>
 	<% end_if %>
 			<span class="step-label">
 				<% if useFieldContext %>
@@ -41,12 +41,11 @@
 		<div class="step4">
 			<span class="step-label">
 				<% if useFieldContext %>
-				<span class="flyout">2</span><span class="arrow"></span>
-				<span class="title">Edit Document Details</span>
+					<span class="flyout">2</span><span class="arrow"></span>
+					<span class="title">Edit Document Details</span>
 				<% else %>
-				<label>Selected Document</strong>
+					<label>Selected Document</strong>
 				<% end_if %>
-
 			</span>
 		</div>
 		<!-- <div class="fileOverview"></div> -->
