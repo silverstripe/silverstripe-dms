@@ -62,6 +62,9 @@ class DMSDocumentAddController extends LeftAndMain {
 		$uploadField = DMSUploadField::create('AssetUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);
+		// Required to avoid Solr reindexing (often used alongside DMS) to
+		// return 503s because of too many concurrent reindex requests
+		$uploadField->setConfig('sequentialUploads', 1);
 		$uploadField->addExtraClass('ss-assetuploadfield');
 		$uploadField->removeExtraClass('ss-uploadfield');
 		$uploadField->setTemplate('AssetUploadField');
