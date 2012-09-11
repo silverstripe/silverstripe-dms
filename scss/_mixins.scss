@@ -26,7 +26,7 @@ $color-button-generic: #e6e6e6 !default;
 				&:last-child{
 					border-radius: 0 6px 6px 0;
 				}
-				&.selected{
+				&.selected, .ie8 &.selected{
 					border-bottom:1px solid #C0C0C2;
 					@include background(
 						linear-gradient(color-stops(
@@ -34,6 +34,7 @@ $color-button-generic: #e6e6e6 !default;
 							$color-button-generic
 						))
 					);
+					background-color: darken($color-button-generic, 15%);
 					filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */
 					-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */
 					box-shadow: 0 1px 1px 0 #A0A0A0 inset;
@@ -60,6 +61,7 @@ $color-button-generic: #e6e6e6 !default;
 			$color-button-generic
 		))
 	);
+	background-color: darken($color-button-generic, 15%);
 	filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */
 	box-shadow: 0 1px 1px 0 #A0A0A0 inset;
