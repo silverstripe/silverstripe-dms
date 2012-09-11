@@ -10,15 +10,8 @@ $gf_colour_zebra: #F0F4F7;
 	overflow: scroll;
 }
 
-#Root_Documents, #Root_RelatedLinks{
-	padding-left: 0;
+.cms fieldset.documents, .cms fieldset.relatedLinks{
 	table{
-		white-space:normal;
-		th{
-			&.col-action_SetOrderTitle, &.col-FilenameWithoutID{
-				width: 300px;
-			}
-		}
 		td{
 			white-space:normal;
 		}

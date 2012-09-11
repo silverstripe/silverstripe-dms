@@ -65,6 +65,7 @@ class DMSSiteTreeExtension extends DataExtension {
 			$this->owner->Documents(),
 			$gridFieldConfig
 		);
+		$gridField->addExtraClass('documents');
 
 		$uploadBtn = new LiteralField(
 			'UploadButton', 

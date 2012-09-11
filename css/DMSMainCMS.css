@@ -1,14 +1,15 @@
 .ui-autocomplete { border: 1px solid #DDD; box-shadow: 0 1px 2px 0px #AFAFAF; max-height: 300px; overflow: scroll; }
 
-#Root_Documents, #Root_RelatedLinks { padding-left: 0; }
-#Root_Documents table, #Root_RelatedLinks table { white-space: normal; }
-#Root_Documents table th.col-action_SetOrderTitle, #Root_Documents table th.col-FilenameWithoutID, #Root_RelatedLinks table th.col-action_SetOrderTitle, #Root_RelatedLinks table th.col-FilenameWithoutID { width: 300px; }
-#Root_Documents table td, #Root_RelatedLinks table td { white-space: normal; }
-#Root_Documents table td.col-buttons, #Root_RelatedLinks table td.col-buttons { white-space: nowrap; }
-#Root_Documents table td.col-buttons .dms-delete-link-only .ui-icon, #Root_RelatedLinks table td.col-buttons .dms-delete-link-only .ui-icon { background: url(../images/chain-unchain.png) no-repeat; }
-#Root_Documents table tr.dms-document-hidden-row.odd, #Root_RelatedLinks table tr.dms-document-hidden-row.odd { background-color: rgba(241, 220, 222, 0.6); }
-#Root_Documents table tr.dms-document-hidden-row.even, #Root_RelatedLinks table tr.dms-document-hidden-row.even { background-color: rgba(242, 201, 203, 0.675); }
-#Root_Documents table tr.dms-document-hidden-row:hover, #Root_RelatedLinks table tr.dms-document-hidden-row:hover { background-color: rgba(244, 171, 172, 0.8) !important; }
+.cms fieldset.documents table { white-space: normal; }
+.cms fieldset.documents table th { /* 			&.col-action_SetOrderTitle, &.col-FilenameWithoutID{
+				width: 300px;
+			} */ }
+.cms fieldset.documents table td { white-space: normal; }
+.cms fieldset.documents table td.col-buttons { white-space: nowrap; }
+.cms fieldset.documents table td.col-buttons .dms-delete-link-only .ui-icon { background: url(../images/chain-unchain.png) no-repeat; }
+.cms fieldset.documents table tr.dms-document-hidden-row.odd { background-color: rgba(241, 220, 222, 0.6); }
+.cms fieldset.documents table tr.dms-document-hidden-row.even { background-color: rgba(242, 201, 203, 0.675); }
+.cms fieldset.documents table tr.dms-document-hidden-row:hover { background-color: rgba(244, 171, 172, 0.8) !important; }
 
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav { border-bottom: none; float: right; margin: 8px 0 -1px 0; padding: 0 24px 0 0; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { padding-bottom: 1px; border: 1px solid #C0C0C2; }
