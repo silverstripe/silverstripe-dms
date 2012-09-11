@@ -38,12 +38,19 @@ class DMSSiteTreeExtension extends DataExtension {
 			new GridFieldFilterHeader(),
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
-			$paginatorComponent = new GridFieldPaginator(15),
 			new GridFieldEditButton(),
 			new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
 			new GridFieldDetailForm()
 			//GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
 		);
+
+		if(class_exists('GridFieldPaginatorWithShowAll')){
+			$paginatorComponent = new GridFieldPaginatorWithShowAll(15);
+		}else{
+			$paginatorComponent = new GridFieldPaginator(15);
+		}
+		$gridFieldConfig->addComponent($paginatorComponent);
+
 		if(class_exists('GridFieldSortableRows')) {
 			$sortableComponent = new GridFieldSortableRows('DocumentSort');
 			$sortableComponent->setUsePagination(false)->setForceRedraw(true);
