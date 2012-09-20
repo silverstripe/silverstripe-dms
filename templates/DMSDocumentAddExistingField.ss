@@ -1,4 +1,4 @@
-<div class="ss-add">
+<div class="ss-add field treedropdown searchable">
 	<div class="document-add-existing <% if useFieldContext %>field<% else %>link-editor-context<% end_if %>">
 	<% if useFieldContext %>
 		<h3>
