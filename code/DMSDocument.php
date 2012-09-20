@@ -445,7 +445,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//write the filename of the stored document
 		$this->Filename = $toFilename;
 		$this->Folder = $toFolder;
-		if (empty($this->Title)) $this->Title = $fromFilename; //don't overwrite existing document titles
+		$extension = pathinfo($this->Filename, PATHINFO_EXTENSION);
+		if (empty($this->Title)) $this->Title = basename($filePath,'.'.$extension); //don't overwrite existing document titles
 		$this->LastChanged = SS_Datetime::now()->Rfc2822();
 
 		$this->write();
