@@ -17,7 +17,7 @@ class DocumentHtmlEditorFieldToolbar extends Extension {
 		}
 
 		$source = $linkType->getSource();
-		$source['document'] = 'Download a document';
+		$source['documentopt'] = 'Download a document';
 		$linkType->setSource($source);
 
 		$addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
