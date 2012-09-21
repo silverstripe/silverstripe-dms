@@ -44,6 +44,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 */
 	function addPage($pageObject) {
 		$this->Pages()->add($pageObject);
+
+		DB::query("UPDATE DMSDocument_Pages SET DocumentSort=DocumentSort+1 WHERE SiteTreeID = $pageObject->ID");
 	}
 	
 	/**

@@ -45,9 +45,6 @@ class DMSUploadField extends UploadField {
 			// Relate to the underlying page being edited.
 			// Not applicable when editing the document itself and replacing it.
 			$doc->addPage($record);
-
-			//increase the sort value by one for the newly uploaded document and every other document attached to this page
-			DB::query("UPDATE DMSDocument_Pages SET DocumentSort=DocumentSort+1 WHERE SiteTreeID = $record->ID");
 		}
 
 		return $doc;
