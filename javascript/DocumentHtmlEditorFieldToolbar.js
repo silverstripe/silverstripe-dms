@@ -10,7 +10,7 @@
 				var form = $('form.htmleditorfield-linkform');
 				var show = false;
 
-				if (this.attr('value') === 'document') {
+				if (this.attr('value') === 'documentopt') {
 					if (this.is(':checked')) {
 						show = true;
 					}
