@@ -9,6 +9,9 @@ it aims to wrap storage and access concerns in a generic API,
 which allows more fine-grained control over how the documents are
 managed and exposed through the website.
 
+Additionally, documents are stored and managed as part of a page instead of
+away in a separate assets store.
+
 Features:
 
  * Relation of documents to pages
@@ -45,13 +48,22 @@ Example:
 ### Requirements
 
  * PHP 5.3 with the "fileinfo" module (or alternatively the "whereis" and "file" Unix commands)
- * (optional) [https://github.com/UndefinedOffset/SortableGridField]("SortableGridField" module)
+ * (optional) [https://github.com/silverstripe-big-o/gridfieldpaginatorwithshowall](Pagination of Documents in the CMS)
+ * (optional) [https://github.com/silverstripe-big-o/SortableGridField](Sorting of Documents in the CMS)
+ * (optional) [https://github.com/silverstripe-big-o/SortableGridField](Sorting of Documents in the CMS)
+ * (optional) [https://github.com/silverstripe-big-o/silverstripe-fulltextsearch](Full text search of Documents)
+ * (optional) [https://github.com/silverstripe-big-o/silverstripe-textextraction](Text extraction for Document full-text search)
 
 ### Configuration
 
 The file location is set via the `DMS::$dmsFolder` static, and points to a location in the webroot.
 
 ### Usage
+
+Add a simple include to any of your .ss templates to display the DMSDocuments associated with
+the current page on the front-end.
+
+	<% include Documents %>
 
 #### Create Documents
 
