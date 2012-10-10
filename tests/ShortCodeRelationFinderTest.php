@@ -17,8 +17,8 @@ class ShortCodeRelationFinderTest extends SapphireTest {
 		$page2->Content = 'Condition:  <a title="document test 2" href="[dms_document_link,id='.$d2->ID.']">';
 		$page2ID = $page2->write();
 
-		$page3 = new CDSHolder();
-		$page3->TermsAndConditions = 'Condition:  <a title="document test 1" href="[dms_document_link,id='.$d1->ID.']">';
+		$page3 = new SiteTree();
+		$page3->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id='.$d1->ID.']">';
 		$page3ID = $page3->write();
 
 		$finder = new ShortCodeRelationFinder();
