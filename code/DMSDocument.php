@@ -196,21 +196,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * Quick way to add multiple tags to a Document. This takes a multidimensional array of category/value pairs.
-	 * The array should look like this:
-	 * $twoDimensionalArray = new array(
-	 *      array('fruit','banana'),
-	 *      array('fruit','apple')
-	 * );
-	 * @param $twoDimensionalArray array containing a list of arrays
-	 * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
-	 * @return null
-	 */
-	function addTags($twoDimensionalArray, $multiValue = true) {
-		// TODO: Implement addTags() method.
-	}
-
-	/**
 	 * Removes a tag from the Document. If you only set a category, then all values in that category are deleted.
 	 * If you specify both a category and a value, then only that single category/value pair is deleted.
 	 * Nothing happens if the category or the value do not exist.
@@ -269,7 +254,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * The dummy functioin for the {@see:getLink()}
+	 * The dummy function for the {@see:getLink()}
 	 * RSSFeed need the data object to have a function called Link()
 	 */
 	function Link(){
@@ -818,7 +803,7 @@ class DMSDocument_Controller extends Controller {
 
 					if (self::$testMode) return $path;
 
-					//if a DMSDocument can be downlaoded and all the permissions/privileges has passed, 
+					//if a DMSDocument can be downloaded and all the permissions/privileges has passed,
 					//its ViewCount should be increased by 1 just before the browser sending the file to front.
 					$doc->trackView();
 

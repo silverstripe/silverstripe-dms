@@ -82,20 +82,6 @@ interface DMSDocumentInterface {
 	function getTagsList($category, $value = null);
 
 	/**
-	 * Quick way to add multiple tags to a DMSDocument. This takes a multidimensional array of category/value pairs.
-	 * The array should look like this:
-	 * $twoDimensionalArray = new array(
-	 *      array('fruit','banana'),
-	 *      array('fruit','apple')
-	 * );
-	 * @abstract
-	 * @param $twoDimensionalArray array containing a list of arrays
-	 * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
-	 * @return null
-	 */
-	function addTags($twoDimensionalArray, $multiValue = true);
-
-	/**
 	 * Removes a tag from the DMSDocument. If you only set a category, then all values in that category are deleted.
 	 * If you specify both a category and a value, then only that single category/value pair is deleted.
 	 * Nothing happens if the category or the value do not exist.
@@ -150,7 +136,7 @@ interface DMSDocumentInterface {
 	 * @return int
 	 */
 	function getAbsoluteSize();
-	
+
 
 	/**
 	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
