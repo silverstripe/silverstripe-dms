@@ -69,7 +69,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		$gridField = GridField::create(
 			'Documents', 
 			false, 
-			$this->owner->Documents(),
+			$this->owner->Documents()->Sort('DocumentSort'),
 			$gridFieldConfig
 		);
 		$gridField->addExtraClass('documents');

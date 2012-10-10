@@ -32,11 +32,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'LastChanged'=>'LastChanged'
 	);
 
-	static $default_sort = array(
-		'DocumentSort ASC'
-	);
-
-
 	static $singular_name = 'Document';
 
 	static $plural_name = 'Documents';
