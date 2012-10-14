@@ -76,6 +76,8 @@ class DMSDocumentTest extends SapphireTest {
 	function testDeletingPageWithAssociatedDocuments() {
 		$s1 = $this->objFromFixture('SiteTree','s1');
 		$s2 = $this->objFromFixture('SiteTree','s2');
+		$s2->publish('Stage', 'Live');
+		$s2ID = $s2->ID;
 
 		$doc = new DMSDocument();
 		$doc->Filename = "delete test file";
@@ -87,11 +89,63 @@ class DMSDocumentTest extends SapphireTest {
 
 		$s1->delete();
 
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
-		$this->assertEquals($documents->Count(),'1',"Deleting one of the associated page doesn't affect the single document we created");
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'", false);
+		$this->assertEquals(
+			$documents->Count(),
+			'1',
+			"Deleting one of the associated page doesn't affect the single document we created"
+		);
 
 		$s2->delete();
 		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
-		$this->assertEquals($documents->Count(),'0',"However, deleting the last page that a document is associated with causes that document to be deleted as well");
+		$this->assertEquals(
+			$documents->Count(),
+			'1',
+			"Deleting a page from draft stage doesn't delete the associated docs,"
+			. "even if it's the last page they're associated with"
+		);
+
+		$s2 = Versioned::get_one_by_stage('SiteTree', 'Live', sprintf('"SiteTree"."ID" = %d', $s2ID));
+		$s2->doDeleteFromLive();
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$this->assertEquals(
+			$documents->Count(),
+			'0',
+			"However, deleting the live version of the last page that a document is "
+			 ."associated with causes that document to be deleted as well"
+		);
 	}
+
+	function testUnpublishPageWithAssociatedDocuments() {
+		$s2 = $this->objFromFixture('SiteTree','s2');
+		$s2->publish('Stage', 'Live');
+		$s2ID = $s2->ID;
+
+		$doc = new DMSDocument();
+		$doc->Filename = "delete test file";
+		$doc->Folder = "0";
+		$doc->write();
+
+		$doc->addPage($s2);
+
+		$s2->doDeleteFromLive();
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$this->assertEquals(
+			$documents->Count(),
+			'1',
+			"Deleting a page from live stage doesn't delete the associated docs,"
+			. "even if it's the last page they're associated with"
+		);
+
+		$s2 = Versioned::get_one_by_stage('SiteTree', 'Stage', sprintf('"SiteTree"."ID" = %d', $s2ID));
+		$s2->delete();
+		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$this->assertEquals(
+			$documents->Count(),
+			'0',
+			"However, deleting the draft version of the last page that a document is "
+			 ."associated with causes that document to be deleted as well"
+		);
+	}
+
 }

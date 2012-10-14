@@ -100,12 +100,21 @@ class DMSSiteTreeExtension extends DataExtension {
 	}
 
 	function onBeforeDelete() {
-		$dmsDocuments = $this->owner->Documents();
-		foreach($dmsDocuments as $document) {
-			//if the document is only associated with one page, i.e. only associated with this page
-			if ($document->Pages()->Count() <= 1) {
-				//delete the document before deleting this page
-				$document->delete();
+		if(Versioned::current_stage() == 'Live') {
+			$existsOnOtherStage = !$this->owner->getIsDeletedFromStage();			
+		} else {
+			$existsOnOtherStage = $this->owner->getExistsOnLive();
+		}
+
+		// Only remove if record doesn't still exist on live stage.
+		if(!$existsOnOtherStage) {
+			$dmsDocuments = $this->owner->Documents();
+			foreach($dmsDocuments as $document) {
+				//if the document is only associated with one page, i.e. only associated with this page
+				if ($document->Pages()->Count() <= 1) {
+					//delete the document before deleting this page
+					$document->delete();
+				}
 			}
 		}
 	}
