@@ -654,7 +654,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * Return the size of the file associated with the document
 	 */
 	function getAbsoluteSize() {
-		return filesize($this->getFullPath());
+		return file_exists($this->getFullPath()) ? filesize($this->getFullPath()) : null;
 	}
 	
 	/**
