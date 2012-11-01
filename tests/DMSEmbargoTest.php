@@ -4,6 +4,8 @@ class DMSEmbargoTest extends SapphireTest {
 	static $fixture_file = "dms/tests/dmsembargotest.yml";
 
 	function tearDownOnce() {
+		self::$is_running_test = true;
+		
 		$d = DataObject::get("DMSDocument");
 		foreach($d as $d1) {
 			$d1->delete();
@@ -12,6 +14,8 @@ class DMSEmbargoTest extends SapphireTest {
 		foreach($t as $t1) {
 			$t1->delete();
 		}
+
+		self::$is_running_test = $this->originalIsRunningTest;
 	}
 
 	function createFakeHTTPRequest($id) {

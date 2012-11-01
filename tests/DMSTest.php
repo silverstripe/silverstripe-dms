@@ -24,6 +24,8 @@ class DMSTest extends FunctionalTest {
 	function tearDown() {
 		parent::tearDown();
 
+		self::$is_running_test = true;
+
 		$d = DataObject::get("DMSDocument");
 		foreach($d as $d1) {
 			$d1->delete();
@@ -39,6 +41,8 @@ class DMSTest extends FunctionalTest {
 		//set the old DMS folder back again
 		DMS::$dmsFolder = self::$dmsFolderOld;
 		DMS::$dmsFolderSize = self::$dmsFolderSizeOld;
+
+		self::$is_running_test = $this->originalIsRunningTest;
 	}
 
 	public function delete($path) {
