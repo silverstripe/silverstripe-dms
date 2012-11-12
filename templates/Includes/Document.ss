@@ -13,7 +13,7 @@
 		| Last Changed: $LastChanged.Nice
 	</p>
 	<% if Description %>
-		<p>$DescriptionWithLineBreaks</p>
+		<p>$DescriptionWithLineBreak</p>
 	<% end_if %>
 </div>
 <% end_if %>
