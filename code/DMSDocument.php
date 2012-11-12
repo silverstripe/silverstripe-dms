@@ -494,6 +494,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return $filename;
 	}
 
+	/**
+	 * Returns the Description field with HTML <br> tags added when there is a line break
+	 * @return string Description
+	 */
+	function getDescriptionWithLineBreaks() {
+		return nl2br($this->getField('Description'));
+	}
+
 
 	function getCMSFields() {
 		//include JS to handling showing and hiding of bottom "action" tabs
