@@ -12,6 +12,8 @@ managed and exposed through the website.
 Additionally, documents are stored and managed as part of a page instead of
 away in a separate assets store.
 
+Read more about the DMS module in this [blog post on silverstripe.org](http://www.silverstripe.org/document-management-system-module)
+
 Features:
 
  * Relation of documents to pages
@@ -48,11 +50,10 @@ Example:
 ### Requirements
 
  * PHP 5.3 with the "fileinfo" module (or alternatively the "whereis" and "file" Unix commands)
- * (optional) [https://github.com/silverstripe-big-o/gridfieldpaginatorwithshowall](Pagination of Documents in the CMS)
- * (optional) [https://github.com/silverstripe-big-o/SortableGridField](Sorting of Documents in the CMS)
- * (optional) [https://github.com/silverstripe-big-o/SortableGridField](Sorting of Documents in the CMS)
- * (optional) [https://github.com/silverstripe-big-o/silverstripe-fulltextsearch](Full text search of Documents)
- * (optional) [https://github.com/silverstripe-big-o/silverstripe-textextraction](Text extraction for Document full-text search)
+ * (optional) [Pagination of Documents in the CMS](https://github.com/silverstripe-big-o/gridfieldpaginatorwithshowall)
+ * (optional) [Sorting of Documents in the CMS](https://github.com/silverstripe-big-o/SortableGridField)
+ * (optional) [Full text search of Documents](https://github.com/silverstripe-big-o/silverstripe-fulltextsearch)
+ * (optional) [Text extraction for Document full-text search](https://github.com/silverstripe-big-o/silverstripe-textextraction)
 
 ### Configuration
 
