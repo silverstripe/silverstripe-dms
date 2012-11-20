@@ -1,4 +1,6 @@
 <?php
+define('DMS_DIR', 'dms');
+
 Object::add_extension('SiteTree','DMSSiteTreeExtension');
 Object::add_extension('HtmlEditorField_Toolbar','DocumentHtmlEditorFieldToolbar');
 CMSMenu::remove_menu_item('DMSDocumentAddController');

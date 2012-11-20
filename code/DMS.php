@@ -23,8 +23,8 @@ class DMS implements DMSInterface {
 
 		if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
 			//restrict access to the storage folder
-			copy(BASE_PATH . DIRECTORY_SEPARATOR . 'dms' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',  $dmsPath . DIRECTORY_SEPARATOR . '.htaccess');
-			copy(BASE_PATH . DIRECTORY_SEPARATOR . 'dms' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'web.config', $dmsPath . DIRECTORY_SEPARATOR . 'web.config');
+			copy(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',  $dmsPath . DIRECTORY_SEPARATOR . '.htaccess');
+			copy(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'web.config', $dmsPath . DIRECTORY_SEPARATOR . 'web.config');
 		}
 		return $dms;
 	}

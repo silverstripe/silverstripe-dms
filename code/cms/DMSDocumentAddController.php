@@ -7,17 +7,6 @@ class DMSDocumentAddController extends LeftAndMain {
 	static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
 	static $menu_title = 'Edit Page';
 	public static $tree_class = 'SiteTree';
-	
-//	public function upload($request) {
-//		$formHtml = $this->renderWith(array('AssetAdmin_UploadContent'));
-//		if($request->isAjax()) {
-//			return $formHtml;
-//		} else {
-//			return $this->customise(array(
-//				'Content' => $formHtml
-//			))->renderWith(array('AssetAdmin', 'LeftAndMain'));
-//		}
-//	}
 
 	/**
 	 * Custom currentPage() method to handle opening the 'root' folder
@@ -55,7 +44,7 @@ class DMSDocumentAddController extends LeftAndMain {
 	public function getEditForm($id = null, $fields = null) {
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
 		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
-		Requirements::css('dms/css/DMSMainCMS.css');
+		Requirements::css(DMS_DIR.'/css/DMSMainCMS.css');
 
 		$page = $this->currentPage();
 

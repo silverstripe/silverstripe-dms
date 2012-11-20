@@ -171,10 +171,10 @@ class DMSUploadField extends UploadField {
 		$useCustomTemplate = $this->getConfig('useDMSReplaceTemplate');
 		if (!empty($useCustomTemplate)) {
 			Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
-			Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+			Requirements::javascript(DMS_DIR.'/javascript/DMSUploadField_downloadtemplate.js');
 		} else {
 			//in the add dialog, add the addtemplate into the set of file that load
-			Requirements::javascript('dms/javascript/DMSUploadField_addtemplate.js');
+			Requirements::javascript(DMS_DIR.'/javascript/DMSUploadField_addtemplate.js');
 		}
 
 		return $fields;

@@ -26,11 +26,11 @@ class DMSSiteTreeExtension extends DataExtension {
 		if (in_array($this->owner->ClassName,self::$noDocumentsList)) return;
 
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
-		Requirements::javascript('dms/javascript/DMSGridField.js');
-		Requirements::css('dms/css/DMSMainCMS.css');
+		Requirements::javascript(DMS_DIR.'/javascript/DMSGridField.js');
+		Requirements::css(DMS_DIR.'/css/DMSMainCMS.css');
 
 		//javascript for the link editor pop-up in TinyMCE
-		Requirements::javascript("dms/javascript/DocumentHtmlEditorFieldToolbar.js");
+		Requirements::javascript(DMS_DIR."/javascript/DocumentHtmlEditorFieldToolbar.js");
 
 		// Document listing
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(

@@ -505,8 +505,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	function getCMSFields() {
 		//include JS to handling showing and hiding of bottom "action" tabs
-		Requirements::javascript('dms/javascript/DMSDocumentCMSFields.js');
-		Requirements::css('dms/css/DMSDocumentCMSFields.css');
+		Requirements::javascript(DMS_DIR.'/javascript/DMSDocumentCMSFields.js');
+		Requirements::css(DMS_DIR.'/css/DMSDocumentCMSFields.css');
 
 		$fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 
@@ -635,15 +635,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return String
 	 */
 	function Icon($ext) {
-		if(!Director::fileExists("dms/images/app_icons/{$ext}_32.png")) {
+		if(!Director::fileExists(DMS_DIR."/images/app_icons/{$ext}_32.png")) {
 			$ext = File::get_app_category($ext);
 		}
 
-		if(!Director::fileExists("dms/images/app_icons/{$ext}_32.png")) {
+		if(!Director::fileExists(DMS_DIR."/images/app_icons/{$ext}_32.png")) {
 			$ext = "generic";
 		}
 
-		return "dms/images/app_icons/{$ext}_32.png";
+		return DMS_DIR."/images/app_icons/{$ext}_32.png";
 	}
 	
 	/**

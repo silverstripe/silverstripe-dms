@@ -26,7 +26,7 @@ class DMSEmbargoTest extends SapphireTest {
 
 	function testBasicEmbargo() {
 		$oldDMSFolder = DMS::$dmsFolder;
-		DMS::$dmsFolder = 'dms';    //sneakily setting the DMS folder to the folder where the test file lives
+		DMS::$dmsFolder = DMS_DIR;    //sneakily setting the DMS folder to the folder where the test file lives
 
 		$doc = new DMSDocument();
 		$doc->Filename = "DMS-test-lorum-file.pdf";
