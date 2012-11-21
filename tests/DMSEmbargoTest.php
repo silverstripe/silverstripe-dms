@@ -41,8 +41,13 @@ class DMSEmbargoTest extends SapphireTest {
 
 		$doc->embargoIndefinitely();
 
+		$this->logInWithPermission('ADMIN');
 		$result = $controller->index($this->createFakeHTTPRequest($docID));
-		$this->assertNotEquals($doc->getFullPath(),$result,"File no longer returned (in test mode)");
+		$this->assertEquals($doc->getFullPath(),$result,"Admins can still download embargoed files");
+
+		$this->logInWithPermission('random-user-group');
+		$result = $controller->index($this->createFakeHTTPRequest($docID));
+		$this->assertNotEquals($doc->getFullPath(),$result,"File no longer returned (in test mode) when switching to other user group");
 
 		DMS::$dmsFolder = $oldDMSFolder;
 	}
