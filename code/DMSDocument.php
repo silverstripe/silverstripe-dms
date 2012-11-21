@@ -365,7 +365,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return DataList List of Document objects
 	 */
 	function getVersions() {
-		// TODO: Implement getVersions() method.
+		if (!DMSDocument_versions::$enable_versions) user_error("DMSDocument versions are disabled",E_USER_WARNING);
+		return DMSDocument_versions::get_versions($this);
 	}
 
 	/**
@@ -405,9 +406,21 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		$this->removeAllPages();
 
+		//get rid of any versions have saved for this DMSDocument, too
+		if (DMSDocument_versions::$enable_versions) {
+			$versions = $this->getVersions();
+			if ($versions->Count() > 0) {
+				foreach($versions as $v) {
+					$v->delete();
+				}
+			}
+		}
+
 		//delete the dataobject
 		parent::delete();
 	}
+
+
 
 	/**
 	 * Relate an existing file on the filesystem to the document.
@@ -427,6 +440,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		//copy the file into place
 		$fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
+
+		//version the existing file (copy it to a new "very specific" filename
+		if (DMSDocument_versions::$enable_versions) {
+			DMSDocument_versions::create_version($this);
+		}
+
 		copy($fromPath, $toPath);   //this will overwrite the existing file (if present)
 
 		//write the filename of the stored document
@@ -510,6 +529,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		$fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 
+		$extraTasks = '';   //additional text to inject into the list of tasks at the bottom of a DMSDocument CMSfield
+		$extraFields = FormField::create('Empty');
+
 		//get list of shortcode page relations
 		$relationFinder = new ShortCodeRelationFinder();
 		$relationList = $relationFinder->getList($this->ID);
@@ -554,7 +576,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
-
 		$referencesGrid = GridField::create(
 			'References',
 			_t('DMSDocument.RelatedReferences', 'Related References'),
@@ -562,13 +583,35 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			$gridFieldConfig
 		);
 
+		if (DMSDocument_versions::$enable_versions) {
+			$versionsGridFieldConfig = GridFieldConfig::create()->addComponents(
+				new GridFieldToolbarHeader(),
+				new GridFieldSortableHeader(),
+				new GridFieldDataColumns(),
+				new GridFieldPaginator(30)
+			);
+			$versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
+									->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
+						 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
+
+			$versionsGrid =  GridField::create(
+				'Versions',
+				_t('DMSDocument.Versions', 'Versions'),
+				$this->getVersions(),
+				$versionsGridFieldConfig
+			);
+			$extraTasks .= '<li class="ss-ui-button" data-panel="find-versions">Versions</li>';
+			$extraFields = $versionsGrid->addExtraClass('find-versions');
+		}
+
 		$fields->add(new LiteralField('BottomTaskSelection',
 			'<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
 			'<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
 			'<li class="ss-ui-button" data-panel="expiry">Expiry</li>'.
 			'<li class="ss-ui-button" data-panel="replace">Replace</li>'.
-			'<li class="ss-ui-button" data-panel="find-usage">Find usage</li>'.
-			'<li class="ss-ui-button" data-panel="find-references">Find references</li>'.
+			'<li class="ss-ui-button" data-panel="find-usage">Usage</li>'.
+			'<li class="ss-ui-button" data-panel="find-references">References</li>'.
+			$extraTasks.
 			'</ul></div>'));
 
 		$embargoValue = 'None';
@@ -599,7 +642,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				)->addExtraClass('expiry'),
 				$uploadField->addExtraClass('replace'),
 				$pagesGrid->addExtraClass('find-usage'),
-				$referencesGrid->addExtraClass('find-references')
+				$referencesGrid->addExtraClass('find-references'),
+				$extraFields
 		)->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
 
 		$this->extend('updateCMSFields', $fields);
@@ -745,9 +789,18 @@ class DMSDocument_Controller extends Controller {
 	 */
 	protected function getDocumentFromID($request) {
 		$doc = null;
-		$id = Convert::raw2sql(intval($request->param('ID')));
-		$doc = DataObject::get_by_id('DMSDocument', $id);
-		$this->extend('updateDocumentFromID', $doc, $request);
+
+		$id = Convert::raw2sql($request->param('ID'));
+
+		if (strpos($id, 'version') === 0) { //versioned document
+			$id = str_replace('version','',$id);
+			$doc = DataObject::get_by_id('DMSDocument_versions', $id);
+			$this->extend('updateVersionFromID', $doc, $request);
+		} else {    //normal document
+			$doc = DataObject::get_by_id('DMSDocument', $id);
+			$this->extend('updateDocumentFromID', $doc, $request);
+		}
+
 		return $doc;
 	}
 
@@ -761,21 +814,27 @@ class DMSDocument_Controller extends Controller {
 			$canView = false;
 
 			//Runs through all pages that this page links to and sets canView to true if the user can view ONE of these pages
-			$pages = $doc->Pages();
-			if ($pages->Count() > 0) {
-				foreach($pages as $page) {
-					if ($page->CanView()) {
-						$canView = true;    //just one canView is enough to know that we can view the file
-						break;
+			if (method_exists($doc, 'Pages')) {
+				$pages = $doc->Pages();
+				if ($pages->Count() > 0) {
+					foreach($pages as $page) {
+						if ($page->CanView()) {
+							$canView = true;    //just one canView is enough to know that we can view the file
+							break;
+						}
 					}
+				} else {
+					//if the document isn't on any page, then allow viewing of the document (because there is no canView() to consult)
+					$canView = true;
 				}
-			} else {
-				//if the document isn't on any page, then allow viewing of the document (because there is no canView() to consult)
-				$canView = true;
 			}
 
 			// check for embargo or expiry
 			if ($doc->isHidden()) $canView = false;
+
+			//admins can always download any document, even if otherwise hidden
+			$member = Member::currentUser();
+			if ($member && Permission::checkMember($member, 'ADMIN')) $canView = true;
 
 			if ($canView) {
 				$path = $doc->getFullPath();
