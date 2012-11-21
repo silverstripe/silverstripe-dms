@@ -76,10 +76,6 @@
 				//do an initial show of the entire panel
 				this.show();
 
-				//move the delete button into the panel
-				$('#Actions ul').append('<li class="delete-button-appended"></li>');
-				$('.delete-button-appended').append($('#Form_ItemEditForm_action_doDelete'));
-
 				//add some extra classes to the replace field containers to make it work with drag and drop uploading
 				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
 				

@@ -390,8 +390,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		if (file_exists($storageFolder)) {
 			if ($handle = opendir($storageFolder)) { //Open directory
 				//List files in the directory
-				while (false !== ($entry = readdir($handle))) {
-					if(strpos($entry,$this->ID.'~') !== false) $filesToDelete[] = $entry;
+				while (false !== ($entry = readdir($handle))) { //only delete if filename starts the the relevant ID
+					if(strpos($entry,$this->ID.'~') === 0) $filesToDelete[] = $entry;
 				}
 				closedir($handle);
 
