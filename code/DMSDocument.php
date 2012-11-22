@@ -756,7 +756,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 						new DateField_Disabled("LastEdited", _t('AssetTableField.LASTEDIT','Last changed') . ':', $this->LastEdited),
 						new DateField_Disabled("LastChanged", _t('AssetTableField.LASTCHANGED','Last replaced') . ':', $this->LastChanged),
 						new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue),
-						new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue)
+						new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue),
+						new ReadonlyField("ViewCount", "View count". ':', $this->ViewCount)
 					)
 				)->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
 			)->setName("FilePreview")->addExtraClass('cms-file-info')
