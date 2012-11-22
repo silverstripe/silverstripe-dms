@@ -7,8 +7,8 @@
 .cms fieldset.documents table tr.dms-document-hidden-row.even, .cms fieldset.relatedLinks table tr.dms-document-hidden-row.even { background-color: rgba(242, 201, 203, 0.675); }
 .cms fieldset.documents table tr.dms-document-hidden-row:hover, .cms fieldset.relatedLinks table tr.dms-document-hidden-row:hover { background-color: rgba(244, 171, 172, 0.8) !important; }
 
-.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav { border-bottom: none; float: right; margin: 8px 0 -1px 0; padding: 0 24px 0 0; }
-.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { padding-bottom: 1px; border: 1px solid #C0C0C2; }
+.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav { border-bottom: 1px solid #C0C0C2; float: none; padding: 0 24px 0 0; }
+.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { float: right; margin-bottom: -1px; border: 1px solid #C0C0C2; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li a { padding: 8px 20px 8px; }
 
 .ss-add .document-add-existing input { position: absolute; z-index: 9999; width: 390px; padding: 9px 7px; border-bottom-right-radius: 0; border-top-right-radius: 0; outline: none; box-sizing: border-box; -moz-box-sizing: border-box; }
