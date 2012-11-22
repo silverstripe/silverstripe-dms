@@ -22,9 +22,9 @@ class DMSDocument_versions extends DataObject {
 	);
 
 	static $display_fields = array(
-		'VersionCounter' => 'VersionCounter',
+		'VersionCounter' => 'Version Counter',
 		'FilenameWithoutID' => 'Filename',
-		'LastChanged' => 'LastChanged'
+		'LastChanged' => 'Last Changed'
 	);
 
 	static $summary_fields = array(
