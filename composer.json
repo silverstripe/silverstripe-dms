@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe-labs/dms",
+    "name": "silverstripe/dms",
     "description": "Adds a Document Management System to SilverStripe ",
     "type": "silverstripe-module",
     "keywords": ["silverstripe", "dms", "document", "document management system"],
