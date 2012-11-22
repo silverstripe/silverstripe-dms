@@ -7,6 +7,18 @@ class DMSDocumentAddController extends LeftAndMain {
 	static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
 	static $menu_title = 'Edit Page';
 	public static $tree_class = 'SiteTree';
+	static $allowed_extensions = array();
+
+	/**
+	 * Add an array of additional allowed extensions
+	 * @static
+	 * @param $array
+	 */
+	static function add_allowed_extensions($array = null) {
+		if (empty($array)) return;
+		if (is_array($array)) self::$allowed_extensions = $array;
+		else self::$allowed_extensions = array($array);
+	}
 
 	/**
 	 * Custom currentPage() method to handle opening the 'root' folder
@@ -59,7 +71,9 @@ class DMSDocumentAddController extends LeftAndMain {
 		$uploadField->setTemplate('AssetUploadField');
 		$uploadField->setRecord($page);
 
+		$uploadField->getValidator()->setAllowedExtensions(array_filter(array_merge(File::$allowed_extensions,self::$allowed_extensions)));
 		$exts = $uploadField->getValidator()->getAllowedExtensions();
+
 		asort($exts);
 		$backlink = $this->Backlink();
 		$done = "
