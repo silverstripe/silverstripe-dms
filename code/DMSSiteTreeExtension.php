@@ -5,15 +5,16 @@ class DMSSiteTreeExtension extends DataExtension {
 		'Documents' => 'DMSDocument'
 	);
 
-	static $noDocumentsList = array(
-	);
+	static $noDocumentsList = array();
+	static $showDocumentsList = array();
 
 	/**
 	 * Do not show the documents tab on the array of pages set here
 	 * @static
 	 * @param $mixed Array of page types to not show the Documents tab on
 	 */
-	static function no_documents_tab($array) {
+	static function no_documents_tab($array = array()) {
+		if (empty($array)) return;
 		if (is_array($array)) {
 			self::$noDocumentsList = $array;
 		} else {
@@ -21,9 +22,25 @@ class DMSSiteTreeExtension extends DataExtension {
 		}
 	}
 
+	/**
+	 * Only show the documents tab on the list of pages set here. Any pages set in the no_documents_tab array will
+	 * still not be shown. If this isn't called, or if it is called with an empty array, all pages will get Document tabs.
+	 * @static
+	 * @param $array Array of page types to show the Documents tab on
+	 */
+	static function show_documents_tab($array = array()) {
+		if (empty($array)) return;
+		if (is_array($array)) {
+			self::$showDocumentsList = $array;
+		} else {
+			self::$showDocumentsList = array($array);
+		}
+	}
+
 	function updateCMSFields(FieldList $fields){
 		//prevent certain pages from having a Document tab in the CMS
 		if (in_array($this->owner->ClassName,self::$noDocumentsList)) return;
+		if (count(self::$showDocumentsList) > 0 && !in_array($this->owner->ClassName,self::$showDocumentsList)) return;
 
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
 		Requirements::javascript(DMS_DIR.'/javascript/DMSGridField.js');
