@@ -1,0 +1,35 @@
+en:
+  AssetAdmin:
+    ALLOWEDEXTS: 'Allowed extensions'
+  AssetTableField:
+    CREATED: 'First uploaded'
+    LASTCHANGED: 'Last replaced'
+    LASTEDIT: 'Last changed'
+    SIZE: 'File size'
+    TYPE: 'File type'
+    URL: URL
+  DMSDocument:
+    PLURALNAME: Documents
+    RelatedPages: 'Related Pages'
+    RelatedReferences: 'Related References'
+    SINGULARNAME: Document
+  DMSTag:
+    PLURALNAME: 'D M S Tags'
+    SINGULARNAME: 'D M S Tag'
+  FileIFrameField:
+    ATTACHONCESAVED2: 'Files can be attached once you have saved the record for the first time.'
+  GridAction:
+    DELETE_DESCRIPTION: Delete
+    Delete: Delete
+    UnlinkRelation: Unlink
+  GridFieldAction_Delete:
+    DeletePermissionsFailure: 'No delete permissions'
+  UploadField:
+    ATTACHFILE: 'Attach a file'
+    DROPFILE: 'drop a file'
+    FIELDNOTSET: 'File information not found'
+    FROMCOMPUTER: 'From your computer'
+    FROMCOMPUTERINFO: 'Upload from your computer'
+    MAXNUMBEROFFILES: 'Max number of {count} file(s) exceeded.'
+  DMSDocumentAddController:
+    MENUTITLE: 'Edit Page'
