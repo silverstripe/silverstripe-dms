@@ -1,0 +1,35 @@
+es:
+  AssetAdmin:
+    ALLOWEDEXTS: 'Extensiones permitidas'
+  AssetTableField:
+    CREATED: 'Primera subida'
+    LASTCHANGED: 'Último reemplazo'
+    LASTEDIT: 'Último editado'
+    SIZE: 'Tamaño del archivo'
+    TYPE: 'Tipo de archivo'
+    URL: URL
+  DMSDocument:
+    PLURALNAME: Documentos
+    RelatedPages: 'Páginas relacionadas'
+    RelatedReferences: 'Referencias relacionadas'
+    SINGULARNAME: Documento
+  DMSTag:
+    PLURALNAME: 'Etiquetas del Sistema documental'
+    SINGULARNAME: 'Etiqueta del Sistema documental'
+  FileIFrameField:
+    ATTACHONCESAVED2: 'Archivos pueden ser adjuntados una vez que guardes por primera vez.'
+  GridAction:
+    DELETE_DESCRIPTION: Borrar
+    Delete: Borrar
+    UnlinkRelation: Desvincular
+  GridFieldAction_Delete:
+    DeletePermissionsFailure: 'No borrar permisos'
+  UploadField:
+    ATTACHFILE: 'Adjuntar un archivo'
+    DROPFILE: 'Dejar un archivo'
+    FIELDNOTSET: 'Información acerca del archivo no encontrada'
+    FROMCOMPUTER: 'Desde tu computador'
+    FROMCOMPUTERINFO: 'Subir desde tu computador'
+    MAXNUMBEROFFILES: 'Sólo se pueden subir {count} archivos.'
+  DMSDocumentAddController:
+    MENUTITLE: 'Editar página'
