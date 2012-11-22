@@ -444,6 +444,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//version the existing file (copy it to a new "very specific" filename
 		if (DMSDocument_versions::$enable_versions) {
 			DMSDocument_versions::create_version($this);
+		} else {    //otherwise delete the old document file
+			$oldPath = $this->getFullPath();
+			if (file_exists($oldPath)) unlink($this->getFullPath());
 		}
 
 		copy($fromPath, $toPath);   //this will overwrite the existing file (if present)
