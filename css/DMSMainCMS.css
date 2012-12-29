@@ -9,6 +9,7 @@
 
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav { border-bottom: 1px solid #C0C0C2; float: none; padding: 0 24px 0 0; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li { float: right; margin-bottom: -1px; border: 1px solid #C0C0C2; }
+.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li.ui-state-active { padding-bottom: 1px; background: black url(../../framework/admin/images/textures/bg_cms_main_content.png); border: 1px solid #c0c0c2; }
 .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li a { padding: 8px 20px 8px; }
 
 .ss-add .document-add-existing input { position: absolute; z-index: 9999; width: 390px; padding: 9px 7px; border-bottom-right-radius: 0; border-top-right-radius: 0; outline: none; box-sizing: border-box; -moz-box-sizing: border-box; }
