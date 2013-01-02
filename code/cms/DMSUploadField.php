@@ -167,15 +167,12 @@ class DMSUploadField extends UploadField {
 	public function Field($properties = array()) {
 		$fields = parent::Field($properties);
 
-		//replace the download template with a new one only when access the upload field through a GridField
-		$useCustomTemplate = $this->getConfig('useDMSReplaceTemplate');
-		if (!empty($useCustomTemplate)) {
-			Requirements::block(FRAMEWORK_DIR . '/javascript/UploadField_downloadtemplate.js');
-			Requirements::javascript(DMS_DIR.'/javascript/DMSUploadField_downloadtemplate.js');
-		} else {
-			//in the add dialog, add the addtemplate into the set of file that load
-			Requirements::javascript(DMS_DIR.'/javascript/DMSUploadField_addtemplate.js');
-		}
+		// Replace the download template with a new one only when access the upload field through a GridField.
+		// Needs to be enabled through setConfig('downloadTemplateName', 'ss-dmsuploadfield-downloadtemplate');
+		Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+			
+		// In the add dialog, add the addtemplate into the set of file that load.
+		Requirements::javascript('dms/javascript/DMSUploadField_addtemplate.js');
 
 		return $fields;
 	}
