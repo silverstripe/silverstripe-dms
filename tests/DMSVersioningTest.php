@@ -7,12 +7,15 @@ class DMSVersioningTest extends SapphireTest {
 	//store values to reset back to after this test runs
 	static $dmsFolderOld;
 	static $dmsFolderSizeOld;
+	static $dmsEnableVersionsOld;
 
 	function setUp() {
 		parent::setUp();
 
 		self::$dmsFolderOld = DMS::$dmsFolder;
 		self::$dmsFolderSizeOld = DMS::$dmsFolderSize;
+		self::$dmsEnableVersionsOld = DMSDocument_versions::$enable_versions;
+		DMSDocument_versions::$enable_versions = true;
 
 		//use a test DMS folder, so we don't overwrite the live one
 		DMS::$dmsFolder = 'dms-assets-test-versions';
@@ -39,6 +42,7 @@ class DMSVersioningTest extends SapphireTest {
 		//set the old DMS folder back again
 		DMS::$dmsFolder = self::$dmsFolderOld;
 		DMS::$dmsFolderSize = self::$dmsFolderSizeOld;
+		DMSDocument_versions::$enable_versions = self::$dmsEnableVersionsOld;
 	}
 
 	public function delete($path) {
