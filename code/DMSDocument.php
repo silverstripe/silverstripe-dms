@@ -374,7 +374,11 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * @return string
 	 */
 	function getFullPath() {
-		return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
+		if($this->Filename) {
+			return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;	
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -446,7 +450,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			DMSDocument_versions::create_version($this);
 		} else {    //otherwise delete the old document file
 			$oldPath = $this->getFullPath();
-			if (file_exists($oldPath)) unlink($this->getFullPath());
+			if (file_exists($oldPath)) unlink($oldPath);
 		}
 
 		copy($fromPath, $toPath);   //this will overwrite the existing file (if present)
