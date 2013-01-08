@@ -53,7 +53,9 @@ class DMSDocument_versions extends DataObject {
 
 		$existingPath = $doc->getFullPath();
 		if (is_file($existingPath)) {
-			$version = new DMSDocument_versions($doc);  //create a copy of the current DMSDocument as a version
+			$docData = $doc->toMap();
+			unset($docData['ID']);
+			$version = new DMSDocument_versions($docData);  //create a copy of the current DMSDocument as a version
 
 			$previousVersionCounter  = 0;
 			$newestExistingVersion = self::get_versions($doc)->sort(array('Created'=>'DESC','ID'=>'DESC'))->limit(1);
