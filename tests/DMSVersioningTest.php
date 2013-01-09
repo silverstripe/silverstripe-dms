@@ -25,8 +25,6 @@ class DMSVersioningTest extends SapphireTest {
 	}
 
 	function tearDown() {
-		parent::tearDown();
-
 		$d = DataObject::get("DMSDocument");
 		foreach($d as $d1) {
 			$d1->delete();
@@ -38,6 +36,8 @@ class DMSVersioningTest extends SapphireTest {
 
 		//delete the test folder after the test runs
 		$this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-versions');
+
+		parent::tearDown();
 
 		//set the old DMS folder back again
 		DMS::$dmsFolder = self::$dmsFolderOld;
