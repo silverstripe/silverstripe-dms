@@ -40,13 +40,21 @@ $gf_colour_zebra: #F0F4F7;
 
 .DMSDocumentAddController .ui-tabs{
 	ul.ui-tabs-nav{
-		border-bottom:none;
-		float: right;
-		margin: 8px 0 -1px 0;
+  	border-bottom: 1px solid #C0C0C2;
+
+		float: none;
+
 		padding: 0 24px 0 0;
+
 		li{
-			padding-bottom: 1px;
+		  float: right;
+		  margin-bottom: -1px;
 			border: 1px solid #C0C0C2;
+			&.ui-state-active{
+        padding-bottom: 1px;
+        background: black url(../../framework/admin/images/textures/bg_cms_main_content.png);
+        border: 1px solid #c0c0c2;
+			}
 			a{
 				padding: 8px 20px 8px;
 			}
