@@ -1,0 +1,35 @@
+nl:
+  AssetAdmin:
+    ALLOWEDEXTS: 'Toegestaande extensies'
+  AssetTableField:
+    CREATED: 'Eerst geupload'
+    LASTCHANGED: 'Laatste vervangen'
+    LASTEDIT: 'Laatste wijziging'
+    SIZE: 'Bestandsgrootte'
+    TYPE: 'Bestandstype'
+    URL: 'URL'
+  DMSDocument:
+    PLURALNAME: 'Documenten'
+    RelatedPages: 'Gerelateerde paginas'
+    RelatedReferences: 'Gerelateerde referenties'
+    SINGULARNAME: 'Document'
+  DMSTag:
+    PLURALNAME: 'D M S Tags'
+    SINGULARNAME: 'D M S Tag'
+  FileIFrameField:
+    ATTACHONCESAVED2: 'Bestanden kunnen worden toegevoegd na het voor het eerst opslaan'
+  GridAction:
+    DELETE_DESCRIPTION: 'Verwijderen'
+    Delete: 'Verwijderen'
+    UnlinkRelation: 'Ontkoppelen'
+  GridFieldAction_Delete:
+    DeletePermissionsFailure: 'Geen verwijder rechten'
+  UploadField:
+    ATTACHFILE: 'Voeg een bestand toe'
+    DROPFILE: 'Sleep hier een bestand'
+    FIELDNOTSET: 'Bestandsinformatie niet gevonden'
+    FROMCOMPUTER: 'Vanaf uw computer'
+    FROMCOMPUTERINFO: 'Uploaden vanaf uw computer'
+    MAXNUMBEROFFILES: 'Maximale nummer {count} van bestand(en) overschreden.'
+  DMSDocumentAddController:
+    MENUTITLE: 'Wijziging pagina'
