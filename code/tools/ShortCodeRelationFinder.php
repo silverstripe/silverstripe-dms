@@ -49,7 +49,7 @@ class ShortCodeRelationFinder {
 			}
 		}
 
-		$list->where(implode(' OR ',$where));
+		$list = $list->where(implode(' OR ', $where));
 		return $list;
 	}
 
