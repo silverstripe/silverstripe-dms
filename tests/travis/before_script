@@ -5,6 +5,8 @@ BUILD_DIR=$1
 # Fetch all dependencies
 echo "Checking out installer@$CORE_RELEASE"
 git clone --depth=100 --quiet --branch $CORE_RELEASE git://github.com/silverstripe/silverstripe-installer.git $BUILD_DIR
+echo "Checking out cms@$CORE_RELEASE"
+git clone --depth=100 --quiet --branch $CORE_RELEASE git://github.com/silverstripe/silverstripe-cms.git $BUILD_DIR/cms
 echo "Checking out framework@$CORE_RELEASE"
 git clone --depth=100 --quiet --branch $CORE_RELEASE git://github.com/silverstripe/sapphire.git $BUILD_DIR/framework
 echo "Checking out postgresql"
