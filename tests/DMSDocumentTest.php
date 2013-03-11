@@ -93,7 +93,7 @@ class DMSDocumentTest extends SapphireTest {
 
 		$s1->delete();
 
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'", false);
+		$documents = DataObject::get("DMSDocument","\"Filename\" = 'delete test file'", false);
 		$this->assertEquals(
 			$documents->Count(),
 			'1',
@@ -101,7 +101,7 @@ class DMSDocumentTest extends SapphireTest {
 		);
 
 		$s2->delete();
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$documents = DataObject::get("DMSDocument","\"Filename\" = 'delete test file'");
 		$this->assertEquals(
 			$documents->Count(),
 			'1',
@@ -111,7 +111,7 @@ class DMSDocumentTest extends SapphireTest {
 
 		$s2 = Versioned::get_one_by_stage('SiteTree', 'Live', sprintf('"SiteTree"."ID" = %d', $s2ID));
 		$s2->doDeleteFromLive();
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$documents = DataObject::get("DMSDocument","\"Filename\" = 'delete test file'");
 		$this->assertEquals(
 			$documents->Count(),
 			'0',
@@ -133,7 +133,7 @@ class DMSDocumentTest extends SapphireTest {
 		$doc->addPage($s2);
 
 		$s2->doDeleteFromLive();
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$documents = DataObject::get("DMSDocument","\"Filename\" = 'delete test file'");
 		$this->assertEquals(
 			$documents->Count(),
 			'1',
@@ -143,7 +143,7 @@ class DMSDocumentTest extends SapphireTest {
 
 		$s2 = Versioned::get_one_by_stage('SiteTree', 'Stage', sprintf('"SiteTree"."ID" = %d', $s2ID));
 		$s2->delete();
-		$documents = DataObject::get("DMSDocument","Filename = 'delete test file'");
+		$documents = DataObject::get("DMSDocument","\"Filename\" = 'delete test file'");
 		$this->assertEquals(
 			$documents->Count(),
 			'0',
