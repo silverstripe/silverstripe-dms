@@ -1,5 +1,7 @@
 # Document Management Module (DMS)
 
+[![Build Status](https://travis-ci.org/silverstripe-labs/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe-labs/silverstripe-dms)
+
 ## Overview
 
 The module adds a new `DMSDocument` model which allows management
