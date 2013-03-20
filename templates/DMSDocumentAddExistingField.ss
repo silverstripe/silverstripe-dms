@@ -42,9 +42,9 @@
 			<span class="step-label">
 				<% if useFieldContext %>
 					<span class="flyout">2</span><span class="arrow"></span>
-					<span class="title">Edit Document Details</span>
+					<strong class="title">Edit Document Details</strong>
 				<% else %>
-					<label>Selected Document</strong>
+					<label>Selected Document</label>
 				<% end_if %>
 			</span>
 		</div>
