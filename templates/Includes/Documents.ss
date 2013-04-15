@@ -1,4 +1,4 @@
 <% if Documents %>
 		<div><h3>Documents:</h3></div>
-		<% control Documents %><% include Document %><% end_control %>
+		<% loop Documents %><% include Document %><% end_loop %>
 <% end_if %>
