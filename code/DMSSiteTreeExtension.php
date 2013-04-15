@@ -70,7 +70,10 @@ class DMSSiteTreeExtension extends DataExtension {
 
 		if(class_exists('GridFieldSortableRows')) {
 			$sortableComponent = new GridFieldSortableRows('DocumentSort');
-			$sortableComponent->setUsePagination(false)->setForceRedraw(true);
+			//setUsePagenation method removed from newer version of SortableGridField.
+			if(method_exists($sortableComponent,'setUsePagination')){
+				$sortableComponent->setUsePagination(false)->setForceRedraw(true);
+			}
 			$gridFieldConfig->addComponent($sortableComponent);
 		}
 

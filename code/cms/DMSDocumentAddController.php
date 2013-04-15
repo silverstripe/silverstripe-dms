@@ -71,7 +71,7 @@ class DMSDocumentAddController extends LeftAndMain {
 		$uploadField->setTemplate('AssetUploadField');
 		$uploadField->setRecord($page);
 
-		$uploadField->getValidator()->setAllowedExtensions(array_filter(array_merge(File::$allowed_extensions,self::$allowed_extensions)));
+		$uploadField->getValidator()->setAllowedExtensions(array_filter(array_merge(Config::inst()->get('File', 'allowed_extensions'),self::$allowed_extensions)));
 		$exts = $uploadField->getValidator()->getAllowedExtensions();
 
 		asort($exts);

@@ -1,0 +1,13 @@
+---
+Name: dmsdocument
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'dmsdocument/$ID' : 'DMSDocument_Controller'
+SiteTree:
+  extensions:
+    - DMSSiteTreeExtension
+HtmlEditorField_Toolbar:
+  extensions:
+    - DocumentHtmlEditorFieldToolbar
