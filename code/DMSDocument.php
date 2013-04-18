@@ -35,6 +35,28 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	static $singular_name = 'Document';
 
 	static $plural_name = 'Documents';
+	
+	
+	public function canView($member = null) {
+		if($member == null) $member = Member::currentUser();
+		
+		if($member->ID){
+			return true;
+		}
+		
+	}
+	public function canEdit($member = null) {
+		return $this->canView();
+	}
+	public function canCreate($member = null) {
+		return $this->canView();
+	}
+	public function canDelete($member = null) {
+		return $this->canView();
+	}
+	
+	
+	
 
 	/**
 	 * Associates this document with a Page. This method does nothing if the association already exists.
