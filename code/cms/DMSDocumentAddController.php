@@ -161,10 +161,9 @@ class DMSDocumentAddController extends LeftAndMain {
 	public function documentautocomplete() {
 		$term = $_GET['term'];
 		$term_sql = Convert::raw2sql($term);
-		$data = DataList::create('DMSDocument');
-		$data->where("(\"ID\" LIKE '%$term_sql%' OR \"Filename\" LIKE '%$term_sql%' OR \"Title\" LIKE '%$term_sql%')");
-		$data->limit(20);
-		
+		$data = DMSDocument::get()
+		->where("(\"ID\" LIKE '%".$term_sql."%' OR \"Filename\" LIKE '%".$term_sql."%' OR \"Title\" LIKE '%".$term_sql."%')")
+		->limit(20);
 		$return = array();
 		foreach($data as $doc) {
 			$return[] = array(
