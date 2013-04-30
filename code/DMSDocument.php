@@ -802,6 +802,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		$file->delete();
 	}
 
+	/**
+	 * Get Content For FullTextSearch module (using Solr) */
+	function getContent() {
+		if (class_exists('FileTextExtractor')) {
+			// Determine which extractor can process this file.
+			$extractor = FileTextExtractor::for_file($this->owner->FullPath);
+			if (!$extractor) return null;
+
+			$text = $extractor->getContent($this->owner->FullPath);
+			return $text;
+		}
+	}
+
 }
 
 class DMSDocument_Controller extends Controller {
@@ -942,19 +955,6 @@ class DMSDocument_Controller extends Controller {
 			if ($errorPage) $linkText = $errorPage->Link();
 		}
 		return $linkText;
-	}
-
-	/**
-	 * Get Content For FullTextSearch module (using Solr) */
-	function getContent() {
-		if (class_exists('FileTextExtractor')) {
-			// Determine which extractor can process this file.
-			$extractor = FileTextExtractor::for_file($this->owner->FullPath);
-			if (!$extractor) return null;
-
-			$text = $extractor->getContent($this->owner->FullPath);
-			return $text;
-		}
 	}
 
 }
