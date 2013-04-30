@@ -944,5 +944,18 @@ class DMSDocument_Controller extends Controller {
 		return $linkText;
 	}
 
+	/**
+	 * Get Content For FullTextSearch module (using Solr) */
+	function getContent() {
+		if (class_exists('FileTextExtractor')) {
+			// Determine which extractor can process this file.
+			$extractor = FileTextExtractor::for_file($this->owner->FullPath);
+			if (!$extractor) return null;
+
+			$text = $extractor->getContent($this->owner->FullPath);
+			return $text;
+		}
+	}
+
 }
 
