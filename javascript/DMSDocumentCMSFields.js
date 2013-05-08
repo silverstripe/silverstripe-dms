@@ -53,6 +53,7 @@
 			onchange: function() {
 				//selected the date options
 				if (this.attr('value') === 'Date') {
+					$('.embargoDatetime').children().show();
 					$('.embargoDatetime').show();
 				} else {
 					$('.embargoDatetime').hide();
@@ -64,6 +65,7 @@
 			onchange: function() {
 				//selected the date options
 				if (this.attr('value') === 'Date') {
+					$('.expiryDatetime').children().show();
 					$('.expiryDatetime').show();
 				} else {
 					$('.expiryDatetime').hide();
