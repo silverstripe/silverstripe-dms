@@ -13,6 +13,9 @@
  * @package dms
  */
 class DMSUploadField extends UploadField {
+	private static $allowed_actions = array (
+        "upload",
+	);
 
 	protected $folderName = 'DMSTemporaryUploads';
 
