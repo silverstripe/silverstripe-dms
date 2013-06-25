@@ -9,6 +9,10 @@ class DMSDocumentAddController extends LeftAndMain {
 	public static $tree_class = 'SiteTree';
 	static $allowed_extensions = array();
 
+	private static $allowed_actions = array (
+        "getEditForm",
+	);
+
 	/**
 	 * Add an array of additional allowed extensions
 	 * @static
