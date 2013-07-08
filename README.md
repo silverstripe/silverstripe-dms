@@ -116,3 +116,17 @@ Note: Both operations copy the existing file.
 	$doc->removeTag('category', 'keyboard'); 
 	$doc->removeTag('category', 'input device'); 
 	$doc->removeAllTags();
+
+## Contributing
+
+### Translations
+
+Translations of the natural language strings are managed through a
+third party translation interface, transifex.com.
+Newly added strings will be periodically uploaded there for translation,
+and any new translations will be merged back to the project source code.
+
+Please use [https://www.transifex.com/projects/p/silverstripe-dms/](https://www.transifex.com/projects/p/silverstripe-dms/) to contribute translations,
+rather than sending pull requests with YAML files.
+
+See the ["i18n" topic](http://doc.silverstripe.org/framework/en/trunk/topics/i18n) on doc.silverstripe.org for more details.
