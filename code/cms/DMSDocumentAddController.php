@@ -2,11 +2,11 @@
 
 class DMSDocumentAddController extends LeftAndMain {
 
-	static $url_segment = 'pages/adddocument';
-	static $url_priority = 60;
-	static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
-	static $menu_title = 'Edit Page';
-	public static $tree_class = 'SiteTree';
+	private static $url_segment = 'pages/adddocument';
+	private static $url_priority = 60;
+	private static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
+	private static $menu_title = 'Edit Page';
+	private static $tree_class = 'SiteTree';
 	static $allowed_extensions = array();
 
 	private static $allowed_actions = array (
