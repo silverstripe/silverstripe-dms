@@ -41,6 +41,7 @@
 					var attributes = {
 						href : href,
 						target : target,
+						class : 'documentLink',
 						title : this.find('.selected-document').text()  //title is the text of the selected document
 					};
 
