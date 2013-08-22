@@ -1,6 +1,6 @@
 <?php
 class DMSDocument extends DataObject implements DMSDocumentInterface {
-	static $db = array(
+	private static $db = array(
 		"Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
 		"Folder" => "Varchar(255)",	// eg.	0
 		"Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
@@ -14,27 +14,27 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		"ExpireAtDate" => 'SS_DateTime'
 	);
 
-	static $many_many = array(
+	private static $many_many = array(
 		'Pages' => 'SiteTree',
 		'Tags' => 'DMSTag'
 	);
 
-	static $many_many_extraFields = array(
+	private static $many_many_extraFields = array(
 		'Pages' => array(
 			'DocumentSort' => 'Int'
 		),
 	);
 
-	static $display_fields = array(
+	private static $display_fields = array(
 		'ID'=>'ID',
 		'Title'=>'Title',
 		'FilenameWithoutID'=>'Filename',
 		'LastChanged'=>'LastChanged'
 	);
 
-	static $singular_name = 'Document';
+	private static $singular_name = 'Document';
 
-	static $plural_name = 'Documents';
+	private static $plural_name = 'Documents';
 	
 	
 	public function canView($member = null) {
