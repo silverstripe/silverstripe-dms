@@ -1,12 +1,12 @@
 <?php
 class DMSSiteTreeExtension extends DataExtension {
 
-	static $belongs_many_many = array(
+	private static $belongs_many_many = array(
 		'Documents' => 'DMSDocument'
 	);
 
-	static $noDocumentsList = array();
-	static $showDocumentsList = array();
+	private static $noDocumentsList = array();
+	private static $showDocumentsList = array();
 
 	/**
 	 * Do not show the documents tab on the array of pages set here

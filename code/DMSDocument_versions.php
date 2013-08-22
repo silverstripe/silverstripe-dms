@@ -6,37 +6,37 @@
  */
 class DMSDocument_versions extends DataObject {
 
-	static $enable_versions = true;   //flag that turns on or off versions of documents when replacing them
+	public static $enable_versions = true;   //flag that turns on or off versions of documents when replacing them
 
-	static $db = array(
+	private static $db = array(
 		'VersionCounter' => 'Int',
 		'VersionViewCount' => 'Int'
 	); //config system call in _config creates this to mirror DMSDocument
 
-	static $has_one = array(
+	private static $has_one = array(
 		'Document' => 'DMSDocument' //ID of the original DMSDocument object this is a version of
 	);
 
-	static $defaults = array(
+	private static $defaults = array(
 		'VersionCounter' => 0
 	);
 
-	static $display_fields = array(
+	private static $display_fields = array(
 		'VersionCounter' => 'Version Counter',
 		'FilenameWithoutID' => 'Filename',
 		'LastChanged' => 'Last Changed'
 	);
 
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'VersionCounter',
 		'FilenameWithoutID'
 	);
 
-	static $field_labels = array(
+	private static $field_labels = array(
 		'FilenameWithoutID'=>'Filename'
 	);
 
-	static $default_sort = array(
+	private static $default_sort = array(
 		'LastChanged' => 'DESC'
 	);
 
