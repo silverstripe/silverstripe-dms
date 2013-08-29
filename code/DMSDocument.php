@@ -923,24 +923,25 @@ class DMSDocument_Controller extends Controller {
 	 */
 	public static function dms_link_shortcode_handler($arguments, $content = null, $parser = null) {
 		$linkText = null;
-		if(isset($arguments['id']) && is_numeric($arguments['id'])) {
-			// get the document object
-			$document = DataObject::get_by_id('DMSDocument', Convert::raw2sql($arguments['id']));
+
+		if (!empty($arguments['id'])) {
+			$document = DMSDocument::get()->filter(array('ID' => $arguments['id']))->First();
 			if ($document && !$document->isHidden()) {
-				if( $content ) {
+				if (!empty($content)) {
 					$linkText = sprintf('<a href="%s">%s</a>', $document->Link(), $parser->parse($content));
 				} else {
-					$extension = $document->getExtension();
-					$size = "data:{size:'{$document->getFileSizeFormatted()}'}";
-					$linkText = $document->getLink()."\" class=\"$size documentLink $extension";
+					$linkText = $document->Link();
 				}
 			}
 		}
 
-		if (!$linkText) {
-			$errorPage = DataObject::get_one('ErrorPage', '"ErrorCode" = \'404\'');
-			if ($errorPage) $linkText = $errorPage->Link();
+		if (empty($linkText)) {
+			$errorPage = ErrorPage::get()->filter(array('ErrorCode' => '404'))->First();
+			if ($errorPage) {
+				$linkText = $errorPage->Link();
+			}
 		}
+		
 		return $linkText;
 	}
 
