@@ -4,7 +4,7 @@
  * Custom ItemRequest class the provides custom delete behaviour for the CMSFields of DMSDocument
  */
 class DMSGridFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
-
+	private static $allowed_actions = array('ItemEditForm');
 
 	function ItemEditForm() {
 		$form = parent::ItemEditForm();
