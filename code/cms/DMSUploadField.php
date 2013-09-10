@@ -57,6 +57,15 @@ class DMSUploadField extends UploadField {
 		return true;
 	}
 
+
+	public function isDisabled() {
+		return (parent::isDisabled() || !$this->isSaveable());
+	}
+
+	public function isSaveable() {
+		return (!empty($this->getRecord()->ID));
+	}
+
 	/**
 	 * Action to handle upload of a single file
 	 * 
