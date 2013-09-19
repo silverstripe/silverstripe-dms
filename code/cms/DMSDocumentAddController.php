@@ -10,7 +10,8 @@ class DMSDocumentAddController extends LeftAndMain {
 	static $allowed_extensions = array();
 
 	private static $allowed_actions = array (
-        "getEditForm",
+		'getEditForm',
+		'documentautocomplete',
 	);
 
 	/**
