@@ -804,7 +804,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 }
 
-class DMSDocument_Controller extends Controller {
+class DMSDocument_Controller extends ContentController {
 
 	static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
 
