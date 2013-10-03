@@ -808,7 +808,7 @@ class DMSDocument_Controller extends Controller {
 
 	static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
 
-	static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'index'
 	);
 
