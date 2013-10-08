@@ -7,6 +7,8 @@ class DMSDocumentAddController extends LeftAndMain {
 	private static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
 	private static $menu_title = 'Edit Page';
 	private static $tree_class = 'SiteTree';
+	private static $session_namespace = 'CMSMain';
+
 	static $allowed_extensions = array();
 
 	private static $allowed_actions = array (
@@ -44,15 +46,7 @@ class DMSDocumentAddController extends LeftAndMain {
 	 * Return fake-ID "root" if no ID is found (needed to upload files into the root-folder)
 	 */
 	public function currentPageID() {
-		if(is_numeric($this->request->requestVar('ID')))	{
-			return $this->request->requestVar('ID');
-		} elseif (is_numeric($this->urlParams['ID'])) {
-			return $this->urlParams['ID'];
-		} elseif(Session::get("{$this->class}.currentPage")) {
-			return Session::get("{$this->class}.currentPage");
-		} else {
-			return 0;
-		}
+		return ($result = parent::currentPageID()) === null ? 0 : $result;
 	}
 
 	/**
