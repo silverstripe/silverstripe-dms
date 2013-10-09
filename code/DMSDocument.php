@@ -916,34 +916,5 @@ class DMSDocument_Controller extends ContentController {
 		$this->httpError(404, 'This asset does not exist.');
 	}
 
-
-	/**
-	 * Handles dms_document_link shortcode
-	 * @return string
-	 */
-	public static function dms_link_shortcode_handler($arguments, $content = null, $parser = null) {
-		$linkText = null;
-
-		if (!empty($arguments['id'])) {
-			$document = DMSDocument::get()->filter(array('ID' => $arguments['id']))->First();
-			if ($document && !$document->isHidden()) {
-				if (!empty($content)) {
-					$linkText = sprintf('<a href="%s">%s</a>', $document->Link(), $parser->parse($content));
-				} else {
-					$linkText = $document->Link();
-				}
-			}
-		}
-
-		if (empty($linkText)) {
-			$errorPage = ErrorPage::get()->filter(array('ErrorCode' => '404'))->First();
-			if ($errorPage) {
-				$linkText = $errorPage->Link();
-			}
-		}
-		
-		return $linkText;
-	}
-
 }
 
