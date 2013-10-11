@@ -804,13 +804,18 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 }
 
-class DMSDocument_Controller extends ContentController {
+class DMSDocument_Controller extends Controller {
 
 	static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
 
 	private static $allowed_actions = array(
 		'index'
 	);
+
+	public function init() {
+		Versioned::choose_site_stage();
+		parent::init();
+	}
 
 	/**
 	 * Returns the document object from the request object's ID parameter.
