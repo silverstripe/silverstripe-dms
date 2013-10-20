@@ -13,6 +13,7 @@ en:
     RelatedPages: 'Related Pages'
     RelatedReferences: 'Related References'
     SINGULARNAME: Document
+    Versions: Versions
   DMSTag:
     PLURALNAME: 'D M S Tags'
     SINGULARNAME: 'D M S Tag'
@@ -33,3 +34,6 @@ en:
     MAXNUMBEROFFILES: 'Max number of {count} file(s) exceeded.'
   DMSDocumentAddController:
     MENUTITLE: 'Edit Page'
+  DMSDocument_versions:
+    PLURALNAME: 'D M S Document_versionss'
+    SINGULARNAME: 'D M S Document_versions'
