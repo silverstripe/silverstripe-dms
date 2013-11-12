@@ -35,17 +35,22 @@
 
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
+
+				console.log('LI CLICKED');
+
 				//add active state to the current button
 				$('#Actions ul li').removeClass('dms-active');
 				this.addClass('dms-active');
 				//$('li.dms-active').append('<span class="arrow"></span>');
 
 				//hide all inner field sections
-				var panel = $('#ActionsPanel');
-				panel.find('div.fieldgroup-field').hide();
+				var panel = $('.ActionsPanel:first');
+				panel.find('div.fieldgroup').hide();
 
 				//show the correct group of controls
-				panel.find('.'+this.data('panel')).closest('div.fieldgroup-field').show();
+				//panel.find('.'+this.data('panel')).closest('div.fieldgroup').show();
+				panel.find('.'+this.data('panel')).show();
+
 			}
 		});
 
@@ -73,7 +78,7 @@
 			}
 		});
 
-		$('#ActionsPanel').entwine({
+		$('.ActionsPanel').entwine({
 			onadd: function() {
 				//do an initial show of the entire panel
 				this.show();

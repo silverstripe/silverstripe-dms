@@ -1,4 +1,5 @@
 @import "compass/css3";
+
 @import '_mixins';
 
 $color-button-generic: #e6e6e6 !default;
@@ -63,20 +64,31 @@ form.small .field .TreeDropdownField,
 	}
 }
 
-#ActionsPanel{
-	.middleColumn{
+.ActionsPanel{
+
+	/*.middleColumn{
 		margin-left:184px;
 		width: 510px;
 		form.small &{
 			margin-left: 120px;
 		}
 	}
-	label.fieldholder-small-label{
+	*/
+
+	/*label.fieldholder-small-label{
 		display: none;
-	}
-	.fieldgroup-field{
+	}*/
+
+
+	.fieldgroup {
+		display: none;
 		float:none;
 		width:auto;
+		background: #f8f8f8;
+		padding: 15px;
+		border: 1px solid #d0d3d5;
+		@include border-radius(5px);
+
  		.fieldholder-small{
 			label{
 				float:none;
@@ -129,6 +141,14 @@ form.small .field .TreeDropdownField,
 			}
 		}
 	}
+
+	#Embargo {
+		border: none;
+		box-shadow: none;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+	}
+
 	.ss-uploadfield-files{
 		.ss-uploadfield-item-preview{
 			background: url('../images/app_icons/generic_32.png') -10px -6px no-repeat;

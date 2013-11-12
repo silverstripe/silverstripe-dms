@@ -612,6 +612,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			//new GridFieldEditButton(),
 			new GridFieldDetailForm()
 		);
+
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')
 			->setDisplayFields(array(
 				'Title'=>'Title',
@@ -624,6 +625,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 					singleton('CMSPageEditController')->Link('show')
 				)
 			));
+
 		$pagesGrid = GridField::create(
 			'Pages',
 			_t('DMSDocument.RelatedPages', 'Related Pages'),
@@ -656,7 +658,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$versionsGridFieldConfig
 			);
 			$extraTasks .= '<li class="ss-ui-button" data-panel="find-versions">Versions</li>';
-			$extraFields = $versionsGrid->addExtraClass('find-versions');
+			//$extraFields = $versionsGrid->addExtraClass('find-versions');
 		}
 
 		$fields->add(new LiteralField('BottomTaskSelection',
@@ -686,20 +688,57 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		// This adds all the actions details into a group.
 		// Embargo, History, etc to go in here
 		// These are toggled on and off via the Actions Buttons above
-		$fields->add(FieldGroup::create(
-				FieldGroup::create(
-					$embargo,
-					$embargoDatetime
-				)->addExtraClass('embargo'),
-				FieldGroup::create(
-					$expiry,
-					$expiryDatetime
-				)->addExtraClass('expiry'),
-				$uploadField->addExtraClass('replace'),
-				$pagesGrid->addExtraClass('find-usage'),
-				$referencesGrid->addExtraClass('find-references'),
-				$extraFields
-		)->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
+		// exit('hit');
+		$actionsPanel = FieldGroup::create(
+
+			FieldGroup::create(
+				$embargo,
+				$embargoDatetime
+			)->addExtraClass('embargo'),
+
+			FieldGroup::create(
+				$expiry,
+				$expiryDatetime
+			)->addExtraClass('expiry'),
+
+			FieldGroup::create(
+				$uploadField
+			)->addExtraClass('replace'),
+
+			FieldGroup::create(
+				$pagesGrid
+			)->addExtraClass('find-usage'),
+
+			FieldGroup::create(
+				$referencesGrid
+			)->addExtraClass('find-references'),
+
+			FieldGroup::create(
+				$versionsGrid
+			)->addExtraClass('find-versions')
+
+		);
+
+		$actionsPanel->setName("ActionsPanel");
+		$actionsPanel->addExtraClass("ActionsPanel");
+
+		$fields->push($actionsPanel);
+
+		// $fields->add(FieldGroup::create(
+		// 		FieldGroup::create(
+		// 			$embargo,
+		// 			$embargoDatetime
+		// 		)->addExtraClass('embargo'),
+		// 		FieldGroup::create(
+		// 			$expiry,
+		// 			$expiryDatetime
+		// 		)->addExtraClass('expiry'),
+		// 		$uploadField->addExtraClass('replace'),
+		// 		$pagesGrid->addExtraClass('find-usage'),
+		// 		$referencesGrid->addExtraClass('find-references'),
+		// 		$extraFields
+		// )->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
+
 
 		$this->extend('updateCMSFields', $fields);
 

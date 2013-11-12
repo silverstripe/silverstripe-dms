@@ -13,7 +13,7 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 #DocumentTypeID .middleColumn ul li { display: table; padding: 0; width: 125px; height: 40px; white-space: normal; margin-right: -1px; border-radius: 0; }
 #DocumentTypeID .middleColumn ul li:first-child { border-radius: 6px 0 0 6px; border-left: 1px solid #C0C0C2; }
 #DocumentTypeID .middleColumn ul li:last-child { border-radius: 0 6px 6px 0; }
-#DocumentTypeID .middleColumn ul li.selected, .ie8 #DocumentTypeID .middleColumn ul li.selected { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: -ms-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); background-color: silver; filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */ box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
+#DocumentTypeID .middleColumn ul li.selected, .ie8 #DocumentTypeID .middleColumn ul li.selected { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); background-color: silver; filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */ box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
 #DocumentTypeID .middleColumn ul li.selected :after, .ie8 #DocumentTypeID .middleColumn ul li.selected :after { box-shadow: 0 1px 1px 0 #DDD; }
 #DocumentTypeID .middleColumn ul li label { display: table-cell; vertical-align: middle; text-align: center; padding: 0 10px; }
 
@@ -21,28 +21,36 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 #Actions li { margin-left: 2px; }
 #Actions li:first-child { margin-left: 0; }
 #Actions li.delete-button-appended { display: inline-block; position: relative; margin-left: 0; }
-#Actions li.dms-active { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: -ms-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); background-color: silver; filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */ box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
+#Actions li.dms-active { border-bottom: 1px solid #C0C0C2; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0c0c0), color-stop(100%, #e6e6e6)); background: -webkit-linear-gradient(#c0c0c0, #e6e6e6); background: -moz-linear-gradient(#c0c0c0, #e6e6e6); background: -o-linear-gradient(#c0c0c0, #e6e6e6); background: linear-gradient(#c0c0c0, #e6e6e6); background-color: silver; filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6'); /* IE6 & IE7 */ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#C0C0C2', endColorstr='#E6E6E6')"; /* IE8 */ box-shadow: 0 1px 1px 0 #A0A0A0 inset; }
 #Actions li.dms-active:after { content: ''; display: block; position: absolute; top: 33px; left: 50%; margin-left: -6px; width: 12px; height: 12px; background: #F8F8F8; border-right: 1px solid #B3B3B3; border-top: 1px solid #B3B3B3; -moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); pointer-events: none; z-index: 10; }
 
-#ActionsPanel .middleColumn { margin-left: 184px; width: 510px; }
-form.small #ActionsPanel .middleColumn { margin-left: 120px; }
-#ActionsPanel label.fieldholder-small-label { display: none; }
-#ActionsPanel .fieldgroup-field { float: none; width: auto; }
-#ActionsPanel .fieldgroup-field .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
-#ActionsPanel .fieldgroup-field .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
-#ActionsPanel .fieldgroup-field .embargo li, #ActionsPanel .fieldgroup-field .expiry li { float: none; width: 100%; margin-left: 8px; }
-#ActionsPanel .fieldgroup-field .embargo li label, #ActionsPanel .fieldgroup-field .expiry li label { padding-left: 10px; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime { margin-top: 0; margin-left: 34px; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.date, #ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.time, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.date, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.time, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.date, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.time, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.date, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.time { display: inline-block; width: auto; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.date .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.date .middleColumn { background: url("../images/calendar-month.png") 90px 7px no-repeat; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .field.time .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .field.time .middleColumn { background: url("../images/clock-frame.png") 90px 7px no-repeat; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .middleColumn, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .middleColumn, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .middleColumn, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .middleColumn { margin-left: 0; width: auto; border: none; }
-#ActionsPanel .fieldgroup-field .embargo .embargoDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .embargo .expiryDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .expiry .embargoDatetime .middleColumn input, #ActionsPanel .fieldgroup-field .expiry .expiryDatetime .middleColumn input { width: 80px; margin-right: 40px; }
-#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-preview { background: url("../images/app_icons/generic_32.png") -10px -6px no-repeat; }
-#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-name span.name { width: 260px; }
-#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel { width: auto; text-indent: 0; }
-#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight { background-position: 0 -128px; display: inline-block; }
-#ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text { display: block; position: relative; float: right; color: #555; padding: 0; padding-left: 2em; }
+.ActionsPanel { /*.middleColumn{
+	margin-left:184px;
+	width: 510px;
+	form.small &{
+		margin-left: 120px;
+	}
+}
+*/ /*label.fieldholder-small-label{
+	display: none;
+}*/ }
+.ActionsPanel .fieldgroup { display: none; float: none; width: auto; background: #f8f8f8; padding: 15px; border: 1px solid #d0d3d5; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+.ActionsPanel .fieldgroup .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
+.ActionsPanel .fieldgroup .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
+.ActionsPanel .fieldgroup .embargo li, .ActionsPanel .fieldgroup .expiry li { float: none; width: 100%; margin-left: 8px; }
+.ActionsPanel .fieldgroup .embargo li label, .ActionsPanel .fieldgroup .expiry li label { padding-left: 10px; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime, .ActionsPanel .fieldgroup .embargo .expiryDatetime, .ActionsPanel .fieldgroup .expiry .embargoDatetime, .ActionsPanel .fieldgroup .expiry .expiryDatetime { margin-top: 0; margin-left: 34px; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime .field.date, .ActionsPanel .fieldgroup .embargo .embargoDatetime .field.time, .ActionsPanel .fieldgroup .embargo .expiryDatetime .field.date, .ActionsPanel .fieldgroup .embargo .expiryDatetime .field.time, .ActionsPanel .fieldgroup .expiry .embargoDatetime .field.date, .ActionsPanel .fieldgroup .expiry .embargoDatetime .field.time, .ActionsPanel .fieldgroup .expiry .expiryDatetime .field.date, .ActionsPanel .fieldgroup .expiry .expiryDatetime .field.time { display: inline-block; width: auto; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime .field.date .middleColumn, .ActionsPanel .fieldgroup .embargo .expiryDatetime .field.date .middleColumn, .ActionsPanel .fieldgroup .expiry .embargoDatetime .field.date .middleColumn, .ActionsPanel .fieldgroup .expiry .expiryDatetime .field.date .middleColumn { background: url("../images/calendar-month.png") 90px 7px no-repeat; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime .field.time .middleColumn, .ActionsPanel .fieldgroup .embargo .expiryDatetime .field.time .middleColumn, .ActionsPanel .fieldgroup .expiry .embargoDatetime .field.time .middleColumn, .ActionsPanel .fieldgroup .expiry .expiryDatetime .field.time .middleColumn { background: url("../images/clock-frame.png") 90px 7px no-repeat; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime .middleColumn, .ActionsPanel .fieldgroup .embargo .expiryDatetime .middleColumn, .ActionsPanel .fieldgroup .expiry .embargoDatetime .middleColumn, .ActionsPanel .fieldgroup .expiry .expiryDatetime .middleColumn { margin-left: 0; width: auto; border: none; }
+.ActionsPanel .fieldgroup .embargo .embargoDatetime .middleColumn input, .ActionsPanel .fieldgroup .embargo .expiryDatetime .middleColumn input, .ActionsPanel .fieldgroup .expiry .embargoDatetime .middleColumn input, .ActionsPanel .fieldgroup .expiry .expiryDatetime .middleColumn input { width: 80px; margin-right: 40px; }
+.ActionsPanel #Embargo { border: none; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
+.ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-preview { background: url("../images/app_icons/generic_32.png") -10px -6px no-repeat; }
+.ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-name span.name { width: 260px; }
+.ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel { width: auto; text-indent: 0; }
+.ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight { background-position: 0 -128px; display: inline-block; }
+.ActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text { display: block; position: relative; float: right; color: #555; padding: 0; padding-left: 2em; }
 
 #Form_ItemEditForm fieldset table.ss-gridfield-table { width: 494px; }
 #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main { min-width: 175px; }
