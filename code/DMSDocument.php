@@ -38,21 +38,31 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	
 	
 	public function canView($member = null) {
+		$canView = false;
 		if($member == null) $member = Member::currentUser();
 		
 		if($member->ID){
-			return true;
+			$canView = true;
 		}
+
+		$this->extend('canView', $canView);
+		return $canView;
 		
 	}
 	public function canEdit($member = null) {
-		return $this->canView();
+		$canEdit = $this->canView();
+		$this->extend('canEdit', $canEdit);
+		return $canEdit;
 	}
 	public function canCreate($member = null) {
-		return $this->canView();
+		$canCreate = $this->canView();
+		$this->extend('canCreate', $canCreate);
+		return $canCreate;
 	}
 	public function canDelete($member = null) {
-		return $this->canView();
+		$canDelete = $this->canView();
+		$this->extend('canDelete', $canDelete);
+		return $canDelete;
 	}
 	
 	
