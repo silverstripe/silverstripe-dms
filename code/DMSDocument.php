@@ -38,31 +38,48 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	
 	
 	public function canView($member = null) {
-		$canView = false;
-		if($member == null) $member = Member::currentUser();
-		
-		if($member->ID){
-			$canView = true;
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
+		// extended access checks
+		$results = $this->extend('canView', $member);
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
 		}
 
-		$this->extend('canView', $canView);
-		return $canView;
-		
+		if($member->ID){
+			return true;
+		}
+		return false;
+
 	}
 	public function canEdit($member = null) {
-		$canEdit = $this->canView();
-		$this->extend('canEdit', $canEdit);
-		return $canEdit;
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
+
+		$results = $this->extend('canEdit', $member);
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
 	}
 	public function canCreate($member = null) {
-		$canCreate = $this->canView();
-		$this->extend('canCreate', $canCreate);
-		return $canCreate;
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
+
+		$results = $this->extend('canCreate', $member);
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
 	}
 	public function canDelete($member = null) {
-		$canDelete = $this->canView();
-		$this->extend('canDelete', $canDelete);
-		return $canDelete;
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
+
+		$results = $this->extend('canDelete', $member);
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
 	}
 	
 	
