@@ -45,7 +45,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			if(!min($results)) return false;
 		}
 
-		if($member->ID){
+		if($member && $member->ID){
 			return true;
 		}
 		return false;
