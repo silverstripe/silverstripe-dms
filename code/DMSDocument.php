@@ -430,6 +430,18 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		}
 	}
 
+	function getFileName() {
+		if($this->getField('Filename')) {
+			return $this->getField('Filename');
+		} else {
+			return ASSETS_DIR . '/';
+		}
+	}
+
+	function getName() {
+		return $this->getField('Title');
+	}
+
 	/**
 	 * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument. Also calls the
 	 * parent DataObject's delete method.
