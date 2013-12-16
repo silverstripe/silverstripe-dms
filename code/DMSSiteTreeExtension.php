@@ -53,7 +53,8 @@ class DMSSiteTreeExtension extends DataExtension {
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldToolbarHeader(),
 			new GridFieldFilterHeader(),
-			new GridFieldSortableHeader(),
+			//new GridFieldSortableHeader(),
+			new GridFieldOrderableRows('DocumentSort'),
 			new GridFieldDataColumns(),
 			new GridFieldEditButton(),
 			new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
