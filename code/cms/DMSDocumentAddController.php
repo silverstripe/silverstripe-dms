@@ -30,12 +30,16 @@ class DMSDocumentAddController extends LeftAndMain {
 
 	/**
 	 * Custom currentPage() method to handle opening the 'root' folder
+	 *
+	 * @return
 	 */
 	public function currentPage() {
 		$id = $this->currentPageID();
 
 		if($id && is_numeric($id) && $id > 0) {
-			return DataObject::get_by_id('SiteTree', $id);
+			return Versioned::get_by_stage('SiteTree', 'Stage', sprintf(
+				'ID = %s', (int) $id
+			))->first();
 		} else {
 			// ID is either '0' or 'root'
 			return singleton('SiteTree');
@@ -59,7 +63,6 @@ class DMSDocumentAddController extends LeftAndMain {
 		Requirements::css(DMS_DIR.'/css/DMSMainCMS.css');
 
 		$page = $this->currentPage();
-
 		$uploadField = DMSUploadField::create('AssetUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);
