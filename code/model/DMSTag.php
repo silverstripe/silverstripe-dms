@@ -1,6 +1,9 @@
 <?php
+
 /**
  * Hold a set of metadata category/value tags associated with a DMSDocument
+ *
+ * @package dms
  */
 class DMSTag extends DataObject {
 

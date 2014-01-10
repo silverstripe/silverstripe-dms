@@ -1,7 +1,10 @@
 <?php
+
 /**
  * Handles replacing `dms_document_link` shortcodes with links to the actual
  * document.
+ *
+ * @package dms
  */
 class DMSShortcodeHandler {
 

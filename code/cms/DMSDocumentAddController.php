@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @package dms
+ */
+
 class DMSDocumentAddController extends LeftAndMain {
 
 	private static $url_segment = 'pages/adddocument';

@@ -100,18 +100,6 @@ interface DMSDocumentInterface {
 	function removeAllTags();
 
 	/**
-	 * Returns a multi-dimensional array containing all Tags associated with this DMSDocument. The array has the
-	 * following structure:
-	 * $twoDimensionalArray = new array(
-     *      array('fruit','banana'),
-     *      array('fruit','apple')
-     * );
-	 * @abstract
-	 * @return array Multi-dimensional array of tags
-	 */
-	function getAllTags();
-
-	/**
 	 * Returns a link to download this DMSDocument from the DMS store
 	 * @abstract
 	 * @return String

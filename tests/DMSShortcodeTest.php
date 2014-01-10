@@ -1,6 +1,9 @@
 <?php
 /**
  * Tests DMS shortcode linking functionality.
+ *
+ * @package dms
+ * @subpackage tests
  */
 class DMSShortcodeTest extends SapphireTest {
 
@@ -9,7 +12,7 @@ class DMSShortcodeTest extends SapphireTest {
 		$document = DMS::inst()->storeDocument($file);
 
 		$result = ShortcodeParser::get('default')->parse(sprintf(
-			'<p><a href="[dms_document_link,id=\'%d\']">Document</a></p>', $document->ID
+			'<p><a href="[dms_document_link id=\'%d\']">Document</a></p>', $document->ID
 		));
 
 		$value = Injector::inst()->create('HTMLValue', $result);

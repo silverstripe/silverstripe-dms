@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @package dms
+ */
 class DMSSiteTreeExtension extends DataExtension {
 
 	private static $belongs_many_many = array(
@@ -6,6 +10,7 @@ class DMSSiteTreeExtension extends DataExtension {
 	);
 
 	private static $noDocumentsList = array();
+
 	private static $showDocumentsList = array();
 
 	/**
@@ -82,27 +87,27 @@ class DMSSiteTreeExtension extends DataExtension {
 		singleton('DMSDocument');
 		$gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
 			->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
- 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
+			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
 
 		//override delete functionality with this class
 		$gridFieldConfig->getComponentByType('GridFieldDetailForm')->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
 
 		$gridField = GridField::create(
-			'Documents', 
-			false, 
+			'Documents',
+			false,
 			$this->owner->Documents()->Sort('DocumentSort'),
 			$gridFieldConfig
 		);
 		$gridField->addExtraClass('documents');
 
 		$uploadBtn = new LiteralField(
-			'UploadButton', 
+			'UploadButton',
 			sprintf(
 				'<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content" data-icon="add" href="%s">%s</a>',
 				Controller::join_links(singleton('DMSDocumentAddController')->Link(), '?ID=' . $this->owner->ID),
 				"Add Documents"
 			)
-		);	
+		);
 
 		$fields->addFieldsToTab(
 			'Root.Documents (' . $this->owner->Documents()->Count() . ')',
@@ -122,7 +127,7 @@ class DMSSiteTreeExtension extends DataExtension {
 
 	function onBeforeDelete() {
 		if(Versioned::current_stage() == 'Live') {
-			$existsOnOtherStage = !$this->owner->getIsDeletedFromStage();			
+			$existsOnOtherStage = !$this->owner->getIsDeletedFromStage();
 		} else {
 			$existsOnOtherStage = $this->owner->getExistsOnLive();
 		}

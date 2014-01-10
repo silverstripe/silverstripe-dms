@@ -1,5 +1,10 @@
 <?php
+
+/**
+ * @package dms
+ */
 class DMSDocument extends DataObject implements DMSDocumentInterface {
+
 	private static $db = array(
 		"Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
 		"Folder" => "Varchar(255)",	// eg.	0
@@ -22,25 +27,33 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	private static $many_many_extraFields = array(
 		'Pages' => array(
 			'DocumentSort' => 'Int'
-		),
+		)
 	);
 
 	private static $display_fields = array(
-		'ID'=>'ID',
-		'Title'=>'Title',
-		'FilenameWithoutID'=>'Filename',
-		'LastChanged'=>'LastChanged'
+		'ID' => 'ID',
+		'Title' => 'Title',
+		'FilenameWithoutID' => 'Filename',
+		'LastChanged' => 'LastChanged'
 	);
 
 	private static $singular_name = 'Document';
 
 	private static $plural_name = 'Documents';
-	
-	
+
+	/**
+	 * @param Member $member
+	 *
+	 * @return boolean
+	 */
 	public function canView($member = null) {
-		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+			$member = Member::currentUser();
+		}
+
 		// extended access checks
 		$results = $this->extend('canView', $member);
+
 		if($results && is_array($results)) {
 			if(!min($results)) return false;
 		}
@@ -48,126 +61,197 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		if($member && $member->ID){
 			return true;
 		}
+
 		return false;
-
 	}
-	public function canEdit($member = null) {
-		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
-
-		$results = $this->extend('canEdit', $member);
-		if($results && is_array($results)) {
-			if(!min($results)) return false;
-		}
-
-		return $this->canView();
-	}
-	public function canCreate($member = null) {
-		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
-
-		$results = $this->extend('canCreate', $member);
-		if($results && is_array($results)) {
-			if(!min($results)) return false;
-		}
-
-		return $this->canView();
-	}
-	public function canDelete($member = null) {
-		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) $member = Member::currentUser();
-
-		$results = $this->extend('canDelete', $member);
-		if($results && is_array($results)) {
-			if(!min($results)) return false;
-		}
-
-		return $this->canView();
-	}
-	
-	
-	
 
 	/**
-	 * Associates this document with a Page. This method does nothing if the association already exists.
-	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to add a many_many relation
-	 * @param $pageObject Page object to associate this Document with
-	 * @return null
+	 * @param Member $member
+	 *
+	 * @return boolean
 	 */
-	function addPage($pageObject) {
+	public function canEdit($member = null) {
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+			$member = Member::currentUser();
+		}
+
+		$results = $this->extend('canEdit', $member);
+
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
+	}
+
+	/**
+	 * @param Member $member
+	 *
+	 * @return boolean
+	 */
+	public function canCreate($member = null) {
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+			$member = Member::currentUser();
+		}
+
+		$results = $this->extend('canCreate', $member);
+
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
+	}
+
+	/**
+	 * @param Member $member
+	 *
+	 * @return boolean
+	 */
+	public function canDelete($member = null) {
+		if(!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+			$member = Member::currentUser();
+		}
+
+		$results = $this->extend('canDelete', $member);
+
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+		}
+
+		return $this->canView();
+	}
+
+
+
+
+	/**
+	 * Associates this document with a Page. This method does nothing if the
+	 * association already exists.
+	 *
+	 * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to
+	 * add a many_many relation.
+	 *
+	 * @param SiteTree $pageObject Page object to associate this Document with
+	 *
+	 * @return DMSDocument
+	 */
+	public function addPage($pageObject) {
 		$this->Pages()->add($pageObject);
 
 		DB::query("UPDATE \"DMSDocument_Pages\" SET \"DocumentSort\"=\"DocumentSort\"+1 WHERE \"SiteTreeID\" = $pageObject->ID");
+
+		return $this;
 	}
-	
+
 	/**
-	 * Associates this DMSDocument with a set of Pages. This method loops through a set of page ids, and then associates this
-	 * DMSDocument with the individual Page with the each page id in the set
-	 * @abstract
-	 * @param $pageIDs array of page ids used for the page objects associate this DMSDocument with
-	 * @return null
+	 * Associates this DMSDocument with a set of Pages. This method loops
+	 * through a set of page ids, and then associates this DMSDocument with the
+	 * individual Page with the each page id in the set.
+	 *
+	 * @param array $pageIDs
+	 *
+	 * @return DMSDocument
 	 */
-	function addPages($pageIDs){
-		foreach($pageIDs as $id){
+	public function addPages($pageIDs) {
+		foreach($pageIDs as $id) {
 			$pageObject = DataObject::get_by_id("SiteTree", $id);
+
 			if($pageObject && $pageObject->exists()) {
 				$this->addPage($pageObject);
 			}
 		}
+
+		return $this;
 	}
 
 	/**
-	 * Removes the association between this Document and a Page. This method does nothing if the association does not exist.
-	 * @param $pageObject Page object to remove the association to
-	 * @return mixed
+	 * Removes the association between this Document and a Page. This method
+	 * does nothing if the association does not exist.
+	 *
+	 * @param SiteTree $pageObject Page object to remove the association to
+	 *
+	 * @return DMSDocument
 	 */
-	function removePage($pageObject) {
+	public function removePage($pageObject) {
 		$this->Pages()->remove($pageObject);
+
+		return $this;
 	}
 
-	function Pages() {
+	/**
+	 * @see getPages()
+	 *
+	 * @return DataList
+	 */
+	public function Pages() {
 		$pages = $this->getManyManyComponents('Pages');
 		$this->extend('updatePages', $pages);
+
 		return $pages;
 	}
 
 	/**
-	 * Returns a list of the Page objects associated with this Document
+	 * Returns a list of the Page objects associated with this Document.
+	 *
 	 * @return DataList
 	 */
-	function getPages() {
+	public function getPages() {
 		return $this->Pages();
 	}
 
 	/**
 	 * Removes all associated Pages from the DMSDocument
-	 * @return null
+	 *
+	 * @return DMSDocument
 	 */
-	function removeAllPages() {
+	public function removeAllPages() {
 		$this->Pages()->removeAll();
+
+		return $this;
 	}
 
 	/**
-	 * increase ViewCount by 1, without update any other record fields such as LastEdited
+	 * Increase ViewCount by 1, without update any other record fields such as
+	 * LastEdited.
+	 *
+	 * @return DMSDocument
 	 */
-	function trackView(){
+	public function trackView() {
 		if ($this->ID > 0) {
 			$count = $this->ViewCount + 1;
+
+			$this->ViewCount = $count;
+
 			DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
 		}
+
+		return $this;
 	}
 
 
 	/**
 	 * Adds a metadata tag to the Document. The tag has a category and a value.
-	 * Each category can have multiple values by default. So: addTag("fruit","banana") addTag("fruit", "apple") will add two items.
-	 * However, if the third parameter $multiValue is set to 'false', then all updates to a category only ever update a single value. So:
-	 * addTag("fruit","banana") addTag("fruit", "apple") would result in a single metadata tag: fruit->apple.
-	 * Can could be implemented as a key/value store table (although it is more like category/value, because the
-	 * same category can occur multiple times)
-	 * @param $category String of a metadata category to add (required)
-	 * @param $value String of a metadata value to add (required)
-	 * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
-	 * @return null
+	 *
+	 * Each category can have multiple values by default. So:
+	 * addTag("fruit","banana") addTag("fruit", "apple") will add two items.
+	 *
+	 * However, if the third parameter $multiValue is set to 'false', then all
+	 * updates to a category only ever update a single value. So:
+	 * addTag("fruit","banana") addTag("fruit", "apple") would result in a
+	 * single metadata tag: fruit->apple.
+	 *
+	 * Can could be implemented as a key/value store table (although it is more
+	 * like category/value, because the same category can occur multiple times)
+	 *
+	 * @param string $category of a metadata category to add (required)
+	 * @param string $value of a metadata value to add (required)
+	 * @param bool $multiValue Boolean that determines if the category is
+	 * 					multi-value or single-value (optional)
+	 *
+	 * @return DMSDocument
 	 */
-	function addTag($category, $value, $multiValue = true) {
+	public function addTag($category, $value, $multiValue = true) {
 		if ($multiValue) {
 			//check for a duplicate tag, don't add the duplicate
 			$currentTag = $this->Tags()->filter(array('Category' => $category, 'Value' => $value));
@@ -204,11 +288,20 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				$tag->write();
 			}
 
-			//regardless of whether we created a new tag or are just updating an existing one, add the relation
+			// regardless of whether we created a new tag or are just updating an
+			// existing one, add the relation
 			$tag->Documents()->add($this);
 		}
+
+		return $this;
 	}
 
+	/**
+	 * @param string $category
+	 * @param string $value
+	 *
+	 * @return DataList
+	 */
 	protected function getTagsObjects($category, $value = null) {
 		$valueFilter = array("Category" => $category);
 		if (!empty($value)) $valueFilter['Value'] = $value;
@@ -218,36 +311,46 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * Fetches all tags associated with this DMSDocument within a given category. If a value is specified this method
-	 * tries to fetch that specific tag.
-	 * @abstract
-	 * @param $category String of the metadata category to get
-	 * @param null $value String of the value of the tag to get
-	 * @return array of Strings of all the tags or null if there is no match found
+	 * Fetches all tags associated with this DMSDocument within a given
+	 * category. If a value is specified this method tries to fetch that
+	 * specific tag.
+	 *
+	 * @param string $category metadata category to get
+	 * @param string $value value of the tag to get
+	 *
+	 * @return array Strings of all the tags or null if there is no match found
 	 */
-	function getTagsList($category, $value = null) {
+	public function getTagsList($category, $value = null) {
 		$tags = $this->getTagsObjects($category, $value);
 
-		//convert DataList into array of Values
 		$returnArray = null;
+
 		if ($tags->Count() > 0) {
 			$returnArray = array();
+
 			foreach($tags as $t) {
 				$returnArray[] = $t->Value;
 			}
 		}
+
 		return $returnArray;
 	}
 
 	/**
-	 * Removes a tag from the Document. If you only set a category, then all values in that category are deleted.
-	 * If you specify both a category and a value, then only that single category/value pair is deleted.
+	 * Removes a tag from the Document. If you only set a category, then all
+	 * values in that category are deleted.
+	 *
+	 * If you specify both a category and a value, then only that single
+	 * category/value pair is deleted.
+	 *
 	 * Nothing happens if the category or the value do not exist.
-	 * @param $category Category to remove (required)
-	 * @param null $value Value to remove (optional)
-	 * @return null
+	 *
+	 * @param string $category Category to remove
+	 * @param string $value Value to remove
+	 *
+	 * @return DMSDocument
 	 */
-	function removeTag($category, $value = null) {
+	public function removeTag($category, $value = null) {
 		$tags = $this->getTagsObjects($category, $value);
 
 		if ($tags->Count() > 0) {
@@ -261,176 +364,252 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				if ($documentList->Count() == 0) $t->delete();
 			}
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Deletes all tags associated with this Document.
-	 * @return null
+	 *
+	 * @return DMSDocument
 	 */
-	function removeAllTags() {
+	public function removeAllTags() {
 		$allTags = $this->Tags();
+
 		foreach($allTags as $tag) {
 			$documentlist = $tag->Documents();
 			$documentlist->remove($this);
 			if ($tag->Documents()->Count() == 0) $tag->delete();
 		}
+
+		return $this;
 	}
 
 	/**
-	 * Returns a multi-dimensional array containing all Tags associated with this Document. The array has the
-	 * following structure:
-	 * $twoDimensionalArray = new array(
-	 *      array('fruit','banana'),
-	 *      array('fruit','apple')
-	 * );
-	 * @return array Multi-dimensional array of tags
+	 * Returns a link to download this document from the DMS store.
+	 *
+	 * @return string
 	 */
-	function getAllTags() {
-		// TODO: Implement getAllTags() method.
-	}
-
-	/**
-	 * Returns a link to download this document from the DMS store
-	 * @return String
-	 */
-	function getLink() {
+	public function getLink() {
 		return Controller::join_links(Director::baseURL(),'dmsdocument/'.$this->ID);
 	}
 
 	/**
-	 * The dummy function for the {@see:getLink()}
-	 * RSSFeed need the data object to have a function called Link()
+	 * @return string
 	 */
-	function Link(){
+	public function Link() {
 		return $this->getLink();
 	}
 
 	/**
-	 * Hides the document, so it does not show up when getByPage($myPage) is called
-	 * (without specifying the $showEmbargoed = true parameter). This is similar to expire, except that this method
-	 * should be used to hide documents that have not yet gone live.
-	 * @return null
+	 * Hides the document, so it does not show up when getByPage($myPage) is
+	 * called (without specifying the $showEmbargoed = true parameter).
+	 *
+	 * This is similar to expire, except that this method should be used to hide
+	 * documents that have not yet gone live.
+	 *
+	 * @param bool $write Save change to the database
+	 *
+	 * @return DMSDocument
 	 */
-	function embargoIndefinitely($write = true) {
+	public function embargoIndefinitely($write = true) {
 		$this->EmbargoedIndefinitely = true;
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
 	 * Hides the document until any page it is linked to is published
-	 * @return null
+	 *
+	 * @param bool $write Save change to database
+	 *
+	 * @return DMSDocument
 	 */
-	function embargoUntilPublished($write = true) {
+	public function embargoUntilPublished($write = true) {
 		$this->EmbargoedUntilPublished = true;
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
 	 * Returns if this is Document is embargoed or expired.
-	 * Also, returns if the document should be displayed on the front-end. Respecting the current reading mode
-     * of the site and the embargo status.
-     * I.e. if a document is embargoed until published, then it should still show up in draft mode.
-	 * @return bool True or False depending on whether this document is embargoed
+	 *
+	 * Also, returns if the document should be displayed on the front-end,
+	 * respecting the current reading mode of the site and the embargo status.
+	 *
+     * I.e. if a document is embargoed until published, then it should still
+     * show up in draft mode.
+     *
+	 * @return bool
 	 */
-	function isHidden() {
+	public function isHidden() {
 		$hidden = $this->isEmbargoed() || $this->isExpired();
 		$readingMode = Versioned::get_reading_mode();
-		if ($readingMode == "Stage.Stage" && $this->EmbargoedUntilPublished == true) $hidden = false;
+
+		if ($readingMode == "Stage.Stage") {
+			if($this->EmbargoedUntilPublished == true) {
+				$hidden = false;
+			}
+		}
+
 		return $hidden;
 	}
 
 	/**
 	 * Returns if this is Document is embargoed.
-	 * @return bool True or False depending on whether this document is embargoed
+	 *
+	 * @return bool
 	 */
-	function isEmbargoed() {
-		if (is_object($this->EmbargoedUntilDate)) $this->EmbargoedUntilDate = $this->EmbargoedUntilDate->Value;
+	public function isEmbargoed() {
+		if (is_object($this->EmbargoedUntilDate)) {
+			$this->EmbargoedUntilDate = $this->EmbargoedUntilDate->Value;
+		}
 
 		$embargoed = false;
-		if ($this->EmbargoedIndefinitely) $embargoed = true;
-		elseif ($this->EmbargoedUntilPublished) $embargoed = true;
-		elseif (!empty($this->EmbargoedUntilDate) && SS_Datetime::now()->Value < $this->EmbargoedUntilDate) $embargoed = true;
+
+		if ($this->EmbargoedIndefinitely) {
+			$embargoed = true;
+		} else if ($this->EmbargoedUntilPublished) {
+			$embargoed = true;
+		} else if (!empty($this->EmbargoedUntilDate)) {
+			if(SS_Datetime::now()->Value < $this->EmbargoedUntilDate) {
+				$embargoed = true;
+			}
+		}
 
 		return $embargoed;
 	}
 
 	/**
-	 * Hides the document, so it does not show up when getByPage($myPage) is called. Automatically un-hides the
-	 * Document at a specific date.
-	 * @param $datetime String date time value when this Document should expire
-	 * @return null
+	 * Hides the document, so it does not show up when getByPage($myPage) is
+	 * called. Automatically un-hides the Document at a specific date.
+	 *
+	 * @param string $datetime date time value when this Document should expire.
+	 * @param bool $write
+	 *
+	 * @return DMSDocument
 	 */
-	function embargoUntilDate($datetime, $write = true) {
+	public function embargoUntilDate($datetime, $write = true) {
 		$this->EmbargoedUntilDate = DBField::create_field('SS_Datetime', $datetime)->Format('Y-m-d H:i:s');
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
-	 * Clears any previously set embargos, so the Document always shows up in all queries.
-	 * @return null
+	 * Clears any previously set embargos, so the Document always shows up in
+	 * all queries.
+	 *
+	 * @param bool $write
+	 *
+	 * @return DMSDocument
 	 */
-	function clearEmbargo($write = true) {
+	public function clearEmbargo($write = true) {
 		$this->EmbargoedIndefinitely = false;
 		$this->EmbargoedUntilPublished = false;
 		$this->EmbargoedUntilDate = null;
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
 	 * Returns if this is Document is expired.
-	 * @return bool True or False depending on whether this document is expired
+	 *
+	 * @return bool
 	 */
-	function isExpired() {
-		if (is_object($this->ExpireAtDate)) $this->ExpireAtDate = $this->ExpireAtDate->Value;
+	public function isExpired() {
+		if (is_object($this->ExpireAtDate)) {
+			$this->ExpireAtDate = $this->ExpireAtDate->Value;
+		}
 
 		$expired = false;
-		if (!empty($this->ExpireAtDate) && SS_Datetime::now()->Value >= $this->ExpireAtDate) $expired = true;
+
+		if (!empty($this->ExpireAtDate)) {
+			if(SS_Datetime::now()->Value >= $this->ExpireAtDate) {
+				$expired = true;
+			}
+		}
 
 		return $expired;
 	}
 
 	/**
-	 * Hides the document at a specific date, so it does not show up when getByPage($myPage) is called.
-	 * @param $datetime String date time value when this Document should expire
-	 * @return null
+	 * Hides the document at a specific date, so it does not show up when
+	 * getByPage($myPage) is called.
+	 *
+	 * @param string $datetime date time value when this Document should expire
+	 * @param bool $write
+	 *
+	 * @return DMSDocument
 	 */
-	function expireAtDate($datetime, $write = true) {
+	public function expireAtDate($datetime, $write = true) {
 		$this->ExpireAtDate = DBField::create_field('SS_Datetime', $datetime)->Format('Y-m-d H:i:s');
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
 	 * Clears any previously set expiry.
-	 * @return null
+	 *
+	 * @param bool $write
+	 *
+	 * @return DMSDocument
 	 */
-	function clearExpiry($write = true) {
+	public function clearExpiry($write = true) {
 		$this->ExpireAtDate = null;
+
 		if ($write) $this->write();
+
+		return $this;
 	}
 
 	/**
-	 * Returns a DataList of all previous Versions of this document (check the LastEdited date of each
-	 * object to find the correct one)
+	 * Returns a DataList of all previous Versions of this document (check the
+	 * LastEdited date of each object to find the correct one).
+	 *
+	 * If {@link DMSDocument_versions::$enable_versions} is disabled then an
+	 * Exception is thrown
+	 *
+	 * @throws Exception
+	 *
 	 * @return DataList List of Document objects
 	 */
-	function getVersions() {
-		if (!DMSDocument_versions::$enable_versions) user_error("DMSDocument versions are disabled",E_USER_WARNING);
+	public function getVersions() {
+		if (!DMSDocument_versions::$enable_versions) {
+			throw new Exception("DMSDocument versions are disabled");
+		}
+
 		return DMSDocument_versions::get_versions($this);
 	}
 
 	/**
-	 * Returns the full filename of the document stored in this object
+	 * Returns the full filename of the document stored in this object.
+	 *
 	 * @return string
 	 */
-	function getFullPath() {
+	public function getFullPath() {
 		if($this->Filename) {
-			return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;	
-		} else {
-			return false;
+			return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
 		}
+
+		return null;
 	}
 
-	function getFileName() {
+	/**
+	 * Returns the filename of this asset.
+	 *
+	 * @return string
+	 */
+	public function getFileName() {
 		if($this->getField('Filename')) {
 			return $this->getField('Filename');
 		} else {
@@ -438,42 +617,74 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		}
 	}
 
-	function getName() {
+	/**
+	 * @return string
+	 */
+	public function getName() {
 		return $this->getField('Title');
 	}
 
+
 	/**
-	 * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument. Also calls the
-	 * parent DataObject's delete method.
+	 * @return string
 	 */
-	function delete() {
-		//remove tags
+	public function getFilenameWithoutID() {
+		$filenameParts = explode('~',$this->Filename);
+		$filename = array_pop($filenameParts);
+
+		return $filename;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStorageFolder() {
+		return DMS::get_dms_path() . DIRECTORY_SEPARATOR . DMS::get_storage_folder($this->ID);
+	}
+
+	/**
+	 * Deletes the DMSDocument, its underlying file, as well as any tags related
+	 * to this DMSDocument. Also calls the parent DataObject's delete method in
+	 * order to complete an cascade.
+	 *
+	 * @return void
+	 */
+	public function delete() {
+		// remove tags
 		$this->removeAllTags();
 
-		//delete the file (and previous versions of files)
+		// delete the file (and previous versions of files)
 		$filesToDelete = array();
-		$storageFolder = DMS::get_dms_path() . DIRECTORY_SEPARATOR . DMS::get_storage_folder($this->ID);
+		$storageFolder = $this->getStorageFolder();
+
 		if (file_exists($storageFolder)) {
-			if ($handle = opendir($storageFolder)) { //Open directory
-				//List files in the directory
-				while (false !== ($entry = readdir($handle))) { //only delete if filename starts the the relevant ID
-					if(strpos($entry,$this->ID.'~') === 0) $filesToDelete[] = $entry;
+			if ($handle = opendir($storageFolder)) {
+				while (false !== ($entry = readdir($handle))) {
+					// only delete if filename starts the the relevant ID
+					if(strpos($entry,$this->ID.'~') === 0) {
+						$filesToDelete[] = $entry;
+					}
 				}
+
 				closedir($handle);
 
 				//delete all this files that have the id of this document
 				foreach($filesToDelete as $file) {
 					$filePath = $storageFolder .DIRECTORY_SEPARATOR . $file;
-					if (is_file($filePath)) unlink($filePath);
+
+					if (is_file($filePath)) {
+						unlink($filePath);
+					}
 				}
 			}
 		}
 
 		$this->removeAllPages();
 
-		//get rid of any versions have saved for this DMSDocument, too
+		// get rid of any versions have saved for this DMSDocument, too
 		if (DMSDocument_versions::$enable_versions) {
 			$versions = $this->getVersions();
+
 			if ($versions->Count() > 0) {
 				foreach($versions as $v) {
 					$v->delete();
@@ -481,7 +692,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			}
 		}
 
-		//delete the dataobject
 		parent::delete();
 	}
 
@@ -489,18 +699,24 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	/**
 	 * Relate an existing file on the filesystem to the document.
+	 *
 	 * Copies the file to the new destination, as defined in {@link get_DMS_path()}.
 	 *
-	 * @param String Path to file, relative to webroot.
+	 * @param string $filePath Path to file, relative to webroot.
+	 *
+	 * @return DMSDocument
 	 */
-	function storeDocument($filePath) {
-		if (empty($this->ID)) user_error("Document must be written to database before it can store documents",E_USER_ERROR);
+	public function storeDocument($filePath) {
+		if (empty($this->ID)) {
+			user_error("Document must be written to database before it can store documents", E_USER_ERROR);
+		}
 
-		//calculate all the path to copy the file to
+		// calculate all the path to copy the file to
 		$fromFilename = basename($filePath);
 		$toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
 		$toFolder = DMS::get_storage_folder($this->ID);
 		$toPath = DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+
 		DMS::create_storage_folder(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder);
 
 		//copy the file into place
@@ -519,24 +735,33 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		//write the filename of the stored document
 		$this->Filename = $toFilename;
 		$this->Folder = $toFolder;
-		$extension = pathinfo($this->Filename, PATHINFO_EXTENSION);
-		if (empty($this->Title)) $this->Title = basename($filePath,'.'.$extension); //don't overwrite existing document titles
-		$this->LastChanged = SS_Datetime::now()->Rfc2822();
 
+		$extension = pathinfo($this->Filename, PATHINFO_EXTENSION);
+
+		if (empty($this->Title)) {
+			 // don't overwrite existing document titles
+			$this->Title = basename($filePath,'.'.$extension);
+		}
+
+		$this->LastChanged = SS_Datetime::now()->Rfc2822();
 		$this->write();
 
 		return $this;
 	}
 
 	/**
-	 * Takes a File object or a String (path to a file) and copies it into the DMS, replacing the original document file
-	 * but keeping the rest of the document unchanged.
-	 * @param $file File object, or String that is path to a file to store
-	 * @return DMSDocumentInstance Document object that we replaced the file in
+	 * Takes a File object or a String (path to a file) and copies it into the
+	 * DMS, replacing the original document file but keeping the rest of the
+	 * document unchanged.
+	 *
+	 * @param File|string $file path to a file to store
+	 *
+	 * @return DMSDocument object that we replaced the file in
 	 */
-	function replaceDocument($file) {
+	public function replaceDocument($file) {
 		$filePath = DMS::transform_file_to_file_path($file);
-		$doc = $this->storeDocument($filePath); //replace the document
+		$doc = $this->storeDocument($filePath); // replace the document
+
 		return $doc;
 	}
 
@@ -545,9 +770,11 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	 * Return the type of file for the given extension
 	 * on the current file name.
 	 *
+	 * @param string $ext
+	 *
 	 * @return string
 	 */
-	static function get_file_type($ext) {
+	public static function get_file_type($ext) {
 		$types = array(
 			'gif' => 'GIF image - good for diagrams',
 			'jpg' => 'JPEG image - good for photos',
@@ -575,22 +802,21 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return isset($types[$ext]) ? $types[$ext] : $ext;
 	}
 
-	function getFilenameWithoutID() {
-		$filenameParts = explode('~',$this->Filename);
-		$filename = array_pop($filenameParts);
-		return $filename;
-	}
 
 	/**
-	 * Returns the Description field with HTML <br> tags added when there is a line break
-	 * @return string Description
+	 * Returns the Description field with HTML <br> tags added when there is a
+	 * line break.
+	 *
+	 * @return string
 	 */
-	function getDescriptionWithLineBreak() {
+	public function getDescriptionWithLineBreak() {
 		return nl2br($this->getField('Description'));
 	}
 
-
-	function getCMSFields() {
+	/**
+	 * @return FieldList
+	 */
+	public function getCMSFields() {
 		//include JS to handling showing and hiding of bottom "action" tabs
 		Requirements::javascript(DMS_DIR.'/javascript/DMSDocumentCMSFields.js');
 		Requirements::css(DMS_DIR.'/css/DMSDocumentCMSFields.css');
@@ -661,7 +887,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 			);
 			$versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
 									->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
-						 			->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
+									->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
 
 			$versionsGrid =  GridField::create(
 				'Versions',
@@ -757,7 +983,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		return $fields;
 	}
 
-	function onBeforeWrite() {
+	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
 		if (isset($this->Embargo)) {
@@ -778,13 +1004,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * Return the relative URL of an icon for the file type,
-	 * based on the {@link appCategory()} value.
+	 * Return the relative URL of an icon for the file type, based on the
+	 * {@link appCategory()} value.
+	 *
 	 * Images are searched for in "dms/images/app_icons/".
 	 *
-	 * @return String
+	 * @return string
 	 */
-	function Icon($ext) {
+	public function Icon($ext) {
 		if(!Director::fileExists(DMS_DIR."/images/app_icons/{$ext}_32.png")) {
 			$ext = File::get_app_category($ext);
 		}
@@ -795,30 +1022,39 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		return DMS_DIR."/images/app_icons/{$ext}_32.png";
 	}
-	
+
 	/**
 	 * Return the extension of the file associated with the document
+	 *
+	 * @return string
 	 */
-	function getExtension() {
+	public function getExtension() {
 		return strtolower(pathinfo($this->Filename, PATHINFO_EXTENSION));
 	}
 
-	function getSize() {
+	/**
+	 * @return string
+	 */
+	public function getSize() {
 		$size = $this->getAbsoluteSize();
 		return ($size) ? File::format_size($size) : false;
 	}
-	
+
 	/**
-	 * Return the size of the file associated with the document
+	 * Return the size of the file associated with the document.
+	 *
+	 * @return string
 	 */
-	function getAbsoluteSize() {
+	public function getAbsoluteSize() {
 		return file_exists($this->getFullPath()) ? filesize($this->getFullPath()) : null;
 	}
-	
+
 	/**
 	 * An alias to DMSDocument::getSize()
+	 *
+	 * @return string
 	 */
-	function getFileSizeFormatted(){
+	public function getFileSizeFormatted() {
 		return $this->getSize();
 	}
 
@@ -865,6 +1101,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 				)->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
 			)->setName("FilePreview")->addExtraClass('cms-file-info')
 		);
+
 		$fields->setName('FileP');
 		$urlField->dontEscape = true;
 
@@ -872,16 +1109,25 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	}
 
 	/**
-	 * Takes a file and adds it to the DMSDocument storage, replacing the current file.
-	 * @param $file File to ingest
+	 * Takes a file and adds it to the DMSDocument storage, replacing the
+	 * current file.
+	 *
+	 * @param File $file
+	 *
+	 * @return DMSDocument
 	 */
-	function ingestFile($file) {
+	public function ingestFile($file) {
 		$this->replaceDocument($file);
 		$file->delete();
+
+		return $this;
 	}
 
 }
 
+/**
+ * @package dms
+ */
 class DMSDocument_Controller extends Controller {
 
 	static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
@@ -917,26 +1163,31 @@ class DMSDocument_Controller extends Controller {
 	}
 
 	/**
-	 * Access the file download without redirecting user, so we can block direct access to documents.
+	 * Access the file download without redirecting user, so we can block direct
+	 * access to documents.
 	 */
-	function index(SS_HTTPRequest $request) {
+	public function index(SS_HTTPRequest $request) {
 		$doc = $this->getDocumentFromID($request);
 
 		if (!empty($doc)) {
 			$canView = false;
 
-			//Runs through all pages that this page links to and sets canView to true if the user can view ONE of these pages
+			// Runs through all pages that this page links to and sets canView
+			// to true if the user can view ONE of these pages
 			if (method_exists($doc, 'Pages')) {
 				$pages = $doc->Pages();
 				if ($pages->Count() > 0) {
 					foreach($pages as $page) {
 						if ($page->CanView()) {
-							$canView = true;    //just one canView is enough to know that we can view the file
+							// just one canView is enough to know that we can
+							// view the file
+							$canView = true;
 							break;
 						}
 					}
 				} else {
-					//if the document isn't on any page, then allow viewing of the document (because there is no canView() to consult)
+					// if the document isn't on any page, then allow viewing of
+					// the document (because there is no canView() to consult)
 					$canView = true;
 				}
 			}
@@ -998,6 +1249,4 @@ class DMSDocument_Controller extends Controller {
 		if (self::$testMode) return 'This asset does not exist.';
 		$this->httpError(404, 'This asset does not exist.');
 	}
-
 }
-
