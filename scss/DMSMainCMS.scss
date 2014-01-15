@@ -54,9 +54,9 @@ $gf_colour_zebra: #F0F4F7;
 	}
 }
 
-.ss-add{
-	.document-add-existing{
-		input{
+.ss-add {
+	.document-add-existing {
+		input.document-autocomplete {
 			position: absolute;
 			z-index: 9999;
 			//top: 70px;
@@ -67,7 +67,8 @@ $gf_colour_zebra: #F0F4F7;
 			outline:none;
 			box-sizing:border-box;
 			-moz-box-sizing: border-box;
-			&[disabled]{
+		
+			&[disabled] {
 				color: #C0C0C2;
 				text-shadow: 0 -1px 0 #FFF;
 				background: #EEE;
@@ -77,36 +78,38 @@ $gf_colour_zebra: #F0F4F7;
 				border-bottom-right-radius:0;
 			}
 		}
-		.TreeDropdownField{
+		.TreeDropdownField {
 			border:none;
 			width: 100%;
 			max-width: 512px;
 			box-sizing: border-box;
 			cursor:pointer;
-			overflow:hidden;
 		}
-		.treedropdownfield-toggle-panel-link{
+
+		.treedropdownfield-toggle-panel-link {
 			padding: 5px 9px 9px;
+			background: #fff;
 			border: 1px solid #B3B3B3;
 			float: right;
 			z-index: 99999;
 			position: relative;
-			&.treedropdownfield-open-tree{
-				background:transparent;
+
+			&.treedropdownfield-open-tree {
+				background: #fff;
 				border: 1px solid #B3B3B3;
 				border-bottom:none;
 				border-bottom-right-radius:0;
 			}
 		}
-		.treedropdownfield-title{
+		.treedropdownfield-title {
 			width: auto;
 		}
-		.treedropdownfield-toggle-panel-link a{
+		.treedropdownfield-toggle-panel-link a {
 			display: inline-block;
 			top: 4px;
 			position: relative;
 		}
-		.document-list{
+		.document-list {
 			position: absolute;
 			z-index: 9999;
 			width: 510px;
@@ -193,17 +196,19 @@ $gf_colour_zebra: #F0F4F7;
 //Styling for tree dropdown field
 .cms{
 	.ss-add, .selectiongroup{
-		.treedropdownfield-panel{
+		.treedropdownfield-panel {
 			margin: -1px 0 0 0;
 			box-sizing: border-box;
-			ul{
+
+			ul {
 				padding: 4px 0;
-				li{
+				li {
 					border: 1px solid #ffffff;
-					a{
+					a {
 						display: block;
 						padding: 4px 2px;
-						&.jstree-hovered{
+
+						&.jstree-hovered {
 							background: rgba(203, 203, 203, 0.4);
 							border: 1px solid #CCC;
 						}
