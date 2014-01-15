@@ -166,11 +166,13 @@ class DMSDocumentAddController extends LeftAndMain {
 	}
 
 	public function documentautocomplete() {
-		$term = $_GET['term'];
+		$term = (isset($_GET['term'])) ? $_GET['term'] : '';
 		$term_sql = Convert::raw2sql($term);
 		$data = DMSDocument::get()
 		->where("(\"ID\" LIKE '%".$term_sql."%' OR \"Filename\" LIKE '%".$term_sql."%' OR \"Title\" LIKE '%".$term_sql."%')")
+		->sort('ID ASC')
 		->limit(20);
+
 		$return = array();
 		foreach($data as $doc) {
 			$return[] = array(
