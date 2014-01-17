@@ -58,7 +58,7 @@ class DMSSiteTreeExtension extends DataExtension {
 		$gridFieldConfig = GridFieldConfig::create()->addComponents(
 			new GridFieldToolbarHeader(),
 			new GridFieldFilterHeader(),
-			//new GridFieldSortableHeader(),
+			new GridFieldSortableHeader(),
 			new GridFieldOrderableRows('DocumentSort'),
 			new GridFieldDataColumns(),
 			new GridFieldEditButton(),
