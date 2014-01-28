@@ -18,7 +18,8 @@ class DMSDocumentAddController extends LeftAndMain {
 	private static $allowed_actions = array (
 		'getEditForm',
 		'documentautocomplete',
-		'linkdocument'
+		'linkdocument',
+		'documentlist'
 	);
 
 	/**
@@ -212,24 +213,30 @@ class DMSDocumentAddController extends LeftAndMain {
 	}
 
 	public function documentlist() {
-		$page = DataObject::get_by_id('SiteTree', (int) $_GET['pageID']);
-		if($page && $page->Documents()) {
+		if(!isset($_GET['pageID'])) {
+			return $this->httpError(400);
+		}
+
+		$page = SiteTree::get()->byId($_GET['pageID']);
+
+		if($page && $page->Documents()->count() > 0) {
 			$list = '<ul>';
 
 			foreach($page->Documents() as $document) {
-				$list .= '<li><a class="add-document" data-document-id="' . $document->ID . '">';
-				$list .= $document->ID . ' - ' . Convert::raw2xml($document->Title);
-				$list .= '</a></li>';
+				$list .= sprintf(
+					'<li><a class="add-document" data-document-id="%s">%s</a></li>',
+					$document->ID,
+					$document->ID . ' - '. Convert::raw2xml($document->Title)
+				);
 			}
 
 			$list .= '</ul>';
 
 			return $list;
-		} else {
-			return '<p>There are no documents attached to the selected page.</p>';
 		}
+		
+		return sprintf('<p>%s</p>', 
+			_t('DMSDocumentAddController.NODOCUMENTS', 'There are no documents attached to the selected page.')
+		);
 	}
 }
-
-
-?>

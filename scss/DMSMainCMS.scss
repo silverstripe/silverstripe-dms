@@ -104,14 +104,14 @@ $gf_colour_zebra: #F0F4F7;
 		.treedropdownfield-title {
 			width: auto;
 		}
+
 		.treedropdownfield-toggle-panel-link a {
 			display: inline-block;
 			top: 4px;
 			position: relative;
 		}
+
 		.document-list {
-			position: absolute;
-			z-index: 9999;
 			width: 510px;
 			border: 1px solid #DDD;
 			border-top:none;
@@ -122,16 +122,24 @@ $gf_colour_zebra: #F0F4F7;
 			border-radius: 6px;
 			background-clip: padding-box;
 			overflow:scroll;
-			ul{
+
+			p {
+				padding: 10px 10px 0;
+			}
+
+			ul {
 				padding: 4px 0;
-				li{
+
+				li {
 					line-height:18px;
-					a{
+
+					a {
 						display: block;
 						padding: 4px 8px;
 						border: 1px solid #FFF;
 						color: black;
-						&:hover{
+
+						&:hover {
 							border: 1px solid #CCC;
 							border-radius: 4px;
 							background: rgba(203, 203, 203, 0.4);

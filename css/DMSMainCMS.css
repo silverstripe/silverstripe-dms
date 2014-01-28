@@ -18,7 +18,8 @@
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link.treedropdownfield-open-tree { background: #fff; border: 1px solid #B3B3B3; border-bottom: none; border-bottom-right-radius: 0; }
 .ss-add .document-add-existing .treedropdownfield-title { width: auto; }
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link a { display: inline-block; top: 4px; position: relative; }
-.ss-add .document-add-existing .document-list { position: absolute; z-index: 9999; width: 510px; border: 1px solid #DDD; border-top: none; background: #ffffff; display: none; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; border-radius: 6px; background-clip: padding-box; overflow: scroll; }
+.ss-add .document-add-existing .document-list { width: 510px; border: 1px solid #DDD; border-top: none; background: #ffffff; display: none; box-shadow: 0 2px 4px 1px #DDD; max-height: 300px; border-radius: 6px; background-clip: padding-box; overflow: scroll; }
+.ss-add .document-add-existing .document-list p { padding: 10px 10px 0; }
 .ss-add .document-add-existing .document-list ul { padding: 4px 0; }
 .ss-add .document-add-existing .document-list ul li { line-height: 18px; }
 .ss-add .document-add-existing .document-list ul li a { display: block; padding: 4px 8px; border: 1px solid #FFF; color: black; }

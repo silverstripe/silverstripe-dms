@@ -81,7 +81,7 @@
 		$('.document-add-existing input[name=PageSelector]').entwine({
 			onchange: function(event) {
 				var doclist = $(this).closest('.document-add-existing').find('.document-list');
-				doclist.html('<span>Loading...</span>');
+				doclist.html('<p>Loading...</p>');
 				doclist.show();
 				doclist.load(
 					'admin/pages/adddocument/documentlist?pageID=' + $(this).val()
