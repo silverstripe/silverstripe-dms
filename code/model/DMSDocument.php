@@ -41,6 +41,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 	private static $plural_name = 'Documents';
 
+	private static $searchable_fields = array(
+		'ID' => array(
+			'filter' => 'ExactMatchFilter',
+			'field' => 'NumericField'
+		),
+		'Title',
+		'Filename',
+		'LastChanged'
+	);
+
 	/**
 	 * @param Member $member
 	 *
