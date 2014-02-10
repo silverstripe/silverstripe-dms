@@ -34,6 +34,7 @@ en:
     MAXNUMBEROFFILES: 'Max number of {count} file(s) exceeded.'
   DMSDocumentAddController:
     MENUTITLE: 'Edit Page'
+    NODOCUMENTS: 'There are no documents attached to the selected page.'
   DMSDocument_versions:
     PLURALNAME: 'D M S Document_versionss'
     SINGULARNAME: 'D M S Document_versions'
