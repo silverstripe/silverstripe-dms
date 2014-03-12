@@ -12,5 +12,6 @@
         "silverstripe/framework": "~3.1",
         "silverstripe/cms": "~3.1",
         "ajshort/silverstripe-gridfieldextensions": "dev-master"
-    }
+    },
+    "minimum-stability": "dev"
 }
