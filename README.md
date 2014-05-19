@@ -56,6 +56,7 @@ Example:
  * (optional) [Sorting of Documents in the CMS](https://github.com/silverstripe-big-o/SortableGridField)
  * (optional) [Full text search of Documents](https://github.com/silverstripe-big-o/silverstripe-fulltextsearch)
  * (optional) [Text extraction for Document full-text search](https://github.com/silverstripe-big-o/silverstripe-textextraction)
+ * (optional) [Tags](https://github.com/tubbs/silverstripe-dms-simple-tags)
 
 ### Configuration
 
