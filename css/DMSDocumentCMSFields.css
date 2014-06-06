@@ -34,6 +34,8 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 */ /*label.fieldholder-small-label{
 	display: none;
 }*/ }
+.ActionsPanel > .fieldgroup.middleColumn { overflow: hidden; display: block;}
+.ActionsPanel > .fieldgroup.middleColumn .fieldgroup-field { width: 100%; } 
 .ActionsPanel .fieldgroup { display: none; float: none; width: auto; background: #f8f8f8; padding: 15px; border: 1px solid #d0d3d5; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
 .ActionsPanel .fieldgroup .fieldholder-small label { float: none; width: auto; margin: 0; padding: 0; }
 .ActionsPanel .fieldgroup .fieldholder-small label.ss-ui-button { float: left; margin: 0 10px 0 0; }
