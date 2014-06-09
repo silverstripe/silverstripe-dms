@@ -64,6 +64,8 @@ form.small .field .TreeDropdownField,
 	}
 }
 
+
+
 .ActionsPanel{
 
 	/*.middleColumn{
@@ -176,6 +178,14 @@ form.small .field .TreeDropdownField,
 				}
 			}
 		}
+	}
+
+	& > .fieldgroup.middleColumn { 
+		overflow: hidden; 
+		display: block;
+		.fieldgroup-field { 
+			width: 100%; 
+		} 
 	}
 }
 
