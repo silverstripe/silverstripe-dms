@@ -45,11 +45,11 @@
 
 				//hide all inner field sections
 				var panel = $('.ActionsPanel:first');
-				panel.find('div.fieldgroup').hide();
+				panel.find('div.fieldgroup-field').hide();
 
 				//show the correct group of controls
 				//panel.find('.'+this.data('panel')).closest('div.fieldgroup').show();
-				panel.find('.'+this.data('panel')).show();
+				panel.find('.'+this.data('panel')).show().parents('.fieldgroup-field').show();
 
 			}
 		});
