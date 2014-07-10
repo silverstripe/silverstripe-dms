@@ -177,6 +177,14 @@ form.small .field .TreeDropdownField,
 			}
 		}
 	}
+
+	& > .fieldgroup.middleColumn { 
+		overflow: hidden; 
+		display: block;
+		.fieldgroup-field { 
+			width: 100%; 
+		}
+  	}
 }
 
 #Form_ItemEditForm{
