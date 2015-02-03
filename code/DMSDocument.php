@@ -31,7 +31,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 		'FilenameWithoutID'=>'Filename',
 		'LastChanged'=>'LastChanged'
 	);
-
+	
 	static $singular_name = 'Document';
 
 	static $plural_name = 'Documents';
