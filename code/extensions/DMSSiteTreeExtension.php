@@ -119,9 +119,9 @@ class DMSSiteTreeExtension extends DataExtension {
 	}
 
 	/**
-	 * Overloaded to enforce sorting
+	 * Enforce sorting for frontend
 	 */
-	function Documents() {
+	function PageDocuments() {
 		return $this->owner->getManyManyComponents('Documents')->sort('DocumentSort');
 	}
 
