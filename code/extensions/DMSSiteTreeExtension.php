@@ -21,9 +21,9 @@ class DMSSiteTreeExtension extends DataExtension {
 	static function no_documents_tab($array = array()) {
 		if (empty($array)) return;
 		if (is_array($array)) {
-			self::$noDocumentsList = $array;
+			$this->owner->set_stat('noDocumentsList', $array);
 		} else {
-			self::$noDocumentsList = array($array);
+			$this->owner->set_stat('noDocumentsList', array($array));
 		}
 	}
 
@@ -36,16 +36,16 @@ class DMSSiteTreeExtension extends DataExtension {
 	static function show_documents_tab($array = array()) {
 		if (empty($array)) return;
 		if (is_array($array)) {
-			self::$showDocumentsList = $array;
+			$this->owner->set_stat('showDocumentsList', $array);
 		} else {
-			self::$showDocumentsList = array($array);
+			$this->owner->set_stat('showDocumentsList', array($array));
 		}
 	}
 
 	function updateCMSFields(FieldList $fields){
 		//prevent certain pages from having a Document tab in the CMS
-		if (in_array($this->owner->ClassName,self::$noDocumentsList)) return;
-		if (count(self::$showDocumentsList) > 0 && !in_array($this->owner->ClassName,self::$showDocumentsList)) return;
+		if (in_array($this->owner->ClassName,$this->owner->stat('noDocumentsList'))) return;
+		if (count($this->owner->stat('showDocumentsList')) > 0 && !in_array($this->owner->ClassName,$this->owner->stat('showDocumentsList')) return;
 
 		//javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
 		Requirements::javascript(DMS_DIR.'/javascript/DMSGridField.js');
