@@ -23,6 +23,8 @@
 		                    });
 
 							$('.ss-add-files').append(fnout);
+
+                            $('.ss-add-files').find('.ss-uploadfield-item-edit')._loadIframe();
 						}
 					}
 				);
