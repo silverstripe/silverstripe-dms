@@ -54,5 +54,3 @@ class DMSDocumentAddExistingField extends CompositeField {
 		$this->useFieldContext = $use;
 	}
 }
-
-?>
