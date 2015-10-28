@@ -410,6 +410,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 	public function Link() {
 		return $this->getLink();
 	}
+	
+	/**
+	 * Returns an absolute link to download this document from the DMS store.
+	 *
+	 * @return string
+	 */
+	function AbsoluteLink() {
+		return Director::absoluteURL($this->Link());
+	}
 
 	/**
 	 * Hides the document, so it does not show up when getByPage($myPage) is
