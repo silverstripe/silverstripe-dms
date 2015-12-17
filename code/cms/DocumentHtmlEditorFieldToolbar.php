@@ -4,26 +4,30 @@
  */
 
 
-class DocumentHtmlEditorFieldToolbar extends Extension {
+class DocumentHtmlEditorFieldToolbar extends Extension
+{
 
-	function updateLinkForm(Form $form) {
-		$linkType = null;
-		$fieldList = null;
-		$fields = $form->Fields();//->fieldByName('Heading');
-		foreach($fields as $field) {
-			$linkType = ($field->fieldByName('LinkType'));
-			$fieldList = $field;
-			if ($linkType) break;   //break once we have the object
-		}
+    public function updateLinkForm(Form $form)
+    {
+        $linkType = null;
+        $fieldList = null;
+        $fields = $form->Fields();//->fieldByName('Heading');
+        foreach ($fields as $field) {
+            $linkType = ($field->fieldByName('LinkType'));
+            $fieldList = $field;
+            if ($linkType) {
+                break;
+            }   //break once we have the object
+        }
 
-		$source = $linkType->getSource();
-		$source['document'] = 'Download a document';
-		$linkType->setSource($source);
+        $source = $linkType->getSource();
+        $source['document'] = 'Download a document';
+        $linkType->setSource($source);
 
-		$addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
-		$addExistingField->setForm($form);
-		$addExistingField->setUseFieldClass(false);
-		$fieldList->insertAfter($addExistingField,'Description');
+        $addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
+        $addExistingField->setForm($form);
+        $addExistingField->setUseFieldClass(false);
+        $fieldList->insertAfter($addExistingField, 'Description');
 
 //		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
 //		Requirements::javascript(SAPPHIRE_DIR . "/javascript/tiny_mce_improvements.js");
@@ -35,6 +39,6 @@ class DocumentHtmlEditorFieldToolbar extends Extension {
 //		$documents->setTreeBaseID($baseFolder->ID);
 
 
-		//return $form;
-	}
+        //return $form;
+    }
 }
