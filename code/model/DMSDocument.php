@@ -744,7 +744,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface {
 
 		//write the filename of the stored document
 		$this->Filename = $toFilename;
-		$this->Folder = $toFolder;
+		$this->Folder = strval($toFolder);
 
 		$extension = pathinfo($this->Filename, PATHINFO_EXTENSION);
 
