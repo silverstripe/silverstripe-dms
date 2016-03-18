@@ -985,7 +985,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             '<li class="ss-ui-button" data-panel="find-usage">Usage</li>'.
             '<li class="ss-ui-button" data-panel="find-references">References</li>'.
             $extraTasks.
-            '</ul></div>'));
+            '</ul></div>'
+        ));
 
         $embargoValue = 'None';
         if ($this->EmbargoedIndefinitely) {
