@@ -36,7 +36,7 @@
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
 
-				console.log('LI CLICKED');
+				//console.log('LI CLICKED');
 
 				//add active state to the current button
 				$('#Actions ul li').removeClass('dms-active');
@@ -45,11 +45,11 @@
 
 				//hide all inner field sections
 				var panel = $('.ActionsPanel:first');
-				panel.find('div.fieldgroup-field').hide();
+				panel.find('div.fieldgroup').hide();
 
 				//show the correct group of controls
 				//panel.find('.'+this.data('panel')).closest('div.fieldgroup').show();
-				panel.find('.'+this.data('panel')).show().parents('.fieldgroup-field').show();
+				panel.find('.'+this.data('panel')).show().parents('.fieldgroup').show();
 
 			}
 		});
