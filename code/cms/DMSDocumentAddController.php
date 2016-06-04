@@ -175,7 +175,7 @@ class DMSDocumentAddController extends LeftAndMain
     public function Backlink()
     {
         $pageID = $this->currentPageID();
-        return singleton('CMSPagesController')->Link().'edit/show/'.$pageID;
+        return Controller::join_links(singleton('CMSPagesController')->Link(), 'edit/show', $pageID);
     }
 
     public function documentautocomplete()
