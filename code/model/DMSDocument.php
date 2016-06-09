@@ -1043,7 +1043,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         );
 
         $actionsPanel->setName("ActionsPanel");
-        $actionsPanel->addExtraClass("ActionsPanel");
+        $actionsPanel->addExtraClass("DMSDocumentActionsPanel");
 
         $fields->push($actionsPanel);
 
