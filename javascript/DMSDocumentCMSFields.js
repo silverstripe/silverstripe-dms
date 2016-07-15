@@ -36,16 +36,14 @@
 		$('#Actions ul li').entwine({
 			onclick: function(e) {
 
-				console.log('LI CLICKED');
-
 				//add active state to the current button
 				$('#Actions ul li').removeClass('dms-active');
 				this.addClass('dms-active');
 				//$('li.dms-active').append('<span class="arrow"></span>');
 
 				//hide all inner field sections
-				var panel = $('.ActionsPanel:first');
-				panel.find('div.fieldgroup-field').hide();
+				var panel = $('.DMSDocumentActionsPanel:first');
+				panel.find('> .fieldgroup > .fieldgroup-field').hide();
 
 				//show the correct group of controls
 				//panel.find('.'+this.data('panel')).closest('div.fieldgroup').show();
@@ -56,6 +54,7 @@
 
 		$('#Form_ItemEditForm_Embargo input, #Form_EditForm_Embargo input').entwine({
 			onchange: function() {
+				console.log('called');
 				//selected the date options
 				if (this.attr('value') === 'Date') {
 					$('.embargoDatetime').children().show();
@@ -78,7 +77,7 @@
 			}
 		});
 
-		$('.ActionsPanel').entwine({
+		$('.DMSDocumentActionsPanel').entwine({
 			onadd: function() {
 				//do an initial show of the entire panel
 				this.show();
@@ -86,35 +85,33 @@
 				//add some extra classes to the replace field containers to make it work with drag and drop uploading
 				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
 				
-				//Add placeholder attribute to date and time fields
-				$('#Form_ItemEditForm_EmbargoedUntilDate-date').attr('placeholder', 'dd-mm-yyyy');
-				$('#Form_ItemEditForm_EmbargoedUntilDate-time').attr('placeholder', 'hh:mm:ss');
-				$('#Form_ItemEditForm_ExpireAtDate-date').attr('placeholder', 'dd-mm-yyyy');
-				$('#Form_ItemEditForm_ExpireAtDate-time').attr('placeholder', 'hh:mm:ss');
-				// We need to duplicate to work when adding documents
-				$('#Form_EditForm_EmbargoedUntilDate-date').attr('placeholder', 'dd-mm-yyyy');
-				$('#Form_EditForm_EmbargoedUntilDate-time').attr('placeholder', 'hh:mm:ss');
-				$('#Form_EditForm_ExpireAtDate-date').attr('placeholder', 'dd-mm-yyyy');
-				$('#Form_EditForm_ExpireAtDate-time').attr('placeholder', 'hh:mm:ss');
-
-
-				$('#Form_ItemEditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
-				$('#Form_ItemEditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
-
+				// add class and hide
+				$('.DMSDocumentActionsPanel .embargo input.date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
+				$('.DMSDocumentActionsPanel .expiry input.date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
 				// We need to duplicate the above functions to work when Adding documents
-				$('#Form_EditForm_EmbargoedUntilDate-date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
-				$('#Form_EditForm_ExpireAtDate-date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
+//				$('#Form_EditForm_EmbargoedUntilDate_date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
+//				$('#Form_EditForm_ExpireAtDate_date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
 
-				//show the replace panel when the page loads
+				//Add placeholder attribute to date and time fields
+				$('.DMSDocumentActionsPanel .embargo input.date').attr('placeholder', 'dd-mm-yyyy');
+				$('.DMSDocumentActionsPanel .embargo input.time').attr('placeholder', 'hh:mm:ss');
+				$('.DMSDocumentActionsPanel .expiry input.date').attr('placeholder', 'dd-mm-yyyy');
+				$('.DMSDocumentActionsPanel .expiry input.time').attr('placeholder', 'hh:mm:ss');
+				// We need to duplicate to work when adding documents
+//				$('#Form_EditForm_EmbargoedUntilDate_date').attr('placeholder', 'dd-mm-yyyy');
+//				$('#Form_EditForm_EmbargoedUntilDate_time').attr('placeholder', 'hh:mm:ss');
+//				$('#Form_EditForm_ExpireAtDate_date').attr('placeholder', 'dd-mm-yyyy');
+//				$('#Form_EditForm_ExpireAtDate_time').attr('placeholder', 'hh:mm:ss');
+
+				//show the embargo panel when the page loads
 				$('li[data-panel="embargo"]').click();
 
 				//set the initial state of the radio button and the associated dropdown hiding
-				$('#Form_ItemEditForm_Embargo input[checked]').change();
-				$('#Form_ItemEditForm_Expiry input[checked]').change();
-
+				$('.DMSDocumentActionsPanel .embargo input[type="radio"][checked]').change();
+				$('.DMSDocumentActionsPanel .expiry input[type="radio"][checked]').change();
 				//Again we need to duplicate the above function to work when adding documents
-				$('#Form_EditForm_Embargo input[checked]').change();
-				$('#Form_EditForm_Expiry input[checked]').change();
+//				$('#Form_EditForm_Embargo input[checked]').change();
+//				$('#Form_EditForm_Expiry input[checked]').change();
 			}
 		});
 

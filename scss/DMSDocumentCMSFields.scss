@@ -64,7 +64,7 @@ form.small .field .TreeDropdownField,
 	}
 }
 
-.ActionsPanel{
+.DMSDocumentActionsPanel{
 
 	/*.middleColumn{
 		margin-left:184px;
@@ -113,19 +113,24 @@ form.small .field .TreeDropdownField,
 			.embargoDatetime, .expiryDatetime{
 				margin-top: 0;
 				margin-left: 34px;
+				overflow: hidden;
 				.field{
 					&.date, &.time{
 						display: inline-block;
 						width: auto;
+						margin: 0; 
+						padding: 0; 
 					}
 					&.date{
 						.middleColumn{
 							background: url('../images/calendar-month.png') 90px 7px no-repeat;
+							overflow: hidden;
 						}
 					}
 					&.time{
 						.middleColumn{
 							background: url('../images/clock-frame.png') 90px 7px no-repeat;
+							overflow: hidden;
 						}
 					}
 				}
