@@ -3,7 +3,7 @@
 
 	$.entwine('ss', function($) {
 
-		/*$('form.htmleditorfield-linkform input[name=LinkType]').entwine({
+		$('form.htmleditorfield-linkform input[name=LinkType]').entwine({
 			onchange: function(e) {
 				this._super(e);
 
@@ -26,7 +26,7 @@
 			onadd: function(e){
 				this.change();
 			}
-		});*/
+		});
 
 		$('form.htmleditorfield-linkform').entwine({
 			insertLink: function() {
