@@ -13,5 +13,9 @@
         "silverstripe/cms": "~3.1",
         "silverstripe-australia/gridfieldextensions": "^1.1.0"
     },
-    "minimum-stability": "dev"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
 }
