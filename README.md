@@ -1,6 +1,6 @@
 # Document Management Module (DMS)
 
-[![Build Status](https://travis-ci.org/silverstripe-labs/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe-labs/silverstripe-dms)
+[![Build Status](https://travis-ci.org/silverstripe/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe/silverstripe-dms)
 
 ## Overview
 
