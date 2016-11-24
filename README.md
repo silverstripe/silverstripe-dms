@@ -90,6 +90,15 @@ Note: Both operations copy the existing file.
 	$docs = $dms->getByTag('priority', 'important')->First();
 	$link = $doc->getLink();
 
+	// Set default download behavior ('open' or 'download'). 'download' is the system default
+	// Attempt to open the file in the browser
+	Config::inst()->update('DMSDocument', 'default_download_behaviour', 'open');
+	
+Or in you config.yml:
+
+    DMSDocument:
+      default_download_behaviour: open
+
 #### Manage Page Relations
 
 	// Find documents by page

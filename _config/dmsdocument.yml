@@ -11,3 +11,5 @@ SiteTree:
 HtmlEditorField_Toolbar:
   extensions:
     - DocumentHtmlEditorFieldToolbar
+DMSDocument_versions:
+  enable_versions: true
