@@ -17,7 +17,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         "EmbargoedIndefinitely" => 'Boolean(false)',
         "EmbargoedUntilPublished" => 'Boolean(false)',
         "EmbargoedUntilDate" => 'SS_DateTime',
-        "ExpireAtDate" => 'SS_DateTime'
+        "ExpireAtDate" => 'SS_DateTime',
+        "DownloadBehavior" => 'Enum(array("open","download"), "download")',
     );
 
     private static $many_many = array(
@@ -51,6 +52,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'Filename',
         'LastChanged'
     );
+
+    /**
+     * @var string download|open
+     * @config
+     */
+    private static $default_download_behaviour = 'download';
 
     /**
      * @param Member $member
@@ -144,7 +151,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         return $this->canView();
     }
-
 
 
 
@@ -902,7 +908,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 
         $extraTasks = '';   //additional text to inject into the list of tasks at the bottom of a DMSDocument CMSfield
-        $extraFields = FormField::create('Empty');
 
         //get list of shortcode page relations
         $relationFinder = new ShortCodeRelationFinder();
@@ -913,6 +918,28 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         $fields->add(new TextField('Title', 'Title'));
         $fields->add(new TextareaField('Description', 'Description'));
+
+        $downloadBehaviorSource = array(
+            'open' => _t('DMSDocument.OPENINBROWSER', 'Open in browser'),
+            'download' => _t('DMSDocument.FORCEDOWNLOAD', 'Force download'),
+        );
+        $defaultDownloadBehaviour = Config::inst()->get('DMSDocument', 'default_download_behaviour');
+        if (!isset($downloadBehaviorSource[$defaultDownloadBehaviour])) {
+            user_error('Default download behaviour "' . $defaultDownloadBehaviour . '" not supported.', E_USER_WARNING);
+        }
+        else {
+            $downloadBehaviorSource[$defaultDownloadBehaviour] .= ' (' . _t('DMSDocument.DEFAULT', 'default') . ')';
+        }
+
+        $fields->add(
+            OptionsetField::create(
+                'DownloadBehavior',
+                _t('DMSDocument.DOWNLOADBEHAVIOUR', 'Download behavior'),
+                $downloadBehaviorSource,
+                $defaultDownloadBehaviour
+            )
+            ->setDescription('How the visitor will view this file. <strong>Open in browser</strong> allows files to be opened in a new tab.')
+        );
 
         //create upload field to replace document
         $uploadField = new DMSUploadField('ReplaceFile', 'Replace file');
@@ -1251,6 +1278,7 @@ class DMSDocument_Controller extends Controller
     /**
      * Returns the document object from the request object's ID parameter.
      * Returns null, if no document found
+     * @return DMSDocument|null
      */
     protected function getDocumentFromID($request)
     {
@@ -1341,22 +1369,20 @@ class DMSDocument_Controller extends Controller
                         return $path;
                     }
 
+                    // set fallback if no config nor file-specific value
+                    $disposition = 'attachment';
+
+                    // file-specific setting
+                    if ($doc->DownloadBehavior == 'open') {
+                        $disposition = 'inline';
+                    }
+
                     //if a DMSDocument can be downloaded and all the permissions/privileges has passed,
                     //its ViewCount should be increased by 1 just before the browser sending the file to front.
                     $doc->trackView();
 
-                    header('Content-Type: ' . $mime);
-                    header('Content-Length: ' . filesize($path), null);
-                    if (!empty($mime) && $mime != "text/html") {
-                        header('Content-Disposition: attachment; filename="'.$doc->getFilenameWithoutID().'"');
-                    }
-                    header('Content-transfer-encoding: 8bit');
-                    header('Expires: 0');
-                    header('Pragma: cache');
-                    header('Cache-Control: private');
-                    flush();
-                    readfile($path);
-                    exit;
+                    $this->sendFile($path, $mime, $doc->getFilenameWithoutID(), $disposition);
+                    return;
                 }
             }
         }
@@ -1365,5 +1391,26 @@ class DMSDocument_Controller extends Controller
             return 'This asset does not exist.';
         }
         $this->httpError(404, 'This asset does not exist.');
+    }
+
+    /**
+     * @param string $path File path
+     * @param string $mime File mime type
+     * @param string $name File name
+     * @param string $disposition Content dispositon
+     */
+    protected function sendFile($path, $mime, $name, $disposition) {
+        header('Content-Type: ' . $mime);
+        header('Content-Length: ' . filesize($path), null);
+        if (!empty($mime) && $mime != "text/html") {
+            header('Content-Disposition: '.$disposition.'; filename="'.addslashes($name).'"');
+        }
+        header('Content-transfer-encoding: 8bit');
+        header('Expires: 0');
+        header('Pragma: cache');
+        header('Cache-Control: private');
+        flush();
+        readfile($path);
+        exit;
     }
 }

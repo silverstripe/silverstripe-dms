@@ -1,7 +1,6 @@
 <?php
 
 $config = Config::inst();
-$config->update('DMSDocument_versions', 'enable_versions', true);
 
 DMSSiteTreeExtension::show_documents_tab(); //show the Documents tab on all pages
 DMSSiteTreeExtension::no_documents_tab();   //and don't exclude it from any pages
@@ -21,4 +20,3 @@ if ($config->get('DMSDocument_versions', 'enable_versions')) {
 	//using the same db relations for the versioned documents, as for the actual documents
 	$config->update('DMSDocument_versions', 'db', $config->get('DMSDocument', 'db'));
 }
-

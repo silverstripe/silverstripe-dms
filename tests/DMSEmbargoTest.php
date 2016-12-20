@@ -7,7 +7,7 @@ class DMSEmbargoTest extends SapphireTest
     public function tearDownOnce()
     {
         self::$is_running_test = true;
-        
+
         $d = DataObject::get("DMSDocument");
         foreach ($d as $d1) {
             $d1->delete();
@@ -30,6 +30,7 @@ class DMSEmbargoTest extends SapphireTest
     public function testBasicEmbargo()
     {
         $oldDMSFolder = DMS::$dmsFolder;
+        $oldTestMode = DMSDocument_Controller::$testMode;
         DMS::$dmsFolder = DMS_DIR;    //sneakily setting the DMS folder to the folder where the test file lives
 
         $doc = new DMSDocument();
@@ -54,6 +55,7 @@ class DMSEmbargoTest extends SapphireTest
         $this->assertNotEquals($doc->getFullPath(), $result, "File no longer returned (in test mode) when switching to other user group");
 
         DMS::$dmsFolder = $oldDMSFolder;
+        DMSDocument_Controller::$testMode = $oldTestMode;
     }
 
     public function testEmbargoIndefinitely()

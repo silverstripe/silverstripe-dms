@@ -2,12 +2,12 @@
 class DMSDocumentTest extends SapphireTest
 {
 
-    public static $fixture_file = "dms/tests/dmstest.yml";
+    protected static $fixture_file = "dms/tests/dmstest.yml";
 
     public function tearDownOnce()
     {
         self::$is_running_test = true;
-        
+
         $d = DataObject::get("DMSDocument");
         foreach ($d as $d1) {
             $d1->delete();
@@ -156,5 +156,17 @@ class DMSDocumentTest extends SapphireTest
             "However, deleting the draft version of the last page that a document is "
              ."associated with causes that document to be deleted as well"
         );
+    }
+
+    public function testDefaultDownloadBehabiourCMSFields() {
+        $document = singleton('DMSDocument');
+        Config::inst()->update('DMSDocument', 'default_download_behaviour', 'open');
+        $cmsFields = $document->getCMSFields();
+        $this->assertEquals('open', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
+
+
+        Config::inst()->update('DMSDocument', 'default_download_behaviour', 'download');
+        $cmsFields = $document->getCMSFields();
+        $this->assertEquals('download', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
     }
 }
