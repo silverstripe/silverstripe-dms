@@ -1278,6 +1278,7 @@ class DMSDocument_Controller extends Controller
     /**
      * Returns the document object from the request object's ID parameter.
      * Returns null, if no document found
+     * @return DMSDocument|null
      */
     protected function getDocumentFromID($request)
     {
@@ -1380,18 +1381,8 @@ class DMSDocument_Controller extends Controller
                     //its ViewCount should be increased by 1 just before the browser sending the file to front.
                     $doc->trackView();
 
-                    header('Content-Type: ' . $mime);
-                    header('Content-Length: ' . filesize($path), null);
-                    if (!empty($mime) && $mime != "text/html") {
-                        header('Content-Disposition: '.$disposition.'; filename="'.$doc->getFilenameWithoutID().'"');
-                    }
-                    header('Content-transfer-encoding: 8bit');
-                    header('Expires: 0');
-                    header('Pragma: cache');
-                    header('Cache-Control: private');
-                    flush();
-                    readfile($path);
-                    exit;
+                    $this->sendFile($path, $mime, $doc->getFilenameWithoutID(), $disposition);
+                    return;
                 }
             }
         }
@@ -1400,5 +1391,26 @@ class DMSDocument_Controller extends Controller
             return 'This asset does not exist.';
         }
         $this->httpError(404, 'This asset does not exist.');
+    }
+
+    /**
+     * @param string $path File path
+     * @param string $mime File mime type
+     * @param string $name File name
+     * @param string $disposition Content dispositon
+     */
+    protected function sendFile($path, $mime, $name, $disposition) {
+        header('Content-Type: ' . $mime);
+        header('Content-Length: ' . filesize($path), null);
+        if (!empty($mime) && $mime != "text/html") {
+            header('Content-Disposition: '.$disposition.'; filename="'.addslashes($name).'"');
+        }
+        header('Content-transfer-encoding: 8bit');
+        header('Expires: 0');
+        header('Pragma: cache');
+        header('Cache-Control: private');
+        flush();
+        readfile($path);
+        exit;
     }
 }
