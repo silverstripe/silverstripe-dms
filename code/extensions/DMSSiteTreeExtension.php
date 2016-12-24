@@ -71,7 +71,6 @@ class DMSSiteTreeExtension extends DataExtension
             new GridFieldToolbarHeader(),
             new GridFieldFilterHeader(),
             new GridFieldSortableHeader(),
-            new GridFieldOrderableRows('DocumentSort'),
             new GridFieldDataColumns(),
             new GridFieldEditButton(),
             new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
