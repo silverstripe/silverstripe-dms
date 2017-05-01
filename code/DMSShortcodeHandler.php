@@ -10,7 +10,11 @@ class DMSShortcodeHandler
 {
 
     public static function handle(
-        $arguments, $content, ShortcodeParser $parser, $tag, array $extra = array()
+        $arguments,
+        $content,
+        ShortcodeParser $parser,
+        $tag,
+        array $extra = array()
     ) {
         if (!empty($arguments['id'])) {
             $document = DMSDocument::get()->byID($arguments['id']);
@@ -18,7 +22,9 @@ class DMSShortcodeHandler
             if ($document && !$document->isHidden()) {
                 if ($content) {
                     return sprintf(
-                        '<a href="%s">%s</a>', $document->Link(), $parser->parse($content)
+                        '<a href="%s">%s</a>',
+                        $document->Link(),
+                        $parser->parse($content)
                     );
                 } else {
                     if (isset($extra['element'])) {

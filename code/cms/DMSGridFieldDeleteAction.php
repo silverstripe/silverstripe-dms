@@ -13,7 +13,9 @@
  * @package dms
  * @subpackage cms
  */
-class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridField_ColumnProvider, GridField_ActionProvider
+class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements
+    GridField_ColumnProvider,
+    GridField_ActionProvider
 {
 
     /**
@@ -26,35 +28,52 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridFiel
     public function getColumnContent($gridField, $record, $columnName)
     {
         if ($this->removeRelation) {
-            $field = GridField_FormAction::create($gridField, 'UnlinkRelation'.$record->ID, false, "unlinkrelation", array('RecordID' => $record->ID))
+            $field = GridField_FormAction::create(
+                $gridField,
+                'UnlinkRelation' . $record->ID,
+                false,
+                "unlinkrelation",
+                array('RecordID' => $record->ID)
+            )
                 ->addExtraClass('gridfield-button-unlink')
                 ->setAttribute('title', _t('GridAction.UnlinkRelation', "Unlink"))
                 ->setAttribute('data-icon', 'chain--minus');
         } else {
             if (!$record->canDelete()) {
-                return;
+                return '';
             }
-            $field = GridField_FormAction::create($gridField,  'DeleteRecord'.$record->ID, false, "deleterecord", array('RecordID' => $record->ID))
+
+            $field = GridField_FormAction::create(
+                $gridField,
+                'DeleteRecord' . $record->ID,
+                false,
+                "deleterecord",
+                array('RecordID' => $record->ID)
+            )
                 ->addExtraClass('gridfield-button-delete')
                 ->setAttribute('title', _t('GridAction.Delete', "Delete"))
                 ->setAttribute('data-icon', 'cross-circle')
                 ->setDescription(_t('GridAction.DELETE_DESCRIPTION', 'Delete'));
         }
 
-        //add a class to the field to if it is the last gridfield in the list
+        // Add a class to the field to if it is the last gridfield in the list
         $numberOfRelations = $record->Pages()->Count();
-        $field->addExtraClass('dms-delete') //add a new class for custom JS to handle the delete action
-                ->setAttribute('data-pages-count', $numberOfRelations)  //add the number of pages attached to this field as a data-attribute
-                ->removeExtraClass('gridfield-button-delete');  //remove the base gridfield behaviour
+        $field
+            // Add a new class for custom JS to handle the delete action
+            ->addExtraClass('dms-delete')
+            // Add the number of pages attached to this field as a data-attribute
+            ->setAttribute('data-pages-count', $numberOfRelations)
+            // Remove the base gridfield behaviour
+            ->removeExtraClass('gridfield-button-delete');
 
-        //set a class telling JS what kind of warning to display when clicking the delete button
+        // Set a class telling JS what kind of warning to display when clicking the delete button
         if ($numberOfRelations > 1) {
             $field->addExtraClass('dms-delete-link-only');
         } else {
             $field->addExtraClass('dms-delete-last-warning');
         }
 
-        //set a class to show if the document is hidden
+        // Set a class to show if the document is hidden
         if ($record->isHidden()) {
             $field->addExtraClass('dms-document-hidden');
         }
@@ -70,6 +89,7 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridFiel
      * @param mixed $arguments
      * @param array $data - form data
      * @return void
+     * @throws ValidationException If the current user doesn't have permission to delete the record
      */
     public function handleAction(GridField $gridField, $actionName, $arguments, $data)
     {
@@ -79,7 +99,10 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridFiel
                 return;
             }
             if ($actionName == 'deleterecord' && !$item->canDelete()) {
-                throw new ValidationException(_t('GridFieldAction_Delete.DeletePermissionsFailure', "No delete permissions"), 0);
+                throw new ValidationException(
+                    _t('GridFieldAction_Delete.DeletePermissionsFailure', "No delete permissions"),
+                    0
+                );
             }
 
             $delete = false;
@@ -87,10 +110,12 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements GridFiel
                 $delete = true;
             }
 
-            $gridField->getList()->remove($item);   //remove the relation
+            // Remove the relation
+            $gridField->getList()->remove($item);
             if ($delete) {
+                // Delete the document
                 $item->delete();
-            }   //delete the DMSDocument
+            }
         }
     }
 }

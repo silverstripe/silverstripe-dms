@@ -33,7 +33,8 @@ class DMSSiteTreeExtension extends DataExtension
 
     /**
      * Only show the documents tab on the list of pages set here. Any pages set in the no_documents_tab array will
-     * still not be shown. If this isn't called, or if it is called with an empty array, all pages will get Document tabs.
+     * still not be shown. If this isn't called, or if it is called with an empty array, all pages will get
+     * Document tabs.
      * @static
      * @param $array Array of page types to show the Documents tab on
      */
@@ -51,7 +52,7 @@ class DMSSiteTreeExtension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        //prevent certain pages from having a Document tab in the CMS
+        // Prevent certain pages from having a Document tab in the CMS
         if (in_array($this->owner->ClassName, self::$noDocumentsList)) {
             return;
         }
@@ -59,11 +60,12 @@ class DMSSiteTreeExtension extends DataExtension
             return;
         }
 
-        //javascript to customize the grid field for the DMS document (overriding entwine in FRAMEWORK_DIR.'/javascript/GridField.js'
+        // Javascript to customize the grid field for the DMS document (overriding entwine
+        // in FRAMEWORK_DIR.'/javascript/GridField.js'
         Requirements::javascript(DMS_DIR.'/javascript/DMSGridField.js');
         Requirements::css(DMS_DIR.'/css/DMSMainCMS.css');
 
-        //javascript for the link editor pop-up in TinyMCE
+        // Javascript for the link editor pop-up in TinyMCE
         Requirements::javascript(DMS_DIR."/javascript/DocumentHtmlEditorFieldToolbar.js");
 
         // Document listing
@@ -97,12 +99,18 @@ class DMSSiteTreeExtension extends DataExtension
 
         // HACK: Create a singleton of DMSDocument to ensure extensions are applied before we try to get display fields.
         singleton('DMSDocument');
-        $gridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
+        $gridFieldConfig->getComponentByType('GridFieldDataColumns')
+            ->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
             ->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
-            ->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
+            ->setFieldFormatting(
+                array(
+                    'FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'
+                )
+            );
 
         //override delete functionality with this class
-        $gridFieldConfig->getComponentByType('GridFieldDetailForm')->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
+        $gridFieldConfig->getComponentByType('GridFieldDetailForm')
+            ->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
 
         $gridField = GridField::create(
             'Documents',
@@ -115,7 +123,8 @@ class DMSSiteTreeExtension extends DataExtension
         $uploadBtn = new LiteralField(
             'UploadButton',
             sprintf(
-                '<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content" data-icon="add" href="%s">%s</a>',
+                '<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content"'
+                . ' data-icon="add" href="%s">%s</a>',
                 Controller::join_links(singleton('DMSDocumentAddController')->Link(), '?ID=' . $this->owner->ID),
                 "Add Documents"
             )

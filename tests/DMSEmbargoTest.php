@@ -1,8 +1,7 @@
 <?php
 class DMSEmbargoTest extends SapphireTest
 {
-
-    public static $fixture_file = "dms/tests/dmsembargotest.yml";
+    public static $fixture_file = "dmsembargotest.yml";
 
     public function tearDownOnce()
     {
@@ -52,7 +51,11 @@ class DMSEmbargoTest extends SapphireTest
 
         $this->logInWithPermission('random-user-group');
         $result = $controller->index($this->createFakeHTTPRequest($docID));
-        $this->assertNotEquals($doc->getFullPath(), $result, "File no longer returned (in test mode) when switching to other user group");
+        $this->assertNotEquals(
+            $doc->getFullPath(),
+            $result,
+            "File no longer returned (in test mode) when switching to other user group"
+        );
 
         DMS::$dmsFolder = $oldDMSFolder;
         DMSDocument_Controller::$testMode = $oldTestMode;
@@ -192,7 +195,10 @@ class DMSEmbargoTest extends SapphireTest
         $s1->publish('Stage', 'Live');
         $s1->doPublish();
         $doc = DataObject::get_by_id("DMSDocument", $dID);
-        $this->assertTrue($doc->isHidden(), "Document is still hidden because although the untilPublish flag is cleared, the indefinitely flag is still there");
+        $this->assertTrue(
+            $doc->isHidden(),
+            "Document is still hidden because although the untilPublish flag is cleared, the indefinitely flag is there"
+        );
         $this->assertTrue($doc->isEmbargoed(), "Document is embargoed");
         $this->assertFalse($doc->isExpired(), "Document is not expired");
 

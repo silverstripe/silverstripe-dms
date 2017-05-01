@@ -2,7 +2,6 @@
 
 class DMSDocumentAddExistingField extends CompositeField
 {
-
     public $useFieldContext = true;
 
     public function __construct($name, $title = null)
@@ -10,7 +9,15 @@ class DMSDocumentAddExistingField extends CompositeField
         $this->name = $name;
         $this->title = ($title === null) ? $name : $title;
 
-        parent::__construct(new TreeDropdownField('PageSelector', 'Add from another page', 'SiteTree', 'ID', 'TitleWithNumberOfDocuments'));
+        parent::__construct(
+            new TreeDropdownField(
+                'PageSelector',
+                'Add from another page',
+                'SiteTree',
+                'ID',
+                'TitleWithNumberOfDocuments'
+            )
+        );
     }
 
     /**
@@ -23,7 +30,8 @@ class DMSDocumentAddExistingField extends CompositeField
         return $this;
     }
     /**
-     * Get the record to use as "Parent" for uploaded Files (eg a Page with a has_one to File) If none is set, it will use Form->getRecord() or Form->Controller()->data()
+     * Get the record to use as "Parent" for uploaded Files (eg a Page with a has_one to File) If none is set, it
+     * will use Form->getRecord() or Form->Controller()->data()
      * @return DataObject
      */
     public function getRecord()

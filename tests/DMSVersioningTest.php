@@ -1,11 +1,18 @@
 <?php
 class DMSVersioningTest extends SapphireTest
 {
+    protected $usesDatabase = true;
 
+    /**
+     * Stub PDF files for testing
+     * @var string
+     */
     public static $testFile = 'dms/tests/DMS-test-lorum-file.pdf';
     public static $testFile2 = 'dms/tests/DMS-test-document-2.pdf';
 
-    //store values to reset back to after this test runs
+    /**
+     * Store values to reset back to after this test runs
+     */
     public static $dmsFolderOld;
     public static $dmsFolderSizeOld;
     public static $dmsEnableVersionsOld;
@@ -37,17 +44,22 @@ class DMSVersioningTest extends SapphireTest
             $t1->delete();
         }
 
-        //delete the test folder after the test runs
+        // Delete the test folder after the test runs
         $this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-versions');
 
         parent::tearDown();
 
-        //set the old DMS folder back again
+        // Set the old DMS folder back again
         DMS::$dmsFolder = self::$dmsFolderOld;
         DMS::$dmsFolderSize = self::$dmsFolderSizeOld;
         DMSDocument_versions::$enable_versions = self::$dmsEnableVersionsOld;
     }
 
+    /**
+     * Delete a file that was created during a unit test
+     *
+     * @param string $path
+     */
     public function delete($path)
     {
         if (file_exists($path) || is_dir($path)) {
@@ -68,7 +80,6 @@ class DMSVersioningTest extends SapphireTest
         }
     }
 
-
     public function testDMSVersionStorage()
     {
         $dms = DMS::inst();
@@ -76,7 +87,13 @@ class DMSVersioningTest extends SapphireTest
         $document = $dms->storeDocument(self::$testFile);
 
         $this->assertNotNull($document, "Document object created");
-        $this->assertTrue(file_exists(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename), "Document file copied into DMS folder");
+        $this->assertTrue(
+            file_exists(
+                DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder
+                . DIRECTORY_SEPARATOR . $document->Filename
+            ),
+            "Document file copied into DMS folder"
+        );
 
         $document->replaceDocument(self::$testFile2);
         $document->replaceDocument(self::$testFile);

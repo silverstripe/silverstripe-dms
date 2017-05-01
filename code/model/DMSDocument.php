@@ -5,14 +5,14 @@
  */
 class DMSDocument extends DataObject implements DMSDocumentInterface
 {
-
     private static $db = array(
         "Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
         "Folder" => "Varchar(255)",    // eg.	0
         "Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
         "Description" => 'Text',
         "ViewCount" => 'Int',
-        "LastChanged" => 'SS_DateTime', //when this document's file was created or last replaced (small changes like updating title don't count)
+        // When this document's file was created or last replaced (small changes like updating title don't count)
+        "LastChanged" => 'SS_DateTime',
 
         "EmbargoedIndefinitely" => 'Boolean(false)',
         "EmbargoedUntilPublished" => 'Boolean(false)',
@@ -169,7 +169,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     {
         $this->Pages()->add($pageObject);
 
-        DB::query("UPDATE \"DMSDocument_Pages\" SET \"DocumentSort\"=\"DocumentSort\"+1 WHERE \"SiteTreeID\" = $pageObject->ID");
+        DB::query(
+            "UPDATE \"DMSDocument_Pages\" SET \"DocumentSort\"=\"DocumentSort\"+1"
+            . " WHERE \"SiteTreeID\" = $pageObject->ID"
+        );
 
         return $this;
     }
@@ -926,8 +929,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $defaultDownloadBehaviour = Config::inst()->get('DMSDocument', 'default_download_behaviour');
         if (!isset($downloadBehaviorSource[$defaultDownloadBehaviour])) {
             user_error('Default download behaviour "' . $defaultDownloadBehaviour . '" not supported.', E_USER_WARNING);
-        }
-        else {
+        } else {
             $downloadBehaviorSource[$defaultDownloadBehaviour] .= ' (' . _t('DMSDocument.DEFAULT', 'default') . ')';
         }
 
@@ -938,7 +940,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $downloadBehaviorSource,
                 $defaultDownloadBehaviour
             )
-            ->setDescription('How the visitor will view this file. <strong>Open in browser</strong> allows files to be opened in a new tab.')
+            ->setDescription(
+                'How the visitor will view this file. <strong>Open in browser</strong> '
+                . 'allows files to be opened in a new tab.'
+            )
         );
 
         //create upload field to replace document
@@ -990,9 +995,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 new GridFieldDataColumns(),
                 new GridFieldPaginator(30)
             );
-            $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
-                                    ->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
-                                    ->setFieldFormatting(array('FilenameWithoutID'=>'<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'));
+            $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')
+                ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
+                ->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
+                ->setFieldFormatting(
+                    array(
+                        'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>'
+                            . '$FilenameWithoutID</a>'
+                    )
+                );
 
             $versionsGrid =  GridField::create(
                 'Versions',
@@ -1004,7 +1015,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             //$extraFields = $versionsGrid->addExtraClass('find-versions');
         }
 
-        $fields->add(new LiteralField('BottomTaskSelection',
+        $fields->add(new LiteralField(
+            'BottomTaskSelection',
             '<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
             '<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
             '<li class="ss-ui-button" data-panel="expiry">Expiry</li>'.
@@ -1023,17 +1035,41 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         } elseif (!empty($this->EmbargoedUntilDate)) {
             $embargoValue = 'Date';
         }
-        $embargo = new OptionsetField('Embargo', 'Embargo', array('None'=>'None', 'Published'=>'Hide document until page is published', 'Indefinitely'=>'Hide document indefinitely', 'Date'=>'Hide until set date'), $embargoValue);
+        $embargo = new OptionsetField(
+            'Embargo',
+            'Embargo',
+            array(
+                'None' => 'None',
+                'Published' => 'Hide document until page is published',
+                'Indefinitely' => 'Hide document indefinitely',
+                'Date' => 'Hide until set date'
+            ),
+            $embargoValue
+        );
         $embargoDatetime = DatetimeField::create('EmbargoedUntilDate', '');
-        $embargoDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'dd-MM-yyyy')->setConfig('datavalueformat', 'dd-MM-yyyy');
+        $embargoDatetime->getDateField()
+            ->setConfig('showcalendar', true)
+            ->setConfig('dateformat', 'dd-MM-yyyy')
+            ->setConfig('datavalueformat', 'dd-MM-yyyy');
 
         $expiryValue = 'None';
         if (!empty($this->ExpireAtDate)) {
             $expiryValue = 'Date';
         }
-        $expiry = new OptionsetField('Expiry', 'Expiry', array('None'=>'None', 'Date'=>'Set document to expire on'), $expiryValue);
+        $expiry = new OptionsetField(
+            'Expiry',
+            'Expiry',
+            array(
+                'None' => 'None',
+                'Date' => 'Set document to expire on'
+            ),
+            $expiryValue
+        );
         $expiryDatetime = DatetimeField::create('ExpireAtDate', '');
-        $expiryDatetime->getDateField()->setConfig('showcalendar', true)->setConfig('dateformat', 'dd-MM-yyyy')->setConfig('datavalueformat', 'dd-MM-yyyy');
+        $expiryDatetime->getDateField()
+            ->setConfig('showcalendar', true)
+            ->setConfig('dateformat', 'dd-MM-yyyy')
+            ->setConfig('datavalueformat', 'dd-MM-yyyy');
 
         // This adds all the actions details into a group.
         // Embargo, History, etc to go in here
@@ -1045,28 +1081,22 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $embargo,
                 $embargoDatetime
             )->addExtraClass('embargo'),
-
             FieldGroup::create(
                 $expiry,
                 $expiryDatetime
             )->addExtraClass('expiry'),
-
             FieldGroup::create(
                 $uploadField
             )->addExtraClass('replace'),
-
             FieldGroup::create(
                 $pagesGrid
             )->addExtraClass('find-usage'),
-
             FieldGroup::create(
                 $referencesGrid
             )->addExtraClass('find-references'),
-
             FieldGroup::create(
                 $versionsGrid
             )->addExtraClass('find-versions')
-
         );
 
         $actionsPanel->setName("ActionsPanel");
@@ -1193,8 +1223,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     {
         $extension = $this->getExtension();
 
-        $previewField = new LiteralField("ImageFull",
-            "<img id='thumbnailImage' class='thumbnail-preview' src='{$this->Icon($extension)}?r=" . rand(1, 100000)  . "' alt='{$this->Title}' />\n"
+        $previewField = new LiteralField(
+            "ImageFull",
+            "<img id='thumbnailImage' class='thumbnail-preview' src='{$this->Icon($extension)}?r="
+            . rand(1, 100000) . "' alt='{$this->Title}' />\n"
         );
 
         //count the number of pages this document is published on
@@ -1217,15 +1249,41 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 CompositeField::create(
                     CompositeField::create(
                         new ReadonlyField("ID", "ID number". ':', $this->ID),
-                        new ReadonlyField("FileType", _t('AssetTableField.TYPE', 'File type') . ':', self::get_file_type($extension)),
-                        new ReadonlyField("Size", _t('AssetTableField.SIZE', 'File size') . ':', $this->getFileSizeFormatted()),
-                        $urlField = new ReadonlyField('ClickableURL', _t('AssetTableField.URL', 'URL'),
-                            sprintf('<a href="%s" target="_blank" class="file-url">%s</a>', $this->getLink(), $this->getLink())
+                        new ReadonlyField(
+                            "FileType",
+                            _t('AssetTableField.TYPE', 'File type') . ':',
+                            self::get_file_type($extension)
+                        ),
+                        new ReadonlyField(
+                            "Size",
+                            _t('AssetTableField.SIZE', 'File size') . ':',
+                            $this->getFileSizeFormatted()
+                        ),
+                        $urlField = new ReadonlyField(
+                            'ClickableURL',
+                            _t('AssetTableField.URL', 'URL'),
+                            sprintf(
+                                '<a href="%s" target="_blank" class="file-url">%s</a>',
+                                $this->getLink(),
+                                $this->getLink()
+                            )
                         ),
                         new ReadonlyField("FilenameWithoutIDField", "Filename". ':', $this->getFilenameWithoutID()),
-                        new DateField_Disabled("Created", _t('AssetTableField.CREATED', 'First uploaded') . ':', $this->Created),
-                        new DateField_Disabled("LastEdited", _t('AssetTableField.LASTEDIT', 'Last changed') . ':', $this->LastEdited),
-                        new DateField_Disabled("LastChanged", _t('AssetTableField.LASTCHANGED', 'Last replaced') . ':', $this->LastChanged),
+                        new DateField_Disabled(
+                            "Created",
+                            _t('AssetTableField.CREATED', 'First uploaded') . ':',
+                            $this->Created
+                        ),
+                        new DateField_Disabled(
+                            "LastEdited",
+                            _t('AssetTableField.LASTEDIT', 'Last changed') . ':',
+                            $this->LastEdited
+                        ),
+                        new DateField_Disabled(
+                            "LastChanged",
+                            _t('AssetTableField.LASTCHANGED', 'Last replaced') . ':',
+                            $this->LastChanged
+                        ),
                         new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue),
                         new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue),
                         new ReadonlyField("ViewCount", "View count". ':', $this->ViewCount)
@@ -1246,7 +1304,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      *
      * @param File $file
      *
-     * @return DMSDocument
+     * @return $this
      */
     public function ingestFile($file)
     {
@@ -1254,163 +1312,5 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $file->delete();
 
         return $this;
-    }
-}
-
-/**
- * @package dms
- */
-class DMSDocument_Controller extends Controller
-{
-
-    public static $testMode = false;   //mode to switch for testing. Does not return document download, just document URL
-
-    private static $allowed_actions = array(
-        'index'
-    );
-
-    public function init()
-    {
-        Versioned::choose_site_stage();
-        parent::init();
-    }
-
-    /**
-     * Returns the document object from the request object's ID parameter.
-     * Returns null, if no document found
-     * @return DMSDocument|null
-     */
-    protected function getDocumentFromID($request)
-    {
-        $doc = null;
-
-        $id = Convert::raw2sql($request->param('ID'));
-
-        if (strpos($id, 'version') === 0) { //versioned document
-            $id = str_replace('version', '', $id);
-            $doc = DataObject::get_by_id('DMSDocument_versions', $id);
-            $this->extend('updateVersionFromID', $doc, $request);
-        } else {    //normal document
-            $doc = DataObject::get_by_id('DMSDocument', $id);
-            $this->extend('updateDocumentFromID', $doc, $request);
-        }
-
-        return $doc;
-    }
-
-    /**
-     * Access the file download without redirecting user, so we can block direct
-     * access to documents.
-     */
-    public function index(SS_HTTPRequest $request)
-    {
-        $doc = $this->getDocumentFromID($request);
-
-        if (!empty($doc)) {
-            $canView = false;
-
-            // Runs through all pages that this page links to and sets canView
-            // to true if the user can view ONE of these pages
-            if (method_exists($doc, 'Pages')) {
-                $pages = $doc->Pages();
-                if ($pages->Count() > 0) {
-                    foreach ($pages as $page) {
-                        if ($page->CanView()) {
-                            // just one canView is enough to know that we can
-                            // view the file
-                            $canView = true;
-                            break;
-                        }
-                    }
-                } else {
-                    // if the document isn't on any page, then allow viewing of
-                    // the document (because there is no canView() to consult)
-                    $canView = true;
-                }
-            }
-
-            // check for embargo or expiry
-            if ($doc->isHidden()) {
-                $canView = false;
-            }
-
-            //admins can always download any document, even if otherwise hidden
-            $member = Member::currentUser();
-            if ($member && Permission::checkMember($member, 'ADMIN')) {
-                $canView = true;
-            }
-
-            if ($canView) {
-                $path = $doc->getFullPath();
-                if (is_file($path)) {
-                    $fileBin = trim(`whereis file`);
-                    if (function_exists('finfo_file')) {
-                        // discover the mime type properly
-                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                        $mime = finfo_file($finfo, $path);
-                    } elseif (is_executable($fileBin)) {
-                        // try to use the system tool
-                        $mime = `$fileBin -i -b $path`;
-                        $mime = explode(';', $mime);
-                        $mime = trim($mime[0]);
-                    } else {
-                        // make do with what we have
-                        $ext = $doc->getExtension();
-                        if ($ext =='pdf') {
-                            $mime = 'application/pdf';
-                        } elseif ($ext == 'html' || $ext =='htm') {
-                            $mime = 'text/html';
-                        } else {
-                            $mime = 'application/octet-stream';
-                        }
-                    }
-
-                    if (self::$testMode) {
-                        return $path;
-                    }
-
-                    // set fallback if no config nor file-specific value
-                    $disposition = 'attachment';
-
-                    // file-specific setting
-                    if ($doc->DownloadBehavior == 'open') {
-                        $disposition = 'inline';
-                    }
-
-                    //if a DMSDocument can be downloaded and all the permissions/privileges has passed,
-                    //its ViewCount should be increased by 1 just before the browser sending the file to front.
-                    $doc->trackView();
-
-                    $this->sendFile($path, $mime, $doc->getFilenameWithoutID(), $disposition);
-                    return;
-                }
-            }
-        }
-
-        if (self::$testMode) {
-            return 'This asset does not exist.';
-        }
-        $this->httpError(404, 'This asset does not exist.');
-    }
-
-    /**
-     * @param string $path File path
-     * @param string $mime File mime type
-     * @param string $name File name
-     * @param string $disposition Content dispositon
-     */
-    protected function sendFile($path, $mime, $name, $disposition) {
-        header('Content-Type: ' . $mime);
-        header('Content-Length: ' . filesize($path), null);
-        if (!empty($mime) && $mime != "text/html") {
-            header('Content-Disposition: '.$disposition.'; filename="'.addslashes($name).'"');
-        }
-        header('Content-transfer-encoding: 8bit');
-        header('Expires: 0');
-        header('Pragma: cache');
-        header('Cache-Control: private');
-        flush();
-        readfile($path);
-        exit;
     }
 }

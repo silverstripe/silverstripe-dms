@@ -1,10 +1,7 @@
 <?php
 class ShortCodeRelationFinderTest extends SapphireTest
 {
-
-    public static $fixture_file = array(
-        'dms/tests/dmstest.yml'
-    );
+    protected static $fixture_file = 'dmstest.yml';
 
     public function testFindInRate()
     {
@@ -12,15 +9,15 @@ class ShortCodeRelationFinderTest extends SapphireTest
         $d2 = $this->objFromFixture('DMSDocument', 'd2');
 
         $page1 = new SiteTree();
-        $page1->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id='.$d1->ID.']">';
+        $page1->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id=' . $d1->ID . ']">';
         $page1ID = $page1->write();
 
         $page2 = new SiteTree();
-        $page2->Content = 'Condition:  <a title="document test 2" href="[dms_document_link,id='.$d2->ID.']">';
+        $page2->Content = 'Condition:  <a title="document test 2" href="[dms_document_link,id=' . $d2->ID . ']">';
         $page2ID = $page2->write();
 
         $page3 = new SiteTree();
-        $page3->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id='.$d1->ID.']">';
+        $page3->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id=' . $d1->ID . ']">';
         $page3ID = $page3->write();
 
         $finder = new ShortCodeRelationFinder();

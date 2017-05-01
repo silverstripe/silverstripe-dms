@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Hold a set of metadata category/value tags associated with a DMSDocument
  *
@@ -7,7 +6,6 @@
  */
 class DMSTag extends DataObject
 {
-
     private static $db = array(
         'Category' => 'Varchar(1024)',
         'Value' => 'Varchar(1024)',

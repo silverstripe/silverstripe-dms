@@ -1,15 +1,17 @@
-(function($) {
+(function ($) {
 	"use strict";
 
-	$.entwine('ss', function($) {
+	$.entwine('ss', function ($) {
 
 		$('#DocumentTypeID ul li').entwine({
-			onadd: function() {
+			onadd: function () {
 				this.addClass('ui-button ss-ui-button ui-corner-all ui-state-default ui-widget ui-button-text-only');
 				this.parents('ul').removeClass('ui-tabs-nav');
-				if(this.find('input').is(':checked')) this.addClass('selected');
+				if (this.find('input').is(':checked')) {
+                    this.addClass('selected');
+                }
 			},
-			onclick: function(e){
+			onclick: function (e) {
 				$('#DocumentTypeID').find('li.selected').removeClass('selected');
 				this.find('input').prop("checked", true);
 				this.addClass('selected');
@@ -34,7 +36,7 @@
 		});*/
 
 		$('#Actions ul li').entwine({
-			onclick: function(e) {
+			onclick: function (e) {
 
 				//add active state to the current button
 				$('#Actions ul li').removeClass('dms-active');
@@ -53,7 +55,7 @@
 		});
 
 		$('#Form_ItemEditForm_Embargo input, #Form_EditForm_Embargo input').entwine({
-			onchange: function() {
+			onchange: function () {
 				console.log('called');
 				//selected the date options
 				if (this.attr('value') === 'Date') {
@@ -66,7 +68,7 @@
 		});
 
 		$('#Form_ItemEditForm_Expiry input, #Form_EditForm_Expiry input').entwine({
-			onchange: function() {
+			onchange: function () {
 				//selected the date options
 				if (this.attr('value') === 'Date') {
 					$('.expiryDatetime').children().show();
@@ -78,7 +80,7 @@
 		});
 
 		$('.DMSDocumentActionsPanel').entwine({
-			onadd: function() {
+			onadd: function () {
 				//do an initial show of the entire panel
 				this.show();
 
@@ -116,7 +118,7 @@
 		});
 
 		$('#Form_ItemEditForm_action_doDelete').entwine({
-			onclick: function(e){
+			onclick: function (e) {
 				//work out how many pages are left attached to this document
 				var form = this.closest('form');
 				var pagesCount = form.data('pages-count');
@@ -145,7 +147,7 @@
 					message = "Permanently delete this document and remove it from this page?\n\nNotice: this document is only attached to this page, so deleting it won't affect any other pages.";
 				}
 
-				if(!confirm(message)) {
+				if (!confirm(message)) {
 					e.preventDefault();
 					return false;
 				} else {
