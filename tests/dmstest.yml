@@ -38,12 +38,16 @@ DMSTag:
     Value: tag6value
 DMSDocument:
   d1:
-    Filename: test-file-file-doesnt-exist
+    Filename: test-file-file-doesnt-exist-1
     Folder: 5
     Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
     Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
   d2:
-    Filename: test-file-file-doesnt-exist
+    Filename: test-file-file-doesnt-exist-2
     Folder: 5
     Tags: =>DMSTag.t5, =>DMSTag.t6
     Pages: =>SiteTree.s5, =>SiteTree.s6
+  document_with_relations:
+    Filename: file-with-relations
+    Folder: 5
+    RelatedDocuments: =>DMSDocument.d1, =>DMSDocument.d2

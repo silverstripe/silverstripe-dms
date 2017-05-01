@@ -14,6 +14,8 @@ en:
     RelatedReferences: 'Related References'
     SINGULARNAME: Document
     Versions: Versions
+    DOWNLOAD: "Download {title}"
+    LASTCHANGED: "Last changed: {date}"
   DMSTag:
     PLURALNAME: 'D M S Tags'
     SINGULARNAME: 'D M S Tag'
@@ -35,6 +37,7 @@ en:
   DMSDocumentAddController:
     MENUTITLE: 'Edit Page'
     NODOCUMENTS: 'There are no documents attached to the selected page.'
+    RELATEDDOCUMENTS: 'Related Documents'
   DMSDocument_versions:
     PLURALNAME: 'D M S Document_versionss'
     SINGULARNAME: 'D M S Document_versions'
