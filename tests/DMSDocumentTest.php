@@ -1,8 +1,7 @@
 <?php
 class DMSDocumentTest extends SapphireTest
 {
-
-    protected static $fixture_file = "dms/tests/dmstest.yml";
+    protected static $fixture_file = "dmstest.yml";
 
     public function tearDownOnce()
     {
@@ -64,13 +63,19 @@ class DMSDocumentTest extends SapphireTest
 
         $doc->removePage($s1);
         $pages = $doc->Pages();
-        $pagesArray = $pages->toArray();    //page 1 is missing
+        $pagesArray = $pages->toArray();    // Page 1 is missing
         $this->assertEquals($pagesArray[0]->ID, $s2->ID, "Page 2 still associated correctly");
         $this->assertEquals($pagesArray[1]->ID, $s3->ID, "Page 3 still associated correctly");
 
         $documents = $s2->Documents();
         $documentsArray = $documents->toArray();
-        $this->assertDOSContains(array(array('Filename'=>$doc->Filename)), $documentsArray, "Document associated with page");
+        $this->assertDOSContains(
+            array(
+                array('Filename' => $doc->Filename)
+            ),
+            $documentsArray,
+            "Document associated with page"
+        );
 
         $doc->removeAllPages();
         $pages = $doc->Pages();
@@ -158,7 +163,8 @@ class DMSDocumentTest extends SapphireTest
         );
     }
 
-    public function testDefaultDownloadBehabiourCMSFields() {
+    public function testDefaultDownloadBehabiourCMSFields()
+    {
         $document = singleton('DMSDocument');
         Config::inst()->update('DMSDocument', 'default_download_behaviour', 'open');
         $cmsFields = $document->getCMSFields();

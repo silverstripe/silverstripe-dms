@@ -74,7 +74,7 @@ class DMSUploadField extends UploadField
 
     /**
      * Action to handle upload of a single file
-     * 
+     *
      * @param SS_HTTPRequest $request
      * @return string json
      */
@@ -93,7 +93,7 @@ class DMSUploadField extends UploadField
         $name = $this->getName();
         $tmpfile = $request->postVar($name);
         $record = $this->getRecord();
-        
+
         // Check if the file has been uploaded into the temporary storage.
         if (!$tmpfile) {
             $return = array('error' => _t('UploadField.FIELDNOTSET', 'File information not found'));
@@ -161,7 +161,7 @@ class DMSUploadField extends UploadField
 
                     // CUSTOM Attach the file to the related record.
                     $document = $this->attachFile($file);
-                    
+
                     // Collect all output data.
                     $return = array_merge($return, array(
                         'id' => $document->ID,
@@ -199,7 +199,7 @@ class DMSUploadField extends UploadField
         // Replace the download template with a new one only when access the upload field through a GridField.
         // Needs to be enabled through setConfig('downloadTemplateName', 'ss-dmsuploadfield-downloadtemplate');
         Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
-            
+
         // In the add dialog, add the addtemplate into the set of file that load.
         Requirements::javascript('dms/javascript/DMSUploadField_addtemplate.js');
 
@@ -214,7 +214,7 @@ class DMSUploadField extends UploadField
     {
         return DMSUploadField_ItemHandler::create($this, $itemID);
     }
-    
+
 
     /**
      * FieldList $fields for the EditForm
@@ -223,24 +223,26 @@ class DMSUploadField extends UploadField
      * @param File $file File context to generate fields for
      * @return FieldList List of form fields
      */
-    public function getDMSFileEditFields($file) 
-	{
+    public function getDMSFileEditFields($file)
+    {
 
         // Empty actions, generate default
-        if(empty($this->fileEditFields)) {
+        if (empty($this->fileEditFields)) {
             $fields = $file->getCMSFields();
             // Only display main tab, to avoid overly complex interface
-            if($fields->hasTabSet() && ($mainTab = $fields->findOrMakeTab('Root.Main'))) {
+            if ($fields->hasTabSet() && ($mainTab = $fields->findOrMakeTab('Root.Main'))) {
                 $fields = $mainTab->Fields();
             }
             return $fields;
         }
 
         // Fields instance
-        if ($this->fileEditFields instanceof FieldList) return $this->fileEditFields;
+        if ($this->fileEditFields instanceof FieldList) {
+            return $this->fileEditFields;
+        }
 
         // Method to call on the given file
-        if($file->hasMethod($this->fileEditFields)) {
+        if ($file->hasMethod($this->fileEditFields)) {
             return $file->{$this->fileEditFields}();
         }
 
@@ -254,21 +256,23 @@ class DMSUploadField extends UploadField
      * @param File $file File context to generate form actions for
      * @return FieldList Field list containing FormAction
      */
-    public function getDMSFileEditActions($file) 
-	{
+    public function getDMSFileEditActions($file)
+    {
 
         // Empty actions, generate default
-        if(empty($this->fileEditActions)) {
+        if (empty($this->fileEditActions)) {
             $actions = new FieldList($saveAction = new FormAction('doEdit', _t('UploadField.DOEDIT', 'Save')));
             $saveAction->addExtraClass('ss-ui-action-constructive icon-accept');
             return $actions;
         }
 
         // Actions instance
-        if ($this->fileEditActions instanceof FieldList) return $this->fileEditActions;
+        if ($this->fileEditActions instanceof FieldList) {
+            return $this->fileEditActions;
+        }
 
         // Method to call on the given file
-        if($file->hasMethod($this->fileEditActions)) {
+        if ($file->hasMethod($this->fileEditActions)) {
             return $file->{$this->fileEditActions}();
         }
 
@@ -282,58 +286,23 @@ class DMSUploadField extends UploadField
      * @param File $file File context to generate validator from
      * @return Validator Validator object
      */
-    public function getDMSFileEditValidator($file) 
-	{
+    public function getDMSFileEditValidator($file)
+    {
         // Empty validator
-        if(empty($this->fileEditValidator)) return null;
+        if (empty($this->fileEditValidator)) {
+            return null;
+        }
 
         // Validator instance
-        if($this->fileEditValidator instanceof Validator) return $this->fileEditValidator;
+        if ($this->fileEditValidator instanceof Validator) {
+            return $this->fileEditValidator;
+        }
 
         // Method to call on the given file
-        if($file->hasMethod($this->fileEditValidator)) {
+        if ($file->hasMethod($this->fileEditValidator)) {
             return $file->{$this->fileEditValidator}();
         }
 
         user_error("Invalid value for UploadField::fileEditValidator", E_USER_ERROR);
-    }    
-}
-
-class DMSUploadField_ItemHandler extends UploadField_ItemHandler
-{
-	
-    private static $allowed_actions = array(
-        'delete',
-        'edit',
-        'EditForm',
-    );
-	
-    public function getItem()
-    {
-        return DataObject::get_by_id('DMSDocument', $this->itemID);
     }
-	
-    /**
-     * @return Form
-     */
-    public function EditForm() {
-    	$file = $this->getItem();
-
-    	// Get form components
-    	$fields = $this->parent->getDMSFileEditFields($file);
-    	$actions = $this->parent->getDMSFileEditActions($file);
-    	$validator = $this->parent->getDMSFileEditValidator($file);
-    	$form = new Form(
-    		$this,
-    		__FUNCTION__,
-    		$fields,
-    		$actions,
-    		$validator
-    	);
-    	$form->loadDataFrom($file);
-    	$form->addExtraClass('small');
-
-    	return $form;
-    }
-    
 }

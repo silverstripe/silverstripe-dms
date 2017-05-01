@@ -1,6 +1,7 @@
 <?php
 class DMSTagTest extends SapphireTest
 {
+    protected $usesDatabase = true;
 
     public function tearDownOnce()
     {

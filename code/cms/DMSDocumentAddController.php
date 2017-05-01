@@ -3,7 +3,6 @@
 /**
  * @package dms
  */
-
 class DMSDocumentAddController extends LeftAndMain
 {
 
@@ -51,7 +50,8 @@ class DMSDocumentAddController extends LeftAndMain
 
         if ($id && is_numeric($id) && $id > 0) {
             return Versioned::get_by_stage('SiteTree', 'Stage', sprintf(
-                'ID = %s', (int) $id
+                'ID = %s',
+                (int) $id
             ))->first();
         } else {
             // ID is either '0' or 'root'
@@ -89,7 +89,9 @@ class DMSDocumentAddController extends LeftAndMain
         $uploadField->setTemplate('AssetUploadField');
         $uploadField->setRecord($page);
 
-        $uploadField->getValidator()->setAllowedExtensions(array_filter(array_merge(Config::inst()->get('File', 'allowed_extensions'), self::$allowed_extensions)));
+        $uploadField->getValidator()->setAllowedExtensions(
+            array_filter(array_merge(Config::inst()->get('File', 'allowed_extensions'), self::$allowed_extensions))
+        );
         $exts = $uploadField->getValidator()->getAllowedExtensions();
 
         asort($exts);
@@ -105,8 +107,10 @@ class DMSDocumentAddController extends LeftAndMain
             $this,
             'getEditForm',
             new FieldList(
-                new TabSet('Main',
-                    new Tab('From your computer',
+                new TabSet(
+                    'Main',
+                    new Tab(
+                        'From your computer',
                         new HiddenField('ID', false, $page->ID),
                         $uploadField,
                         new LiteralField(
@@ -118,7 +122,8 @@ class DMSDocumentAddController extends LeftAndMain
                             )
                         )
                     ),
-                    new Tab('From the CMS',
+                    new Tab(
+                        'From the CMS',
                         $addExistingField
                     )
                 )
@@ -168,10 +173,10 @@ class DMSDocumentAddController extends LeftAndMain
             'Title' => 'Add Document',
             'Link' => $this->Link()
         )));
-        
+
         return $items;
     }
-    
+
     public function Backlink()
     {
         $pageID = $this->currentPageID();
@@ -183,7 +188,9 @@ class DMSDocumentAddController extends LeftAndMain
         $term = (isset($_GET['term'])) ? $_GET['term'] : '';
         $term_sql = Convert::raw2sql($term);
         $data = DMSDocument::get()
-        ->where("(\"ID\" LIKE '%".$term_sql."%' OR \"Filename\" LIKE '%".$term_sql."%' OR \"Title\" LIKE '%".$term_sql."%')")
+        ->where(
+            "(\"ID\" LIKE '%".$term_sql."%' OR \"Filename\" LIKE '%".$term_sql."%' OR \"Title\" LIKE '%".$term_sql."%')"
+        )
         ->sort('ID ASC')
         ->limit(20);
 
@@ -208,15 +215,17 @@ class DMSDocumentAddController extends LeftAndMain
             $document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
             $document->addPage($page);
 
-            $buttonText = '<button class="ss-uploadfield-item-edit ss-ui-button ui-corner-all" title="Edit this document" data-icon="pencil">'.
-                'Edit<span class="toggle-details"><span class="toggle-details-icon"></span></span></button>';
+            $buttonText = '<button class="ss-uploadfield-item-edit ss-ui-button ui-corner-all"'
+                . ' title="Edit this document" data-icon="pencil">'
+                . 'Edit<span class="toggle-details"><span class="toggle-details-icon"></span></span></button>';
 
             // Collect all output data.
             $return = array(
                 'id' => $document->ID,
                 'name' => $document->getTitle(),
                 'thumbnail_url' => $document->Icon($document->getExtension()),
-                'edit_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')->getItemHandler($document->ID)->EditLink(),
+                'edit_url' => $this->getEditForm()->Fields()->fieldByName('Main.From your computer.AssetUploadField')
+                    ->getItemHandler($document->ID)->EditLink(),
                 'size' => $document->getFileSizeFormatted(),
                 'buttons' => $buttonText,
                 'showeditform' => true
@@ -249,8 +258,9 @@ class DMSDocumentAddController extends LeftAndMain
 
             return $list;
         }
-        
-        return sprintf('<p>%s</p>',
+
+        return sprintf(
+            '<p>%s</p>',
             _t('DMSDocumentAddController.NODOCUMENTS', 'There are no documents attached to the selected page.')
         );
     }

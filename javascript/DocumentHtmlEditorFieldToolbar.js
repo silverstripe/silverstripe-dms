@@ -1,10 +1,10 @@
-(function($) {
+(function ($) {
 	"use strict";
 
-	$.entwine('ss', function($) {
+	$.entwine('ss', function ($) {
 
 		$('form.htmleditorfield-linkform input[name=LinkType]').entwine({
-			onchange: function(e) {
+			onchange: function (e) {
 				this._super(e);
 
 				var form = $('form.htmleditorfield-linkform');
@@ -23,20 +23,22 @@
 					form.find('.ss-add').hide();
 				}
 			},
-			onadd: function(e){
+			onadd: function (e) {
 				this.change();
 			}
 		});
 
 		$('form.htmleditorfield-linkform').entwine({
-			insertLink: function() {
+			insertLink: function () {
 				var href, target = null;
 				var checkedValue = this.find(':input[name=LinkType]:checked').val();
 				if (checkedValue === 'document') {
 					href = '[dms_document_link,id=' + this.find('.selected-document').data('document-id') + ']';
 
 					// Determine target
-					if(this.find(':input[name=TargetBlank]').is(':checked')) target = '_blank';
+					if (this.find(':input[name=TargetBlank]').is(':checked')) {
+                        target = '_blank';
+                    }
 
 					var attributes = {
 						href : href,
@@ -45,7 +47,7 @@
 						title : this.find('.selected-document').text()  //title is the text of the selected document
 					};
 
-					this.modifySelection(function(ed){
+					this.modifySelection(function (ed) {
 						ed.insertLink(attributes);
 					});
 
@@ -55,22 +57,26 @@
 					this._super();
 				}
 			},
-			getCurrentLink: function() {
+			getCurrentLink: function () {
 				var selectedEl = this.getSelection(), href = "", target = "", title = "", action = "insert", style_class = "";
 				var linkDataSource = null;
-				if(selectedEl.length) {
-					if(selectedEl.is('a')) {
+				if (selectedEl.length) {
+					if (selectedEl.is('a')) {
 						linkDataSource = selectedEl;
 					} else {
 						linkDataSource = selectedEl = selectedEl.parents('a:first');
 					}
 				}
-				if(linkDataSource && linkDataSource.length) this.modifySelection(function(ed){
-					ed.selectNode(linkDataSource[0]);
-				});
+				if (linkDataSource && linkDataSource.length) {
+                    this.modifySelection(function (ed) {
+                                        ed.selectNode(linkDataSource[0]);
+                    });
+                }
 
 				// Is anchor not a link
-				if (!linkDataSource.attr('href')) linkDataSource = null;
+				if (!linkDataSource.attr('href')) {
+                    linkDataSource = null;
+                }
 
 				if (linkDataSource) {
 					href = linkDataSource.attr('href');
@@ -82,7 +88,7 @@
 				}
 
 				//match a document or call the regular link handling
-				if(href.match(/^\[dms_document_link(\s*|%20|,)?id=([0-9]+)\]?$/i)) {
+				if (href.match(/^\[dms_document_link(\s*|%20|,)?id=([0-9]+)\]?$/i)) {
 					var returnArray = {
 						LinkType: 'document',
 						DocumentID: RegExp.$2,

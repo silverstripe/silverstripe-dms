@@ -8,12 +8,15 @@ DMSDocumentAddController::add_allowed_extensions(); //add an array of additional
 
 define('DMS_DIR', 'dms');
 
-if (!file_exists(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR)) user_error("DMS directory named incorrectly. Please install the DMS module into a folder named: ".DMS_DIR);
+if (!file_exists(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR)) {
+    user_error("DMS directory named incorrectly. Please install the DMS module into a folder named: ".DMS_DIR);
+}
 
 CMSMenu::remove_menu_item('DMSDocumentAddController');
 
 ShortcodeParser::get('default')->register(
-	'dms_document_link', array('DMSShortcodeHandler', 'handle')
+	'dms_document_link',
+    array('DMSShortcodeHandler', 'handle')
 );
 
 if ($config->get('DMSDocument_versions', 'enable_versions')) {

@@ -1,11 +1,20 @@
 <?php
 class DMS implements DMSInterface
 {
+    /**
+     * Folder to store the documents in
+     *
+     * @var string
+     */
+    public static $dmsFolder = 'dms-assets';
 
-    public static $dmsFolder = 'dms-assets';   //folder to store the documents in
-
-    //How many documents to store in a single folder. The square of this number is the maximum number of documents.
-    //The number should be a multiple of 10
+    /**
+     * How many documents to store in a single folder. The square of this number is the maximum number of documents.
+     *
+     * The number should be a multiple of 10
+     *
+     * @var int
+     */
     public static $dmsFolderSize = 1000;
 
 
@@ -24,13 +33,25 @@ class DMS implements DMSInterface
         }
 
         if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
-            //restrict access to the storage folder
-            copy(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',  $dmsPath . DIRECTORY_SEPARATOR . '.htaccess');
-            copy(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'web.config', $dmsPath . DIRECTORY_SEPARATOR . 'web.config');
+            // Restrict access to the storage folder
+            copy(
+                BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',
+                $dmsPath . DIRECTORY_SEPARATOR . '.htaccess'
+            );
+
+            copy(
+                BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                . 'resources' . DIRECTORY_SEPARATOR . 'web.config',
+                $dmsPath . DIRECTORY_SEPARATOR . 'web.config'
+            );
         }
         return $dms;
     }
 
+    /**
+     * @return string
+     */
     public static function get_dms_path()
     {
         return BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
@@ -56,13 +77,14 @@ class DMS implements DMSInterface
     /**
      * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
      * When storing a document, sets the fields on the File has "tag" metadata.
-     * @param $file File object, or String that is path to a file to store, e.g. "assets/documents/industry/supplied-v1-0.pdf"
-
+     * @param $file File object, or String that is path to a file to store,
+     *              e.g. "assets/documents/industry/supplied-v1-0.pdf"
+     * @return DMSDocument
      */
     public function storeDocument($file)
     {
         $filePath = self::transform_file_to_file_path($file);
-        
+
         //create a new document and get its ID
         $doc = new DMSDocument();
         $doc->write();
@@ -74,7 +96,14 @@ class DMS implements DMSInterface
     /**
      *
      * Returns a number of Document objects based on the a search by tags. You can search by category alone,
-     * by tag value alone, or by both. I.e: getByTag("fruits",null); getByTag(null,"banana"); getByTag("fruits","banana")
+     * by tag value alone, or by both. I.e:
+     *
+     * <code>
+     * getByTag("fruits", null);
+     * getByTag(null, "banana");
+     * getByTag("fruits", "banana");
+     * </code>
+     *
      * @param null $category The metadata category to search for
      * @param null $value The metadata value to search for
      * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results

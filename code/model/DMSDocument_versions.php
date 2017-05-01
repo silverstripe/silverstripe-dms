@@ -206,14 +206,17 @@ class DMSDocument_versions extends DataObject
         $filename = $doc->Filename;
 
         do {
-            $versionPaddingString = str_pad($versionCounter, 4, '0', STR_PAD_LEFT); //add leading zeros to make sorting accurate up to 10,000 documents
+            // Add leading zeros to make sorting accurate up to 10,000 documents
+            $versionPaddingString = str_pad($versionCounter, 4, '0', STR_PAD_LEFT);
             $newVersionFilename = preg_replace('/([0-9]+~)(.*?)/', '$1~'.$versionPaddingString.'~$2', $filename);
 
-            if ($newVersionFilename == $filename || empty($newVersionFilename)) {   //sanity check for crazy document names
+            // Sanity check for crazy document names
+            if ($newVersionFilename == $filename || empty($newVersionFilename)) {
                 user_error('Cannot generate new document filename for file: '.$filename, E_USER_ERROR);
             }
 
-            $versionCounter++;  //increase the counter for the next loop run, if necessary
+            // Increase the counter for the next loop run, if necessary
+            $versionCounter++;
         } while (file_exists($this->getFullPath($newVersionFilename)));
 
         return $newVersionFilename;

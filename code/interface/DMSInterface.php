@@ -10,7 +10,6 @@
  */
 interface DMSInterface
 {
-
     /**
      * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
      * @static
@@ -31,7 +30,13 @@ interface DMSInterface
     /**
      *
      * Returns a number of Document objects based on the a search by tags. You can search by category alone,
-     * by tag value alone, or by both. I.e: getByTag("fruits",null); getByTag(null,"banana"); getByTag("fruits","banana")
+     * by tag value alone, or by both. I.e:
+     *
+     * <code>
+     * getByTag("fruits", null);
+     * getByTag(null, "banana");
+     * getByTag("fruits", "banana");
+     * </code>
      * @abstract
      * @param null $category The metadata category to search for
      * @param null $value The metadata value to search for

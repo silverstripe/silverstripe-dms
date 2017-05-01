@@ -1,11 +1,18 @@
 <?php
 class DMSTest extends FunctionalTest
 {
+    protected $usesDatabase = true;
 
+    /**
+     * Stub PDF files for testing
+     * @var string
+     */
     public static $testFile = 'dms/tests/DMS-test-lorum-file.pdf';
     public static $testFile2 = 'dms/tests/DMS-test-document-2.pdf';
 
-    //store values to reset back to after this test runs
+    /**
+     * Store values to reset back to after this test runs
+     */
     public static $dmsFolderOld;
     public static $dmsFolderSizeOld;
 
@@ -48,6 +55,11 @@ class DMSTest extends FunctionalTest
         self::$is_running_test = $this->originalIsRunningTest;
     }
 
+    /**
+     * Delete a file that was created during a unit test
+     *
+     * @param string $path
+     */
     public function delete($path)
     {
         if (file_exists($path) || is_dir($path)) {
@@ -68,7 +80,6 @@ class DMSTest extends FunctionalTest
         }
     }
 
-
     public function testDMSStorage()
     {
         $dms = DMS::inst();
@@ -77,9 +88,13 @@ class DMSTest extends FunctionalTest
         $document = $dms->storeDocument($file);
 
         $this->assertNotNull($document, "Document object created");
-        $this->assertTrue(file_exists(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename), "Document file copied into DMS folder");
-
-        //$title = $document->getTag('title');
+        $this->assertTrue(
+            file_exists(
+                DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder
+                . DIRECTORY_SEPARATOR . $document->Filename
+            ),
+            "Document file copied into DMS folder"
+        );
     }
 
     public function testDMSFolderSpanning()
@@ -97,15 +112,18 @@ class DMSTest extends FunctionalTest
             $documents[] = $document;
         }
 
-        //test document objects have their folders set
+        // Test document objects have their folders set
         $folders = array();
         for ($i = 0; $i <= 16; $i++) {
             $folderName = $documents[$i]->Folder;
-            $this->assertTrue(strpos($documents[$i]->getFullPath(), DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR) !== false, "Correct folder name for the documents. Document path contains reference to folder name '$folderName'");
+            $this->assertTrue(
+                strpos($documents[$i]->getFullPath(), DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR) !== false,
+                "Correct folder name for the documents. Document path contains reference to folder name '$folderName'"
+            );
             $folders[] = $folderName;
         }
 
-        //test we created 4 folder to contain the 17 files
+        // Test we created 4 folder to contain the 17 files
         foreach ($folders as $f) {
             $this->assertTrue(is_dir(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $f), "Document folder '$f' exists");
         }
@@ -115,34 +133,29 @@ class DMSTest extends FunctionalTest
     {
         $dms = DMS::inst();
 
-        //store the first document
+        // Store the first document
         $document = $dms->storeDocument(self::$testFile);
         $document->Title = "My custom title";
         $document->Description = "My custom description";
         $document->write();
 
-        //then overwrite with a second document
+        // Then overwrite with a second document
         $document = $document->replaceDocument(self::$testFile2);
 
         $this->assertNotNull($document, "Document object created");
-        $this->assertTrue(file_exists(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder . DIRECTORY_SEPARATOR . $document->Filename), "Document file copied into DMS folder");
-        $this->assertContains("DMS-test-document-2", $document->Filename, "Original document filename is contain in the new filename");
+        $this->assertTrue(
+            file_exists(
+                DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder
+                . DIRECTORY_SEPARATOR . $document->Filename
+            ),
+            "Document file copied into DMS folder"
+        );
+        $this->assertContains(
+            "DMS-test-document-2",
+            $document->Filename,
+            "Original document filename is contain in the new filename"
+        );
         $this->assertEquals("My custom title", $document->Title, "Custom title not modified");
         $this->assertEquals("My custom description", $document->Description, "Custom description not modified");
-    }
-
-    public function testDownloadDocument()
-    {
-        //		$dms = DMS::inst();
-//
-//		//store the first document
-//		$document = $dms->storeDocument(self::$testFile);
-//		$link = $document->getLink();
-//
-//		Debug::Show($link);
-//		$d=new DMSDocument_Controller();
-//		$response = $d->index(new SS_HTTPRequest('GET',$link,array("ID"=>$document->ID)));
-//		//$response = $this->get($link);
-//		Debug::show($response);
     }
 }

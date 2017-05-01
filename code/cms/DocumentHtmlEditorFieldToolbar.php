@@ -2,11 +2,8 @@
 /**
  * Extends the original toolbar with document picking capability - modified lines are commented.
  */
-
-
 class DocumentHtmlEditorFieldToolbar extends Extension
 {
-
     public function updateLinkForm(Form $form)
     {
         $linkType = null;

@@ -1,17 +1,16 @@
 <?php
 /**
- * Interface for a DMSDocument used in the Document Management System. A DMSDocument is create by storing a File object in an
- * instance of the DMSInterface. All write operations on the DMSDocument create a new relation, so we never need to
- * explicitly call the write() method on the DMSDocument DataObject
+ * Interface for a DMSDocument used in the Document Management System. A DMSDocument is create by storing a File
+ * object in an instance of the DMSInterface. All write operations on the DMSDocument create a new relation, so we
+ * never need to explicitly call the write() method on the DMSDocument DataObject
  */
 interface DMSDocumentInterface
 {
-
     /**
      * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument.
      *
      * @todo Can't be applied to classes which already implement the DataObjectInterface (naming conflict)
-     * 
+     *
      * @abstract
      * @return null
      */
@@ -25,9 +24,10 @@ interface DMSDocumentInterface
      * @return null
      */
     public function addPage($pageObject);
-    
+
     /**
-     * Associates this DMSDocument with a set of Pages. This method loops through a set of page ids, and then associates this
+     * Associates this DMSDocument with a set of Pages. This method loops through a set of page ids, and then
+     * associates this
      * DMSDocument with the individual Page with the each page id in the set
      * @abstract
      * @param $pageIDs array of page ids used for the page objects associate this DMSDocument with
@@ -36,7 +36,8 @@ interface DMSDocumentInterface
     public function addPages($pageIDs);
 
     /**
-     * Removes the association between this DMSDocument and a Page. This method does nothing if the association does not exist.
+     * Removes the association between this DMSDocument and a Page. This method does nothing if the association does
+     * not exist.
      * @abstract
      * @param $pageObject Page object to remove the association to
      * @return mixed
@@ -59,8 +60,10 @@ interface DMSDocumentInterface
 
     /**
      * Adds a metadata tag to the DMSDocument. The tag has a category and a value.
-     * Each category can have multiple values by default. So: addTag("fruit","banana") addTag("fruit", "apple") will add two items.
-     * However, if the third parameter $multiValue is set to 'false', then all updates to a category only ever update a single value. So:
+     * Each category can have multiple values by default. So: addTag("fruit","banana") addTag("fruit", "apple") will
+     * add two items.
+     * However, if the third parameter $multiValue is set to 'false', then all updates to a category only ever update
+     * a single value. So:
      * addTag("fruit","banana") addTag("fruit", "apple") would result in a single metadata tag: fruit->apple.
      * Can could be implemented as a key/value store table (although it is more like category/value, because the
      * same category can occur multiple times)
@@ -106,12 +109,12 @@ interface DMSDocumentInterface
      * @return String
      */
     public function getLink();
-    
+
     /**
      * Return the extension of the file associated with the document
      */
     public function getExtension();
-    
+
     /**
      * Returns the size of the file type in an appropriate format.
      *
