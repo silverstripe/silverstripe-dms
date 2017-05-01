@@ -1,6 +1,9 @@
 # Document Management Module (DMS)
 
-[![Build Status](https://travis-ci.org/silverstripe/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe/silverstripe-dms)
+[![Build status](https://travis-ci.org/silverstripe/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe/silverstripe-dms)
+[![Code quality](https://scrutinizer-ci.com/g/silverstripe/silverstripe-dms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-dms/?branch=master)
+[![Code coverage](https://codecov.io/gh/silverstripe/silverstripe-dms/branch/master/graph/badge.svg)](https://codecov.io/gh/silverstripe/silverstripe-dms)
+
 
 ## Overview
 
@@ -33,7 +36,7 @@ the default implementation (the `DMS` class) stores them locally.
 Relations to pages and tags are persisted as many-many relationships
 through the SilverStripe ORM.
 
-File locations in this implementation are structured into 
+File locations in this implementation are structured into
 subfolders, in order to avoid exceeding filesystem limits.
 The file name is a composite based on its database ID
 and the original file name. The exact location shouldn't
@@ -93,7 +96,7 @@ Note: Both operations copy the existing file.
 	// Set default download behavior ('open' or 'download'). 'download' is the system default
 	// Attempt to open the file in the browser
 	Config::inst()->update('DMSDocument', 'default_download_behaviour', 'open');
-	
+
 Or in you config.yml:
 
     DMSDocument:
@@ -123,8 +126,8 @@ Or in you config.yml:
 	$doc->addTag('category', 'input device');
 
 	// Removing tags is abstracted as well
-	$doc->removeTag('category', 'keyboard'); 
-	$doc->removeTag('category', 'input device'); 
+	$doc->removeTag('category', 'keyboard');
+	$doc->removeTag('category', 'input device');
 	$doc->removeAllTags();
 
 ## Contributing
