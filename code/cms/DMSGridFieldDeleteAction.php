@@ -57,7 +57,7 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements
         }
 
         // Add a class to the field to if it is the last gridfield in the list
-        $numberOfRelations = $record->Pages()->Count();
+        $numberOfRelations = $record->getRelatedPages()->count();
         $field
             // Add a new class for custom JS to handle the delete action
             ->addExtraClass('dms-delete')

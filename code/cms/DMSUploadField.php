@@ -18,16 +18,11 @@ class DMSUploadField extends UploadField
         "upload",
     );
 
+    /**
+     * The temporary folder name to store files in during upload
+     * @var string
+     */
     protected $folderName = 'DMSTemporaryUploads';
-
-    public function __construct($name, $title = null, SS_List $items = null)
-    {
-        parent::__construct($name, $title, $items);
-
-        //set default DMS replace template to false
-        $this->setConfig('useDMSReplaceTemplate', 0);
-    }
-
 
     /**
      * Override the default behaviour of the UploadField and take the uploaded file (uploaded to assets) and
@@ -48,9 +43,12 @@ class DMSUploadField extends UploadField
             // Otherwise create it
             $doc = $dms->storeDocument($file);
             $file->delete();
-            // Relate to the underlying page being edited.
-            // Not applicable when editing the document itself and replacing it.
-            $doc->addPage($record);
+        }
+
+        // Relate to the underlying document set being edited.
+        // Not applicable when editing the document itself and replacing it, or uploading from the ModelAdmin
+        if ($record instanceof DMSDocumentSet) {
+            $record->Documents()->add($doc);
         }
 
         return $doc;
@@ -61,17 +59,6 @@ class DMSUploadField extends UploadField
         return true;
     }
 
-
-    public function isDisabled()
-    {
-        return (parent::isDisabled() || !$this->isSaveable());
-    }
-
-    public function isSaveable()
-    {
-        return (!empty($this->getRecord()->ID));
-    }
-
     /**
      * Action to handle upload of a single file
      *
@@ -80,6 +67,10 @@ class DMSUploadField extends UploadField
      */
     public function upload(SS_HTTPRequest $request)
     {
+        if ($recordId = $request->postVar('ID')) {
+            $this->setRecord(DMSDocumentSet::get()->byId($recordId));
+        }
+
         if ($this->isDisabled() || $this->isReadonly()) {
             return $this->httpError(403);
         }
@@ -110,13 +101,13 @@ class DMSUploadField extends UploadField
         if (!$return['error'] && $this->relationAutoSetting && $record && $record->exists()) {
             $tooManyFiles = false;
             // Some relationships allow many files to be attached.
-            if ($this->getConfig('allowedMaxFileNumber') && ($record->has_many($name) || $record->many_many($name))) {
+            if ($this->getConfig('allowedMaxFileNumber') && ($record->hasMany($name) || $record->manyMany($name))) {
                 if (!$record->isInDB()) {
                     $record->write();
                 }
                 $tooManyFiles = $record->{$name}()->count() >= $this->getConfig('allowedMaxFileNumber');
             // has_one only allows one file at any given time.
-            } elseif ($record->has_one($name)) {
+            } elseif ($record->hasOne($name)) {
                 $tooManyFiles = $record->{$name}() && $record->{$name}()->exists();
             }
 
@@ -147,7 +138,7 @@ class DMSUploadField extends UploadField
 
             // Get the uploaded file into a new file object.
             try {
-                $this->upload->loadIntoFile($tmpfile, $fileObject, $this->folderName);
+                $this->upload->loadIntoFile($tmpfile, $fileObject, $this->getFolderName());
             } catch (Exception $e) {
                 // we shouldn't get an error here, but just in case
                 $return['error'] = $e->getMessage();
@@ -155,7 +146,7 @@ class DMSUploadField extends UploadField
 
             if (!$return['error']) {
                 if ($this->upload->isError()) {
-                    $return['error'] = implode(' '.PHP_EOL, $this->upload->getErrors());
+                    $return['error'] = implode(' ' . PHP_EOL, $this->upload->getErrors());
                 } else {
                     $file = $this->upload->getFile();
 
@@ -198,10 +189,10 @@ class DMSUploadField extends UploadField
 
         // Replace the download template with a new one only when access the upload field through a GridField.
         // Needs to be enabled through setConfig('downloadTemplateName', 'ss-dmsuploadfield-downloadtemplate');
-        Requirements::javascript('dms/javascript/DMSUploadField_downloadtemplate.js');
+        Requirements::javascript(DMS_DIR . '/javascript/DMSUploadField_downloadtemplate.js');
 
         // In the add dialog, add the addtemplate into the set of file that load.
-        Requirements::javascript('dms/javascript/DMSUploadField_addtemplate.js');
+        Requirements::javascript(DMS_DIR . '/javascript/DMSUploadField_addtemplate.js');
 
         return $fields;
     }
@@ -304,5 +295,27 @@ class DMSUploadField extends UploadField
         }
 
         user_error("Invalid value for UploadField::fileEditValidator", E_USER_ERROR);
+    }
+
+    /**
+     * Set the folder name to store DMS files in
+     *
+     * @param  string $folderName
+     * @return $this
+     */
+    public function setFolderName($folderName)
+    {
+        $this->folderName = (string) $folderName;
+        return $this;
+    }
+
+    /**
+     * Get the folder name for storing the document
+     *
+     * @return string
+     */
+    public function getFolderName()
+    {
+        return $this->folderName;
     }
 }

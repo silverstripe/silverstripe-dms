@@ -14,3 +14,7 @@
 ## CMS user help
 
 * TBC
+
+### Changelogs
+
+* [2.0.0 (unreleased)](changelogs/2.0.0.md)

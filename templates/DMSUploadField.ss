@@ -12,7 +12,7 @@
 						<div class="clear"><!-- --></div>
 					</label>
 					<div class="ss-uploadfield-item-actions">
-						<% if Top.isDisabled || Top.isReadonly %>
+						<% if $Top.isDisabled || $Top.isReadonly %>
 						<% else %>
 							$UploadFieldFileButtons
 						<% end_if %>
@@ -25,11 +25,11 @@
 		<% end_loop %>
 	<% end_if %>
 </ul>
-<% if isDisabled || isReadonly %>
-	<% if isSaveable %>
+<% if $isDisabled || $isReadonly %>
+	<% if $isSaveable %>
 	<% else %>
 		<div class="ss-uploadfield-item">
-			<em><% _t('FileIFrameField.ATTACHONCESAVED2', 'Files can be attached once you have saved the record for the first time.') %></em>
+			<em><%t FileIFrameField.ATTACHONCESAVED2 "Files can be attached once you have saved the record for the first time." %></em>
 		</div>
 	<% end_if %>
 <% else %>
@@ -41,8 +41,8 @@
 			<label class="ss-uploadfield-item-name"><b>
 				<% _t('UploadField.ATTACHFILE', 'Attach a file') %>
 			</b></label>
-			<label class="ss-uploadfield-fromcomputer ss-ui-button ui-corner-all" title="<% _t('UploadField.FROMCOMPUTERINFO', 'Upload from your computer') %>" data-icon="drive-upload">
-				<% _t('UploadField.FROMCOMPUTER', 'From your computer') %>
+			<label class="ss-uploadfield-fromcomputer ss-ui-button ui-corner-all" title="<%t UploadField.FROMCOMPUTERINFO 'Upload from your computer' %>" data-icon="drive-upload">
+				<%t UploadField.FROMCOMPUTER 'From your computer' %>
 				<input id="$id" name="$getName" class="$extraClass ss-uploadfield-fromcomputer-fileinput" data-config="$configString" type="file"<% if $multiple %> multiple="multiple"<% end_if %> />
 			</label>
 			<div class="clear"><!-- --></div>

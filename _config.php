@@ -2,14 +2,10 @@
 
 $config = Config::inst();
 
-DMSSiteTreeExtension::show_documents_tab(); //show the Documents tab on all pages
-DMSSiteTreeExtension::no_documents_tab();   //and don't exclude it from any pages
-DMSDocumentAddController::add_allowed_extensions(); //add an array of additional allowed extensions
-
-define('DMS_DIR', 'dms');
+define('DMS_DIR', basename(__DIR__));
 
 if (!file_exists(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR)) {
-    user_error("DMS directory named incorrectly. Please install the DMS module into a folder named: ".DMS_DIR);
+    user_error('DMS directory named incorrectly. Please install the DMS module into a folder named: ' . DMS_DIR);
 }
 
 CMSMenu::remove_menu_item('DMSDocumentAddController');

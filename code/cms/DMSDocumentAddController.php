@@ -5,7 +5,6 @@
  */
 class DMSDocumentAddController extends LeftAndMain
 {
-
     private static $url_segment = 'pages/adddocument';
     private static $url_priority = 60;
     private static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
@@ -13,7 +12,13 @@ class DMSDocumentAddController extends LeftAndMain
     private static $tree_class = 'SiteTree';
     private static $session_namespace = 'CMSMain';
 
-    public static $allowed_extensions = array();
+    /**
+     * Allowed file upload extensions, will be merged with `$allowed_extensions` from {@link File}
+     *
+     * @config
+     * @var array
+     */
+    private static $allowed_extensions = array();
 
     private static $allowed_actions = array(
         'getEditForm',
@@ -23,26 +28,9 @@ class DMSDocumentAddController extends LeftAndMain
     );
 
     /**
-     * Add an array of additional allowed extensions
-     * @static
-     * @param $array
-     */
-    public static function add_allowed_extensions($array = null)
-    {
-        if (empty($array)) {
-            return;
-        }
-        if (is_array($array)) {
-            self::$allowed_extensions = $array;
-        } else {
-            self::$allowed_extensions = array($array);
-        }
-    }
-
-    /**
      * Custom currentPage() method to handle opening the 'root' folder
      *
-     * @return
+     * @return SiteTree
      */
     public function currentPage()
     {
@@ -61,10 +49,25 @@ class DMSDocumentAddController extends LeftAndMain
 
     /**
      * Return fake-ID "root" if no ID is found (needed to upload files into the root-folder)
+     *
+     * @return int
      */
     public function currentPageID()
     {
         return ($result = parent::currentPageID()) === null ? 0 : $result;
+    }
+
+    /**
+     * Get the current document set, if a document set ID was provided
+     *
+     * @return DMSDocumentSet
+     */
+    public function getCurrentDocumentSet()
+    {
+        if ($id = $this->getRequest()->getVar('dsid')) {
+            return DMSDocumentSet::get()->byid($id);
+        }
+        return singleton('DMSDocumentSet');
     }
 
     /**
@@ -75,9 +78,13 @@ class DMSDocumentAddController extends LeftAndMain
     {
         Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
         Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
-        Requirements::css(DMS_DIR.'/css/DMSMainCMS.css');
+        Requirements::css(DMS_DIR . '/css/DMSMainCMS.css');
 
+        /** @var SiteTree $page */
         $page = $this->currentPage();
+        /** @var DMSDocumentSet $documentSet */
+        $documentSet = $this->getCurrentDocumentSet();
+
         $uploadField = DMSUploadField::create('AssetUploadField', '');
         $uploadField->setConfig('previewMaxWidth', 40);
         $uploadField->setConfig('previewMaxHeight', 30);
@@ -87,31 +94,34 @@ class DMSDocumentAddController extends LeftAndMain
         $uploadField->addExtraClass('ss-assetuploadfield');
         $uploadField->removeExtraClass('ss-uploadfield');
         $uploadField->setTemplate('AssetUploadField');
-        $uploadField->setRecord($page);
+        $uploadField->setRecord($documentSet);
 
-        $uploadField->getValidator()->setAllowedExtensions(
-            array_filter(array_merge(Config::inst()->get('File', 'allowed_extensions'), self::$allowed_extensions))
-        );
+        $uploadField->getValidator()->setAllowedExtensions($this->getAllowedExtensions());
         $exts = $uploadField->getValidator()->getAllowedExtensions();
 
         asort($exts);
         $backlink = $this->Backlink();
         $done = "
-		<a class=\"ss-ui-button ss-ui-action-constructive cms-panel-link ui-corner-all\" href=\"".$backlink."\">
-			Done!
+		<a class=\"ss-ui-button ss-ui-action-constructive cms-panel-link ui-corner-all\" href=\"" . $backlink . "\">
+			" . _t('UploadField.DONE', 'DONE') . "
 		</a>";
 
-        $addExistingField = new DMSDocumentAddExistingField('AddExisting', 'Add Existing');
-        $addExistingField->setRecord($page);
+        $addExistingField = new DMSDocumentAddExistingField(
+            'AddExisting',
+            _t('DMSDocumentAddExistingField.ADDEXISTING', 'Add Existing')
+        );
+        $addExistingField->setRecord($documentSet);
+
         $form = new Form(
             $this,
             'getEditForm',
             new FieldList(
                 new TabSet(
-                    'Main',
+                    _t('DMSDocumentAddController.MAINTAB', 'Main'),
                     new Tab(
-                        'From your computer',
+                        _t('UploadField.FROMCOMPUTER', 'From your computer'),
                         new HiddenField('ID', false, $page->ID),
+                        new HiddenField('DSID', false, $documentSet->ID),
                         $uploadField,
                         new LiteralField(
                             'AllowedExtensions',
@@ -123,7 +133,7 @@ class DMSDocumentAddController extends LeftAndMain
                         )
                     ),
                     new Tab(
-                        'From the CMS',
+                        _t('UploadField.FROMCMS', 'From the CMS'),
                         $addExistingField
                     )
                 )
@@ -136,17 +146,6 @@ class DMSDocumentAddController extends LeftAndMain
         $form->Backlink = $backlink;
         // Don't use AssetAdmin_EditForm, as it assumes a different panel structure
         $form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
-        /*$form->Fields()->push(
-            new LiteralField(
-                'BackLink',
-                sprintf(
-                    '<a href="%s" class="backlink ss-ui-button cms-panel-link" data-icon="back">%s</a>',
-                    Controller::join_links(singleton('AssetAdmin')->Link('show'), $folder ? $folder->ID : 0),
-                    _t('AssetAdmin.BackToFolder', 'Back to folder')
-                )
-            )
-        );*/
-        //$form->loadDataFrom($folder);
 
         return $form;
     }
@@ -170,29 +169,43 @@ class DMSDocumentAddController extends LeftAndMain
         }
 
         $items->push(new ArrayData(array(
-            'Title' => 'Add Document',
+            'Title' => _t('DMSDocumentSet.ADDDOCUMENTBUTTON', 'Add Document'),
             'Link' => $this->Link()
         )));
 
         return $items;
     }
 
+    /**
+     * Returns the link to be used to return the user after uploading a document. If a document set ID (dsid) is present
+     * then it will be redirected back to the page that owns the document set. @todo redirect back to the document set
+     *
+     * If no document set ID is present then we assume that it has been added from the model admin, so redirect back to
+     * that instead.
+     *
+     * @return string
+     */
     public function Backlink()
     {
-        $pageID = $this->currentPageID();
-        return Controller::join_links(singleton('CMSPagesController')->Link(), 'edit/show', $pageID);
+        if (!$this->getRequest()->getVar('dsid')) {
+            $modelAdmin = new DMSDocumentAdmin;
+            $modelAdmin->init();
+            return $modelAdmin->Link();
+        }
+        return Controller::join_links(singleton('CMSPagesController')->Link(), 'edit/show', $this->currentPageID());
     }
 
     public function documentautocomplete()
     {
-        $term = (isset($_GET['term'])) ? $_GET['term'] : '';
-        $term_sql = Convert::raw2sql($term);
+        $term = (string) $this->getRequest()->getVar('term');
+        $termSql = Convert::raw2sql($term);
         $data = DMSDocument::get()
-        ->where(
-            "(\"ID\" LIKE '%".$term_sql."%' OR \"Filename\" LIKE '%".$term_sql."%' OR \"Title\" LIKE '%".$term_sql."%')"
-        )
-        ->sort('ID ASC')
-        ->limit(20);
+            ->where(
+                '("ID" LIKE \'%' . $termSql . '%\' OR "Filename" LIKE \'%' . $termSql . '%\''
+                . ' OR "Title" LIKE \'%' . $termSql . '%\')'
+            )
+            ->sort('ID ASC')
+            ->limit(20);
 
         $return = array();
         foreach ($data as $doc) {
@@ -202,22 +215,24 @@ class DMSDocumentAddController extends LeftAndMain
             );
         }
 
-
-        return json_encode($return);
+        return Convert::raw2json($return);
     }
 
     public function linkdocument()
     {
         $return = array('error' => _t('UploadField.FIELDNOTSET', 'Could not add document to page'));
-
+$return = array('error' => 'testing');
+return Convert::raw2json($return);
         $page = $this->currentPage();
         if (!empty($page)) {
-            $document = DataObject::get_by_id('DMSDocument', (int) $_GET['documentID']);
+            $document = DMSDocument::get()->byId($this->getRequest()->getVar('documentID'));
+            // @todo add sets
             $document->addPage($page);
 
             $buttonText = '<button class="ss-uploadfield-item-edit ss-ui-button ui-corner-all"'
-                . ' title="Edit this document" data-icon="pencil">'
-                . 'Edit<span class="toggle-details"><span class="toggle-details-icon"></span></span></button>';
+                . ' title="' . _t('DMSDocument.EDITDOCUMENT', 'Edit this document') . '" data-icon="pencil">'
+                . _t('DMSDocument.EDIT', 'Edit') . '<span class="toggle-details">'
+                . '<span class="toggle-details-icon"></span></span></button>';
 
             // Collect all output data.
             $return = array(
@@ -232,21 +247,27 @@ class DMSDocumentAddController extends LeftAndMain
             );
         }
 
-        return json_encode($return);
+        return Convert::raw2json($return);
     }
 
+    /**
+     * Returns HTML representing a list of documents that are associated with the given page ID, across all document
+     * sets.
+     *
+     * @return string HTML
+     */
     public function documentlist()
     {
-        if (!isset($_GET['pageID'])) {
+        if (!$this->getRequest()->getVar('pageID')) {
             return $this->httpError(400);
         }
 
-        $page = SiteTree::get()->byId($_GET['pageID']);
+        $page = SiteTree::get()->byId($this->getRequest()->getVar('pageID'));
 
-        if ($page && $page->Documents()->count() > 0) {
+        if ($page && $page->getAllDocuments()->count() > 0) {
             $list = '<ul>';
 
-            foreach ($page->Documents() as $document) {
+            foreach ($page->getAllDocuments() as $document) {
                 $list .= sprintf(
                     '<li><a class="add-document" data-document-id="%s">%s</a></li>',
                     $document->ID,
@@ -262,6 +283,22 @@ class DMSDocumentAddController extends LeftAndMain
         return sprintf(
             '<p>%s</p>',
             _t('DMSDocumentAddController.NODOCUMENTS', 'There are no documents attached to the selected page.')
+        );
+    }
+
+    /**
+     * Get an array of allowed file upload extensions, merged with {@link File} and extra configuration from this
+     * class
+     *
+     * @return array
+     */
+    public function getAllowedExtensions()
+    {
+        return array_filter(
+            array_merge(
+                (array) Config::inst()->get('File', 'allowed_extensions'),
+                (array) $this->config()->get('allowed_extensions')
+            )
         );
     }
 }

@@ -1,21 +1,21 @@
 SiteTree:
   s1:
-    Title: testPage1
+    Title: testPage1 has document sets
     URLSegment: s1
   s2:
-    Title: testPage2
+    Title: testPage2 has document sets
     URLSegment: s2
   s3:
-    Title: testPage3
+    Title: testPage3 has document sets with embargoed docs
     URLSegment: s3
   s4:
-    Title: testPage4
+    Title: testPage4 has no sets
     URLSegment: s4
   s5:
-    Title: testPage5
+    Title: testPage5 has no sets
     URLSegment: s5
   s6:
-    Title: testPage6
+    Title: testPage6 has no sets
     URLSegment: s6
 DMSTag:
   t1:
@@ -43,17 +43,30 @@ Group:
   cable-guy:
     Code: cable-guy
     Title: "Cable Guy"
+DMSDocumentSet:
+  ds1:
+    Title: Document Set 1
+    Page: =>SiteTree.s1
+  ds2:
+    Title: Document Set 2
+    Page: =>SiteTree.s1
+  ds3:
+    Title: Document Set 3
+    Page: =>SiteTree.s2
+  ds4:
+    Title: Set containing embargoed documents
+    Page: =>SiteTree.s3
 DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
     Folder: 5
     Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
-    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+    Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   d2:
     Filename: test-file-file-doesnt-exist-2
     Folder: 5
     Tags: =>DMSTag.t5, =>DMSTag.t6
-    Pages: =>SiteTree.s5, =>SiteTree.s6
+    Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   document_with_relations:
     Filename: file-with-relations
     Folder: 5
@@ -80,6 +93,11 @@ DMSDocument:
     Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
     ViewerGroups: =>Group.content-author
     EditorGroups: =>Group.content-author
+  embargoed_document1:
+    Filename: foobar
+    EmbargoedIndefinitely: true
+    Folder: 5
+    Sets: =>DMSDocumentSet.ds4
 Member:
   editor:
     Name: editor

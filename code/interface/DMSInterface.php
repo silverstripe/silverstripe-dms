@@ -57,11 +57,19 @@ interface DMSInterface
 
 
     /**
-     * Returns a list of Document objects associated with a Page
-     * @abstract
-     * @param $page SiteTree to fetch the associated Documents from
-     * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
-     * @return DataList Document list associated with the Page
+     * Returns a list of Document objects associated with a Page via intermediary document sets
+     *
+     * @param  SiteTree $page          SiteTree to fetch the associated Documents from
+     * @param  bool     $showEmbargoed Boolean that specifies if embargoed documents should be included in results
+     * @return ArrayList               Document list associated with the Page
      */
-    public function getByPage($page, $showEmbargoed = false);
+    public function getByPage(SiteTree $page, $showEmbargoed = false);
+
+    /**
+     * Returns a list of Document Set objects associated with a Page
+     *
+     * @param  SiteTree $page SiteTree to fetch the associated Document Sets from
+     * @return ArrayList      Document list associated with the Page
+     */
+    public function getDocumentSetsByPage(SiteTree $page);
 }

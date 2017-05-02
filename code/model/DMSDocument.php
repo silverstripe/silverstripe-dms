@@ -43,18 +43,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')",
     );
 
+    private static $belongs_many_many = array(
+        'Sets' => 'DMSDocumentSet'
+    );
+
     private static $many_many = array(
-        'Pages' => 'SiteTree',
         'RelatedDocuments' => 'DMSDocument',
         'Tags' => 'DMSTag',
         'ViewerGroups' => 'Group',
         'EditorGroups' => 'Group',
-    );
-
-    private static $many_many_extraFields = array(
-        'Pages' => array(
-            'DocumentSort' => 'Int'
-        )
     );
 
     private static $display_fields = array(
@@ -82,7 +79,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'Filename' => 'Filename',
         'Title' => 'Title',
         'ViewCount' => 'ViewCount',
-        'getPages.count' => 'Page Use'
+        'getRelatedPages.count' => 'Page Use'
     );
 
     /**
@@ -215,103 +212,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         return $this->canView();
-    }
-
-
-
-    /**
-     * Associates this document with a Page. This method does nothing if the
-     * association already exists.
-     *
-     * This could be a simple wrapper around $myDoc->Pages()->add($myPage) to
-     * add a many_many relation.
-     *
-     * @param SiteTree $pageObject Page object to associate this Document with
-     *
-     * @return DMSDocument
-     */
-    public function addPage($pageObject)
-    {
-        $this->Pages()->add($pageObject);
-
-        DB::query(
-            "UPDATE \"DMSDocument_Pages\" SET \"DocumentSort\"=\"DocumentSort\"+1"
-            . " WHERE \"SiteTreeID\" = $pageObject->ID"
-        );
-
-        return $this;
-    }
-
-    /**
-     * Associates this DMSDocument with a set of Pages. This method loops
-     * through a set of page ids, and then associates this DMSDocument with the
-     * individual Page with the each page id in the set.
-     *
-     * @param array $pageIDs
-     *
-     * @return DMSDocument
-     */
-    public function addPages($pageIDs)
-    {
-        foreach ($pageIDs as $id) {
-            $pageObject = DataObject::get_by_id("SiteTree", $id);
-
-            if ($pageObject && $pageObject->exists()) {
-                $this->addPage($pageObject);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Removes the association between this Document and a Page. This method
-     * does nothing if the association does not exist.
-     *
-     * @param SiteTree $pageObject Page object to remove the association to
-     *
-     * @return DMSDocument
-     */
-    public function removePage($pageObject)
-    {
-        $this->Pages()->remove($pageObject);
-
-        return $this;
-    }
-
-    /**
-     * @see getPages()
-     *
-     * @return DataList
-     */
-    public function Pages()
-    {
-        $pages = $this->getManyManyComponents('Pages');
-        $this->extend('updatePages', $pages);
-
-        return $pages;
-    }
-
-    /**
-     * Returns a list of the Page objects associated with this Document.
-     *
-     * @return DataList
-     */
-    public function getPages()
-    {
-        return $this->Pages();
-    }
-
-    /**
-     * Removes all associated Pages from the DMSDocument
-     *
-     * @return DMSDocument
-     */
-    public function removeAllPages()
-    {
-        $this->Pages()->removeAll();
-
-        return $this;
     }
 
     /**
@@ -842,8 +742,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        $this->removeAllPages();
-
         // get rid of any versions have saved for this DMSDocument, too
         if (DMSDocument_versions::$enable_versions) {
             $versions = $this->getVersions();
@@ -855,10 +753,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        parent::delete();
+        return parent::delete();
     }
-
-
 
     /**
      * Relate an existing file on the filesystem to the document.
@@ -1060,7 +956,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $pagesGrid = GridField::create(
             'Pages',
             _t('DMSDocument.RelatedPages', 'Related Pages'),
-            $this->Pages(),
+            $this->getRelatedPages(),
             $gridFieldConfig
         );
 
@@ -1321,7 +1217,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         );
 
         //count the number of pages this document is published on
-        $publishedOnCount = $this->Pages()->Count();
+        $publishedOnCount = $this->getRelatedPages()->count();
         $publishedOnValue = "$publishedOnCount pages";
         if ($publishedOnCount == 1) {
             $publishedOnValue = "$publishedOnCount page";
@@ -1417,6 +1313,26 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $this->extend('updateRelatedDocuments', $documents);
 
         return $documents;
+    }
+
+    /**
+     * Get a list of related pages for this document by going through the associated document sets
+     *
+     * @return ArrayList
+     */
+    public function getRelatedPages()
+    {
+        $pages = ArrayList::create();
+
+        foreach ($this->Sets() as $documentSet) {
+            /** @var DocumentSet $documentSet */
+            $pages->add($documentSet->Page());
+        }
+        $pages->removeDuplicates();
+
+        $this->extend('updateRelatedPages', $pages);
+
+        return $pages;
     }
 
     /**

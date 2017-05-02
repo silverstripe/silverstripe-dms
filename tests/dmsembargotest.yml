@@ -1,7 +1,11 @@
+DMSDocumentSet:
+  ds1:
+    Title: Document Set 1
 SiteTree:
   s1:
     Title: testPage1
     URLSegment: s1
+    DocumentSets: =>DMSDocumentSet.ds1
   s2:
     Title: testPage2
     URLSegment: s2
