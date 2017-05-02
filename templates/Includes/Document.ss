@@ -11,7 +11,7 @@
             <p>$DescriptionWithLineBreak</p>
         <% end_if %>
 
-        <% if $RelatedDocuments %>
+        <% if $getRelatedDocuments %>
             <% include RelatedDocuments %>
         <% end_if %>
     </div>

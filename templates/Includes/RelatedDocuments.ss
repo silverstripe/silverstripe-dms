@@ -1,7 +1,7 @@
 <h5><%t DMSDocument.RELATED_DOCUMENTS "Related documents" %></h5>
 
 <ul class="documents-relateddocuments">
-    <% loop $RelatedDocuments %>
+    <% loop $getRelatedDocuments %>
         <li>
             <% if $Title %>
                 <a href="$Link" title="<%t DMSDocument.DOWNLOAD "Download {title}" title=$Title %>">$Title</a>
