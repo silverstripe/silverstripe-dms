@@ -1,4 +1,8 @@
-<% if PageDocuments %>
-		<div><h3>Documents:</h3></div>
-		<% loop PageDocuments %><% include Document %><% end_loop %>
+<% if $PageDocuments %>
+    <div class="documents">
+        <h3><%t DMSDocument.PLURALNAME "Documents" %></h3>
+        <% loop $PageDocuments %>
+            <% include Document %>
+        <% end_loop %>
+    </div>
 <% end_if %>

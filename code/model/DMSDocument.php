@@ -23,6 +23,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
     private static $many_many = array(
         'Pages' => 'SiteTree',
+        'RelatedDocuments' => 'DMSDocument',
         'Tags' => 'DMSTag'
     );
 
@@ -1012,19 +1013,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $versionsGridFieldConfig
             );
             $extraTasks .= '<li class="ss-ui-button" data-panel="find-versions">Versions</li>';
-            //$extraFields = $versionsGrid->addExtraClass('find-versions');
         }
 
         $fields->add(new LiteralField(
             'BottomTaskSelection',
-            '<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'.
-            '<li class="ss-ui-button" data-panel="embargo">Embargo</li>'.
-            '<li class="ss-ui-button" data-panel="expiry">Expiry</li>'.
-            '<li class="ss-ui-button" data-panel="replace">Replace</li>'.
-            '<li class="ss-ui-button" data-panel="find-usage">Usage</li>'.
-            '<li class="ss-ui-button" data-panel="find-references">References</li>'.
-            $extraTasks.
-            '</ul></div>'
+            '<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'
+            . '<li class="ss-ui-button" data-panel="embargo">Embargo</li>'
+            . '<li class="ss-ui-button" data-panel="expiry">Expiry</li>'
+            . '<li class="ss-ui-button" data-panel="replace">Replace</li>'
+            . '<li class="ss-ui-button" data-panel="find-usage">Usage</li>'
+            . '<li class="ss-ui-button" data-panel="find-references">References</li>'
+            . '<li class="ss-ui-button" data-panel="find-relateddocuments">Related Documents</li>'
+            . $extraTasks
+            . '</ul></div>'
         ));
 
         $embargoValue = 'None';
@@ -1076,49 +1077,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         // These are toggled on and off via the Actions Buttons above
         // exit('hit');
         $actionsPanel = FieldGroup::create(
-
-            FieldGroup::create(
-                $embargo,
-                $embargoDatetime
-            )->addExtraClass('embargo'),
-            FieldGroup::create(
-                $expiry,
-                $expiryDatetime
-            )->addExtraClass('expiry'),
-            FieldGroup::create(
-                $uploadField
-            )->addExtraClass('replace'),
-            FieldGroup::create(
-                $pagesGrid
-            )->addExtraClass('find-usage'),
-            FieldGroup::create(
-                $referencesGrid
-            )->addExtraClass('find-references'),
-            FieldGroup::create(
-                $versionsGrid
-            )->addExtraClass('find-versions')
+            FieldGroup::create($embargo, $embargoDatetime)->addExtraClass('embargo'),
+            FieldGroup::create($expiry, $expiryDatetime)->addExtraClass('expiry'),
+            FieldGroup::create($uploadField)->addExtraClass('replace'),
+            FieldGroup::create($pagesGrid)->addExtraClass('find-usage'),
+            FieldGroup::create($referencesGrid)->addExtraClass('find-references'),
+            FieldGroup::create($versionsGrid)->addExtraClass('find-versions'),
+            FieldGroup::create($this->getRelatedDocumentsGridField())->addExtraClass('find-relateddocuments')
         );
 
         $actionsPanel->setName("ActionsPanel");
         $actionsPanel->addExtraClass("DMSDocumentActionsPanel");
 
         $fields->push($actionsPanel);
-
-        // $fields->add(FieldGroup::create(
-        // 		FieldGroup::create(
-        // 			$embargo,
-        // 			$embargoDatetime
-        // 		)->addExtraClass('embargo'),
-        // 		FieldGroup::create(
-        // 			$expiry,
-        // 			$expiryDatetime
-        // 		)->addExtraClass('expiry'),
-        // 		$uploadField->addExtraClass('replace'),
-        // 		$pagesGrid->addExtraClass('find-usage'),
-        // 		$referencesGrid->addExtraClass('find-references'),
-        // 		$extraFields
-        // )->setName("ActionsPanel")->addExtraClass('dmsupload ss-uploadfield'));
-
 
         $this->extend('updateCMSFields', $fields);
 
@@ -1312,5 +1283,43 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $file->delete();
 
         return $this;
+    }
+
+    /**
+     * Get a data list of documents related to this document
+     *
+     * @return DataList
+     */
+    public function getRelatedDocuments()
+    {
+        $documents = $this->RelatedDocuments();
+
+        $this->extend('updateRelatedDocuments', $documents);
+
+        return $documents;
+    }
+
+    /**
+     * Get a GridField for managing related documents
+     *
+     * @return GridField
+     */
+    protected function getRelatedDocumentsGridField()
+    {
+        $gridField = GridField::create(
+            'RelatedDocuments',
+            _t('DMSDocument.RELATEDDOCUMENTS', 'Related Documents'),
+            $this->RelatedDocuments(),
+            new GridFieldConfig_RelationEditor
+        );
+
+        $gridField->getConfig()->removeComponentsByType('GridFieldAddNewButton');
+        // Move the autocompleter to the left
+        $gridField->getConfig()->removeComponentsByType('GridFieldAddExistingAutocompleter');
+        $gridField->getConfig()->addComponent(new GridFieldAddExistingAutocompleter('buttons-before-left'));
+
+        $this->extend('updateRelatedDocumentsGridField', $gridField);
+
+        return $gridField;
     }
 }
