@@ -54,6 +54,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'LastChanged'
     );
 
+    private static $summary_fields = array(
+        'Filename' => 'Filename',
+        'Title' => 'Title',
+        'ViewCount' => 'ViewCount',
+        'getPages.count' => 'Page Use'
+    );
+
     /**
      * @var string download|open
      * @config

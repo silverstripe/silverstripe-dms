@@ -120,23 +120,13 @@ class DMSSiteTreeExtension extends DataExtension
         );
         $gridField->addExtraClass('documents');
 
-        $uploadBtn = new LiteralField(
-            'UploadButton',
-            sprintf(
-                '<a class="ss-ui-button ss-ui-action-constructive cms-panel-link" data-pjax-target="Content"'
-                . ' data-icon="add" href="%s">%s</a>',
-                Controller::join_links(singleton('DMSDocumentAddController')->Link(), '?ID=' . $this->owner->ID),
-                "Add Documents"
-            )
+        $gridFieldConfig->addComponent(
+            $addNewButton = new DMSGridFieldAddNewButton,
+            'GridFieldExportButton'
         );
+        $addNewButton->setPageId($this->owner->ID);
 
-        $fields->addFieldsToTab(
-            'Root.Documents (' . $this->owner->Documents()->Count() . ')',
-            array(
-                $uploadBtn,
-                $gridField
-            )
-        );
+        $fields->addFieldToTab('Root.Documents (' . $this->owner->Documents()->Count() . ')', $gridField);
     }
 
     /**
