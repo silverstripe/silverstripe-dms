@@ -106,7 +106,7 @@ class DMSGridFieldDeleteAction extends GridFieldDeleteAction implements
             }
 
             $delete = false;
-            if ($item->Pages()->Count() <= 1) {
+            if ($item->getRelatedPages()->count() <= 1) {
                 $delete = true;
             }
 

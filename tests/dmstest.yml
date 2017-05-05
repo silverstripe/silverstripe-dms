@@ -3,7 +3,7 @@ SiteTree:
     Title: testPage1 has document sets
     URLSegment: s1
   s2:
-    Title: testPage2 has document sets
+    Title: testPage2 a document set
     URLSegment: s2
   s3:
     Title: testPage3 has document sets with embargoed docs
@@ -17,6 +17,9 @@ SiteTree:
   s6:
     Title: testPage6 has no sets
     URLSegment: s6
+  s7:
+    Title: testPage7 has documents embargoed until publish
+    URLSegment: s7
 DMSTag:
   t1:
     Category: tag1
@@ -56,6 +59,9 @@ DMSDocumentSet:
   ds4:
     Title: Set containing embargoed documents
     Page: =>SiteTree.s3
+  ds5:
+    Title: Set containing embargoed until publish documents
+    Page: =>SiteTree.s7
 DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
@@ -98,6 +104,16 @@ DMSDocument:
     EmbargoedIndefinitely: true
     Folder: 5
     Sets: =>DMSDocumentSet.ds4
+  embargo_until_publish1:
+    Filename: embargo-until-publish1
+    EmbargoUntilPublish: true
+    Folder: 5
+    Sets: =>DMSDocumentSet.ds5
+  embargo_until_publish2:
+    Filename: embargo-until-publish2
+    EmbargoUntilPublish: true
+    Folder: 5
+    Sets: =>DMSDocumentSet.ds5
 Member:
   editor:
     Name: editor

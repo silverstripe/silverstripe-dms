@@ -25,7 +25,7 @@ class DMSSiteTreeExtension extends DataExtension
         $gridField->addExtraClass('documentsets');
 
         $fields->addFieldToTab(
-            'Root.Document Sets (' . $this->owner->DocumentSets()->Count() . ')',
+            'Root.Document Sets (' . $this->owner->DocumentSets()->count() . ')',
             $gridField
         );
     }
@@ -53,6 +53,7 @@ class DMSSiteTreeExtension extends DataExtension
             /** @var DocumentSet $documentSet */
             $documents->merge($documentSet->getDocuments());
         }
+        $documents->removeDuplicates();
 
         return $documents;
     }
@@ -67,11 +68,11 @@ class DMSSiteTreeExtension extends DataExtension
 
         // Only remove if record doesn't still exist on live stage.
         if (!$existsOnOtherStage) {
-            $dmsDocuments = $this->owner->Documents();
+            $dmsDocuments = $this->owner->getAllDocuments();
             foreach ($dmsDocuments as $document) {
-                //if the document is only associated with one page, i.e. only associated with this page
-                if ($document->Pages()->Count() <= 1) {
-                    //delete the document before deleting this page
+                // If the document is only associated with one page, i.e. only associated with this page
+                if ($document->getRelatedPages()->count() <= 1) {
+                    // Delete the document before deleting this page
                     $document->delete();
                 }
             }
@@ -81,7 +82,7 @@ class DMSSiteTreeExtension extends DataExtension
     public function onBeforePublish()
     {
         $embargoedDocuments = $this->owner->getAllDocuments()->filter('EmbargoedUntilPublished', true);
-        if ($embargoedDocuments->Count() > 0) {
+        if ($embargoedDocuments->count() > 0) {
             foreach ($embargoedDocuments as $doc) {
                 $doc->EmbargoedUntilPublished = false;
                 $doc->write();
