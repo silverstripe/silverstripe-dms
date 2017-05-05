@@ -218,16 +218,17 @@ class DMSDocumentAddController extends LeftAndMain
         return Convert::raw2json($return);
     }
 
+    /**
+     * Link an existing document to the given document set ID
+     * @return string JSON
+     */
     public function linkdocument()
     {
         $return = array('error' => _t('UploadField.FIELDNOTSET', 'Could not add document to page'));
-$return = array('error' => 'testing');
-return Convert::raw2json($return);
-        $page = $this->currentPage();
-        if (!empty($page)) {
+        $documentSet = $this->getCurrentDocumentSet();
+        if (!empty($documentSet)) {
             $document = DMSDocument::get()->byId($this->getRequest()->getVar('documentID'));
-            // @todo add sets
-            $document->addPage($page);
+            $documentSet->Documents()->add($document);
 
             $buttonText = '<button class="ss-uploadfield-item-edit ss-ui-button ui-corner-all"'
                 . ' title="' . _t('DMSDocument.EDITDOCUMENT', 'Edit this document') . '" data-icon="pencil">'

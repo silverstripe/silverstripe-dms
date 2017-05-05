@@ -167,8 +167,8 @@ class DMSTest extends FunctionalTest
     {
         $pageWithEmbargoes = $this->objFromFixture('SiteTree', 's3');
         $documents = $this->dms->getByPage($pageWithEmbargoes);
-        // Fixture: 3 documents in set, 1 is embargoed
-        $this->assertCount(2, $documents, 'Embargoed documents are excluded by default');
+        // Fixture: 6 documents in set, 1 is embargoed
+        $this->assertCount(5, $documents, 'Embargoed documents are excluded by default');
         $this->assertContainsOnlyInstancesOf('DMSDocument', $documents);
     }
 
@@ -179,8 +179,8 @@ class DMSTest extends FunctionalTest
     {
         $pageWithEmbargoes = $this->objFromFixture('SiteTree', 's3');
         $documents = $this->dms->getByPage($pageWithEmbargoes, true);
-        // Fixture: 3 documents in set, 1 is embargoed
-        $this->assertCount(3, $documents, 'Embargoed documents can be included');
+        // Fixture: 6 documents in set, 1 is embargoed
+        $this->assertCount(6, $documents, 'Embargoed documents can be included');
         $this->assertContainsOnlyInstancesOf('DMSDocument', $documents);
     }
 

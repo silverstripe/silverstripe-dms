@@ -46,6 +46,13 @@ Group:
   cable-guy:
     Code: cable-guy
     Title: "Cable Guy"
+Member:
+  editor:
+    Name: editor
+    Groups: =>Group.content-author
+  non-editor:
+    Name: cable-guy
+    Groups: =>Group.cable-guy
 DMSDocumentSet:
   ds1:
     Title: Document Set 1
@@ -83,20 +90,20 @@ DMSDocument:
     CanEditType: LoggedInUsers
     Folder: 5
     Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
-    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+    Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   doc-anyone:
     FileName: doc-anyone
     CanViewType: Anyone
     Folder: 5
     Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
-    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+    Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   doc-only-these-users:
     FileName: doc-only-these-users
     CanViewType: OnlyTheseUsers
     CanEditType: OnlyTheseUsers
     Folder: 5
     Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
-    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+    Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
     ViewerGroups: =>Group.content-author
     EditorGroups: =>Group.content-author
   embargoed_document1:
@@ -114,10 +121,3 @@ DMSDocument:
     EmbargoUntilPublish: true
     Folder: 5
     Sets: =>DMSDocumentSet.ds5
-Member:
-  editor:
-    Name: editor
-    Groups: =>Group.content-author
-  non-editor:
-    Name: cable-guy
-    Groups: =>Group.cable-guy

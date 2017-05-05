@@ -54,13 +54,12 @@ class DMSSiteTreeExtensionTest extends SapphireTest
     /**
      * Ensure that a page title can be retrieved with the number of related documents it has (across all document sets).
      *
-     * Note that the fixture has the same two documents attached to two different document sets, attached to this
-     * page, but we're expecting only two since they should be returned as unique only (rather than four).
+     * See fixtures for relationships that define this result.
      */
     public function testGetTitleWithNumberOfDocuments()
     {
         $siteTree = $this->objFromFixture('SiteTree', 's1');
-        $this->assertSame('testPage1 has document sets (2)', $siteTree->getTitleWithNumberOfDocuments());
+        $this->assertSame('testPage1 has document sets (5)', $siteTree->getTitleWithNumberOfDocuments());
     }
 
     /**

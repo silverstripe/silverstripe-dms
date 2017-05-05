@@ -4,10 +4,10 @@
 	$.entwine('ss', function ($) {
 		$('.document-add-existing').entwine({
 			adddocument: function (document_id) {
-				var page_id = $(this).closest('form').find(':input[name=ID]').val();
+				var documentSetId = $(this).closest('form').find('input[name="DSID"]').val();
 
 				jQuery.ajax(
-					'admin/pages/adddocument/linkdocument?ID=' + page_id + '&documentID=' + document_id,
+					'admin/pages/adddocument/linkdocument?dsid=' + documentSetId + '&documentID=' + document_id,
 					{
 						dataType: 'json',
 						success: function (data, textstatus) {
@@ -92,7 +92,7 @@
 				doclist.load(
 					'admin/pages/adddocument/documentlist?pageID=' + $(this).val()
 				);
-				
+
 			}
 		});
 
