@@ -47,14 +47,25 @@ class DMSDocumentSet extends DataObject
      */
     public function getCMSFields()
     {
-        $this->beforeUpdateCMSFields(function (FieldList $fields) {
-            // Javascript to customize the grid field for the DMS document (overriding entwine
-            // in FRAMEWORK_DIR.'/javascript/GridField.js'
-            Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
-            Requirements::css(DMS_DIR . '/css/DMSMainCMS.css');
+        // PHP 5.3 only
+        $self = $this;
 
-            // Javascript for the link editor pop-up in TinyMCE
-            Requirements::javascript(DMS_DIR . '/javascript/DocumentHtmlEditorFieldToolbar.js');
+        $this->beforeUpdateCMSFields(function (FieldList $fields) use ($self) {
+            // Don't put the GridField for documents in until the set has been created
+            if (!$self->isInDB()) {
+                $fields->addFieldToTab(
+                    'Root.Main',
+                    LiteralField::create(
+                        'GridFieldNotice',
+                        '<p class="message warning">' . _t(
+                            'DMSDocumentSet.GRIDFIELD_NOTICE',
+                            'Managing documents will be available once you have created this document set.'
+                        ) . '</p>'
+                    ),
+                    'Title'
+                );
+                return;
+            }
 
             // Document listing
             $gridFieldConfig = GridFieldConfig::create()
@@ -65,9 +76,9 @@ class DMSDocumentSet extends DataObject
                     // new GridFieldOrderableRows('DocumentSort'),
                     new GridFieldDataColumns(),
                     new GridFieldEditButton(),
-                    new DMSGridFieldDeleteAction(), //special delete dialog to handle custom behaviour of unlinking and deleting
+                    // Special delete dialog to handle custom behaviour of unlinking and deleting
+                    new DMSGridFieldDeleteAction(),
                     new GridFieldDetailForm()
-                    //GridFieldLevelup::create($folder->ID)->setLinkSpec('admin/assets/show/%d')
                 );
 
             if (class_exists('GridFieldPaginatorWithShowAll')) {
@@ -79,7 +90,7 @@ class DMSDocumentSet extends DataObject
 
             if (class_exists('GridFieldSortableRows')) {
                 $sortableComponent = new GridFieldSortableRows('DocumentSort');
-                //setUsePagenation method removed from newer version of SortableGridField.
+                // setUsePagenation method removed from newer version of SortableGridField.
                 if (method_exists($sortableComponent, 'setUsePagination')) {
                     $sortableComponent->setUsePagination(false)->setForceRedraw(true);
                 }
@@ -90,21 +101,21 @@ class DMSDocumentSet extends DataObject
             singleton('DMSDocument');
             $gridFieldConfig->getComponentByType('GridFieldDataColumns')
                 ->setDisplayFields(Config::inst()->get('DMSDocument', 'display_fields'))
-                ->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
+                ->setFieldCasting(array('LastChanged' => 'Datetime->Ago'))
                 ->setFieldFormatting(
                     array(
                         'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>'
                     )
                 );
 
-            //override delete functionality with this class
+            // Override delete functionality with this class
             $gridFieldConfig->getComponentByType('GridFieldDetailForm')
                 ->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
 
             $gridField = GridField::create(
                 'Documents',
                 false,
-                $this->Documents(),//->Sort('DocumentSort'),
+                $self->Documents(), //->Sort('DocumentSort'),
                 $gridFieldConfig
             );
             $gridField->addExtraClass('documents');
@@ -113,11 +124,30 @@ class DMSDocumentSet extends DataObject
                 $addNewButton = new DMSGridFieldAddNewButton,
                 'GridFieldExportButton'
             );
-            $addNewButton->setDocumentSetId($this->ID);
+            $addNewButton->setDocumentSetId($self->ID);
 
             $fields->removeByName('Documents');
             $fields->addFieldToTab('Root.Main', $gridField);
         });
+        $this->addRequirements();
         return parent::getCMSFields();
+    }
+
+    /**
+     * Add required CSS and Javascript requirements for managing documents
+     *
+     * @return $this
+     */
+    protected function addRequirements()
+    {
+        // Javascript to customize the grid field for the DMS document (overriding entwine
+        // in FRAMEWORK_DIR.'/javascript/GridField.js'
+        Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
+        Requirements::css(DMS_DIR . '/css/DMSMainCMS.css');
+
+        // Javascript for the link editor pop-up in TinyMCE
+        Requirements::javascript(DMS_DIR . '/javascript/DocumentHtmlEditorFieldToolbar.js');
+
+        return $this;
     }
 }

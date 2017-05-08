@@ -13,7 +13,7 @@ class DMSGridFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 
         //add a data attribute specifying how many pages this document is referenced on
         if ($record = $this->record) {
-            $numberOfPageRelations = $record->getRelatedPages()->Count();
+            $numberOfPageRelations = $record->getRelatedPages()->count();
             $relations = new ShortCodeRelationFinder();
             $numberOfInlineRelations = $relations->findPageCount($record->ID);
 

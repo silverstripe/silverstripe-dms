@@ -21,6 +21,7 @@ en:
   DMSDocumentSet:
     ADDDOCUMENTBUTTON: Add Document
     ADDDOCUMENTSBUTTON: Add Documents
+    GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
     PLURALNAME: Document Sets
     SINGULARNAME: Document Set
   DMSTag:
