@@ -1,9 +1,11 @@
 <% if not $isHidden %>
     <div class="document $Extension">
-        <% if $Title %>
-            <h4><a href="$Link" title="<%t DMSDocument.DOWNLOAD "Download {title}" title=$Title %>">$Title</a></h4>
-        <% else %>
-            <h4><a href="$Link" title="<%t DMSDocument.DOWNLOAD "Download {title}" title=$FilenameWithoutID %>">$FilenameWithoutID</a></h4>
+        <h4><a href="$Link" title="<%t DMSDocument.DOWNLOAD "Download {title}" title=$getTitle %>">$getTitle</a></h4>
+
+        <% if $CoverImage %>
+            <div class="article-thumbnail">
+                $CoverImage.FitMax(100, 100)
+            </div>
         <% end_if %>
 
         <p class="details"><% include DocumentDetails %></p>

@@ -48,7 +48,7 @@ class DMSUploadField extends UploadField
         // Relate to the underlying document set being edited.
         // Not applicable when editing the document itself and replacing it, or uploading from the ModelAdmin
         if ($record instanceof DMSDocumentSet) {
-            $record->Documents()->add($doc);
+            $record->Documents()->add($doc, array('BelongsToSet' => 1));
         }
 
         return $doc;

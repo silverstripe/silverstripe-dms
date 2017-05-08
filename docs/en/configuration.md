@@ -28,3 +28,31 @@ DMSDocumentAddController:
     - php
     - php5
 ```
+
+## Adding fields to the Query Builder
+Query builder fields are read from the DMSDocument::searchable_fields property set in [querybuilder.yml](../../_config/querybuilder.yml). Some default fields are provided and can be customised
+by modifying the field and/or filter properties of a field or adding a new field entirely. 
+
+[See here for information](https://docs.silverstripe.org/en/developer_guides/model/searchfilters/) on how to modify search filters and [see here for more information](https://docs.silverstripe.org/en/developer_guides/forms/field_types/common_subclasses/)
+on the field types available.
+
+The default searchable filters available to query builder is as follows:
+
+```yaml
+DMSDocument:
+  searchable_fields:
+    Title:
+      title: "Document title matches ..."
+    Description:
+      title: "Document summary matches ..."
+    CreatedByID:
+      title: 'Document created by ...'
+      field: 'ListboxField'
+      filter: 'ExactMatchFilter'
+    LastEditedByID:
+      title: 'Document last changed by ...'
+      field: 'ListboxField'
+      filter: 'ExactMatchFilter'
+    Filename:
+      title: 'File name'
+```
