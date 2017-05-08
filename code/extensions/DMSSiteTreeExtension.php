@@ -18,6 +18,8 @@ class DMSSiteTreeExtension extends DataExtension
      * Do not show the documents tab on the array of pages set here
      * @static
      * @param $mixed Array of page types to not show the Documents tab on
+     *
+     * @deprecated 2.0 Will be removed in favour of YAML configuration
      */
     public static function no_documents_tab($array = array())
     {
@@ -36,6 +38,8 @@ class DMSSiteTreeExtension extends DataExtension
      * still not be shown. If this isn't called, or if it is called with an empty array, all pages will get Document tabs.
      * @static
      * @param $array Array of page types to show the Documents tab on
+     *
+     * @deprecated 2.0 Will be removed in favour of YAML configuration
      */
     public static function show_documents_tab($array = array())
     {
@@ -132,6 +136,8 @@ class DMSSiteTreeExtension extends DataExtension
 
     /**
      * Enforce sorting for frontend
+     *
+     * @deprecated 2.0 Will be removed in future
      */
     public function PageDocuments()
     {
