@@ -237,4 +237,103 @@ class DMSDocumentTest extends SapphireTest
             'Related documents GridField does not have an "add new" button'
         );
     }
+
+    /*
+     * Tests whether the permissions fields are added
+     */
+    public function testAddPermissionsFields()
+    {
+        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $fields = $document->getCMSFields();
+
+        $this->assertNotNull($fields->fieldByName('CanViewType'));
+        $this->assertNotNull($fields->fieldByName('ViewerGroups'));
+    }
+
+    /**
+     * Test view permissions
+     */
+    public function testCanView()
+    {
+        /** @var DMSDocument $document */
+        $document = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        // Make sure user is logged out
+        if ($member = Member::currentUser()) {
+            $member->logOut();
+        }
+
+        // Logged out user test
+        $this->assertFalse($document->canView());
+
+        // Logged in user test
+        $adminID = $this->logInWithPermission();
+        $admin = Member::get()->byID($adminID);
+        $this->assertTrue($document->canView($admin));
+        /** @var Member $member */
+        $admin->logout();
+
+        // Check anyone
+        $document = $this->objFromFixture('DMSDocument', 'doc-anyone');
+        $this->assertTrue($document->canView());
+
+        // Check OnlyTheseUsers
+        $document = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $reportAdminID = $this->logInWithPermission('cable-guy');
+        /** @var Member $reportAdmin */
+        $reportAdmin = Member::get()->byID($reportAdminID);
+        $this->assertFalse($document->canView($reportAdmin));
+        // Add reportAdmin to group
+        $reportAdmin->addToGroupByCode('content-author');
+        $this->assertTrue($document->canView($reportAdmin));
+        $reportAdmin->logout();
+    }
+
+    /**
+     * Tests edit permissions
+     */
+    public function testCanEdit()
+    {
+        // Make sure user is logged out
+        if ($member = Member::currentUser()) {
+            $member->logOut();
+        }
+
+        /** @var DMSDocument $document1 */
+        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+
+        // Logged out user test
+        $this->assertFalse($document1->canEdit());
+
+        //Logged in user test
+        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $this->assertTrue($document1->canEdit($contentAuthor));
+
+        // Check OnlyTheseUsers
+        /** @var DMSDocument $document2 */
+        $document2 = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        /** @var Member $cableGuy */
+        $cableGuy = $this->objFromFixture('Member', 'non-editor');
+        $this->assertFalse($document2->canEdit($cableGuy));
+
+        $cableGuy->addToGroupByCode('content-author');
+        $this->assertTrue($document2->canEdit($cableGuy));
+    }
+
+    /**
+     * Test permission denied reasons for documents
+     */
+    public function testGetPermissionDeniedReason()
+    {
+        /** @var DMSDocument $document1 */
+        $doc1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $this->assertContains('Please log in to view this document', $doc1->getPermissionDeniedReason());
+
+        /** @var DMSDocument $doc2 */
+        $doc2 = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $this->assertContains('You are not authorised to view this document', $doc2->getPermissionDeniedReason());
+
+        /** @var DMSDocument $doc3 */
+        $doc3 = $this->objFromFixture('DMSDocument', 'doc-anyone');
+        $this->assertEquals('', $doc3->getPermissionDeniedReason());
+    }
 }

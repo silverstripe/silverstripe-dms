@@ -1,4 +1,4 @@
-<% if $isHidden != true %>
+<% if not $isHidden %>
     <div class="document $Extension">
         <% if $Title %>
             <h4><a href="$Link" title="<%t DMSDocument.DOWNLOAD "Download {title}" title=$Title %>">$Title</a></h4>
