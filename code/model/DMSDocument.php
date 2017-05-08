@@ -1436,11 +1436,29 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $gridField->getConfig()->removeComponentsByType('GridFieldAddNewButton');
         // Move the autocompleter to the left
         $gridField->getConfig()->removeComponentsByType('GridFieldAddExistingAutocompleter');
-        $gridField->getConfig()->addComponent(new GridFieldAddExistingAutocompleter('buttons-before-left'));
+        $gridField->getConfig()->addComponent(
+            $addExisting = new GridFieldAddExistingAutocompleter('buttons-before-left')
+        );
+
+        // Ensure that current document doesn't get returned in the autocompleter
+        $addExisting->setSearchList($this->getRelatedDocumentsForAutocompleter());
 
         $this->extend('updateRelatedDocumentsGridField', $gridField);
 
         return $gridField;
+    }
+
+    /**
+     * Get the list of documents to show in "related documents". This can be modified via the extension point, for
+     * example if you wanted to exclude embargoed documents or something similar.
+     *
+     * @return DataList
+     */
+    protected function getRelatedDocumentsForAutocompleter()
+    {
+        $documents = DMSDocument::get()->exclude('ID', $this->ID);
+        $this->extend('updateRelatedDocumentsForAutocompleter', $documents);
+        return $documents;
     }
 
     /**

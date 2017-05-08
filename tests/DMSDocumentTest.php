@@ -209,21 +209,7 @@ class DMSDocumentTest extends SapphireTest
     public function testDocumentHasCmsFieldForManagingRelatedDocuments()
     {
         $document = $this->objFromFixture('DMSDocument', 'document_with_relations');
-
-        $documentFields = $document->getCMSFields();
-        /** @var FieldGroup $actions */
-        $actions = $documentFields->fieldByName('ActionsPanel');
-
-        $gridField = null;
-        foreach ($actions->getChildren() as $child) {
-            /** @var FieldGroup $child */
-            if ($gridField = $child->fieldByName('RelatedDocuments')) {
-                break;
-            }
-        }
-        $this->assertInstanceOf('GridField', $gridField);
-
-        /** @var GridFieldConfig $gridFieldConfig */
+        $gridField = $this->getGridFieldFromDocument($document);
         $gridFieldConfig = $gridField->getConfig();
 
         $this->assertNotNull(
@@ -236,6 +222,48 @@ class DMSDocumentTest extends SapphireTest
             $gridFieldConfig->getComponentByType('GridFieldAddNewButton'),
             'Related documents GridField does not have an "add new" button'
         );
+    }
+
+    /**
+     * Ensure that the related documents list does not include the current document itself
+     */
+    public function testGetRelatedDocumentsForAutocompleter()
+    {
+        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $gridField = $this->getGridFieldFromDocument($document);
+
+        $config = $gridField->getConfig();
+
+        $autocompleter = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+        $autocompleter->setResultsFormat('$Filename');
+
+        $jsonResult = $autocompleter->doSearch(
+            $gridField,
+            new SS_HTTPRequest('GET', '/', array('gridfield_relationsearch' => 'test'))
+        );
+
+        $this->assertNotContains('test-file-file-doesnt-exist-1', $jsonResult);
+        $this->assertContains('test-file-file-doesnt-exist-2', $jsonResult);
+    }
+
+    /**
+     * @return GridField
+     */
+    protected function getGridFieldFromDocument(DMSDocument $document)
+    {
+        $documentFields = $document->getCMSFields();
+        /** @var FieldGroup $actions */
+        $actions = $documentFields->fieldByName('ActionsPanel');
+
+        $gridField = null;
+        foreach ($actions->getChildren() as $child) {
+            /** @var FieldGroup $child */
+            if ($gridField = $child->fieldByName('RelatedDocuments')) {
+                break;
+            }
+        }
+        $this->assertInstanceOf('GridField', $gridField);
+        return $gridField;
     }
 
     /*
