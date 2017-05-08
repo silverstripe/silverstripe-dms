@@ -36,6 +36,13 @@ DMSTag:
   t6:
     Category: tag6
     Value: tag6value
+Group:
+  content-author:
+    Code: content-author
+    Title: "Content Author"
+  cable-guy:
+    Code: cable-guy
+    Title: "Cable Guy"
 DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
@@ -51,3 +58,32 @@ DMSDocument:
     Filename: file-with-relations
     Folder: 5
     RelatedDocuments: =>DMSDocument.d1, =>DMSDocument.d2
+  doc-logged-in-users:
+    FileName: doc-logged-in-users
+    CanViewType: LoggedInUsers
+    CanEditType: LoggedInUsers
+    Folder: 5
+    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
+    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+  doc-anyone:
+    FileName: doc-anyone
+    CanViewType: Anyone
+    Folder: 5
+    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
+    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+  doc-only-these-users:
+    FileName: doc-only-these-users
+    CanViewType: OnlyTheseUsers
+    CanEditType: OnlyTheseUsers
+    Folder: 5
+    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
+    Pages: =>SiteTree.s1, =>SiteTree.s2, =>SiteTree.s3, =>SiteTree.s4, =>SiteTree.s5, =>SiteTree.s6
+    ViewerGroups: =>Group.content-author
+    EditorGroups: =>Group.content-author
+Member:
+  editor:
+    Name: editor
+    Groups: =>Group.content-author
+  non-editor:
+    Name: cable-guy
+    Groups: =>Group.cable-guy

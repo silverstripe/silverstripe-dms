@@ -1,7 +1,7 @@
-(function ($) {
+(function($) {
 	"use strict";
 
-	$.entwine('ss', function ($) {
+	$.entwine('ss', function($) {
 
 		$('#DocumentTypeID ul li').entwine({
 			onadd: function () {
@@ -11,7 +11,7 @@
                     this.addClass('selected');
                 }
 			},
-			onclick: function (e) {
+			onclick: function(e) {
 				$('#DocumentTypeID').find('li.selected').removeClass('selected');
 				this.find('input').prop("checked", true);
 				this.addClass('selected');
@@ -34,7 +34,22 @@
 				}
 			}
 		});*/
-
+		$('#CanViewType input, #CanEditType input').entwine({
+			onchange: function () {
+				var dropDown = $(this).closest('.field').next();
+				if ($(this).val() === 'OnlyTheseUsers') {
+					dropDown.removeClass('hide');
+				} else {
+					dropDown.addClass('hide');
+				}
+			},
+			onadd: function () {
+				if ($(this).is(':checked') && $(this).val() === 'OnlyTheseUsers') {
+					var dropDown = $(this).closest('.field').next();
+					dropDown.removeClass('hide');
+				}
+			}
+		});
 		$('#Actions ul li').entwine({
 			onclick: function (e) {
 
@@ -56,7 +71,6 @@
 
 		$('#Form_ItemEditForm_Embargo input, #Form_EditForm_Embargo input').entwine({
 			onchange: function () {
-				console.log('called');
 				//selected the date options
 				if (this.attr('value') === 'Date') {
 					$('.embargoDatetime').children().show();

@@ -35,6 +35,7 @@ class DMSEmbargoTest extends SapphireTest
         $doc = new DMSDocument();
         $doc->Filename = "DMS-test-lorum-file.pdf";
         $doc->Folder = "tests";
+        $doc->CanViewType = 'LoggedInUsers';
         $docID = $doc->write();
 
         //fake a request for a document

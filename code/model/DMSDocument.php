@@ -2,6 +2,26 @@
 
 /**
  * @package dms
+ *
+ * @property Varchar Filename
+ * @property Varchar Folder
+ * @property Varchar Title
+ * @property Text Description
+ * @property int ViewCount
+ * @property DateTime LastChanged
+ * @property Boolean EmbargoedIndefinitely
+ * @property Boolean EmbargoedUntilPublished
+ * @property DateTime EmbargoedUntilDate
+ * @property DateTime ExpireAtDate
+ * @property Enum DownloadBehavior
+ * @property Enum CanViewType Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'Anyone')
+ * @property Enum CanEditType Enum('LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')
+ *
+ * @method ManyManyList RelatedDocuments
+ * @method ManyManyList Tags
+ * @method ManyManyList ViewerGroups
+ * @method ManyManyList EditorGroups
+ *
  */
 class DMSDocument extends DataObject implements DMSDocumentInterface
 {
@@ -19,12 +39,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         "EmbargoedUntilDate" => 'SS_DateTime',
         "ExpireAtDate" => 'SS_DateTime',
         "DownloadBehavior" => 'Enum(array("open","download"), "download")',
+        "CanViewType" => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers', 'Anyone')",
+        "CanEditType" => "Enum('LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')",
     );
 
     private static $many_many = array(
         'Pages' => 'SiteTree',
         'RelatedDocuments' => 'DMSDocument',
-        'Tags' => 'DMSTag'
+        'Tags' => 'DMSTag',
+        'ViewerGroups' => 'Group',
+        'EditorGroups' => 'Group',
     );
 
     private static $many_many_extraFields = array(
@@ -67,11 +91,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     private static $default_download_behaviour = 'download';
 
-    /**
-     * @param Member $member
-     *
-     * @return boolean
-     */
     public function canView($member = null)
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
@@ -87,18 +106,36 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        if ($member && $member->ID) {
+        if (!$this->CanViewType || $this->CanViewType == 'Anyone') {
             return true;
         }
 
-        return false;
+        if ($member && Permission::checkMember($member,
+                array(
+                    'ADMIN',
+                    'SITETREE_EDIT_ALL',
+                    'SITETREE_VIEW_ALL',
+                )
+            )
+        ) {
+            return true;
+        }
+
+        if ($this->isHidden()) {
+            return false;
+        }
+
+        if ($this->CanViewType == 'LoggedInUsers') {
+            return $member && $member->exists();
+        }
+
+        if ($this->CanViewType == 'OnlyTheseUsers' && $this->ViewerGroups()->count()) {
+            return ($member && $member->inGroups($this->ViewerGroups()));
+        }
+
+        return $this->canEdit($member);
     }
 
-    /**
-     * @param Member $member
-     *
-     * @return boolean
-     */
     public function canEdit($member = null)
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
@@ -113,7 +150,27 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        return $this->canView();
+        // Do early admin check
+        if ($member && Permission::checkMember($member,
+                array(
+                    'ADMIN',
+                    'SITETREE_EDIT_ALL',
+                    'SITETREE_VIEW_ALL',
+                )
+            )
+        ) {
+            return true;
+        }
+
+        if ($this->CanEditType === 'LoggedInUsers') {
+            return $member && $member->exists();
+        }
+
+        if ($this->CanEditType === 'OnlyTheseUsers' && $this->EditorGroups()->count()) {
+            return $member && $member->inGroups($this->EditorGroups());
+        }
+
+        return ($member && Permission::checkMember($member, array('ADMIN', 'SITETREE_EDIT_ALL')));
     }
 
     /**
@@ -135,7 +192,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        return $this->canView();
+        return $this->canEdit($member);
     }
 
     /**
@@ -294,7 +351,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $category of a metadata category to add (required)
      * @param string $value of a metadata value to add (required)
      * @param bool $multiValue Boolean that determines if the category is
-     * 					multi-value or single-value (optional)
+     *                  multi-value or single-value (optional)
      *
      * @return DMSDocument
      */
@@ -445,12 +502,30 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
     /**
      * Returns a link to download this document from the DMS store.
+     * Alternatively a basic javascript alert will be shown should the user not have view permissions. An extension
+     * point for this was also added.
+     *
+     * To extend use the following from within an Extension subclass:
+     *
+     * <code>
+     * public function updateGetLink($result)
+     * {
+     *     // Do something here
+     * }
+     * </code>
      *
      * @return string
      */
     public function getLink()
     {
-        return Controller::join_links(Director::baseURL(), 'dmsdocument/'.$this->ID);
+        $result = Controller::join_links(Director::baseURL(), 'dmsdocument/' . $this->ID);
+        if (!$this->canView()) {
+            $result = sprintf("javascript:alert('%s')", $this->getPermissionDeniedReason());
+        }
+
+        $this->extend('updateGetLink', $result);
+
+        return $result;
     }
 
     /**
@@ -1095,12 +1170,50 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         $actionsPanel->setName("ActionsPanel");
         $actionsPanel->addExtraClass("DMSDocumentActionsPanel");
-
         $fields->push($actionsPanel);
 
+        $this->addPermissionsFields($fields);
         $this->extend('updateCMSFields', $fields);
 
         return $fields;
+    }
+
+    /**
+     * Adds permissions selection fields to the FieldList.
+     *
+     * @param FieldList $fields
+     */
+    public function addPermissionsFields($fields)
+    {
+        $showFields = array(
+            'CanViewType'  => '',
+            'ViewerGroups' => 'hide',
+            'CanEditType'  => '',
+            'EditorGroups' => 'hide',
+        );
+        /** @var SiteTree $siteTree */
+        $siteTree = singleton('SiteTree');
+        $settingsFields = $siteTree->getSettingsFields();
+
+        foreach ($showFields as $name => $extraCss) {
+            $compositeName = "Root.Settings.$name";
+            /** @var FormField $field */
+            if ($field = $settingsFields->fieldByName($compositeName)) {
+                $field->addExtraClass($extraCss);
+                $title = str_replace('page', 'document', $field->Title());
+                $field->setTitle($title);
+
+                // Remove Inherited source option from DropdownField
+                if ($field instanceof DropdownField) {
+                    $options = $field->getSource();
+                    unset($options['Inherit']);
+                    $field->setSource($options);
+                }
+                $fields->push($field);
+            }
+        }
+
+        $this->extend('updatePermissionsFields', $fields);
     }
 
     public function onBeforeWrite()
@@ -1328,5 +1441,56 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $this->extend('updateRelatedDocumentsGridField', $gridField);
 
         return $gridField;
+    }
+
+    /**
+     * Checks at least one group is selected if CanViewType || CanEditType == 'OnlyTheseUsers'
+     *
+     * @return ValidationResult
+     */
+    protected function validate()
+    {
+        $valid = parent::validate();
+
+        if ($this->CanViewType == 'OnlyTheseUsers' && !$this->ViewerGroups()->count()) {
+            $valid->error(
+                _t(
+                    'DMSDocument.VALIDATIONERROR_NOVIEWERSELECTED',
+                    "Selecting 'Only these people' from a viewers list needs at least one group selected."
+                )
+            );
+        }
+
+        if ($this->CanEditType == 'OnlyTheseUsers' && !$this->EditorGroups()->count()) {
+            $valid->error(
+                _t(
+                    'DMSDocument.VALIDATIONERROR_NOEDITORSELECTED',
+                    "Selecting 'Only these people' from a editors list needs at least one group selected."
+                )
+            );
+        }
+
+        return $valid;
+    }
+
+    /**
+     * Returns a reason as to why this document cannot be viewed.
+     *
+     * @return string
+     */
+    public function getPermissionDeniedReason()
+    {
+        $result = '';
+
+        if ($this->CanViewType == 'LoggedInUsers') {
+            $result = _t('DMSDocument.PERMISSIONDENIEDREASON_LOGINREQUIRED', 'Please log in to view this document');
+        }
+
+        if ($this->CanViewType == 'OnlyTheseUsers') {
+            $result = _t('DMSDocument.PERMISSIONDENIEDREASON_NOTAUTHORISED',
+                'You are not authorised to view this document');
+        }
+
+        return $result;
     }
 }

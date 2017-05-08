@@ -54,39 +54,9 @@ class DMSDocument_Controller extends Controller
     {
         $doc = $this->getDocumentFromID($request);
 
+
         if (!empty($doc)) {
-            $canView = false;
-
-            // Runs through all pages that this page links to and sets canView
-            // to true if the user can view ONE of these pages
-            if (method_exists($doc, 'Pages')) {
-                $pages = $doc->Pages();
-                if ($pages->Count() > 0) {
-                    foreach ($pages as $page) {
-                        if ($page->CanView()) {
-                            // just one canView is enough to know that we can
-                            // view the file
-                            $canView = true;
-                            break;
-                        }
-                    }
-                } else {
-                    // if the document isn't on any page, then allow viewing of
-                    // the document (because there is no canView() to consult)
-                    $canView = true;
-                }
-            }
-
-            // check for embargo or expiry
-            if ($doc->isHidden()) {
-                $canView = false;
-            }
-
-            //admins can always download any document, even if otherwise hidden
-            $member = Member::currentUser();
-            if ($member && Permission::checkMember($member, 'ADMIN')) {
-                $canView = true;
-            }
+            $canView = $doc->canView();
 
             if ($canView) {
                 $path = $doc->getFullPath();
@@ -129,8 +99,7 @@ class DMSDocument_Controller extends Controller
                     //its ViewCount should be increased by 1 just before the browser sending the file to front.
                     $doc->trackView();
 
-                    $this->sendFile($path, $mime, $doc->getFilenameWithoutID(), $disposition);
-                    return;
+                    return $this->sendFile($path, $mime, $doc->getFilenameWithoutID(), $disposition);
                 }
             }
         }
