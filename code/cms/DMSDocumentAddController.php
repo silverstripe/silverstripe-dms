@@ -27,6 +27,8 @@ class DMSDocumentAddController extends LeftAndMain
      * Add an array of additional allowed extensions
      * @static
      * @param $array
+     *
+     * @deprecated 2.0 Will be removed in future in favour of YAML configuration
      */
     public static function add_allowed_extensions($array = null)
     {

@@ -23,6 +23,8 @@ interface DMSDocumentInterface
      * @abstract
      * @param $pageObject Page object to associate this DMSDocument with
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPage($pageObject);
     
@@ -32,6 +34,8 @@ interface DMSDocumentInterface
      * @abstract
      * @param $pageIDs array of page ids used for the page objects associate this DMSDocument with
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPages($pageIDs);
 
@@ -47,6 +51,8 @@ interface DMSDocumentInterface
      * Returns a list of the Page objects associated with this DMSDocument
      * @abstract
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function getPages();
 
@@ -54,6 +60,8 @@ interface DMSDocumentInterface
      * Removes all associated Pages from the DMSDocument
      * @abstract
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function removeAllPages();
 
