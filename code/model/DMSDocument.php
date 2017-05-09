@@ -892,8 +892,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     public function getCMSFields()
     {
         //include JS to handling showing and hiding of bottom "action" tabs
-        Requirements::javascript(DMS_DIR.'/javascript/DMSDocumentCMSFields.js');
-        Requirements::css(DMS_DIR.'/css/DMSDocumentCMSFields.css');
+        Requirements::javascript(DMS_DIR . '/javascript/DMSDocumentCMSFields.js');
+        Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 
         $fields = new FieldList();  //don't use the automatic scaffolding, it is slow and unnecessary here
 

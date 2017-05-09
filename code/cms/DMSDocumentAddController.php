@@ -78,7 +78,7 @@ class DMSDocumentAddController extends LeftAndMain
     {
         Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
         Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
-        Requirements::css(DMS_DIR . '/css/DMSMainCMS.css');
+        Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 
         /** @var SiteTree $page */
         $page = $this->currentPage();

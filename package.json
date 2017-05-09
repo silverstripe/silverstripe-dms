@@ -1,0 +1,36 @@
+{
+  "name": "silverstripe-dms",
+  "version": "2.0.0",
+  "description": "SilverStripe Document Management System",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.17.0",
+    "webpack": "^2.5.1"
+  },
+  "scripts": {
+    "build": "webpack --bail --progress",
+    "watch": "webpack --watch --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/silverstripe/silverstripe-dms.git"
+  },
+  "keywords": [
+    "silverstripe",
+    "dms"
+  ],
+  "author": "SilverStripe Ltd",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/silverstripe/silverstripe-dms/issues"
+  },
+  "homepage": "https://github.com/silverstripe/silverstripe-dms#readme"
+}
