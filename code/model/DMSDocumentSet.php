@@ -143,7 +143,7 @@ class DMSDocumentSet extends DataObject
         // Javascript to customize the grid field for the DMS document (overriding entwine
         // in FRAMEWORK_DIR.'/javascript/GridField.js'
         Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
-        Requirements::css(DMS_DIR . '/css/DMSMainCMS.css');
+        Requirements::css(DMS_DIR . '/dist/css/dmsbundle.css');
 
         // Javascript for the link editor pop-up in TinyMCE
         Requirements::javascript(DMS_DIR . '/javascript/DocumentHtmlEditorFieldToolbar.js');

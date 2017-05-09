@@ -10,6 +10,7 @@
 * [Manage page relations](manage-page-relations.md)
 * [Manage tags](manage-tags.md)
 * [Manage related documents](manage-related-documents.md)
+* [Building frontend assets](building-frontend-assets.md)
 
 ## CMS user help
 
