@@ -8,9 +8,14 @@ class DMSUploadField_ItemHandler extends UploadField_ItemHandler
         'EditForm',
     );
 
+    /**
+     * Gets a DMS document by its ID
+     *
+     * @return DMSDocument
+     */
     public function getItem()
     {
-        return DataObject::get_by_id('DMSDocument', $this->itemID);
+        return DMSDocument::get()->byId($this->itemID);
     }
 
     /**

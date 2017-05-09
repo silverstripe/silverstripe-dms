@@ -24,24 +24,24 @@ class DMSGridFieldAddNewButtonTest extends SapphireTest
     }
 
     /**
-     * Test that when no page ID is present then it is not added to the URL for "add document"
+     * Test that when no document set ID is present then it is not added to the URL for "add document"
      */
     public function testNoPageIdInAddUrlWhenNotProvided()
     {
         $fragments = $this->button->getHTMLFragments($this->gridField);
         $result = array_pop($fragments)->getValue();
-        $this->assertNotContains('?ID', $result);
+        $this->assertNotContains('?dsid', $result);
     }
 
     /**
-     * Test that when a page ID is provided, it is added onto the "add document" link
+     * Test that when a document set ID is provided, it is added onto the "add document" link
      */
     public function testPageIdAddedToLinkWhenProvided()
     {
-        $this->button->setPageId(123);
+        $this->button->setDocumentSetId(123);
 
         $fragments = $this->button->getHTMLFragments($this->gridField);
         $result = array_pop($fragments)->getValue();
-        $this->assertContains('?ID=123', $result);
+        $this->assertContains('?dsid=123', $result);
     }
 }

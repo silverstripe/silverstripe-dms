@@ -161,7 +161,7 @@ class DMSEmbargoTest extends SapphireTest
         $doc->Folder = "0";
         $dID = $doc->write();
 
-        $doc->addPage($s1);
+        $s1->getDocumentSets()->first()->getDocuments()->add($doc);
 
         $s1->publish('Stage', 'Live');
         $s1->doPublish();

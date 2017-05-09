@@ -9,6 +9,8 @@ en:
     TYPE: 'File type'
     URL: URL
   DMSDocument:
+    EDIT: Edit
+    EDITDOCUMENT: Edit this document
     PLURALNAME: Documents
     RelatedPages: 'Related Pages'
     RelatedReferences: 'Related References'
@@ -16,9 +18,15 @@ en:
     Versions: Versions
     DOWNLOAD: "Download {title}"
     LASTCHANGED: "Last changed: {date}"
+  DMSDocumentSet:
+    ADDDOCUMENTBUTTON: Add Document
+    ADDDOCUMENTSBUTTON: Add Documents
+    GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
+    PLURALNAME: Document Sets
+    SINGULARNAME: Document Set
   DMSTag:
-    PLURALNAME: 'D M S Tags'
-    SINGULARNAME: 'D M S Tag'
+    PLURALNAME: 'DMS Tags'
+    SINGULARNAME: 'DMS Tag'
   FileIFrameField:
     ATTACHONCESAVED2: 'Files can be attached once you have saved the record for the first time.'
   GridAction:
@@ -29,8 +37,10 @@ en:
     DeletePermissionsFailure: 'No delete permissions'
   UploadField:
     ATTACHFILE: 'Attach a file'
+    DONE: Done!
     DROPFILE: 'drop a file'
     FIELDNOTSET: 'File information not found'
+    FROMCMS: From the CMS
     FROMCOMPUTER: 'From your computer'
     FROMCOMPUTERINFO: 'Upload from your computer'
     MAXNUMBEROFFILES: 'Max number of {count} file(s) exceeded.'
@@ -38,6 +48,14 @@ en:
     MENUTITLE: 'Edit Page'
     NODOCUMENTS: 'There are no documents attached to the selected page.'
     RELATEDDOCUMENTS: 'Related Documents'
+    MAINTAB: Main
   DMSDocument_versions:
-    PLURALNAME: 'D M S Document_versionss'
-    SINGULARNAME: 'D M S Document_versions'
+    PLURALNAME: 'DMS Document_versionss'
+    SINGULARNAME: 'DMS Document_versions'
+  DMSDocumentAddExistingField:
+    ADDEXISTING: Add Existing
+    AUTOCOMPLETE: Search by ID or filename
+    CHOOSESET: Choose Document Set
+    EDITDOCUMENTDETAILS: Edit Document Details
+    LINKADOCUMENT: Link a Document
+    SELECTED: Selected Document

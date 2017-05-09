@@ -5,7 +5,7 @@
 You can use `DMSDocument::getLink` to retrieve the secure route to download a DMS document:
 
 ```php
-$dms = DMS::getDMSInstance();
+$dms = DMS::inst();
 $docs = $dms->getByTag('priority', 'important')->First();
 $link = $doc->getLink();
 ```

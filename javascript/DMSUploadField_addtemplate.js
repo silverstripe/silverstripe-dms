@@ -8,7 +8,7 @@ window.tmpl.cache['ss-uploadfield-addtemplate'] = tmpl(
 				'<label class="ss-uploadfield-item-name">' +
 					'<span class="name" title="{%=file.name%}">{%=file.name%}</span> ' +
 					'{% if (!file.error) { %}' +
-						'<div class="ss-uploadfield-item-status ui-state-success-text" title="'+ss.i18n._t('UploadField.AddedToPage', 'Added to Page')+'">'+ss.i18n._t('UploadField.AddedToPage', 'Added to Page')+'</div>' +
+						'<div class="ss-uploadfield-item-status ui-state-success-text" title="'+ss.i18n._t('UploadField.AddedToDocumentSet', 'Added to Document Set')+'">'+ss.i18n._t('UploadField.AddedToDocumentSet', 'Added to Document Set')+'</div>' +
 					'{% } else {  %}' +
 						'<div class="ss-uploadfield-item-status ui-state-error-text" title="{%=o.options.errorMessages[file.error] || file.error%}">{%=o.options.errorMessages[file.error] || file.error%}</div>' +
 					'{% } %}' +

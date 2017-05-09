@@ -1,7 +1,7 @@
 <?php
 class DMSTest extends FunctionalTest
 {
-    protected $usesDatabase = true;
+    protected static $fixture_file = 'dmstest.yml';
 
     /**
      * Stub PDF files for testing
@@ -16,6 +16,11 @@ class DMSTest extends FunctionalTest
     public static $dmsFolderOld;
     public static $dmsFolderSizeOld;
 
+    /**
+     * @var DMS
+     */
+    protected $dms;
+
     public function setUp()
     {
         parent::setUp();
@@ -28,6 +33,8 @@ class DMSTest extends FunctionalTest
 
         //clear out the test folder (in case a broken test doesn't delete it)
         $this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-1234');
+
+        $this->dms = DMS::inst();
     }
 
     public function tearDown()
@@ -82,10 +89,8 @@ class DMSTest extends FunctionalTest
 
     public function testDMSStorage()
     {
-        $dms = DMS::inst();
-
         $file = self::$testFile;
-        $document = $dms->storeDocument($file);
+        $document = $this->dms->storeDocument($file);
 
         $this->assertNotNull($document, "Document object created");
         $this->assertTrue(
@@ -100,13 +105,11 @@ class DMSTest extends FunctionalTest
     public function testDMSFolderSpanning()
     {
         DMS::$dmsFolderSize = 5;
-        $dms = DMS::inst();
-
         $file = self::$testFile;
 
         $documents = array();
         for ($i = 0; $i <= 16; $i++) {
-            $document = $dms->storeDocument($file);
+            $document = $this->dms->storeDocument($file);
             $this->assertNotNull($document, "Document object created on run number: $i");
             $this->assertTrue(file_exists($document->getFullPath()));
             $documents[] = $document;
@@ -131,10 +134,8 @@ class DMSTest extends FunctionalTest
 
     public function testReplaceDocument()
     {
-        $dms = DMS::inst();
-
         // Store the first document
-        $document = $dms->storeDocument(self::$testFile);
+        $document = $this->dms->storeDocument(self::$testFile);
         $document->Title = "My custom title";
         $document->Description = "My custom description";
         $document->write();
@@ -157,5 +158,40 @@ class DMSTest extends FunctionalTest
         );
         $this->assertEquals("My custom title", $document->Title, "Custom title not modified");
         $this->assertEquals("My custom description", $document->Description, "Custom description not modified");
+    }
+
+    /**
+     * Test that documents can be returned by a given page
+     */
+    public function testGetByPageWithoutEmbargoes()
+    {
+        $pageWithEmbargoes = $this->objFromFixture('SiteTree', 's3');
+        $documents = $this->dms->getByPage($pageWithEmbargoes);
+        // Fixture: 6 documents in set, 1 is embargoed
+        $this->assertCount(5, $documents, 'Embargoed documents are excluded by default');
+        $this->assertContainsOnlyInstancesOf('DMSDocument', $documents);
+    }
+
+    /**
+     * Test that embargoed documents are excluded from getByPage
+     */
+    public function testGetByPageWithEmbargoedDocuments()
+    {
+        $pageWithEmbargoes = $this->objFromFixture('SiteTree', 's3');
+        $documents = $this->dms->getByPage($pageWithEmbargoes, true);
+        // Fixture: 6 documents in set, 1 is embargoed
+        $this->assertCount(6, $documents, 'Embargoed documents can be included');
+        $this->assertContainsOnlyInstancesOf('DMSDocument', $documents);
+    }
+
+    /**
+     * Test that document sets can be retrieved for a given page
+     */
+    public function testGetDocumentSetsByPage()
+    {
+        $page = $this->objFromFixture('SiteTree', 's1');
+        $sets = $this->dms->getDocumentSetsByPage($page);
+        $this->assertCount(2, $sets);
+        $this->assertContainsOnlyInstancesOf('DMSDocumentSet', $sets);
     }
 }

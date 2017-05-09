@@ -3,11 +3,11 @@
 class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridField_HTMLProvider
 {
     /**
-     * The page ID that the document should be attached to. Used in the GridField for Documents in a Page.
+     * The document set ID that the document should be attached to
      *
      * @var int
      */
-    protected $pageId;
+    protected $documentSetId;
 
     /**
      * Overriding the parent method to change the template that the DMS add button will be rendered with
@@ -30,8 +30,8 @@ class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridFiel
         }
 
         $link = singleton('DMSDocumentAddController')->Link();
-        if ($this->getPageId()) {
-            $link = Controller::join_links($link, '?ID=' . $this->getPageId());
+        if ($this->getDocumentSetId()) {
+            $link = Controller::join_links($link, '?dsid=' . $this->getDocumentSetId());
         }
 
         $data = new ArrayData(array(
@@ -45,24 +45,24 @@ class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridFiel
     }
 
     /**
-     * Set the page ID that this document should be attached to
+     * Set the document set ID that this document should be attached to
      *
      * @param  int $id
      * @return $this
      */
-    public function setPageId($id)
+    public function setDocumentSetId($id)
     {
-        $this->pageId = $id;
+        $this->documentSetId = $id;
         return $this;
     }
 
     /**
-     * Get the page ID that this document should be attached to
+     * Get the document set ID that this document should be attached to
      *
      * @return int
      */
-    public function getPageId()
+    public function getDocumentSetId()
     {
-        return $this->pageId;
+        return $this->documentSetId;
     }
 }

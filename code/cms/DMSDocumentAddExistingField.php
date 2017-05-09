@@ -63,9 +63,12 @@ class DMSDocumentAddExistingField extends CompositeField
     /**
      * Sets or unsets the use of the "field" class in the template. The "field" class adds Javascript behaviour
      * that causes unwelcome hiding side-effects when this Field is used within the link editor pop-up
+     *
+     * @return $this
      */
     public function setUseFieldClass($use = false)
     {
         $this->useFieldContext = $use;
+        return $this;
     }
 }

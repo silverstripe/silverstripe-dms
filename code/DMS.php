@@ -126,15 +126,25 @@ class DMS implements DMSInterface
         // TODO: Implement getByFullTextSearch() method.
     }
 
-    /**
-     * Returns a list of Document objects associated with a Page
-     * @param $page SiteTree to fetch the associated Documents from
-     * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
-     * @return DataList Document list associated with the Page
-     */
-    public function getByPage($page, $showEmbargoed = false)
+    public function getByPage(SiteTree $page, $showEmbargoed = false)
     {
-        // TODO: Implement getByPage() method.
+        /** @var ArrayList $documents */
+        $documents = $page->getAllDocuments();
+
+        if (!$showEmbargoed) {
+            foreach ($documents as $document) {
+                if ($document->isEmbargoed()) {
+                    $documents->remove($document);
+                }
+            }
+        }
+
+        return $documents;
+    }
+
+    public function getDocumentSetsByPage(SiteTree $page)
+    {
+        return $page->getDocumentSets();
     }
 
     /**
