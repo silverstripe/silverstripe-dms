@@ -1,0 +1,22 @@
+# Fixtures for migration task testing. The relationships for them are
+# created manually in the unit test class.
+DMSDocument:
+  one:
+    Title: document1
+  two:
+    Title: document2
+  three:
+    Title: document3
+DMSDocumentSet:
+  four:
+    Title: documentSet4
+SiteTree:
+  one:
+    Title: page1
+  two:
+    Title: page2
+  three:
+    Title: page3
+  four:
+    Title: page4
+    DocumentSets: =>DMSDocumentSet.four
