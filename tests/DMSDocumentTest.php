@@ -122,16 +122,32 @@ class DMSDocumentTest extends SapphireTest
         return $gridField;
     }
 
+    /**
+     * Ensure that HTML is returned containing list items with action panel steps
+     */
+    public function testGetActionTaskHtml()
+    {
+        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $document->addActionPanelTask('example', 'Example');
+
+        $result = $document->getActionTaskHtml();
+
+        $this->assertContains('<label class="left">Actions</label>', $result);
+        $this->assertContains('<li class="ss-ui-button" data-panel="', $result);
+        $this->assertContains('permission', $result);
+        $this->assertContains('Example', $result);
+    }
+
     /*
      * Tests whether the permissions fields are added
      */
-    public function testAddPermissionsFields()
+    public function testGetPermissionsActionPanel()
     {
-        $document = $this->objFromFixture('DMSDocument', 'd1');
-        $fields = $document->getCMSFields();
+        $result = $this->objFromFixture('DMSDocument', 'd1')->getPermissionsActionPanel();
 
-        $this->assertNotNull($fields->fieldByName('CanViewType'));
-        $this->assertNotNull($fields->fieldByName('ViewerGroups'));
+        $this->assertInstanceOf('CompositeField', $result);
+        $this->assertNotNull($result->getChildren()->fieldByName('CanViewType'));
+        $this->assertNotNull($result->getChildren()->fieldByName('ViewerGroups'));
     }
 
     /**

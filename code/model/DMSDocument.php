@@ -88,6 +88,21 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     private static $default_download_behaviour = 'download';
 
+    /**
+     * A key value map of the "actions" tabs that will be added to the CMS fields
+     *
+     * @var array
+     */
+    protected $actionTasks = array(
+        'embargo' => 'Embargo',
+        'expiry' => 'Expiry',
+        'replace' => 'Replace',
+        'find-usage' => 'Usage',
+        'find-references' => 'References',
+        'find-relateddocuments' => 'Related Documents',
+        'permissions' => 'Permissions'
+    );
+
     public function canView($member = null)
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
@@ -107,14 +122,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             return true;
         }
 
-        if ($member && Permission::checkMember($member,
-                array(
-                    'ADMIN',
-                    'SITETREE_EDIT_ALL',
-                    'SITETREE_VIEW_ALL',
-                )
-            )
-        ) {
+        if ($member && Permission::checkMember($member, array('ADMIN', 'SITETREE_EDIT_ALL', 'SITETREE_VIEW_ALL'))) {
             return true;
         }
 
@@ -990,21 +998,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $this->getVersions(),
                 $versionsGridFieldConfig
             );
-            $extraTasks .= '<li class="ss-ui-button" data-panel="find-versions">Versions</li>';
+            $this->addActionPanelTask('find-versions', 'Versions');
         }
 
-        $fields->add(new LiteralField(
-            'BottomTaskSelection',
-            '<div id="Actions" class="field actions"><label class="left">Actions</label><ul>'
-            . '<li class="ss-ui-button" data-panel="embargo">Embargo</li>'
-            . '<li class="ss-ui-button" data-panel="expiry">Expiry</li>'
-            . '<li class="ss-ui-button" data-panel="replace">Replace</li>'
-            . '<li class="ss-ui-button" data-panel="find-usage">Usage</li>'
-            . '<li class="ss-ui-button" data-panel="find-references">References</li>'
-            . '<li class="ss-ui-button" data-panel="find-relateddocuments">Related Documents</li>'
-            . $extraTasks
-            . '</ul></div>'
-        ));
+        $fields->add(LiteralField::create('BottomTaskSelection', $this->getActionTaskHtml()));
 
         $embargoValue = 'None';
         if ($this->EmbargoedIndefinitely) {
@@ -1016,12 +1013,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
         $embargo = new OptionsetField(
             'Embargo',
-            'Embargo',
+            _t('DMSDocument.EMBARGO', 'Embargo'),
             array(
-                'None' => 'None',
-                'Published' => 'Hide document until page is published',
-                'Indefinitely' => 'Hide document indefinitely',
-                'Date' => 'Hide until set date'
+                'None' => _t('DMSDocument.EMBARGO_NONE', 'None'),
+                'Published' => _t('DMSDocument.EMBARGO_PUBLISHED', 'Hide document until page is published'),
+                'Indefinitely' => _t('DMSDocument.EMBARGO_INDEFINITELY', 'Hide document indefinitely'),
+                'Date' => _t('DMSDocument.EMBARGO_DATE', 'Hide until set date')
             ),
             $embargoValue
         );
@@ -1061,26 +1058,27 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             FieldGroup::create($pagesGrid)->addExtraClass('find-usage'),
             FieldGroup::create($referencesGrid)->addExtraClass('find-references'),
             FieldGroup::create($versionsGrid)->addExtraClass('find-versions'),
-            FieldGroup::create($this->getRelatedDocumentsGridField())->addExtraClass('find-relateddocuments')
+            FieldGroup::create($this->getRelatedDocumentsGridField())->addExtraClass('find-relateddocuments'),
+            FieldGroup::create($this->getPermissionsActionPanel())->addExtraClass('permissions')
         );
 
         $actionsPanel->setName("ActionsPanel");
         $actionsPanel->addExtraClass("DMSDocumentActionsPanel");
         $fields->push($actionsPanel);
 
-        $this->addPermissionsFields($fields);
         $this->extend('updateCMSFields', $fields);
 
         return $fields;
     }
 
     /**
-     * Adds permissions selection fields to the FieldList.
+     * Adds permissions selection fields to a composite field and returns so it can be used in the "actions panel"
      *
-     * @param FieldList $fields
+     * @return CompositeField
      */
-    public function addPermissionsFields($fields)
+    public function getPermissionsActionPanel()
     {
+        $fields = FieldList::create();
         $showFields = array(
             'CanViewType'  => '',
             'ViewerGroups' => 'hide',
@@ -1110,6 +1108,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         $this->extend('updatePermissionsFields', $fields);
+
+        return CompositeField::create($fields);
     }
 
     public function onBeforeWrite()
@@ -1421,10 +1421,47 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         if ($this->CanViewType == 'OnlyTheseUsers') {
-            $result = _t('DMSDocument.PERMISSIONDENIEDREASON_NOTAUTHORISED',
-                'You are not authorised to view this document');
+            $result = _t(
+                'DMSDocument.PERMISSIONDENIEDREASON_NOTAUTHORISED',
+                'You are not authorised to view this document'
+            );
         }
 
         return $result;
+    }
+
+    /**
+     * Add an "action panel" task
+     *
+     * @param  string $panelKey
+     * @param  string $title
+     * @return $this
+     */
+    public function addActionPanelTask($panelKey, $title)
+    {
+        $this->actionTasks[$panelKey] = $title;
+        return $this;
+    }
+
+    /**
+     * Returns a HTML representation of the action tasks for the CMS
+     *
+     * @return string
+     */
+    public function getActionTaskHtml()
+    {
+        $html = '<div id="Actions" class="field actions">'
+            . '<label class="left">' . _t('DMSDocument.ACTIONS_LABEL', 'Actions') . '</label>'
+            . '<ul>';
+
+        foreach ($this->actionTasks as $panelKey => $title) {
+            $html .= '<li class="ss-ui-button" data-panel="' . $panelKey . '">'
+                . _t('DMSDocument.ACTION_' . strtoupper($panelKey), $title)
+                . '</li>';
+        }
+
+        $html .= '</ul></div>';
+
+        return $html;
     }
 }
