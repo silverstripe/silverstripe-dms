@@ -47,6 +47,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'Sets' => 'DMSDocumentSet'
     );
 
+    private static $has_one = array(
+        'CoverImage' => 'Image'
+    );
+
     private static $many_many = array(
         'RelatedDocuments' => 'DMSDocument',
         'Tags' => 'DMSTag',
@@ -906,8 +910,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $fieldsTop = $this->getFieldsForFile($relationList->count());
         $fields->add($fieldsTop);
 
-        $fields->add(new TextField('Title', 'Title'));
-        $fields->add(new TextareaField('Description', 'Description'));
+        $fields->add(TextField::create('Title', _t('DMSDocument.TITLE', 'Title')));
+        $fields->add(TextareaField::create('Description', _t('DMSDocument.DESCRIPTION', 'Description')));
+
+        $coverImageField = UploadField::create('CoverImage', _t('DMSDocument.COVERIMAGE', 'Cover Image'));
+        $coverImageField->getValidator()->setAllowedExtensions(array('jpg', 'jpeg', 'png', 'gif'));
+        $coverImageField->setConfig('allowedMaxFileNumber', 1);
+        $fields->add($coverImageField);
+
 
         $downloadBehaviorSource = array(
             'open' => _t('DMSDocument.OPENINBROWSER', 'Open in browser'),
@@ -1110,6 +1120,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $this->extend('updatePermissionsFields', $fields);
 
         return CompositeField::create($fields);
+    }
+
+    /**
+     * Return a title to use on the frontend, preferably the "title", otherwise the filename without it's numeric ID
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        if ($this->getField('Title')) {
+            return $this->getField('Title');
+        }
+        return $this->FilenameWithoutID;
     }
 
     public function onBeforeWrite()

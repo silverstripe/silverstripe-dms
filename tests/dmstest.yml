@@ -78,6 +78,7 @@ DMSDocument:
   d2:
     Filename: test-file-file-doesnt-exist-2
     Folder: 5
+    Title: File That Doesn't Exist (Title)
     Tags: =>DMSTag.t5, =>DMSTag.t6
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   document_with_relations:
