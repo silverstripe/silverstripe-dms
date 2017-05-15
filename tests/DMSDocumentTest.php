@@ -247,4 +247,16 @@ class DMSDocumentTest extends SapphireTest
         $this->assertCount(3, $result, 'Document 1 is related to 3 Pages');
         $this->assertSame(array('s1', 's2', 's3'), $result->column('URLSegment'));
     }
+
+    /**
+     * Test that the title is returned if it is set, otherwise the filename without ID
+     */
+    public function testGetTitleOrFilenameWithoutId()
+    {
+        $d1 = $this->objFromFixture('DMSDocument', 'd1');
+        $this->assertSame('test-file-file-doesnt-exist-1', $d1->getTitle());
+
+        $d2 = $this->objFromFixture('DMSDocument', 'd2');
+        $this->assertSame('File That Doesn\'t Exist (Title)', $d2->getTitle());
+    }
 }

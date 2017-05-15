@@ -9,6 +9,8 @@ en:
     TYPE: 'File type'
     URL: URL
   DMSDocument:
+    COVERIMAGE: Cover Image
+    DESCRIPTION: Description
     EDIT: Edit
     EDITDOCUMENT: Edit this document
     PLURALNAME: Documents
@@ -18,6 +20,7 @@ en:
     Versions: Versions
     DOWNLOAD: "Download {title}"
     LASTCHANGED: "Last changed: {date}"
+    TITLE: Title
   DMSDocumentSet:
     ADDDOCUMENTBUTTON: Add Document
     ADDDOCUMENTSBUTTON: Add Documents
