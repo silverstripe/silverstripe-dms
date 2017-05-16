@@ -32,6 +32,7 @@ For information on configuring and using this module, please see [the documentat
 
  * PHP 5.3 with the "fileinfo" module (or alternatively the "whereis" and "file" Unix commands)
  * SilverStripe framework/CMS ^3.5
+ * [Taxonomy](https://github.com/silverstripe/silverstripe-taxonomy) ^1.2 (for tagging)
  * (optional) [Pagination of Documents in the CMS](https://github.com/silverstripe-big-o/gridfieldpaginatorwithshowall)
  * (optional) [Sorting of Documents in the CMS](https://github.com/silverstripe-big-o/SortableGridField)
  * (optional) [Full text search of Documents](https://github.com/silverstripe-big-o/silverstripe-fulltextsearch)

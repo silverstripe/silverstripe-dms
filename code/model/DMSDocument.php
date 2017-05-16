@@ -63,7 +63,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'ID' => 'ID',
         'Title' => 'Title',
         'FilenameWithoutID' => 'Filename',
-        'LastEdited' => 'LastEdited'
+        'LastEdited' => 'Last Edited'
     );
 
     private static $singular_name = 'Document';
@@ -1209,6 +1209,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         // Ensure that current document doesn't get returned in the autocompleter
         $addExisting->setSearchList($this->getRelatedDocumentsForAutocompleter());
+
+        // Restrict search fields to specific fields only
+        $addExisting->setSearchFields(array('Title', 'Filename'));
 
         $this->extend('updateRelatedDocumentsGridField', $gridField);
 

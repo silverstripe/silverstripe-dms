@@ -114,17 +114,17 @@ DMSDocument:
     Filename: extradoc1
     Folder: 5
     Sets: =>DMSDocumentSet.ds6
-    BelongsToSet: 1
+    ManuallyAdded: 1
     CreatedByID: 2
   extraDoc2:
     Filename: extradoc2
     Folder: 5
     CreatedByID: 2
-    BelongsToSet: 0
+    ManuallyAdded: 0
   extraDoc3:
     Filename: extradoc3
     Folder: 5
-    BelongsToSet: 0
+    ManuallyAdded: 0
     CreatedByID: 2
   docSaveLinkedDocuments1:
     Filename: saveLinkedDocument1

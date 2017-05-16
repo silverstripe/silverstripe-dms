@@ -26,7 +26,9 @@ class DMSDocumentSet extends DataObject
 
     private static $many_many_extraFields = array(
         'Documents' => array(
-            'BelongsToSet' => 'Boolean(1)', // Flag indicating if a document was added directly to a set - in which case it is set - or added via the query-builder.
+            // Flag indicating if a document was added directly to a set - in which case it is set - or added
+            // via the query-builder.
+            'ManuallyAdded' => 'Boolean(1)',
         ),
     );
 
@@ -89,7 +91,7 @@ class DMSDocumentSet extends DataObject
                         new GridFieldDataColumns(),
                         new GridFieldEditButton(),
                         // Special delete dialog to handle custom behaviour of unlinking and deleting
-                        new DMSGridFieldDeleteAction(),
+                        new GridFieldDeleteAction(true),
                         new GridFieldDetailForm()
                     );
 
@@ -115,7 +117,7 @@ class DMSDocumentSet extends DataObject
                     ->setFieldFormatting(
                         array(
                             'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>',
-                            'BelongsToSet' => function ($value) {
+                            'ManuallyAdded' => function ($value) {
                                 if ($value) {
                                     return _t('DMSDocumentSet.MANUAL', 'Manually');
                                 }
@@ -197,24 +199,24 @@ class DMSDocumentSet extends DataObject
         $dmsDocFields = $doc->scaffoldSearchFields(array('fieldClasses' => true));
         $membersMap = Member::get()->map('ID', 'Name')->toArray();
         asort($membersMap);
+
         foreach ($dmsDocFields as $field) {
-            // Apply field customisations where necessary
-            if (in_array($field->getName(), array('CreatedByID', 'LastEditedByID', 'LastEditedByID'))) {
-                /** @var ListboxField $field */
-                $field->setMultiple(true)->setSource($membersMap);
+            if ($field instanceof ListboxField) {
+                $map = ($field->getName() === 'Tags__ID') ? $doc->getAllTagsMap() : $membersMap;
+                $field->setMultiple(true)->setSource($map);
             }
         }
         $keyValPairs = JsonField::create('KeyValuePairs', $dmsDocFields->toArray());
 
         // Now lastly add the sort fields
         $sortedBy = FieldGroup::create('SortedBy', array(
-                DropdownField::create('SortBy', '', array(
-                    'LastEdited'  => 'Last changed',
-                    'Created'     => 'Created',
-                    'Title'       => 'Document title',
-                ), 'LastEdited'),
-                DropdownField::create('SortByDirection', '', $this->dbObject('SortByDirection')->enumValues(), 'DESC'),
-            ));
+            DropdownField::create('SortBy', '', array(
+                'LastEdited'  => 'Last changed',
+                'Created'     => 'Created',
+                'Title'       => 'Document title',
+            ), 'LastEdited'),
+            DropdownField::create('SortByDirection', '', $this->dbObject('SortByDirection')->enumValues(), 'DESC'),
+        ));
 
         $sortedBy->setTitle(_t('DMSDocumentSet.SORTED_BY', 'Sort the document set by:'));
         $fields->addFieldsToTab('Root.QueryBuilder', array($keyValPairs, $sortedBy));
@@ -230,40 +232,65 @@ class DMSDocumentSet extends DataObject
 
     /**
      * Retrieve a list of the documents in this set. An extension hook is provided before the result is returned.
-     *
-     * @return ArrayList|null
      */
     public function saveLinkedDocuments()
     {
-        // Documents that belong to just this set.
-        /** @var ManyManyList $originals */
-        $originals = $this->Documents();
-        if (!(empty($this->KeyValuePairs)) && $this->isChanged('KeyValuePairs')) {
-            $keyValuesPair = Convert::json2array($this->KeyValuePairs);
-            /** @var DMSDocument $dmsDoc */
-            $dmsDoc = singleton('DMSDocument');
-            $context = $dmsDoc->getDefaultSearchContext();
-
-            $sortBy = $this->SortBy ? $this->SortBy : 'LastEdited';
-            $sortByDirection = $this->SortByDirection ? $this->SortByDirection : 'DESC';
-            $sortedBy = sprintf('%s %s', $sortBy, $sortByDirection);
-            /** @var DataList $documents */
-            $documents = $context->getResults($keyValuesPair, $sortedBy);
-            $now = SS_Datetime::now()->Rfc2822();
-            $documents = $documents->where(
-                "\"EmbargoedIndefinitely\" = 0 AND ".
-                " \"EmbargoedUntilPublished\" = 0 AND ".
-                "(\"EmbargoedUntilDate\" IS NULL OR " .
-                "(\"EmbargoedUntilDate\" IS NOT NULL AND '{$now}' >= \"EmbargoedUntilDate\")) AND " .
-                "\"ExpireAtDate\" IS NULL OR (\"ExpireAtDate\" IS NOT NULL AND '{$now}' < \"ExpireAtDate\")"
-            );
-
-            // Remove all BelongsToSet as the rules have changed
-            $originals->removeByFilter('"BelongsToSet" = 0');
-            foreach ($documents as $document) {
-                $originals->add($document, array('BelongsToSet' => 0));
-            }
+        if (empty($this->KeyValuePairs) || !$this->isChanged('KeyValuePairs')) {
+            return;
         }
+
+        $keyValuesPair = Convert::json2array($this->KeyValuePairs);
+
+        /** @var DMSDocument $dmsDoc */
+        $dmsDoc = singleton('DMSDocument');
+        $context = $dmsDoc->getDefaultSearchContext();
+
+        $sortBy = $this->SortBy ? $this->SortBy : 'LastEdited';
+        $sortByDirection = $this->SortByDirection ? $this->SortByDirection : 'DESC';
+        $sortedBy = sprintf('%s %s', $sortBy, $sortByDirection);
+
+        /** @var DataList $documents */
+        $documents = $context->getResults($keyValuesPair, $sortedBy);
+        $documents = $this->addEmbargoConditions($documents);
+        $documents = $this->addQueryBuilderSearchResults($documents);
+    }
+
+    /**
+     * Add embargo date conditions to a search query
+     *
+     * @param  DataList $documents
+     * @return DataList
+     */
+    protected function addEmbargoConditions(DataList $documents)
+    {
+        $now = SS_Datetime::now()->Rfc2822();
+
+        return $documents->where(
+            "\"EmbargoedIndefinitely\" = 0 AND "
+            . " \"EmbargoedUntilPublished\" = 0 AND "
+            . "(\"EmbargoedUntilDate\" IS NULL OR "
+            . "(\"EmbargoedUntilDate\" IS NOT NULL AND '{$now}' >= \"EmbargoedUntilDate\")) AND "
+            . "\"ExpireAtDate\" IS NULL OR (\"ExpireAtDate\" IS NOT NULL AND '{$now}' < \"ExpireAtDate\")"
+        );
+    }
+
+    /**
+     * Remove all ManuallyAdded = 0 original results and add in the new documents returned by the search context
+     *
+     * @param  DataList $documents
+     * @return DataList
+     */
+    protected function addQueryBuilderSearchResults(DataList $documents)
+    {
+        /** @var ManyManyList $originals Documents that belong to just this set. */
+        $originals = $this->Documents();
+        $originals->removeByFilter('"ManuallyAdded" = 0');
+
+        foreach ($documents as $document) {
+            $originals->add($document, array('ManuallyAdded' => 0));
+        }
+
+        return $originals;
     }
 
     /**
@@ -275,7 +302,7 @@ class DMSDocumentSet extends DataObject
     {
         return array_merge(
             (array) DMSDocument::create()->config()->get('display_fields'),
-            array('BelongsToSet' => _t('DMSDocumentSet.ADDEDMETHOD', 'Added'))
+            array('ManuallyAdded' => _t('DMSDocumentSet.ADDEDMETHOD', 'Added'))
         );
     }
 }

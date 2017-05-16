@@ -1,16 +1,16 @@
 DMSDocument:
   searchable_fields:
     Title:
-      title: "Document title matches ..."
+      title: Document title matches
     Description:
-      title: "Document summary matches ..."
+      title: Document summary matches
     CreatedByID:
-      title: 'Document created by ...'
-      field: 'ListboxField'
-      filter: 'ExactMatchFilter'
+      title: Document created by
+      field: ListboxField
+      filter: ExactMatchFilter
     LastEditedByID:
-      title: 'Document last changed by ...'
-      field: 'ListboxField'
-      filter: 'ExactMatchFilter'
+      title: Document last changed by
+      field: ListboxField
+      filter: ExactMatchFilter
     Filename:
-      title: 'File name'
+      title: File name

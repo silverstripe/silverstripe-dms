@@ -10,6 +10,12 @@ TaxonomyType:
 DMSDocument:
   extensions:
     - DMSDocumentTaxonomyExtension
+  # Add query builder filter for tags
+  searchable_fields:
+    Tags.ID:
+      title: Document has tags
+      field: ListboxField
+      filter: ExactMatchFilter
 
 DMSTaxonomyTypeExtension:
   # Referenced to filter taxonomy terms for DMS Documents.
