@@ -7,47 +7,6 @@
 interface DMSDocumentInterface
 {
     /**
-     * Adds a metadata tag to the DMSDocument. The tag has a category and a value.
-     * Each category can have multiple values by default. So: addTag("fruit","banana") addTag("fruit", "apple") will
-     * add two items.
-     * However, if the third parameter $multiValue is set to 'false', then all updates to a category only ever update
-     * a single value. So:
-     * addTag("fruit","banana") addTag("fruit", "apple") would result in a single metadata tag: fruit->apple.
-     * Can could be implemented as a key/value store table (although it is more like category/value, because the
-     * same category can occur multiple times)
-     * @param $category String of a metadata category to add (required)
-     * @param $value String of a metadata value to add (required)
-     * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
-     * @return null
-     */
-    public function addTag($category, $value, $multiValue = true);
-
-    /**
-     * Fetches all tags associated with this DMSDocument within a given category. If a value is specified this method
-     * tries to fetch that specific tag.
-     * @param $category String of the metadata category to get
-     * @param null $value String of the value of the tag to get
-     * @return array of Strings of all the tags or null if there is no match found
-     */
-    public function getTagsList($category, $value = null);
-
-    /**
-     * Removes a tag from the DMSDocument. If you only set a category, then all values in that category are deleted.
-     * If you specify both a category and a value, then only that single category/value pair is deleted.
-     * Nothing happens if the category or the value do not exist.
-     * @param $category Category to remove (required)
-     * @param null $value Value to remove (optional)
-     * @return null
-     */
-    public function removeTag($category, $value = null);
-
-    /**
-     * Deletes all tags associated with this DMSDocument.
-     * @return null
-     */
-    public function removeAllTags();
-
-    /**
      * Returns a link to download this DMSDocument from the DMS store
      * @return String
      */

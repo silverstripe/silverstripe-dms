@@ -26,25 +26,6 @@ SiteTree:
   s9:
     Title: testPage9
     URLSegment: s9
-DMSTag:
-  t1:
-    Category: tag1
-    Value: tag1value
-  t2:
-    Category: tag2
-    Value: tag2value
-  t3:
-    Category: tag3
-    Value: tag3value
-  t4:
-    Category: tag4
-    Value: tag4value
-  t5:
-    Category: tag5
-    Value: tag5value
-  t6:
-    Category: tag6
-    Value: tag6value
 Group:
   content-author:
     Code: content-author
@@ -85,13 +66,11 @@ DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
     Folder: 5
-    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   d2:
     Filename: test-file-file-doesnt-exist-2
     Folder: 5
     Title: File That Doesn't Exist (Title)
-    Tags: =>DMSTag.t5, =>DMSTag.t6
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   document_with_relations:
     Filename: file-with-relations
@@ -102,20 +81,17 @@ DMSDocument:
     CanViewType: LoggedInUsers
     CanEditType: LoggedInUsers
     Folder: 5
-    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   doc-anyone:
     FileName: doc-anyone
     CanViewType: Anyone
     Folder: 5
-    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
   doc-only-these-users:
     FileName: doc-only-these-users
     CanViewType: OnlyTheseUsers
     CanEditType: OnlyTheseUsers
     Folder: 5
-    Tags: =>DMSTag.t1, =>DMSTag.t2, =>DMSTag.t3, =>DMSTag.t4
     Sets: =>DMSDocumentSet.ds1, =>DMSDocumentSet.ds2, =>DMSDocumentSet.ds3, =>DMSDocumentSet.ds4
     ViewerGroups: =>Group.content-author
     EditorGroups: =>Group.content-author

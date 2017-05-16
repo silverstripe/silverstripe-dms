@@ -17,7 +17,6 @@
  * @property Enum CanEditType Enum('LoggedInUsers, OnlyTheseUsers', 'LoggedInUsers')
  *
  * @method ManyManyList RelatedDocuments
- * @method ManyManyList Tags
  * @method ManyManyList ViewerGroups
  * @method ManyManyList EditorGroups
  *
@@ -56,7 +55,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
     private static $many_many = array(
         'RelatedDocuments' => 'DMSDocument',
-        'Tags' => 'DMSTag',
         'ViewerGroups' => 'Group',
         'EditorGroups' => 'Group',
     );
@@ -239,173 +237,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $this->ViewCount = $count;
 
             DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * Adds a metadata tag to the Document. The tag has a category and a value.
-     *
-     * Each category can have multiple values by default. So:
-     * addTag("fruit","banana") addTag("fruit", "apple") will add two items.
-     *
-     * However, if the third parameter $multiValue is set to 'false', then all
-     * updates to a category only ever update a single value. So:
-     * addTag("fruit","banana") addTag("fruit", "apple") would result in a
-     * single metadata tag: fruit->apple.
-     *
-     * Can could be implemented as a key/value store table (although it is more
-     * like category/value, because the same category can occur multiple times)
-     *
-     * @param string $category of a metadata category to add (required)
-     * @param string $value of a metadata value to add (required)
-     * @param bool $multiValue Boolean that determines if the category is
-     *                  multi-value or single-value (optional)
-     *
-     * @return DMSDocument
-     */
-    public function addTag($category, $value, $multiValue = true)
-    {
-        if ($multiValue) {
-            //check for a duplicate tag, don't add the duplicate
-            $currentTag = $this->Tags()->filter(array('Category' => $category, 'Value' => $value));
-            if ($currentTag->Count() == 0) {
-                //multi value tag
-                $tag = new DMSTag();
-                $tag->Category = $category;
-                $tag->Value = $value;
-                $tag->MultiValue = true;
-                $tag->write();
-                $tag->Documents()->add($this);
-            } else {
-                //add the relation between the tag and document
-                foreach ($currentTag as $tagObj) {
-                    $tagObj->Documents()->add($this);
-                }
-            }
-        } else {
-            //single value tag
-            $currentTag = $this->Tags()->filter(array('Category' => $category));
-            $tag = null;
-            if ($currentTag->Count() == 0) {
-                //create the single-value tag
-                $tag = new DMSTag();
-                $tag->Category = $category;
-                $tag->Value = $value;
-                $tag->MultiValue = false;
-                $tag->write();
-            } else {
-                //update the single value tag
-                $tag = $currentTag->first();
-                $tag->Value = $value;
-                $tag->MultiValue = false;
-                $tag->write();
-            }
-
-            // regardless of whether we created a new tag or are just updating an
-            // existing one, add the relation
-            $tag->Documents()->add($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $category
-     * @param string $value
-     *
-     * @return DataList
-     */
-    protected function getTagsObjects($category, $value = null)
-    {
-        $valueFilter = array("Category" => $category);
-        if (!empty($value)) {
-            $valueFilter['Value'] = $value;
-        }
-
-        $tags = $this->Tags()->filter($valueFilter);
-        return $tags;
-    }
-
-    /**
-     * Fetches all tags associated with this DMSDocument within a given
-     * category. If a value is specified this method tries to fetch that
-     * specific tag.
-     *
-     * @param string $category metadata category to get
-     * @param string $value value of the tag to get
-     *
-     * @return array Strings of all the tags or null if there is no match found
-     */
-    public function getTagsList($category, $value = null)
-    {
-        $tags = $this->getTagsObjects($category, $value);
-
-        $returnArray = null;
-
-        if ($tags->Count() > 0) {
-            $returnArray = array();
-
-            foreach ($tags as $t) {
-                $returnArray[] = $t->Value;
-            }
-        }
-
-        return $returnArray;
-    }
-
-    /**
-     * Removes a tag from the Document. If you only set a category, then all
-     * values in that category are deleted.
-     *
-     * If you specify both a category and a value, then only that single
-     * category/value pair is deleted.
-     *
-     * Nothing happens if the category or the value do not exist.
-     *
-     * @param string $category Category to remove
-     * @param string $value Value to remove
-     *
-     * @return DMSDocument
-     */
-    public function removeTag($category, $value = null)
-    {
-        $tags = $this->getTagsObjects($category, $value);
-
-        if ($tags->Count() > 0) {
-            foreach ($tags as $t) {
-                $documentList = $t->Documents();
-
-                //remove the relation between the tag and the document
-                $documentList->remove($this);
-
-                //delete the entire tag if it has no relations left
-                if ($documentList->Count() == 0) {
-                    $t->delete();
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Deletes all tags associated with this Document.
-     *
-     * @return DMSDocument
-     */
-    public function removeAllTags()
-    {
-        $allTags = $this->Tags();
-
-        foreach ($allTags as $tag) {
-            $documentlist = $tag->Documents();
-            $documentlist->remove($this);
-            if ($tag->Documents()->Count() == 0) {
-                $tag->delete();
-            }
         }
 
         return $this;
@@ -717,17 +548,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     }
 
     /**
-     * Deletes the DMSDocument, its underlying file, as well as any tags related
-     * to this DMSDocument. Also calls the parent DataObject's delete method in
+     * Deletes the DMSDocument and its underlying file. Also calls the parent DataObject's delete method in
      * order to complete an cascade.
      *
      * @return void
      */
     public function delete()
     {
-        // remove tags
-        $this->removeAllTags();
-
         // delete the file (and previous versions of files)
         $filesToDelete = array();
         $storageFolder = $this->getStorageFolder();

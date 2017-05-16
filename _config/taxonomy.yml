@@ -1,0 +1,19 @@
+---
+Name: dmstaxonomy
+Only:
+  moduleexists: taxonomy
+---
+TaxonomyType:
+  extensions:
+    - DMSTaxonomyTypeExtension
+
+DMSDocument:
+  extensions:
+    - DMSDocumentTaxonomyExtension
+
+DMSTaxonomyTypeExtension:
+  # Referenced to filter taxonomy terms for DMS Documents.
+  # To change, update the default_records array too.
+  default_record_name: Document
+  default_records:
+    - Document

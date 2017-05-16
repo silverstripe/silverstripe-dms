@@ -13,9 +13,6 @@ nl:
     RelatedPages: 'Gerelateerde paginas'
     RelatedReferences: 'Gerelateerde referenties'
     SINGULARNAME: 'Document'
-  DMSTag:
-    PLURALNAME: 'D M S Tags'
-    SINGULARNAME: 'D M S Tag'
   FileIFrameField:
     ATTACHONCESAVED2: 'Bestanden kunnen worden toegevoegd na het voor het eerst opslaan'
   GridAction:

@@ -13,9 +13,6 @@ es:
     RelatedPages: 'Páginas relacionadas'
     RelatedReferences: 'Referencias relacionadas'
     SINGULARNAME: Documento
-  DMSTag:
-    PLURALNAME: 'Etiquetas del Sistema documental'
-    SINGULARNAME: 'Etiqueta del Sistema documental'
   FileIFrameField:
     ATTACHONCESAVED2: 'Archivos pueden ser adjuntados una vez que guardes por primera vez.'
   GridAction:

@@ -19,10 +19,10 @@ Additionally, documents are stored and managed as part of a page instead of away
  * Relation of documents to other documents
  * Management and upload of documents within a page context in the CMS
  * Metadata management through the powerful `GridField` and `UploadField` core APIs
- * Configurable tags for documents
  * Download via SilverStripe controller (rather than filesystem URLs)
  * Access control based on PHP logic, and page relations
  * Replacement of existing files
+ * Tagging via the [taxonomy module](https://github.com/silverstripe/silverstripe-taxonomy) if installed
 
 ## Documentation
 
@@ -36,7 +36,6 @@ For information on configuring and using this module, please see [the documentat
  * (optional) [Sorting of Documents in the CMS](https://github.com/silverstripe-big-o/SortableGridField)
  * (optional) [Full text search of Documents](https://github.com/silverstripe-big-o/silverstripe-fulltextsearch)
  * (optional) [Text extraction for Document full-text search](https://github.com/silverstripe-big-o/silverstripe-textextraction)
- * (optional) [Tags](https://github.com/tubbs/silverstripe-dms-simple-tags)
 
 ## Contributing
 

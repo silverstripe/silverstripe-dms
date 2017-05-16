@@ -27,9 +27,9 @@ en:
     GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
     PLURALNAME: Document Sets
     SINGULARNAME: Document Set
-  DMSTag:
-    PLURALNAME: 'DMS Tags'
-    SINGULARNAME: 'DMS Tag'
+  DMSDocumentTaxonomyExtension:
+    TAGS: Tags
+    NOTAGS: No tags found
   FileIFrameField:
     ATTACHONCESAVED2: 'Files can be attached once you have saved the record for the first time.'
   GridAction:
