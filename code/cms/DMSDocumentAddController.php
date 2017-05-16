@@ -120,8 +120,6 @@ class DMSDocumentAddController extends LeftAndMain
                     _t('DMSDocumentAddController.MAINTAB', 'Main'),
                     new Tab(
                         _t('UploadField.FROMCOMPUTER', 'From your computer'),
-                        new HiddenField('ID', false, $page->ID),
-                        new HiddenField('DSID', false, $documentSet->ID),
                         $uploadField,
                         new LiteralField(
                             'AllowedExtensions',
@@ -146,6 +144,8 @@ class DMSDocumentAddController extends LeftAndMain
         $form->Backlink = $backlink;
         // Don't use AssetAdmin_EditForm, as it assumes a different panel structure
         $form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
+        $form->Fields()->push(HiddenField::create('ID', false, $documentSet->ID));
+        $form->Fields()->push(HiddenField::create('DSID', false, $documentSet->ID));
 
         return $form;
     }

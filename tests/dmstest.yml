@@ -20,6 +20,12 @@ SiteTree:
   s7:
     Title: testPage7 has documents embargoed until publish
     URLSegment: s7
+  s8:
+    Title: testPage8
+    URLSegment: s8
+  s9:
+    Title: testPage9
+    URLSegment: s9
 DMSTag:
   t1:
     Category: tag1
@@ -69,6 +75,12 @@ DMSDocumentSet:
   ds5:
     Title: Set containing embargoed until publish documents
     Page: =>SiteTree.s7
+  ds6:
+    Title: Test Set 6
+    Page: =>SiteTree.s8
+  dsSaveLinkedDocuments:
+    Title: Test Set 6
+    Page: =>SiteTree.s9
 DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
@@ -122,3 +134,23 @@ DMSDocument:
     EmbargoUntilPublish: true
     Folder: 5
     Sets: =>DMSDocumentSet.ds5
+  extraDoc1:
+    Filename: extradoc1
+    Folder: 5
+    Sets: =>DMSDocumentSet.ds6
+    BelongsToSet: 1
+    CreatedByID: 2
+  extraDoc2:
+    Filename: extradoc2
+    Folder: 5
+    CreatedByID: 2
+    BelongsToSet: 0
+  extraDoc3:
+    Filename: extradoc3
+    Folder: 5
+    BelongsToSet: 0
+    CreatedByID: 2
+  docSaveLinkedDocuments1:
+    Filename: saveLinkedDocument1
+    Folder: 5
+    Sets: =>DMSDocumentSet.dsSaveLinkedDocuments

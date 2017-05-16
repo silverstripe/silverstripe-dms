@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class StubRelatedDocumentExtension
+ *
+ * @package dms
+ */
 class StubRelatedDocumentExtension extends DataExtension implements TestOnly
 {
     /**

@@ -83,4 +83,57 @@ class DMSDocumentSetTest extends SapphireTest
         $sortableAssertion = class_exists('GridFieldSortableRows') ? 'assertNotNull' : 'assertNull';
         $this->$sortableAssertion($config->getComponentByType('GridFieldSortableRows'));
     }
+
+    /**
+     * Test that query fields can be added to the gridfield
+     */
+    public function testAddQueryFields()
+    {
+
+        /** @var DMSDocumentSet $set */
+        $set = $this->objFromFixture('DMSDocumentSet', 'ds6');
+        /** @var FieldList $fields */
+        $fields = new FieldList(new TabSet('Root'));
+        /** @var FieldList $fields */
+        $set->addQueryFields($fields);
+        $keyValuePairs = $fields->dataFieldByName('KeyValuePairs');
+        $this->assertNotNull(
+            $keyValuePairs,
+            'addQueryFields() includes KeyValuePairs composite field'
+        );
+        $this->assertNotNull(
+            $keyValuePairs->fieldByName('KeyValuePairs[Title]'),
+            'addQueryFields() includes KeyValuePairs composite field'
+        );
+    }
+
+    public function testAddQueryFieldsIsExtensible()
+    {
+
+        DMSDocumentSet::add_extension('StubDocumentSetMockExtension');
+
+        $fields = new FieldList(new TabSet('Root'));
+        $set = new DMSDocumentSet;
+        $set->addQueryFields($fields);
+
+        $this->assertNotNull(
+            $fields->dataFieldByName('ExtendedField'),
+            'addQueryFields() is extendible as it included the field from the extension'
+        );
+    }
+
+    /**
+     * Test that extra documents are added after write
+     */
+    public function testSaveLinkedDocuments()
+    {
+        /** @var DMSDocumentSet $set */
+        $set = $this->objFromFixture('DMSDocumentSet', 'dsSaveLinkedDocuments');
+        // Assert initially docs
+        $this->assertEquals(1, $set->getDocuments()->count(), 'Set has 1 document');
+        // Now apply the query and see if 2 extras were added with CreatedByID filter
+        $set->KeyValuePairs = '{"Filename":"extradoc3"}';
+        $set->saveLinkedDocuments();
+        $this->assertEquals(2, $set->getDocuments()->count(), 'Set has 2 documents');
+    }
 }

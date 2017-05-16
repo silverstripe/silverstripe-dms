@@ -8,7 +8,6 @@
  * @property Varchar Title
  * @property Text Description
  * @property int ViewCount
- * @property DateTime LastChanged
  * @property Boolean EmbargoedIndefinitely
  * @property Boolean EmbargoedUntilPublished
  * @property DateTime EmbargoedUntilDate
@@ -22,6 +21,11 @@
  * @method ManyManyList ViewerGroups
  * @method ManyManyList EditorGroups
  *
+ * @method Member CreatedBy
+ * @property Int CreatedByID
+ * @method Member LastEditedBy
+ * @property Int LastEditedByID
+ *
  */
 class DMSDocument extends DataObject implements DMSDocumentInterface
 {
@@ -31,9 +35,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         "Title" => 'Varchar(1024)', // eg. "Energy Saving Report for Year 2011, New Zealand LandCorp"
         "Description" => 'Text',
         "ViewCount" => 'Int',
-        // When this document's file was created or last replaced (small changes like updating title don't count)
-        "LastChanged" => 'SS_DateTime',
-
         "EmbargoedIndefinitely" => 'Boolean(false)',
         "EmbargoedUntilPublished" => 'Boolean(false)',
         "EmbargoedUntilDate" => 'SS_DateTime',
@@ -48,7 +49,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     );
 
     private static $has_one = array(
-        'CoverImage' => 'Image'
+        'CoverImage' => 'Image',
+        'CreatedBy' => 'Member',
+        'LastEditedBy' => 'Member',
     );
 
     private static $many_many = array(
@@ -62,22 +65,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'ID' => 'ID',
         'Title' => 'Title',
         'FilenameWithoutID' => 'Filename',
-        'LastChanged' => 'LastChanged'
+        'LastEdited' => 'LastEdited'
     );
 
     private static $singular_name = 'Document';
 
     private static $plural_name = 'Documents';
-
-    private static $searchable_fields = array(
-        'ID' => array(
-            'filter' => 'ExactMatchFilter',
-            'field' => 'NumericField'
-        ),
-        'Title',
-        'Filename',
-        'LastChanged'
-    );
 
     private static $summary_fields = array(
         'Filename' => 'Filename',
@@ -126,7 +119,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             return true;
         }
 
-        if ($member && Permission::checkMember($member, array('ADMIN', 'SITETREE_EDIT_ALL', 'SITETREE_VIEW_ALL'))) {
+        if ($member && Permission::checkMember($member, array(
+                'ADMIN',
+                'SITETREE_EDIT_ALL',
+                'SITETREE_VIEW_ALL',
+            ))
+        ) {
             return true;
         }
 
@@ -160,13 +158,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         // Do early admin check
-        if ($member && Permission::checkMember($member,
-                array(
+        if ($member && Permission::checkMember(
+            $member,
+            array(
                     'ADMIN',
                     'SITETREE_EDIT_ALL',
                     'SITETREE_VIEW_ALL',
                 )
-            )
+        )
         ) {
             return true;
         }
@@ -817,7 +816,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $this->Title = basename($filePath, '.'.$extension);
         }
 
-        $this->LastChanged = SS_Datetime::now()->Rfc2822();
         $this->write();
 
         return $this;
@@ -994,7 +992,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             );
             $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')
                 ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
-                ->setFieldCasting(array('LastChanged'=>"Datetime->Ago"))
                 ->setFieldFormatting(
                     array(
                         'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>'
@@ -1143,7 +1140,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             //set the embargo options from the OptionSetField created in the getCMSFields method
             //do not write after clearing the embargo (write happens automatically)
             $savedDate = $this->EmbargoedUntilDate;
-            $this->clearEmbargo(false); //clear all previous settings and re-apply them on save
+            $this->clearEmbargo(false); // Clear all previous settings and re-apply them on save
 
             if ($this->Embargo == 'Published') {
                 $this->embargoUntilPublished(false);
@@ -1161,7 +1158,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $this->expireAtDate($this->ExpireAtDate, false);
             } else {
                 $this->clearExpiry(false);
-            } //clear all previous settings
+            } // Clear all previous settings
+        }
+
+        // Set user fields
+        if ($currentUserID = Member::currentUserID()) {
+            if (!$this->CreatedByID) {
+                $this->CreatedByID = $currentUserID;
+            }
+            $this->LastEditedByID = $currentUserID;
         }
     }
 
@@ -1288,11 +1293,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                             "LastEdited",
                             _t('AssetTableField.LASTEDIT', 'Last changed') . ':',
                             $this->LastEdited
-                        ),
-                        new DateField_Disabled(
-                            "LastChanged",
-                            _t('AssetTableField.LASTCHANGED', 'Last replaced') . ':',
-                            $this->LastChanged
                         ),
                         new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue),
                         new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue),

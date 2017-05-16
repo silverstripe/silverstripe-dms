@@ -34,7 +34,7 @@ class DMSDocument_versions extends DataObject
     private static $display_fields = array(
         'VersionCounter' => 'Version Counter',
         'FilenameWithoutID' => 'Filename',
-        'LastChanged' => 'Last Changed'
+        'LastEdited' => 'Last Changed'
     );
 
     private static $summary_fields = array(
@@ -47,7 +47,7 @@ class DMSDocument_versions extends DataObject
     );
 
     private static $default_sort = array(
-        'LastChanged' => 'DESC'
+        'LastEdited' => 'DESC'
     );
 
 
