@@ -32,6 +32,8 @@ interface DMSInterface
      *
      * Returns a number of Document objects based on the a search by tags. You can search by category alone,
      * by tag value alone, or by both. I.e: getByTag("fruits",null); getByTag(null,"banana"); getByTag("fruits","banana")
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      * @abstract
      * @param null $category The metadata category to search for
      * @param null $value The metadata value to search for
