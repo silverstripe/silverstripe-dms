@@ -178,7 +178,7 @@ class DMSDocumentAddController extends LeftAndMain
 
     /**
      * Returns the link to be used to return the user after uploading a document. If a document set ID (dsid) is present
-     * then it will be redirected back to the page that owns the document set. @todo redirect back to the document set
+     * then it will be redirected back to that document set in a page.
      *
      * If no document set ID is present then we assume that it has been added from the model admin, so redirect back to
      * that instead.
@@ -192,7 +192,11 @@ class DMSDocumentAddController extends LeftAndMain
             $modelAdmin->init();
             return $modelAdmin->Link();
         }
-        return Controller::join_links(singleton('CMSPagesController')->Link(), 'edit/show', $this->currentPageID());
+        return Controller::join_links(
+            singleton('CMSPagesController')->Link(),
+            'edit/EditForm/field/Document%20Sets/item',
+            $this->getRequest()->getVar('dsid')
+        );
     }
 
     public function documentautocomplete()

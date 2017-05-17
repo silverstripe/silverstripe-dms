@@ -35,4 +35,20 @@ class DMSDocumentAddControllerTest extends FunctionalTest
         Config::inst()->update('DMSDocumentAddController', 'allowed_extensions', array('php', 'php5'));
         $this->assertSame(array('jpg', 'gif', 'php', 'php5'), $controller->getAllowedExtensions());
     }
+
+    /**
+     * Test that the back link will be the document set that a file is uploaded into if relevant, otherwise the model
+     * admin that it was uploaded from
+     */
+    public function testBacklink()
+    {
+        $controller = new DMSDocumentAddController;
+        $controller->init();
+        $this->assertContains('admin/documents', $controller->Backlink());
+
+        $request = new SS_HTTPRequest('GET', '/', array('dsid' => 123));
+        $controller->setRequest($request);
+        $this->assertContains('EditForm', $controller->Backlink());
+        $this->assertContains('123', $controller->Backlink());
+    }
 }
