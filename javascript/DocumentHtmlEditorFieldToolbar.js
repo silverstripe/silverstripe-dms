@@ -29,11 +29,14 @@
 		});
 
 		$('form.htmleditorfield-linkform').entwine({
+            getShortcodeKey: function () {
+                return this.find(':input[name=DMSShortcodeHandlerKey]').val();
+            },
 			insertLink: function () {
 				var href, target = null;
 				var checkedValue = this.find(':input[name=LinkType]:checked').val();
 				if (checkedValue === 'document') {
-					href = '[dms_document_link,id=' + this.find('.selected-document').data('document-id') + ']';
+					href = '[' + this.getShortcodeKey() + ',id=' + this.find('.selected-document').data('document-id') + ']';
 
 					// Determine target
 					if (this.find(':input[name=TargetBlank]').is(':checked')) {
@@ -88,7 +91,7 @@
 				}
 
 				//match a document or call the regular link handling
-				if (href.match(/^\[dms_document_link(\s*|%20|,)?id=([0-9]+)\]?$/i)) {
+				if (href.match(new RegExp("/^\[" + this.getShortcodeKey() + "(\s*|%20|,)?id=([0-9]+)\]?$/", "i"))) {
 					var returnArray = {
 						LinkType: 'document',
 						DocumentID: RegExp.$2,

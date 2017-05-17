@@ -46,12 +46,13 @@ class ShortCodeRelationFinder
         $list = DataList::create('SiteTree');
         $where = array();
         $fields = $this->getShortCodeFields('SiteTree');
+        $shortcode = DMS::inst()->getShortcodeHandlerKey();
         foreach ($fields as $ancClass => $ancFields) {
             foreach ($ancFields as $ancFieldName => $ancFieldSpec) {
                 if ($ancClass != "SiteTree") {
                     $list = $list->leftJoin($ancClass, '"'.$ancClass.'"."ID" = "SiteTree"."ID"');
                 }
-                $where[] = "\"$ancClass\".\"$ancFieldName\" LIKE '%[dms_document_link,id=$number]%'"; //."%s" LIKE ""',
+                $where[] = "\"$ancClass\".\"$ancFieldName\" LIKE '%[{$shortcode},id=$number]%'"; //."%s" LIKE ""',
             }
         }
 

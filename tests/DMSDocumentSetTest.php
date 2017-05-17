@@ -123,6 +123,23 @@ class DMSDocumentSetTest extends SapphireTest
     }
 
     /**
+     * Ensure that the configurable shortcode handler key is a hidden field in the CMS
+     */
+    public function testShortcodeHandlerKeyFieldExists()
+    {
+        Config::inst()->update('DMS', 'shortcode_handler_key', 'unit-test');
+
+        $set = DMSDocumentSet::create();
+        $set->write();
+
+        $fields = $set->getCMSFields();
+        $field = $fields->fieldByName('Root.Main.DMSShortcodeHandlerKey');
+
+        $this->assertInstanceOf('HiddenField', $field);
+        $this->assertSame('unit-test', $field->Value());
+    }
+
+    /**
      * Test that extra documents are added after write
      */
     public function testSaveLinkedDocuments()

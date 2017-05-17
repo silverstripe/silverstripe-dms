@@ -17,6 +17,13 @@ class DMS implements DMSInterface
      */
     public static $dmsFolderSize = 1000;
 
+    /**
+     * The shortcode handler key. Can be changed by user code.
+     *
+     * @config
+     * @var string
+     */
+    private static $shortcode_handler_key = 'dms_document_link';
 
     /**
      * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
@@ -165,5 +172,15 @@ class DMS implements DMSInterface
     {
         $folderName = intval($id / self::$dmsFolderSize);
         return $folderName;
+    }
+
+    /**
+     * Get the shortcode handler key
+     *
+     * @return string
+     */
+    public function getShortcodeHandlerKey()
+    {
+        return (string) Config::inst()->get('DMS', 'shortcode_handler_key');
     }
 }

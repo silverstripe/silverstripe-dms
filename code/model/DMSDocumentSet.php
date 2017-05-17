@@ -138,7 +138,13 @@ class DMSDocumentSet extends DataObject
                 $addNewButton->setDocumentSetId($self->ID);
 
                 $fields->removeByName('Documents');
-                $fields->addFieldToTab('Root.Main', $gridField);
+                $fields->addFieldsToTab(
+                    'Root.Main',
+                    array(
+                        $gridField,
+                        HiddenField::create('DMSShortcodeHandlerKey', false, DMS::inst()->getShortcodeHandlerKey())
+                    )
+                );
                 $self->addQueryFields($fields);
             }
         });
