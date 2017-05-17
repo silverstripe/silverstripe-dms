@@ -179,7 +179,7 @@ class DMSDocument_versions extends DataObject
         if (!$filename) {
             $filename = $this->Filename;
         }
-        return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $filename;
+        return DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $filename;
     }
 
     /**

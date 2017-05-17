@@ -5,86 +5,46 @@ class DMSTest extends FunctionalTest
 
     /**
      * Stub PDF files for testing
+     *
      * @var string
      */
     public static $testFile = 'dms/tests/DMS-test-lorum-file.pdf';
     public static $testFile2 = 'dms/tests/DMS-test-document-2.pdf';
 
     /**
-     * Store values to reset back to after this test runs
+     * The test folder to write assets into
+     *
+     * @var string
      */
-    public static $dmsFolderOld;
-    public static $dmsFolderSizeOld;
+    protected $testDmsPath = 'assets/_dms-assets-test-1234';
 
     /**
-     * @var DMS
+     * @var DMSInterace
      */
     protected $dms;
 
+    /**
+     * Use a test DMS folder, so we don't overwrite the live one, and clear it out in case of previous broken tests
+     *
+     * {@inheritDoc}
+     */
     public function setUp()
     {
         parent::setUp();
-
-        self::$dmsFolderOld = DMS::$dmsFolder;
-        self::$dmsFolderSizeOld = DMS::$dmsFolderSize;
-
-        //use a test DMS folder, so we don't overwrite the live one
-        DMS::$dmsFolder = 'dms-assets-test-1234';
-
-        //clear out the test folder (in case a broken test doesn't delete it)
-        $this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-1234');
-
+        Config::inst()->update('DMS', 'folder_name', $this->testDmsPath);
+        DMSFilesystemTestHelper::delete($this->testDmsPath);
         $this->dms = DMS::inst();
     }
 
+    /**
+     * Delete the test folder after the test runs
+     *
+     * {@inheritDoc}
+     */
     public function tearDown()
     {
         parent::tearDown();
-
-        self::$is_running_test = true;
-
-        $d = DataObject::get("DMSDocument");
-        foreach ($d as $d1) {
-            $d1->delete();
-        }
-        $t = DataObject::get("DMSTag");
-        foreach ($t as $t1) {
-            $t1->delete();
-        }
-
-        //delete the test folder after the test runs
-        $this->delete(BASE_PATH . DIRECTORY_SEPARATOR . 'dms-assets-test-1234');
-
-        //set the old DMS folder back again
-        DMS::$dmsFolder = self::$dmsFolderOld;
-        DMS::$dmsFolderSize = self::$dmsFolderSizeOld;
-
-        self::$is_running_test = $this->originalIsRunningTest;
-    }
-
-    /**
-     * Delete a file that was created during a unit test
-     *
-     * @param string $path
-     */
-    public function delete($path)
-    {
-        if (file_exists($path) || is_dir($path)) {
-            $it = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($path),
-                RecursiveIteratorIterator::CHILD_FIRST
-            );
-            foreach ($it as $file) {
-                if (in_array($file->getBasename(), array('.', '..'))) {
-                    continue;
-                } elseif ($file->isDir()) {
-                    rmdir($file->getPathname());
-                } elseif ($file->isFile() || $file->isLink()) {
-                    unlink($file->getPathname());
-                }
-            }
-            rmdir($path);
-        }
+        DMSFilesystemTestHelper::delete($this->testDmsPath);
     }
 
     public function testDMSStorage()
@@ -95,7 +55,7 @@ class DMSTest extends FunctionalTest
         $this->assertNotNull($document, "Document object created");
         $this->assertTrue(
             file_exists(
-                DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder
+                DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $document->Folder
                 . DIRECTORY_SEPARATOR . $document->Filename
             ),
             "Document file copied into DMS folder"
@@ -104,7 +64,7 @@ class DMSTest extends FunctionalTest
 
     public function testDMSFolderSpanning()
     {
-        DMS::$dmsFolderSize = 5;
+        Config::inst()->update('DMS', 'folder_size', 5);
         $file = self::$testFile;
 
         $documents = array();
@@ -128,7 +88,10 @@ class DMSTest extends FunctionalTest
 
         // Test we created 4 folder to contain the 17 files
         foreach ($folders as $f) {
-            $this->assertTrue(is_dir(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $f), "Document folder '$f' exists");
+            $this->assertTrue(
+                is_dir(DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $f),
+                "Document folder '$f' exists"
+            );
         }
     }
 
@@ -146,7 +109,7 @@ class DMSTest extends FunctionalTest
         $this->assertNotNull($document, "Document object created");
         $this->assertTrue(
             file_exists(
-                DMS::get_dms_path() . DIRECTORY_SEPARATOR . $document->Folder
+                DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $document->Folder
                 . DIRECTORY_SEPARATOR . $document->Filename
             ),
             "Document file copied into DMS folder"

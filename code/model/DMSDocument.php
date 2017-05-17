@@ -667,7 +667,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     public function getFullPath()
     {
         if ($this->Filename) {
-            return DMS::get_dms_path() . DIRECTORY_SEPARATOR . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
+            return DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR
+                . $this->Folder . DIRECTORY_SEPARATOR . $this->Filename;
         }
 
         return null;
@@ -712,7 +713,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     public function getStorageFolder()
     {
-        return DMS::get_dms_path() . DIRECTORY_SEPARATOR . DMS::get_storage_folder($this->ID);
+        return DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . DMS::inst()->getStorageFolder($this->ID);
     }
 
     /**
@@ -770,7 +771,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     /**
      * Relate an existing file on the filesystem to the document.
      *
-     * Copies the file to the new destination, as defined in {@link get_DMS_path()}.
+     * Copies the file to the new destination, as defined in {@link DMS::getStoragePath()}.
      *
      * @param string $filePath Path to file, relative to webroot.
      *
@@ -785,10 +786,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         // calculate all the path to copy the file to
         $fromFilename = basename($filePath);
         $toFilename = $this->ID. '~' . $fromFilename; //add the docID to the start of the Filename
-        $toFolder = DMS::get_storage_folder($this->ID);
-        $toPath = DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
+        $toFolder = DMS::inst()->getStorageFolder($this->ID);
+        $toPath = DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $toFolder . DIRECTORY_SEPARATOR . $toFilename;
 
-        DMS::create_storage_folder(DMS::get_dms_path() . DIRECTORY_SEPARATOR . $toFolder);
+        DMS::inst()->createStorageFolder(DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $toFolder);
 
         //copy the file into place
         $fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
@@ -832,7 +833,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     public function replaceDocument($file)
     {
-        $filePath = DMS::transform_file_to_file_path($file);
+        $filePath = DMS::inst()->transformFileToFilePath($file);
         $doc = $this->storeDocument($filePath); // replace the document
 
         return $doc;

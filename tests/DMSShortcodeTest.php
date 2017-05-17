@@ -9,6 +9,8 @@ class DMSShortcodeTest extends SapphireTest
 {
     public function testShortcodeOperation()
     {
+        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
+
         $file = 'dms/tests/DMS-test-lorum-file.pdf';
         $document = DMS::inst()->storeDocument($file);
 
@@ -23,5 +25,7 @@ class DMSShortcodeTest extends SapphireTest
         $this->assertStringEndsWith("/dmsdocument/$document->ID", $link->getAttribute('href'));
         $this->assertEquals($document->getExtension(), $link->getAttribute('data-ext'));
         $this->assertEquals($document->getFileSizeFormatted(), $link->getAttribute('data-size'));
+
+        DMSFilesystemTestHelper::delete('assets/_unit-test-123');
     }
 }
