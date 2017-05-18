@@ -34,20 +34,21 @@
 				}
 			}
 		});*/
-		$('#CanViewType input, #CanEditType input').entwine({
+		$('.permissions input[name="CanViewType"], .permissions input[name="CanEditType"]').entwine({
 			onchange: function () {
-				var dropDown = $(this).closest('.field').next();
-				if ($(this).val() === 'OnlyTheseUsers') {
+                if (!this.is(':checked')) {
+                    return;
+                }
+
+				var dropDown = this.closest('.fieldholder-small').next();
+				if (this.val() === 'OnlyTheseUsers') {
 					dropDown.removeClass('hide');
 				} else {
 					dropDown.addClass('hide');
 				}
 			},
 			onadd: function () {
-				if ($(this).is(':checked') && $(this).val() === 'OnlyTheseUsers') {
-					var dropDown = $(this).closest('.field').next();
-					dropDown.removeClass('hide');
-				}
+                this.trigger('change');
 			}
 		});
 		$('#Actions ul li').entwine({
@@ -100,7 +101,7 @@
 
 				//add some extra classes to the replace field containers to make it work with drag and drop uploading
 				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
-				
+
 				// add class and hide
 				$('.DMSDocumentActionsPanel .embargo input.date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
 				$('.DMSDocumentActionsPanel .expiry input.date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
