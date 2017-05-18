@@ -1,0 +1,25 @@
+---
+Name: dmstaxonomy
+Only:
+  moduleexists: taxonomy
+---
+TaxonomyType:
+  extensions:
+    - DMSTaxonomyTypeExtension
+
+DMSDocument:
+  extensions:
+    - DMSDocumentTaxonomyExtension
+  # Add query builder filter for tags
+  searchable_fields:
+    Tags.ID:
+      title: Document has tags
+      field: ListboxField
+      filter: ExactMatchFilter
+
+DMSTaxonomyTypeExtension:
+  # Referenced to filter taxonomy terms for DMS Documents.
+  # To change, update the default_records array too.
+  default_record_name: Document
+  default_records:
+    - Document

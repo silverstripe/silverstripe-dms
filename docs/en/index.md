@@ -8,7 +8,6 @@
 * [Creating documents](creating-documents.md)
 * [Download documents](download-documents.md)
 * [Manage page relations](manage-page-relations.md)
-* [Manage tags](manage-tags.md)
 * [Manage related documents](manage-related-documents.md)
 * [Building frontend assets](building-frontend-assets.md)
 

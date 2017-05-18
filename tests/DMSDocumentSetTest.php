@@ -68,7 +68,6 @@ class DMSDocumentSetTest extends SapphireTest
         /** @var GridFieldConfig $config */
         $config = $gridField->getConfig();
 
-        $this->assertNotNull($config->getComponentByType('DMSGridFieldDeleteAction'));
         $this->assertNotNull($addNew = $config->getComponentByType('DMSGridFieldAddNewButton'));
         $this->assertSame($set->ID, $addNew->getDocumentSetId());
 
@@ -96,14 +95,14 @@ class DMSDocumentSetTest extends SapphireTest
         $displayFields = $document->getDocumentDisplayFields();
         $this->assertContains('Apple', $displayFields);
         $this->assertContains('Orange', $displayFields);
-        $this->assertArrayHasKey('BelongsToSet', $displayFields);
+        $this->assertArrayHasKey('ManuallyAdded', $displayFields);
         $this->assertContains('Added', $displayFields);
     }
 
     /**
-     * Tests to ensure that the callback for formatting BelongsToSet will return a nice label for the user
+     * Tests to ensure that the callback for formatting ManuallyAdded will return a nice label for the user
      */
-    public function testNiceFormattingForBelongsToSetInGridField()
+    public function testNiceFormattingForManuallyAddedInGridField()
     {
         $fieldFormatting = $this->objFromFixture('DMSDocumentSet', 'ds1')
             ->getCMSFields()
@@ -112,11 +111,11 @@ class DMSDocumentSetTest extends SapphireTest
             ->getComponentByType('GridFieldDataColumns')
             ->getFieldFormatting();
 
-        $this->assertArrayHasKey('BelongsToSet', $fieldFormatting);
-        $this->assertTrue(is_callable($fieldFormatting['BelongsToSet']));
+        $this->assertArrayHasKey('ManuallyAdded', $fieldFormatting);
+        $this->assertTrue(is_callable($fieldFormatting['ManuallyAdded']));
 
-        $this->assertSame('Manually', $fieldFormatting['BelongsToSet'](1));
-        $this->assertSame('Query Builder', $fieldFormatting['BelongsToSet'](0));
+        $this->assertSame('Manually', $fieldFormatting['ManuallyAdded'](1));
+        $this->assertSame('Query Builder', $fieldFormatting['ManuallyAdded'](0));
     }
 
     /**

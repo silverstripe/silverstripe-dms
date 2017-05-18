@@ -122,27 +122,6 @@ class DMS extends Object implements DMSInterface
     }
 
     /**
-     *
-     * Returns a number of Document objects based on the a search by tags. You can search by category alone,
-     * by tag value alone, or by both. I.e:
-     *
-     * <code>
-     * getByTag("fruits", null);
-     * getByTag(null, "banana");
-     * getByTag("fruits", "banana");
-     * </code>
-     *
-     * @param null $category The metadata category to search for
-     * @param null $value The metadata value to search for
-     * @param bool $showEmbargoed Boolean that specifies if embargoed documents should be included in results
-     * @return DocumentInterface
-     */
-    public function getByTag($category = null, $value = null, $showEmbargoed = false)
-    {
-        // TODO: Implement getByTag() method.
-    }
-
-    /**
      * Returns a number of Document objects that match a full-text search of the Documents and their contents
      * (if contents is searchable and compatible search module is installed - e.g. FullTextSearch module)
      * @param $searchText String to search for

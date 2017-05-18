@@ -84,6 +84,7 @@ class DMSDocumentTest extends SapphireTest
 
         $this->assertNotContains('test-file-file-doesnt-exist-1', $jsonResult);
         $this->assertContains('test-file-file-doesnt-exist-2', $jsonResult);
+        $this->assertEquals(array('Title', 'Filename'), $autocompleter->getSearchFields());
     }
 
     /**

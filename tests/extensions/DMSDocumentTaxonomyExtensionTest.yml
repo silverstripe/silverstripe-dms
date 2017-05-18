@@ -1,0 +1,30 @@
+TaxonomyType:
+  document:
+    Name: Document
+  not_a_document:
+    Name: Not A Document
+
+TaxonomyTerm:
+  subject:
+    Name: Subject
+    Type: =>TaxonomyType.document
+  maths:
+    Name: Mathematics
+    Parent: =>TaxonomyTerm.subject
+    Type: =>TaxonomyType.document
+  science:
+    Name: Science
+    Parent: =>TaxonomyTerm.subject
+    Type: =>TaxonomyType.document
+  chemistry:
+    Name: Chemistry
+    Parent: =>TaxonomyTerm.science
+    Type: =>TaxonomyType.document
+  chemistry_level_1:
+    Name: Level 1
+    Parent: =>TaxonomyTerm.chemistry
+    Type: =>TaxonomyType.document
+  # Not applicable to DMS documents, but here for testing edge cases
+  physed:
+    Name: Physical Education
+    Type: =>TaxonomyType.not_a_document
