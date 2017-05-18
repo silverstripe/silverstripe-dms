@@ -11,7 +11,7 @@ if (!file_exists(BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR)) {
 CMSMenu::remove_menu_item('DMSDocumentAddController');
 
 ShortcodeParser::get('default')->register(
-    'dms_document_link',
+    $config->get('DMS', 'shortcode_handler_key'),
     array('DMSShortcodeHandler', 'handle')
 );
 

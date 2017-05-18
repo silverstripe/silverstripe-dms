@@ -5,6 +5,8 @@ class ShortCodeRelationFinderTest extends SapphireTest
 
     public function testFindInRate()
     {
+        Config::inst()->update('DMS', 'shortcode_handler_key', 'dms_document_link');
+
         $d1 = $this->objFromFixture('DMSDocument', 'd1');
         $d2 = $this->objFromFixture('DMSDocument', 'd2');
 

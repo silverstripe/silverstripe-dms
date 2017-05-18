@@ -185,6 +185,15 @@ class DMSTest extends FunctionalTest
     }
 
     /**
+     * Ensure the shortcode handler key is configurable
+     */
+    public function testShortcodeHandlerKeyIsConfigurable()
+    {
+        Config::inst()->update('DMS', 'shortcode_handler_key', 'testing');
+        $this->assertSame('testing', DMS::inst()->getShortcodeHandlerKey());
+    }
+
+    /**
      * Test that document sets can be retrieved for a given page
      */
     public function testGetDocumentSetsByPage()
