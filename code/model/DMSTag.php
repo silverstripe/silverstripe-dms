@@ -4,6 +4,7 @@
  * Hold a set of metadata category/value tags associated with a DMSDocument
  *
  * @package dms
+ * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
  */
 class DMSTag extends DataObject
 {

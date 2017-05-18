@@ -298,6 +298,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * 					multi-value or single-value (optional)
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function addTag($category, $value, $multiValue = true)
     {
@@ -350,6 +352,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value
      *
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     protected function getTagsObjects($category, $value = null)
     {
@@ -371,6 +375,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value value of the tag to get
      *
      * @return array Strings of all the tags or null if there is no match found
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function getTagsList($category, $value = null)
     {
@@ -402,6 +408,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value Value to remove
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeTag($category, $value = null)
     {
@@ -428,6 +436,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * Deletes all tags associated with this Document.
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeAllTags()
     {

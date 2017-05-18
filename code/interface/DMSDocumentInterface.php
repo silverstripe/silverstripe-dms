@@ -11,7 +11,7 @@ interface DMSDocumentInterface
      * Deletes the DMSDocument, its underlying file, as well as any tags related to this DMSDocument.
      *
      * @todo Can't be applied to classes which already implement the DataObjectInterface (naming conflict)
-     * 
+     *
      * @abstract
      * @return null
      */
@@ -27,7 +27,7 @@ interface DMSDocumentInterface
      * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPage($pageObject);
-    
+
     /**
      * Associates this DMSDocument with a set of Pages. This method loops through a set of page ids, and then associates this
      * DMSDocument with the individual Page with the each page id in the set
@@ -77,6 +77,8 @@ interface DMSDocumentInterface
      * @param $value String of a metadata value to add (required)
      * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function addTag($category, $value, $multiValue = true);
 
@@ -87,6 +89,8 @@ interface DMSDocumentInterface
      * @param $category String of the metadata category to get
      * @param null $value String of the value of the tag to get
      * @return array of Strings of all the tags or null if there is no match found
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function getTagsList($category, $value = null);
 
@@ -98,6 +102,8 @@ interface DMSDocumentInterface
      * @param $category Category to remove (required)
      * @param null $value Value to remove (optional)
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeTag($category, $value = null);
 
@@ -105,6 +111,8 @@ interface DMSDocumentInterface
      * Deletes all tags associated with this DMSDocument.
      * @abstract
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeAllTags();
 
@@ -114,12 +122,12 @@ interface DMSDocumentInterface
      * @return String
      */
     public function getLink();
-    
+
     /**
      * Return the extension of the file associated with the document
      */
     public function getExtension();
-    
+
     /**
      * Returns the size of the file type in an appropriate format.
      *
