@@ -24,6 +24,8 @@ class DMSSiteTreeExtension extends DataExtension
         );
         $gridField->addExtraClass('documentsets');
 
+        $gridField->getConfig()->removeComponentsByType('GridFieldAddExistingAutocompleter');
+
         $fields->addFieldToTab(
             'Root.Document Sets (' . $this->owner->DocumentSets()->count() . ')',
             $gridField
