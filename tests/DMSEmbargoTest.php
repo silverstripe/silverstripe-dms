@@ -1,23 +1,7 @@
 <?php
 class DMSEmbargoTest extends SapphireTest
 {
-    public static $fixture_file = "dmsembargotest.yml";
-
-    public function tearDownOnce()
-    {
-        self::$is_running_test = true;
-
-        $d = DataObject::get("DMSDocument");
-        foreach ($d as $d1) {
-            $d1->delete();
-        }
-        $t = DataObject::get("DMSTag");
-        foreach ($t as $t1) {
-            $t1->delete();
-        }
-
-        self::$is_running_test = $this->originalIsRunningTest;
-    }
+    protected static $fixture_file = 'dmsembargotest.yml';
 
     public function createFakeHTTPRequest($id)
     {
@@ -28,13 +12,10 @@ class DMSEmbargoTest extends SapphireTest
 
     public function testBasicEmbargo()
     {
-        $oldDMSFolder = DMS::$dmsFolder;
         $oldTestMode = DMSDocument_Controller::$testMode;
-        DMS::$dmsFolder = DMS_DIR;    //sneakily setting the DMS folder to the folder where the test file lives
+        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
 
-        $doc = new DMSDocument();
-        $doc->Filename = "DMS-test-lorum-file.pdf";
-        $doc->Folder = "tests";
+        $doc = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
         $doc->CanViewType = 'LoggedInUsers';
         $docID = $doc->write();
 
@@ -42,24 +23,24 @@ class DMSEmbargoTest extends SapphireTest
         $controller = new DMSDocument_Controller();
         DMSDocument_Controller::$testMode = true;
         $result = $controller->index($this->createFakeHTTPRequest($docID));
-        $this->assertEquals($doc->getFullPath(), $result, "Correct underlying file returned (in test mode)");
+        $this->assertEquals($doc->getFullPath(), $result, 'Correct underlying file returned (in test mode)');
 
         $doc->embargoIndefinitely();
 
         $this->logInWithPermission('ADMIN');
         $result = $controller->index($this->createFakeHTTPRequest($docID));
-        $this->assertEquals($doc->getFullPath(), $result, "Admins can still download embargoed files");
+        $this->assertEquals($doc->getFullPath(), $result, 'Admins can still download embargoed files');
 
         $this->logInWithPermission('random-user-group');
         $result = $controller->index($this->createFakeHTTPRequest($docID));
         $this->assertNotEquals(
             $doc->getFullPath(),
             $result,
-            "File no longer returned (in test mode) when switching to other user group"
+            'File no longer returned (in test mode) when switching to other user group'
         );
 
-        DMS::$dmsFolder = $oldDMSFolder;
         DMSDocument_Controller::$testMode = $oldTestMode;
+        DMSFilesystemTestHelper::delete('assets/_unit-test-123');
     }
 
     public function testEmbargoIndefinitely()

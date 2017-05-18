@@ -1,6 +1,20 @@
 # Configuration
 
-The file location is set via the `DMS::$dmsFolder` static, and points to a location in the webroot.
+The file location is set via the `DMS.folder_name` configuation property, and points to a location in the webroot. By
+default, this resides in an underscores folder within the assets folder. This means that automated snapshots/backups
+(e.g. using [sspak](https://github.com/silverstripe/sspak)) can still handle DMS documents, but they will not show up
+when navigating asset folders in the CMS.
+
+## Changing the default storage folder
+
+You can change the default storage folder location using YAML configuration. This folder would be relative to your
+project root directory:
+
+```yaml
+DMS:
+  folder_name: my-custom-folder
+```
+
 
 ## Enable/disable documents/sets for a specific page type
 

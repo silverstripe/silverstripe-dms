@@ -3,22 +3,6 @@ class DMSDocumentTest extends SapphireTest
 {
     protected static $fixture_file = 'dmstest.yml';
 
-    public function tearDownOnce()
-    {
-        self::$is_running_test = true;
-
-        $d = DataObject::get('DMSDocument');
-        foreach ($d as $d1) {
-            $d1->delete();
-        }
-        $t = DataObject::get('DMSTag');
-        foreach ($t as $t1) {
-            $t1->delete();
-        }
-
-        self::$is_running_test = $this->originalIsRunningTest;
-    }
-
     public function testDefaultDownloadBehabiourCMSFields()
     {
         $document = singleton('DMSDocument');
@@ -258,5 +242,36 @@ class DMSDocumentTest extends SapphireTest
 
         $d2 = $this->objFromFixture('DMSDocument', 'd2');
         $this->assertSame('File That Doesn\'t Exist (Title)', $d2->getTitle());
+    }
+
+    /**
+     * Ensure that the folder a document's file is stored in can be retrieved, and that delete() will also delete
+     * the file and the record
+     */
+    public function testGetStorageFolderThenDelete()
+    {
+        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-tests');
+
+        $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
+        $filename = $document->getStorageFolder() . '/' . $document->getFileName();
+
+        $this->assertTrue(file_exists($filename));
+        $document->delete();
+        $this->assertFalse($document->exists());
+        $this->assertFalse(file_exists($filename));
+
+        DMSFilesystemTestHelper::delete('assets/_unit-tests');
+    }
+
+    /**
+     * Ensure that the description can be returned in HTML format
+     */
+    public function testGetDescriptionWithLineBreak()
+    {
+        $document = DMSDocument::create();
+        $document->Description = "Line 1\nLine 2\nLine 3";
+        $document->write();
+
+        $this->assertSame("Line 1<br />\nLine 2<br />\nLine 3", $document->getDescriptionWithLineBreak());
     }
 }

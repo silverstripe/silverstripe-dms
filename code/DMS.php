@@ -1,21 +1,30 @@
 <?php
-class DMS implements DMSInterface
+class DMS extends Object implements DMSInterface
 {
     /**
      * Folder to store the documents in
      *
+     * @config
      * @var string
      */
-    public static $dmsFolder = 'dms-assets';
+    private static $folder_name = 'assets/_dmsassets';
 
     /**
      * How many documents to store in a single folder. The square of this number is the maximum number of documents.
      *
      * The number should be a multiple of 10
      *
+     * @config
      * @var int
      */
-    public static $dmsFolderSize = 1000;
+    private static $folder_size = 1000;
+
+    /**
+     * Singleton instance of a DMSInterface
+     *
+     * @var DMSInterface
+     */
+    private static $instance;
 
     /**
      * The shortcode handler key. Can be changed by user code.
@@ -27,44 +36,56 @@ class DMS implements DMSInterface
 
     /**
      * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
-     * @static
+     *
      * @return DMSInterface An instance of the Document Management System
      */
     public static function inst()
     {
-        $dmsPath = self::get_dms_path();
+        if (!self::$instance) {
+            self::$instance = new static();
 
-        $dms = new DMS();
-        if (!is_dir($dmsPath)) {
-            self::create_storage_folder($dmsPath);
+            $dmsPath = self::$instance->getStoragePath();
+
+            if (!is_dir($dmsPath)) {
+                self::$instance->createStorageFolder($dmsPath);
+            }
+
+            if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
+                // Restrict access to the storage folder
+                copy(
+                    BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                    . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',
+                    $dmsPath . DIRECTORY_SEPARATOR . '.htaccess'
+                );
+
+                copy(
+                    BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                    . 'resources' . DIRECTORY_SEPARATOR . 'web.config',
+                    $dmsPath . DIRECTORY_SEPARATOR . 'web.config'
+                );
+            }
         }
-
-        if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
-            // Restrict access to the storage folder
-            copy(
-                BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
-                . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',
-                $dmsPath . DIRECTORY_SEPARATOR . '.htaccess'
-            );
-
-            copy(
-                BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
-                . 'resources' . DIRECTORY_SEPARATOR . 'web.config',
-                $dmsPath . DIRECTORY_SEPARATOR . 'web.config'
-            );
-        }
-        return $dms;
+        return self::$instance;
     }
 
     /**
+     * Get the storage path for DMS documents
+     *
      * @return string
      */
-    public static function get_dms_path()
+    public function getStoragePath()
     {
-        return BASE_PATH . DIRECTORY_SEPARATOR . self::$dmsFolder;
+        return BASE_PATH . DIRECTORY_SEPARATOR . $this->config()->get('folder_name');
     }
 
-    public static function transform_file_to_file_path($file)
+    /**
+     * Gets a file path from either a File or a string
+     *
+     * @param  string|File $file
+     * @return string
+     * @throws FileNotFoundException If an unexpected value was provided, or the filename was null
+     */
+    public function transformFileToFilePath($file)
     {
         //confirm we have a file
         $filePath = null;
@@ -84,16 +105,16 @@ class DMS implements DMSInterface
     /**
      * Takes a File object or a String (path to a file) and copies it into the DMS. The original file remains unchanged.
      * When storing a document, sets the fields on the File has "tag" metadata.
-     * @param $file File object, or String that is path to a file to store,
+     * @param  File|string $file File object, or String that is path to a file to store,
      *              e.g. "assets/documents/industry/supplied-v1-0.pdf"
      * @return DMSDocument
      */
     public function storeDocument($file)
     {
-        $filePath = self::transform_file_to_file_path($file);
+        $filePath = $this->transformFileToFilePath($file);
 
-        //create a new document and get its ID
-        $doc = new DMSDocument();
+        // Create a new document and get its ID
+        $doc = DMSDocument::create();
         $doc->write();
         $doc->storeDocument($filePath);
 
@@ -156,22 +177,26 @@ class DMS implements DMSInterface
 
     /**
      * Creates a storage folder for the given path
-     * @param $path Path to create a folder for
+     *
+     * @param  string $path Path to create a folder for
+     * @return $this
      */
-    public static function create_storage_folder($path)
+    public function createStorageFolder($path)
     {
         if (!is_dir($path)) {
-            mkdir($path, 0777);
+            mkdir($path, 0777, true);
         }
+        return $this;
     }
 
     /**
      * Calculates the storage path from a database DMSDocument ID
+     *
+     * @return int
      */
-    public static function get_storage_folder($id)
+    public function getStorageFolder($id)
     {
-        $folderName = intval($id / self::$dmsFolderSize);
-        return $folderName;
+        return intval($id / self::config()->get('folder_size'));
     }
 
     /**

@@ -1,0 +1,12 @@
+---
+Name: dmsconfig
+---
+SiteTree:
+  extensions:
+    - DMSSiteTreeExtension
+  # Whether to show the document sets tab in the CMS for the page type this extension is applied to
+  documents_enabled: true
+
+HtmlEditorField_Toolbar:
+  extensions:
+    - DocumentHtmlEditorFieldToolbar
