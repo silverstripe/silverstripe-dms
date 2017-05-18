@@ -85,6 +85,41 @@ class DMSDocumentSetTest extends SapphireTest
     }
 
     /**
+     * Ensure that the display fields for the documents GridField can be returned
+     */
+    public function testGetDocumentDisplayFields()
+    {
+        $document = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $this->assertInternalType('array', $document->getDocumentDisplayFields());
+
+        Config::inst()->update('DMSDocument', 'display_fields', array('apple' => 'Apple', 'orange' => 'Orange'));
+        $displayFields = $document->getDocumentDisplayFields();
+        $this->assertContains('Apple', $displayFields);
+        $this->assertContains('Orange', $displayFields);
+        $this->assertArrayHasKey('BelongsToSet', $displayFields);
+        $this->assertContains('Added', $displayFields);
+    }
+
+    /**
+     * Tests to ensure that the callback for formatting BelongsToSet will return a nice label for the user
+     */
+    public function testNiceFormattingForBelongsToSetInGridField()
+    {
+        $fieldFormatting = $this->objFromFixture('DMSDocumentSet', 'ds1')
+            ->getCMSFields()
+            ->fieldByName('Root.Main.Documents')
+            ->getConfig()
+            ->getComponentByType('GridFieldDataColumns')
+            ->getFieldFormatting();
+
+        $this->assertArrayHasKey('BelongsToSet', $fieldFormatting);
+        $this->assertTrue(is_callable($fieldFormatting['BelongsToSet']));
+
+        $this->assertSame('Manually', $fieldFormatting['BelongsToSet'](1));
+        $this->assertSame('Query Builder', $fieldFormatting['BelongsToSet'](0));
+    }
+
+    /**
      * Test that query fields can be added to the gridfield
      */
     public function testAddQueryFields()

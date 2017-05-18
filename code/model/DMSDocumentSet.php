@@ -9,7 +9,6 @@
  */
 class DMSDocumentSet extends DataObject
 {
-
     private static $db = array(
         'Title' => 'Varchar(255)',
         'KeyValuePairs' => 'Text',
@@ -111,11 +110,17 @@ class DMSDocumentSet extends DataObject
                 }
 
                 $gridFieldConfig->getComponentByType('GridFieldDataColumns')
-                    ->setDisplayFields(DMSDocument::create()->config()->get('display_fields'))
+                    ->setDisplayFields($self->getDocumentDisplayFields())
                     ->setFieldCasting(array('LastEdited' => 'Datetime->Ago'))
                     ->setFieldFormatting(
                         array(
                             'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>',
+                            'BelongsToSet' => function ($value) {
+                                if ($value) {
+                                    return _t('DMSDocumentSet.MANUAL', 'Manually');
+                                }
+                                return _t('DMSDocumentSet.QUERYBUILDER', 'Query Builder');
+                            }
                         )
                     );
 
@@ -253,5 +258,18 @@ class DMSDocumentSet extends DataObject
                 $originals->add($document, array('BelongsToSet' => 0));
             }
         }
+    }
+
+    /**
+     * Customise the display fields for the documents GridField
+     *
+     * @return array
+     */
+    public function getDocumentDisplayFields()
+    {
+        return array_merge(
+            (array) DMSDocument::create()->config()->get('display_fields'),
+            array('BelongsToSet' => _t('DMSDocumentSet.ADDEDMETHOD', 'Added'))
+        );
     }
 }
