@@ -1,3 +1,4 @@
 @import "_variables";
-@import "DMSDocumentCMSFields";
-@import "DMSMainCMS";
+@import "_mixins";
+@import "cmsfields";
+@import "upload";

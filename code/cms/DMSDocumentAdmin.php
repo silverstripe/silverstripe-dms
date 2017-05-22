@@ -10,6 +10,8 @@ class DMSDocumentAdmin extends ModelAdmin
 
     private static $menu_title = 'Documents';
 
+    private static $menu_icon = 'dms/images/app_icons/drawer.png';
+
     /**
      * Remove the default "add" button and replace it with a customised version for DMS
      *

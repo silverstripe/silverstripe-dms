@@ -514,9 +514,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     {
         if ($this->getField('Filename')) {
             return $this->getField('Filename');
-        } else {
-            return ASSETS_DIR . '/';
         }
+        return ASSETS_DIR . '/';
     }
 
     /**
@@ -529,6 +528,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
 
     /**
+     * Returns the filename of a document without the prefix, e.g. 0~filename.jpg -> filename.jpg
+     *
      * @return string
      */
     public function getFilenameWithoutID()
@@ -898,7 +899,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         );
 
         $actionsPanel->setName("ActionsPanel");
-        $actionsPanel->addExtraClass("DMSDocumentActionsPanel");
+        $actionsPanel->addExtraClass('dmsdocument-actionspanel');
         $fields->push($actionsPanel);
 
         $this->extend('updateCMSFields', $fields);
@@ -1130,7 +1131,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             )->setName("FilePreview")->addExtraClass('cms-file-info')
         );
 
-        $fields->setName('FileP');
+        $fields->addExtraClass('dmsdocument-documentdetails');
         $urlField->dontEscape = true;
 
         return $fields;
@@ -1211,7 +1212,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $addExisting->setSearchList($this->getRelatedDocumentsForAutocompleter());
 
         // Restrict search fields to specific fields only
-        $addExisting->setSearchFields(array('Title', 'Filename'));
+        $addExisting->setSearchFields(array('Title:PartialMatch', 'Filename:PartialMatch'));
+        $addExisting->setResultsFormat('$Filename');
 
         $this->extend('updateRelatedDocumentsGridField', $gridField);
 
@@ -1304,12 +1306,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     public function getActionTaskHtml()
     {
-        $html = '<div id="Actions" class="field actions">'
+        $html = '<div class="field dmsdocment-actions">'
             . '<label class="left">' . _t('DMSDocument.ACTIONS_LABEL', 'Actions') . '</label>'
             . '<ul>';
 
         foreach ($this->actionTasks as $panelKey => $title) {
-            $html .= '<li class="ss-ui-button" data-panel="' . $panelKey . '">'
+            $html .= '<li class="ss-ui-button dmsdocument-action" data-panel="' . $panelKey . '">'
                 . _t('DMSDocument.ACTION_' . strtoupper($panelKey), $title)
                 . '</li>';
         }

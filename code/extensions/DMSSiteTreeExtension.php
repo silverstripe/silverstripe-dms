@@ -20,11 +20,9 @@ class DMSSiteTreeExtension extends DataExtension
             'Document Sets',
             false,
             $this->owner->DocumentSets(), //->Sort('DocumentSort'),
-            new GridFieldConfig_RelationEditor
+            new GridFieldConfig_RecordEditor
         );
         $gridField->addExtraClass('documentsets');
-
-        $gridField->getConfig()->removeComponentsByType('GridFieldAddExistingAutocompleter');
 
         $fields->addFieldToTab(
             'Root.Document Sets (' . $this->owner->DocumentSets()->count() . ')',

@@ -84,7 +84,7 @@ class DMSDocumentTest extends SapphireTest
 
         $this->assertNotContains('test-file-file-doesnt-exist-1', $jsonResult);
         $this->assertContains('test-file-file-doesnt-exist-2', $jsonResult);
-        $this->assertEquals(array('Title', 'Filename'), $autocompleter->getSearchFields());
+        $this->assertEquals(array('Title:PartialMatch', 'Filename:PartialMatch'), $autocompleter->getSearchFields());
     }
 
     /**
@@ -118,7 +118,7 @@ class DMSDocumentTest extends SapphireTest
         $result = $document->getActionTaskHtml();
 
         $this->assertContains('<label class="left">Actions</label>', $result);
-        $this->assertContains('<li class="ss-ui-button" data-panel="', $result);
+        $this->assertContains('<li class="ss-ui-button dmsdocument-action" data-panel="', $result);
         $this->assertContains('permission', $result);
         $this->assertContains('Example', $result);
     }

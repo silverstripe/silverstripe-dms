@@ -51,16 +51,16 @@
                 this.trigger('change');
 			}
 		});
-		$('#Actions ul li').entwine({
+		$('.dmsdocment-actions ul li').entwine({
 			onclick: function (e) {
 
 				//add active state to the current button
-				$('#Actions ul li').removeClass('dms-active');
+				$('.dmsdocment-actions ul li').removeClass('dms-active');
 				this.addClass('dms-active');
 				//$('li.dms-active').append('<span class="arrow"></span>');
 
 				//hide all inner field sections
-				var panel = $('.DMSDocumentActionsPanel:first');
+				var panel = $('.dmsdocument-actionspanel:first');
 				panel.find('> .fieldgroup > .fieldgroup-field').hide();
 
 				//show the correct group of controls
@@ -94,7 +94,7 @@
 			}
 		});
 
-		$('.DMSDocumentActionsPanel').entwine({
+		$('.dmsdocument-actionspanel').entwine({
 			onadd: function () {
 				//do an initial show of the entire panel
 				this.show();
@@ -103,17 +103,17 @@
 				this.find('.replace').closest('div.fieldgroup-field').addClass('ss-upload').addClass('ss-uploadfield');
 
 				// add class and hide
-				$('.DMSDocumentActionsPanel .embargo input.date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
-				$('.DMSDocumentActionsPanel .expiry input.date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
+				$('.dmsdocument-actionspanel .embargo input.date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
+				$('.dmsdocument-actionspanel .expiry input.date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
 				// We need to duplicate the above functions to work when Adding documents
 //				$('#Form_EditForm_EmbargoedUntilDate_date').closest('.fieldholder-small').addClass('embargoDatetime').hide();
 //				$('#Form_EditForm_ExpireAtDate_date').closest('.fieldholder-small').addClass('expiryDatetime').hide();
 
 				//Add placeholder attribute to date and time fields
-				$('.DMSDocumentActionsPanel .embargo input.date').attr('placeholder', 'dd-mm-yyyy');
-				$('.DMSDocumentActionsPanel .embargo input.time').attr('placeholder', 'hh:mm:ss');
-				$('.DMSDocumentActionsPanel .expiry input.date').attr('placeholder', 'dd-mm-yyyy');
-				$('.DMSDocumentActionsPanel .expiry input.time').attr('placeholder', 'hh:mm:ss');
+				$('.dmsdocument-actionspanel .embargo input.date').attr('placeholder', 'dd-mm-yyyy');
+				$('.dmsdocument-actionspanel .embargo input.time').attr('placeholder', 'hh:mm:ss');
+				$('.dmsdocument-actionspanel .expiry input.date').attr('placeholder', 'dd-mm-yyyy');
+				$('.dmsdocument-actionspanel .expiry input.time').attr('placeholder', 'hh:mm:ss');
 				// We need to duplicate to work when adding documents
 //				$('#Form_EditForm_EmbargoedUntilDate_date').attr('placeholder', 'dd-mm-yyyy');
 //				$('#Form_EditForm_EmbargoedUntilDate_time').attr('placeholder', 'hh:mm:ss');
@@ -124,8 +124,8 @@
 				$('li[data-panel="embargo"]').click();
 
 				//set the initial state of the radio button and the associated dropdown hiding
-				$('.DMSDocumentActionsPanel .embargo input[type="radio"][checked]').change();
-				$('.DMSDocumentActionsPanel .expiry input[type="radio"][checked]').change();
+				$('.dmsdocument-actionspanel .embargo input[type="radio"][checked]').change();
+				$('.dmsdocument-actionspanel .expiry input[type="radio"][checked]').change();
 				//Again we need to duplicate the above function to work when adding documents
 //				$('#Form_EditForm_Embargo input[checked]').change();
 //				$('#Form_EditForm_Expiry input[checked]').change();
