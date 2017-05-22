@@ -1,18 +1,6 @@
-form.small .field input.text,
-form.small .field textarea,
-form.small .field select,
-form.small .field .TreeDropdownField,
-.field.small input.text,
-.field.small textarea,
-.field.small select,
-.field.small .TreeDropdownField {
-  width: 100%;
-}
-
-#FileP {
+//** The DMS document details/information on an edit page
+.dmsdocument-documentdetails {
   .fieldgroup-field {
-    width: 100%;
-
     .cms-file-info-preview {
       box-shadow: none;
     }
@@ -20,73 +8,78 @@ form.small .field .TreeDropdownField,
     .cms-file-info-data {
       width: 400px;
     }
+
     .fieldholder-small {
       margin-top: 5px;
-      label {
-        width: auto;
-        margin-left: 0;
-        padding-top: 0;
-        margin-right: 10px;
+
+      .fieldholder-small-label {
         font-weight: bold;
         float: left;
       }
-      .readonly{
+
+      .readonly {
         font-style: italic;
-        color: #666;
       }
     }
   }
 }
 
-#Actions {
-  box-shadow:none;
-  border:none;
-  padding:0;
-  li {
-    margin-left: 2px;
-    &:first-child {
-      margin-left: 0;
+//** The actions panel buttons when editing a DMS document
+.dmsdocment-actions {
+  border: none;
+  box-shadow: none;
+  margin-bottom: 0;
+  padding: 0;
+
+  label.left {
+    padding: 6px 0 0 0;
+  }
+
+  .ss-ui-button {
+    border: none;
+    background: none;
+    border-radius: 0;
+    font-weight: normal;
+
+    .ui-button-text {
+      padding-bottom: 1em;
     }
-    &.delete-button-appended {
-      display: inline-block;
-      position: relative;
-      margin-left: 0;
+
+    &.dms-active,
+    &.dms-active:hover {
+      @include dmsdocument-actions-active($color-grey-dark);
     }
-    // &.dms-active{
-    //  @include active-actions-btn;
-    // }
+
+    &:hover,
+    &:active {
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
   }
 }
 
-.DMSDocumentActionsPanel {
+//** The actions panel, containing mini forms for each DMS document action
+.dmsdocument-actionspanel {
+  margin-top: 0;
+
   .fieldgroup {
+    border: 1px solid $color-grey-light;
     display: none;
-    float: none;
-    width: auto;
-    background: #f8f8f8;
-    padding: 15px;
-    border: 1px solid #d0d3d5;
+    margin-left: 0;
+    padding: 5px 15px;
 
     .fieldholder-small {
       label {
-        float: none;
-        width: auto;
-        margin: 0;
         padding: 0;
-
-        &.ss-ui-button {
-          float: left;
-          margin: 0 10px 0 0;
-        }
       }
     }
 
     .embargo,
     .expiry {
       li {
-        float: none;
-        width: 100%;
         margin-left: 8px;
+        width: 100%;
 
         label {
           padding-left: 10px;
@@ -95,6 +88,7 @@ form.small .field .TreeDropdownField,
 
       .embargoDatetime,
       .expiryDatetime {
+        float: left;
         margin-top: 0;
         margin-left: 34px;
         overflow: hidden;
@@ -103,45 +97,45 @@ form.small .field .TreeDropdownField,
           &.date,
           &.time {
             display: inline-block;
-            width: auto;
             margin: 0;
             padding: 0;
+            width: auto;
+
+            .middleColumn {
+              overflow: hidden;
+            }
           }
 
           &.date {
-            .middleColumn{
+            .middleColumn {
               background: url('../images/calendar-month.png') 90px 7px no-repeat;
-              overflow: hidden;
             }
           }
 
           &.time {
             .middleColumn {
               background: url('../images/clock-frame.png') 90px 7px no-repeat;
-              overflow: hidden;
             }
           }
         }
 
         .middleColumn {
+          border: none;
           margin-left: 0;
           width: auto;
-          border: none;
 
-          input {
-            width: 80px;
+          input.date,
+          input.time {
             margin-right: 40px;
+            width: 80px;
           }
         }
       }
     }
-  }
 
-  #Embargo {
-    border: none;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
+    .fieldgroup-field label {
+      margin: 0;
+    }
   }
 
   .ss-uploadfield-files {
@@ -157,8 +151,8 @@ form.small .field .TreeDropdownField,
 
     .ss-uploadfield-item-actions {
       .ss-uploadfield-item-cancel {
-        width: auto;
         text-indent: 0;
+        width: auto;
 
         .btn-icon-deleteLight {
           background-position: 0 -128px;
@@ -166,50 +160,44 @@ form.small .field .TreeDropdownField,
         }
 
         .ui-button-text {
+          color: $color-grey-dark;
           display: block;
-          position: relative;
           float: right;
-          color: #555;
-          padding:0;
-          padding-left: 2em;
+          padding: 0 0 0 2em;
+          position: relative;
         }
       }
     }
   }
 
   & > .fieldgroup.middleColumn {
-    overflow: hidden;
     display: block;
+    overflow: hidden;
 
     .fieldgroup-field {
       width: 100%;
     }
   }
-}
 
-#Form_ItemEditForm {
-  fieldset {
-    table.ss-gridfield-table {
-      width: 494px;
-
-      tr {
-        th.main {
-          min-width: 175px;
-
-          &.col-action_SetOrderID {
-            width: 60px;
-            min-width: 60px;
-          }
-        }
-
-        td {
-          white-space: normal;
-        }
-      }
+  .permissions {
+    .fieldholder-small {
+      clear: both;
     }
   }
 }
 
 #ui-datepicker-div {
-  border: 1px solid #DDD;
+  border: 1px solid $color-grey-light;
+}
+
+//** Overrides for the inline edit screen
+form.small .field input.text,
+form.small .field textarea,
+form.small .field select,
+form.small .field .TreeDropdownField,
+.field.small input.text,
+.field.small textarea,
+.field.small select,
+.field.small .TreeDropdownField {
+  width: 100%;
 }

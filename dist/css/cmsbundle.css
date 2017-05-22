@@ -1,3 +1,137 @@
+.dmsdocument-documentdetails .fieldgroup-field .cms-file-info-preview {
+  box-shadow: none; }
+
+.dmsdocument-documentdetails .fieldgroup-field .cms-file-info-data {
+  width: 400px; }
+
+.dmsdocument-documentdetails .fieldgroup-field .fieldholder-small {
+  margin-top: 5px; }
+  .dmsdocument-documentdetails .fieldgroup-field .fieldholder-small .fieldholder-small-label {
+    font-weight: bold;
+    float: left; }
+  .dmsdocument-documentdetails .fieldgroup-field .fieldholder-small .readonly {
+    font-style: italic; }
+
+.dmsdocment-actions {
+  border: none;
+  box-shadow: none;
+  margin-bottom: 0;
+  padding: 0; }
+  .dmsdocment-actions label.left {
+    padding: 6px 0 0 0; }
+  .dmsdocment-actions .ss-ui-button {
+    border: none;
+    background: none;
+    border-radius: 0;
+    font-weight: normal; }
+    .dmsdocment-actions .ss-ui-button .ui-button-text {
+      padding-bottom: 1em; }
+    .dmsdocment-actions .ss-ui-button.dms-active, .dmsdocment-actions .ss-ui-button.dms-active:hover {
+      border-bottom: 4px solid #66727d; }
+    .dmsdocment-actions .ss-ui-button:hover, .dmsdocment-actions .ss-ui-button:active {
+      background: none;
+      border: none;
+      box-shadow: none; }
+
+.dmsdocument-actionspanel {
+  margin-top: 0; }
+  .dmsdocument-actionspanel .fieldgroup {
+    border: 1px solid #d0d3d5;
+    display: none;
+    margin-left: 0;
+    padding: 5px 15px; }
+    .dmsdocument-actionspanel .fieldgroup .fieldholder-small label {
+      padding: 0; }
+    .dmsdocument-actionspanel .fieldgroup .embargo li,
+    .dmsdocument-actionspanel .fieldgroup .expiry li {
+      margin-left: 8px;
+      width: 100%; }
+      .dmsdocument-actionspanel .fieldgroup .embargo li label,
+      .dmsdocument-actionspanel .fieldgroup .expiry li label {
+        padding-left: 10px; }
+    .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime,
+    .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime,
+    .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime,
+    .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime {
+      float: left;
+      margin-top: 0;
+      margin-left: 34px;
+      overflow: hidden; }
+      .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.date, .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.time,
+      .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.date,
+      .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.time,
+      .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.date,
+      .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.time,
+      .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.date,
+      .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.time {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        width: auto; }
+        .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.date .middleColumn, .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.time .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.date .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.time .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.date .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.time .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.date .middleColumn,
+        .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.time .middleColumn {
+          overflow: hidden; }
+      .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.date .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.date .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.date .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.date .middleColumn {
+        background: url(../../images/calendar-month.png) 90px 7px no-repeat; }
+      .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .field.time .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .field.time .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .field.time .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .field.time .middleColumn {
+        background: url(../../images/clock-frame.png) 90px 7px no-repeat; }
+      .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .middleColumn,
+      .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .middleColumn {
+        border: none;
+        margin-left: 0;
+        width: auto; }
+        .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .middleColumn input.date,
+        .dmsdocument-actionspanel .fieldgroup .embargo .embargoDatetime .middleColumn input.time,
+        .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .middleColumn input.date,
+        .dmsdocument-actionspanel .fieldgroup .embargo .expiryDatetime .middleColumn input.time,
+        .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .middleColumn input.date,
+        .dmsdocument-actionspanel .fieldgroup .expiry .embargoDatetime .middleColumn input.time,
+        .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .middleColumn input.date,
+        .dmsdocument-actionspanel .fieldgroup .expiry .expiryDatetime .middleColumn input.time {
+          margin-right: 40px;
+          width: 80px; }
+    .dmsdocument-actionspanel .fieldgroup .fieldgroup-field label {
+      margin: 0; }
+  .dmsdocument-actionspanel .ss-uploadfield-files .ss-uploadfield-item-preview {
+    background: url(../../images/app_icons/generic_32.png) -10px -6px no-repeat; }
+  .dmsdocument-actionspanel .ss-uploadfield-files .ss-uploadfield-item-name span.name {
+    width: 260px; }
+  .dmsdocument-actionspanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel {
+    text-indent: 0;
+    width: auto; }
+    .dmsdocument-actionspanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight {
+      background-position: 0 -128px;
+      display: inline-block; }
+    .dmsdocument-actionspanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text {
+      color: #66727d;
+      display: block;
+      float: right;
+      padding: 0 0 0 2em;
+      position: relative; }
+  .dmsdocument-actionspanel > .fieldgroup.middleColumn {
+    display: block;
+    overflow: hidden; }
+    .dmsdocument-actionspanel > .fieldgroup.middleColumn .fieldgroup-field {
+      width: 100%; }
+  .dmsdocument-actionspanel .permissions .fieldholder-small {
+    clear: both; }
+
+#ui-datepicker-div {
+  border: 1px solid #d0d3d5; }
+
 form.small .field input.text,
 form.small .field textarea,
 form.small .field select,
@@ -8,189 +142,10 @@ form.small .field .TreeDropdownField,
 .field.small .TreeDropdownField {
   width: 100%; }
 
-#FileP .fieldgroup-field {
-  width: 100%; }
-  #FileP .fieldgroup-field .cms-file-info-preview {
-    box-shadow: none; }
-  #FileP .fieldgroup-field .cms-file-info-data {
-    width: 400px; }
-  #FileP .fieldgroup-field .fieldholder-small {
-    margin-top: 5px; }
-    #FileP .fieldgroup-field .fieldholder-small label {
-      width: auto;
-      margin-left: 0;
-      padding-top: 0;
-      margin-right: 10px;
-      font-weight: bold;
-      float: left; }
-    #FileP .fieldgroup-field .fieldholder-small .readonly {
-      font-style: italic;
-      color: #666; }
-
-#Actions {
-  box-shadow: none;
-  border: none;
-  padding: 0; }
-  #Actions li {
-    margin-left: 2px; }
-    #Actions li:first-child {
-      margin-left: 0; }
-    #Actions li.delete-button-appended {
-      display: inline-block;
-      position: relative;
-      margin-left: 0; }
-
-.DMSDocumentActionsPanel .fieldgroup {
-  display: none;
-  float: none;
-  width: auto;
-  background: #f8f8f8;
-  padding: 15px;
-  border: 1px solid #d0d3d5; }
-  .DMSDocumentActionsPanel .fieldgroup .fieldholder-small label {
-    float: none;
-    width: auto;
-    margin: 0;
-    padding: 0; }
-    .DMSDocumentActionsPanel .fieldgroup .fieldholder-small label.ss-ui-button {
-      float: left;
-      margin: 0 10px 0 0; }
-  .DMSDocumentActionsPanel .fieldgroup .embargo li,
-  .DMSDocumentActionsPanel .fieldgroup .expiry li {
-    float: none;
-    width: 100%;
-    margin-left: 8px; }
-    .DMSDocumentActionsPanel .fieldgroup .embargo li label,
-    .DMSDocumentActionsPanel .fieldgroup .expiry li label {
-      padding-left: 10px; }
-  .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime,
-  .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime,
-  .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime,
-  .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime {
-    margin-top: 0;
-    margin-left: 34px;
-    overflow: hidden; }
-    .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .field.date, .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .field.time,
-    .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .field.date,
-    .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .field.time,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .field.date,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .field.time,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .field.date,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .field.time {
-      display: inline-block;
-      width: auto;
-      margin: 0;
-      padding: 0; }
-    .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .field.date .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .field.date .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .field.date .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .field.date .middleColumn {
-      background: url(../../images/calendar-month.png) 90px 7px no-repeat;
-      overflow: hidden; }
-    .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .field.time .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .field.time .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .field.time .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .field.time .middleColumn {
-      background: url(../../images/clock-frame.png) 90px 7px no-repeat;
-      overflow: hidden; }
-    .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .middleColumn,
-    .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .middleColumn {
-      margin-left: 0;
-      width: auto;
-      border: none; }
-      .DMSDocumentActionsPanel .fieldgroup .embargo .embargoDatetime .middleColumn input,
-      .DMSDocumentActionsPanel .fieldgroup .embargo .expiryDatetime .middleColumn input,
-      .DMSDocumentActionsPanel .fieldgroup .expiry .embargoDatetime .middleColumn input,
-      .DMSDocumentActionsPanel .fieldgroup .expiry .expiryDatetime .middleColumn input {
-        width: 80px;
-        margin-right: 40px; }
-
-.DMSDocumentActionsPanel #Embargo {
-  border: none;
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none; }
-
-.DMSDocumentActionsPanel .ss-uploadfield-files .ss-uploadfield-item-preview {
-  background: url(../../images/app_icons/generic_32.png) -10px -6px no-repeat; }
-
-.DMSDocumentActionsPanel .ss-uploadfield-files .ss-uploadfield-item-name span.name {
-  width: 260px; }
-
-.DMSDocumentActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel {
-  width: auto;
-  text-indent: 0; }
-  .DMSDocumentActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .btn-icon-deleteLight {
-    background-position: 0 -128px;
-    display: inline-block; }
-  .DMSDocumentActionsPanel .ss-uploadfield-files .ss-uploadfield-item-actions .ss-uploadfield-item-cancel .ui-button-text {
-    display: block;
-    position: relative;
-    float: right;
-    color: #555;
-    padding: 0;
-    padding-left: 2em; }
-
-.DMSDocumentActionsPanel > .fieldgroup.middleColumn {
-  overflow: hidden;
-  display: block; }
-  .DMSDocumentActionsPanel > .fieldgroup.middleColumn .fieldgroup-field {
-    width: 100%; }
-
-#Form_ItemEditForm fieldset table.ss-gridfield-table {
-  width: 494px; }
-  #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main {
-    min-width: 175px; }
-    #Form_ItemEditForm fieldset table.ss-gridfield-table tr th.main.col-action_SetOrderID {
-      width: 60px;
-      min-width: 60px; }
-  #Form_ItemEditForm fieldset table.ss-gridfield-table tr td {
-    white-space: normal; }
-
-#ui-datepicker-div {
-  border: 1px solid #DDD; }
-
-.ui-autocomplete {
-  border: 1px solid #DDD;
-  box-shadow: 0 1px 2px 0px #AFAFAF;
+.dmsdocument-addexisting .ui-autocomplete {
+  border: 1px solid #d0d3d5;
   max-height: 300px;
   overflow: scroll; }
-
-.cms fieldset.documents table td,
-.cms fieldset.relatedLinks table td {
-  white-space: normal; }
-
-.cms fieldset.documents table td.col-buttons,
-.cms fieldset.relatedLinks table td.col-buttons {
-  white-space: nowrap; }
-  .cms fieldset.documents table td.col-buttons .dms-delete-link-only .ui-icon,
-  .cms fieldset.relatedLinks table td.col-buttons .dms-delete-link-only .ui-icon {
-    background: url(../../images/chain-unchain.png) no-repeat; }
-
-.cms fieldset.documents table tr.dms-document-hidden-row.odd,
-.cms fieldset.relatedLinks table tr.dms-document-hidden-row.odd {
-  background-color: rgba(242, 220, 222, 0.6); }
-
-.cms fieldset.documents table tr.dms-document-hidden-row.even,
-.cms fieldset.relatedLinks table tr.dms-document-hidden-row.even {
-  background-color: rgba(243, 202, 204, 0.675); }
-
-.cms fieldset.documents table tr.dms-document-hidden-row:hover,
-.cms fieldset.relatedLinks table tr.dms-document-hidden-row:hover {
-  background-color: rgba(245, 172, 173, 0.8) !important; }
-
-.DMSDocumentAddController .ui-tabs ul.ui-tabs-nav {
-  border-bottom: none;
-  float: right;
-  margin: 8px 0 -1px 0;
-  padding: 0 24px 0 0; }
-  .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li {
-    padding-bottom: 1px;
-    border: 1px solid #C0C0C2; }
-    .DMSDocumentAddController .ui-tabs ul.ui-tabs-nav li a {
-      padding: 8px 20px 8px; }
 
 .ss-add .document-add-existing input.document-autocomplete {
   position: absolute;
@@ -203,20 +158,16 @@ form.small .field .TreeDropdownField,
   box-sizing: border-box;
   -moz-box-sizing: border-box; }
   .ss-add .document-add-existing input.document-autocomplete[disabled] {
-    color: #C0C0C2;
-    text-shadow: 0 -1px 0 #FFF;
-    background: #EEE;
+    color: #d0d3d5;
+    text-shadow: 0 -1px 0 #ffffff;
+    background: #f8f8f8;
     background-image: none;
-    box-shadow: inset 0 1px 8px 0 #C4C4C4;
+    box-shadow: inset 0 1px 8px 0 #d0d3d5;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; }
 
-.ss-add .document-add-existing .TreeDropdownField {
-  border: none;
-  width: 100%;
-  max-width: 512px;
-  box-sizing: border-box;
-  cursor: pointer; }
+.ss-add .document-add-existing .treedropdown {
+  border: none; }
 
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link {
   padding: 5px 9px 9px;
@@ -241,13 +192,11 @@ form.small .field .TreeDropdownField,
 
 .ss-add .document-add-existing .document-list {
   width: 510px;
-  border: 1px solid #DDD;
+  border: 1px solid #d0d3d5;
   border-top: none;
   background: #ffffff;
   display: none;
-  box-shadow: 0 2px 4px 1px #DDD;
   max-height: 300px;
-  border-radius: 6px;
   background-clip: padding-box;
   overflow: scroll; }
   .ss-add .document-add-existing .document-list p {
@@ -259,10 +208,10 @@ form.small .field .TreeDropdownField,
       .ss-add .document-add-existing .document-list ul li a {
         display: block;
         padding: 4px 8px;
-        border: 1px solid #FFF;
+        border: 1px solid #ffffff;
         color: black; }
         .ss-add .document-add-existing .document-list ul li a:hover {
-          border: 1px solid #CCC;
+          border: 1px solid #d0d3d5;
           border-radius: 4px;
           background: rgba(203, 203, 203, 0.4);
           cursor: pointer;
@@ -326,20 +275,7 @@ form.small .field .TreeDropdownField,
         .cms .ss-add .treedropdownfield-panel ul li a.jstree-hovered,
         .cms .selectiongroup .treedropdownfield-panel ul li a.jstree-hovered {
           background: rgba(203, 203, 203, 0.4);
-          border: 1px solid #CCC; }
-
-@-moz-document url-prefix() .ss-add .document-add-existing input {
-  padding: 10px 7px; }
-
-#Form_EditForm_Documents {
-  padding: 1em 0; }
-  #Form_EditForm_Documents input[name="filter[LastChanged]"] {
-    display: none; }
-
-#Form_EditForm_RelatedLinks table {
-  padding: 1em 0; }
-  #Form_EditForm_RelatedLinks table thead h2 {
-    display: none; }
+          border: 1px solid #d0d3d5; }
 
 #Form_ItemEditForm h3:first-child {
   display: inline-block;

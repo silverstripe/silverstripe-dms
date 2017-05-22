@@ -1,4 +1,4 @@
-<div id="document" class="ss-add field treedropdown searchable">
+<div class="ss-add field treedropdown searchable dmsdocument-addexisting">
     <div class="document-add-existing <% if $useFieldContext %>field<% else %>link-editor-context<% end_if %>">
     <% if $useFieldContext %><h3><% else %><div><% end_if %>
         <span class="step-label">

@@ -32,6 +32,11 @@ class DMSDocumentSet extends DataObject
         ),
     );
 
+    private static $summary_fields = array(
+        'Title' => 'Title',
+        'Documents.Count' => 'No. Documents'
+    );
+
     /**
      * Retrieve a list of the documents in this set. An extension hook is provided before the result is returned.
      *
@@ -85,6 +90,7 @@ class DMSDocumentSet extends DataObject
                 // Document listing
                 $gridFieldConfig = GridFieldConfig::create()
                     ->addComponents(
+                        new GridFieldButtonRow('before'),
                         new GridFieldToolbarHeader(),
                         new GridFieldFilterHeader(),
                         new GridFieldSortableHeader(),
@@ -139,7 +145,7 @@ class DMSDocumentSet extends DataObject
                 $gridField->addExtraClass('documents');
 
                 $gridFieldConfig->addComponent(
-                    $addNewButton = new DMSGridFieldAddNewButton,
+                    $addNewButton = new DMSGridFieldAddNewButton('buttons-before-left'),
                     'GridFieldExportButton'
                 );
                 $addNewButton->setDocumentSetId($self->ID);

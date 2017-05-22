@@ -37,7 +37,6 @@ class DMSUploadField_ItemHandler extends UploadField_ItemHandler
             $validator
         );
         $form->loadDataFrom($file);
-        $form->addExtraClass('small');
 
         return $form;
     }

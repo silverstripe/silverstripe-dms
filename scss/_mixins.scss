@@ -1,0 +1,7 @@
+//** Generate a state for an active list item link
+//
+// @param {string} $color - the colour to use for the border
+// @param {string} $size  - the size the border should be, e.g. "8px"
+@mixin dmsdocument-actions-active($color, $size: "4px") {
+  border-bottom: #{$size} solid #{$color};
+}
