@@ -22,7 +22,10 @@ class DMSShortcodeTest extends SapphireTest
         $value = Injector::inst()->create('HTMLValue', $result);
         $link = $value->query('//a')->item(0);
 
-        $this->assertStringEndsWith("/dmsdocument/$document->ID", $link->getAttribute('href'));
+        $this->assertStringEndsWith(
+            '/dmsdocument/' . $document->ID . '-dms-test-lorum-file-pdf',
+            $link->getAttribute('href')
+        );
         $this->assertEquals($document->getExtension(), $link->getAttribute('data-ext'));
         $this->assertEquals($document->getFileSizeFormatted(), $link->getAttribute('data-size'));
 

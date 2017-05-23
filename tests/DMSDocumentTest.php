@@ -265,6 +265,20 @@ class DMSDocumentTest extends SapphireTest
     }
 
     /**
+     * Test that the link contains an ID and URL slug
+     */
+    public function testGetLink()
+    {
+        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-tests');
+
+        $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
+
+        $expected = '/dmsdocument/' . $document->ID . '-dms-test-lorum-file-pdf';
+        $this->assertSame($expected, $document->Link());
+        $this->assertSame($expected, $document->getLink());
+    }
+
+    /**
      * Ensure that the description can be returned in HTML format
      */
     public function testGetDescriptionWithLineBreak()
