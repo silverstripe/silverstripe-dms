@@ -212,7 +212,7 @@ class DMSDocumentSet extends DataObject
                 $field->setMultiple(true)->setSource($map);
             }
         }
-        $keyValPairs = JsonField::create('KeyValuePairs', $dmsDocFields->toArray());
+        $keyValPairs = DMSJsonField::create('KeyValuePairs', $dmsDocFields->toArray());
 
         // Now lastly add the sort fields
         $sortedBy = FieldGroup::create('SortedBy', array(

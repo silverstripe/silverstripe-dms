@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class JsonField combines form inputs into a key-value pair
+ * Combines form inputs into a key-value pair
  */
-class JsonField extends CompositeField
+class DMSJsonField extends CompositeField
 {
     public function __construct($name, $children = null)
     {
@@ -90,7 +90,7 @@ class JsonField extends CompositeField
     }
 
     /**
-     * Sets
+     * Sets the value
      * @param mixed $value
      *
      * @return $this
