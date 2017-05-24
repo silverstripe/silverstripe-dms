@@ -1,22 +1,22 @@
 <?php
 
-class JsonFieldTest extends SapphireTest
+class DMSJsonFieldTest extends SapphireTest
 {
     public function testJsonFieldConstructorMultiWays()
     {
-        $jsonField = new JsonField('MyJsonField', new FieldList(
+        $jsonField = new DMSJsonField('MyJsonField', new FieldList(
             new TextField('FirstName', 'Given name'),
             new TextField('Surname', 'Last name')
         ));
         $this->assertEquals($jsonField->FieldList()->count(), 2);
         $this->assertNotNull($jsonField->FieldList()->dataFieldByName('MyJsonField[FirstName]'));
 
-        $jsonField = new JsonField('MyJsonField', array(new TextField('FirstName', 'Given name'),
+        $jsonField = new DMSJsonField('MyJsonField', array(new TextField('FirstName', 'Given name'),
             new TextField('Surname', 'Last name')));
         $this->assertEquals($jsonField->FieldList()->count(), 2);
         $this->assertNotNull($jsonField->FieldList()->dataFieldByName('MyJsonField[FirstName]'));
 
-        $jsonField = new JsonField(
+        $jsonField = new DMSJsonField(
             'MyJsonField',
             new TextField('FirstName', 'Given name'),
             new TextField('Surname', 'Last name')
@@ -27,7 +27,7 @@ class JsonFieldTest extends SapphireTest
 
     public function testJsonFieldDataValueCouldDealWithArray()
     {
-        $jsonField = new JsonField('MyJsonField', new FieldList(
+        $jsonField = new DMSJsonField('MyJsonField', new FieldList(
             new TextField('FirstName', 'Given name'),
             new TextField('Surname', 'Last name')
         ));
