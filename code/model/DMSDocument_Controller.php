@@ -31,19 +31,35 @@ class DMSDocument_Controller extends Controller
         $doc = null;
 
         $id = Convert::raw2sql($request->param('ID'));
-
         if (strpos($id, 'version') === 0) {
             // Versioned document
-            $id = str_replace('version', '', $id);
+            $id = $this->getDocumentIdFromSlug(str_replace('version', '', $id));
             $doc = DataObject::get_by_id('DMSDocument_versions', $id);
             $this->extend('updateVersionFromID', $doc, $request);
         } else {
             // Normal document
-            $doc = DataObject::get_by_id('DMSDocument', $id);
+            $doc = DataObject::get_by_id('DMSDocument', $this->getDocumentIdFromSlug($id));
             $this->extend('updateDocumentFromID', $doc, $request);
         }
 
         return $doc;
+    }
+
+    /**
+     * Get a document's ID from a "friendly" URL slug containing a numeric ID and slugged title
+     *
+     * @param  string $slug
+     * @return int
+     * @throws InvalidArgumentException if an invalid format is provided
+     */
+    protected function getDocumentIdFromSlug($slug)
+    {
+        $parts = (array) sscanf($slug, '%d-%s');
+        $id = array_shift($parts);
+        if (is_numeric($id)) {
+            return (int) $id;
+        }
+        throw new InvalidArgumentException($slug . ' is not a valid DMSDocument URL');
     }
 
     /**
@@ -53,7 +69,6 @@ class DMSDocument_Controller extends Controller
     public function index(SS_HTTPRequest $request)
     {
         $doc = $this->getDocumentFromID($request);
-
 
         if (!empty($doc)) {
             $canView = $doc->canView();

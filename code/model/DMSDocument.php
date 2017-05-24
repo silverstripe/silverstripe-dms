@@ -260,7 +260,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     public function getLink()
     {
-        $result = Controller::join_links(Director::baseURL(), 'dmsdocument/' . $this->ID);
+        $urlSegment = sprintf('%d-%s', $this->ID, URLSegmentFilter::create()->filter($this->getTitle()));
+        $result = Controller::join_links(Director::baseURL(), 'dmsdocument/' . $urlSegment);
         if (!$this->canView()) {
             $result = sprintf("javascript:alert('%s')", $this->getPermissionDeniedReason());
         }
@@ -787,12 +788,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         $gridFieldConfig->getComponentByType('GridFieldDataColumns')
             ->setDisplayFields(array(
-                'Title'=>'Title',
-                'ClassName'=>'Page Type',
-                'ID'=>'Page ID'
+                'Title' => 'Title',
+                'ClassName' => 'Page Type',
+                'ID' => 'Page ID'
             ))
             ->setFieldFormatting(array(
-                'Title'=>sprintf(
+                'Title' => sprintf(
                     '<a class=\"cms-panel-link\" href=\"%s/$ID\">$Title</a>',
                     singleton('CMSPageEditController')->Link('show')
                 )
@@ -823,7 +824,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
                 ->setFieldFormatting(
                     array(
-                        'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>'
+                        'FilenameWithoutID' => '<a target="_blank" class="file-url" href="$Link">'
                             . '$FilenameWithoutID</a>'
                     )
                 );

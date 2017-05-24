@@ -8,6 +8,29 @@ class DMSDocumentControllerTest extends SapphireTest
     protected static $fixture_file = 'dmstest.yml';
 
     /**
+     * @var DMSDocument_Controller
+     */
+    protected $controller;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
+        $this->logInWithPermission('ADMIN');
+
+        $this->controller = $this->getMockBuilder('DMSDocument_Controller')
+            ->setMethods(array('sendFile'))
+            ->getMock();
+    }
+
+    public function tearDown()
+    {
+        DMSFilesystemTestHelper::delete('assets/_unit-test-123');
+        parent::tearDown();
+    }
+
+    /**
      * Test that the download behaviour is either "open" or "download"
      *
      * @param string $behaviour
@@ -16,16 +39,8 @@ class DMSDocumentControllerTest extends SapphireTest
      */
     public function testDownloadBehaviourOpen($behaviour, $expectedDisposition)
     {
-        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
-
-        $this->logInWithPermission('ADMIN');
-
-        /** @var DMSDocument_Controller $controller */
-        $controller = $this->getMockBuilder('DMSDocument_Controller')
-            ->setMethods(array('sendFile'))->getMock();
-
         $self = $this;
-        $controller->expects($this->once())
+        $this->controller->expects($this->once())
             ->method('sendFile')
             ->will(
                 $this->returnCallback(function ($path, $mime, $name, $disposition) use ($self, $expectedDisposition) {
@@ -38,11 +53,9 @@ class DMSDocumentControllerTest extends SapphireTest
         $openDoc->clearEmbargo(false);
         $openDoc->write();
 
-        $request = new SS_HTTPRequest('GET', 'index/' . $openDoc->ID);
-        $request->match('index/$ID');
-        $controller->index($request);
-
-        DMSFilesystemTestHelper::delete('assets/_unit-test-123');
+        $request = new SS_HTTPRequest('GET', $openDoc->Link());
+        $request->match('dmsdocument/$ID');
+        $this->controller->index($request);
     }
 
     /**
