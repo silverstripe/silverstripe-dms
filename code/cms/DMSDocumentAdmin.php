@@ -3,7 +3,8 @@
 class DMSDocumentAdmin extends ModelAdmin
 {
     private static $managed_models = array(
-        'DMSDocument'
+        'DMSDocument',
+        'DMSDocumentSet'
     );
 
     private static $url_segment = 'documents';
@@ -21,13 +22,34 @@ class DMSDocumentAdmin extends ModelAdmin
     {
         /** @var CMSForm $form */
         $form = parent::getEditForm($id, $fields);
+        $gridField = $form->Fields()->fieldByName($this->sanitiseClassName($this->modelClass));
+        return $this->modifyGridField($form, $gridField);
+    }
 
-        // See parent class
-        $gridFieldName = $this->sanitiseClassName($this->modelClass);
+    /**
+     * If the GridField is for DMSDocument then add a custom "add" button. If it's for DMSDocumentSet then
+     * update the display fields to include some extra columns that are only for this ModelAdmin, so cannot
+     * be added directly to the model's display fields.
+     *
+     * @param  CMSForm   $form
+     * @param  GridField $gridField
+     * @return CMSForm
+     */
+    protected function modifyGridField(CMSForm $form, GridField $gridField)
+    {
+        $gridFieldConfig = $gridField->getConfig();
 
-        $gridFieldConfig = $form->Fields()->fieldByName($gridFieldName)->getConfig();
-        $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
-        $gridFieldConfig->addComponent(new DMSGridFieldAddNewButton('buttons-before-left'), 'GridFieldExportButton');
+        if ($this->modelClass === 'DMSDocument') {
+            $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
+            $gridFieldConfig->addComponent(new DMSGridFieldAddNewButton('buttons-before-left'), 'GridFieldExportButton');
+        } elseif ($this->modelClass === 'DMSDocumentSet') {
+            $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
+
+            $dataColumns = $gridFieldConfig->getComponentByType('GridFieldDataColumns');
+            $fields = $dataColumns->getDisplayFields($gridField);
+            $fields = array('Title' => 'Title', 'Page.Title' => 'Page') + $fields;
+            $dataColumns->setDisplayFields($fields);
+        }
 
         return $form;
     }
