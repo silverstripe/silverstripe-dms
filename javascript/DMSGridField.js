@@ -4,7 +4,7 @@
   $.entwine('ss', function ($) {
     $('.ss-gridfield-item a.file-url').entwine({
       onclick: function (e) {
-        //make sure the download link doesn't trigger a gridfield edit dialog
+        // Make sure the download link doesn't trigger a gridfield edit dialog
         window.open(this.attr('href'), '_blank');
 
         e.preventDefault();
