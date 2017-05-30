@@ -73,8 +73,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     private static $summary_fields = array(
         'Filename' => 'Filename',
         'Title' => 'Title',
+        'getRelatedPages.count' => 'Page Use',
         'ViewCount' => 'ViewCount',
-        'getRelatedPages.count' => 'Page Use'
     );
 
     /**
@@ -1127,13 +1127,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                         new ReadonlyField("PublishedOn", "Published on". ':', $publishedOnValue),
                         new ReadonlyField("ReferencedOn", "Referenced on". ':', $relationListCountValue),
                         new ReadonlyField("ViewCount", "View count". ':', $this->ViewCount)
-                    )
+                    )->setName('FilePreviewDataFields')
                 )->setName("FilePreviewData")->addExtraClass('cms-file-info-data')
             )->setName("FilePreview")->addExtraClass('cms-file-info')
         );
 
         $fields->addExtraClass('dmsdocument-documentdetails');
         $urlField->dontEscape = true;
+
+        $this->extend('updateFieldsForFile', $fields);
 
         return $fields;
     }
