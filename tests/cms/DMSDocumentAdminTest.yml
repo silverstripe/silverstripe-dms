@@ -1,0 +1,32 @@
+Page:
+  home:
+    Title: Home Test Page
+    URLSegment: home
+  about_us:
+    Title: About Us Test Page
+    URLSegment: About Us
+
+DMSDocumentSet:
+  home_default:
+    Title: Home Default
+    Page: =>Page.home
+  home_alt:
+    Title: Home Alternative
+    Page: =>Page.home
+  about_default:
+    Title: About Default
+    Page: =>Page.about_us
+
+DMSDocument:
+  h_d_1:
+    Title: Home Default 1
+    Filename: home-default-1
+    Sets: =>DMSDocumentSet.home_default
+  h_a_2:
+    Title: Home Default 2
+    Filename: home-default-2
+    Sets: =>DMSDocumentSet.home_alt
+  a_d_1:
+    Title: About Default 1
+    Filename: about-default-1
+    Sets: =>DMSDocumentSet.about_default

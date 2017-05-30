@@ -2,14 +2,21 @@
 
 class DMSDocumentAdminTest extends FunctionalTest
 {
+    protected static $fixture_file = 'DMSDocumentAdminTest.yml';
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->logInWithPermission('ADMIN');
+    }
+
     /**
      * Check that the default "add new" button is gone, and replaced with our customised version of it
      */
     public function testGridFieldHasCustomisedAddNewButton()
     {
         $modelAdmin = new DMSDocumentAdmin;
-        // SS < 3.3 doesn't have a response setter, this initialises it
-        $modelAdmin->handleRequest(new SS_HTTPRequest('GET', '/'), DataModel::inst());
         $modelAdmin->init();
 
         $form = $modelAdmin->getEditForm();
@@ -30,5 +37,33 @@ class DMSDocumentAdminTest extends FunctionalTest
             $gridFieldConfig->getComponentByType('DMSGridFieldAddNewButton'),
             'Model admin for documents contains customised DMS add new button'
         );
+    }
+
+    /**
+     * Quick check to ensure that the ModelAdmin endpoint is working
+     */
+    public function testModelAdminEndpointWorks()
+    {
+        $this->assertEquals(200, $this->get('admin/documents')->getStatusCode());
+    }
+
+    /**
+     * Check that the document sets GridField has had its "add new" button removed
+     */
+    public function testDocumentSetsGridFieldHasNoAddButton()
+    {
+        $result = (string) $this->get('admin/documents/DMSDocumentSet')->getBody();
+        $this->assertNotContains('Add Document Set', $result);
+    }
+
+    /**
+     * Check that the document sets GridField has a data column for the parent page title. Here we check for the
+     * Page title existing in the DOM, since "Page" is guaranteed to exist somewhere else.
+     */
+    public function testDocumentSetsGridFieldHasParentPageColumn()
+    {
+        $result = (string) $this->get('admin/documents/DMSDocumentSet')->getBody();
+        $this->assertContains('Home Test Page', $result);
+        $this->assertContains('About Us Test Page', $result);
     }
 }
