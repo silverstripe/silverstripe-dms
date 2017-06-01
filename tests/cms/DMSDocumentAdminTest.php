@@ -48,15 +48,6 @@ class DMSDocumentAdminTest extends FunctionalTest
     }
 
     /**
-     * Check that the document sets GridField has had its "add new" button removed
-     */
-    public function testDocumentSetsGridFieldHasNoAddButton()
-    {
-        $result = (string) $this->get('admin/documents/DMSDocumentSet')->getBody();
-        $this->assertNotContains('Add Document Set', $result);
-    }
-
-    /**
      * Check that the document sets GridField has a data column for the parent page title. Here we check for the
      * Page title existing in the DOM, since "Page" is guaranteed to exist somewhere else.
      */

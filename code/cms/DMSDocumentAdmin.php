@@ -43,8 +43,6 @@ class DMSDocumentAdmin extends ModelAdmin
             $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
             $gridFieldConfig->addComponent(new DMSGridFieldAddNewButton('buttons-before-left'), 'GridFieldExportButton');
         } elseif ($this->modelClass === 'DMSDocumentSet') {
-            $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
-
             $dataColumns = $gridFieldConfig->getComponentByType('GridFieldDataColumns');
             $fields = $dataColumns->getDisplayFields($gridField);
             $fields = array('Title' => 'Title', 'Page.Title' => 'Page') + $fields;

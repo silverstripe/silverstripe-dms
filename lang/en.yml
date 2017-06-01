@@ -26,6 +26,7 @@ en:
     ADDDOCUMENTSBUTTON: Add Documents
     GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
     PLURALNAME: Document Sets
+    SHOWONPAGE: Show on page
     SINGULARNAME: Document Set
   DMSDocumentTaxonomyExtension:
     TAGS: Tags
