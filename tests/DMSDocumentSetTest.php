@@ -163,7 +163,7 @@ class DMSDocumentSetTest extends SapphireTest
     {
         Config::inst()->update('DMS', 'shortcode_handler_key', 'unit-test');
 
-        $set = DMSDocumentSet::create();
+        $set = DMSDocumentSet::create(array('Title' => 'TestSet'));
         $set->write();
 
         $fields = $set->getCMSFields();
@@ -186,5 +186,19 @@ class DMSDocumentSetTest extends SapphireTest
         $set->KeyValuePairs = '{"Filename":"extradoc3"}';
         $set->saveLinkedDocuments();
         $this->assertEquals(2, $set->getDocuments()->count(), 'Set has 2 documents');
+    }
+
+    /**
+     * Tests that an exception is thrown if no title entered for a DMSDocumentSet.
+     * @expectedException ValidationException
+     */
+    public function testExceptionOnNoTitleGiven()
+    {
+        $set = DMSDocumentSet::create(array('Title' => ''));
+        try {
+            $set->write();
+        } catch (ValidationException $e) {
+            throw $e;
+        }
     }
 }

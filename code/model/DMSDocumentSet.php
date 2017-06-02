@@ -122,7 +122,8 @@ class DMSDocumentSet extends DataObject
                     ->setFieldCasting(array('LastEdited' => 'Datetime->Ago'))
                     ->setFieldFormatting(
                         array(
-                            'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\' href=\'$Link\'>$FilenameWithoutID</a>',
+                            'FilenameWithoutID' => '<a target=\'_blank\' class=\'file-url\''
+                                . ' href=\'$Link\'>$FilenameWithoutID</a>',
                             'ManuallyAdded' => function ($value) {
                                 if ($value) {
                                     return _t('DMSDocumentSet.MANUAL', 'Manually');
@@ -310,5 +311,15 @@ class DMSDocumentSet extends DataObject
             (array) DMSDocument::create()->config()->get('display_fields'),
             array('ManuallyAdded' => _t('DMSDocumentSet.ADDEDMETHOD', 'Added'))
         );
+    }
+
+    protected function validate()
+    {
+        $result = parent::validate();
+
+        if (!$this->getTitle()) {
+            $result->error(_t('DMSDocumentSet.VALIDATION_NO_TITLE', '\'Title\' is required.'));
+        }
+        return $result;
     }
 }
