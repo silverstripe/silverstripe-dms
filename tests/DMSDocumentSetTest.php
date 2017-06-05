@@ -194,11 +194,24 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testExceptionOnNoTitleGiven()
     {
-        $set = DMSDocumentSet::create(array('Title' => ''));
-        try {
-            $set->write();
-        } catch (ValidationException $e) {
-            throw $e;
-        }
+        DMSDocumentSet::create(array('Title' => ''))->write();
+    }
+
+    /**
+     * Ensure that when editing in a page context that the "page" field is removed, or is labelled "Show on page"
+     * otherwise
+     */
+    public function testPageFieldRemovedWhenEditingInPageContext()
+    {
+        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+
+        $fields = $set->getCMSFields();
+        $this->assertInstanceOf('DropdownField', $fields->fieldByName('Root.Main.PageID'));
+
+        $pageController = new CMSPageEditController;
+        $pageController->pushCurrent();
+
+        $fields = $set->getCMSFields();
+        $this->assertNull($fields->fieldByName('Root.Main.PageID'));
     }
 }

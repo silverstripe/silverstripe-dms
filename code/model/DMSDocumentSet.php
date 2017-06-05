@@ -117,8 +117,12 @@ class DMSDocumentSet extends DataObject
                     $gridFieldConfig->addComponent($sortableComponent);
                 }
 
-                $field = $fields->fieldByName('Root.Main.PageID');
-                $field->setTitle(_t('DMSDocumentSet.SHOWONPAGE', 'Show on page'));
+                // Don't show which page this is if we're already editing within a page context
+                if (Controller::curr() instanceof CMSPageEditController) {
+                    $fields->removeByName('PageID');
+                } else {
+                    $fields->fieldByName('Root.Main.PageID')->setTitle(_t('DMSDocumentSet.SHOWONPAGE', 'Show on page'));
+                }
 
                 $gridFieldConfig->getComponentByType('GridFieldDataColumns')
                     ->setDisplayFields($self->getDocumentDisplayFields())
