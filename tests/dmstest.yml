@@ -62,6 +62,8 @@ DMSDocumentSet:
   dsSaveLinkedDocuments:
     Title: Test Set 6
     Page: =>SiteTree.s9
+  unlinked_set:
+    Title: Document Set not linked
 DMSDocument:
   d1:
     Filename: test-file-file-doesnt-exist-1
