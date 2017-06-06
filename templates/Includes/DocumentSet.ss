@@ -4,7 +4,7 @@
             <h3>$Title</h3>
         <% end_if %>
 
-        <% loop $getDocuments %>
+        <% loop $getDocuments.Sort(DocumentSort) %>
             <% include Document %>
         <% end_loop %>
     </div>

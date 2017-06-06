@@ -174,6 +174,26 @@ class DMSDocumentSetTest extends SapphireTest
     }
 
     /**
+     * Ensure that if the module is available, the orderable rows GridField component is added
+     */
+    public function testDocumentsAreOrderable()
+    {
+        if (!class_exists('GridFieldSortableRows')) {
+            $this->markTestSkipped('Test requires undefinedoffset/sortablegridfield installed.');
+        }
+
+        $fields = $this->objFromFixture('DMSDocumentSet', 'ds1')->getCMSFields();
+
+        $gridField = $fields->fieldByName('Root.Main.Documents');
+        $this->assertInstanceOf('GridField', $gridField);
+
+        $this->assertInstanceOf(
+            'GridFieldSortableRows',
+            $gridField->getConfig()->getComponentByType('GridFieldSortableRows')
+        );
+    }
+
+    /**
      * Test that extra documents are added after write
      */
     public function testSaveLinkedDocuments()

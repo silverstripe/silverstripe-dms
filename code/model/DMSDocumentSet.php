@@ -29,6 +29,7 @@ class DMSDocumentSet extends DataObject
             // Flag indicating if a document was added directly to a set - in which case it is set - or added
             // via the query-builder.
             'ManuallyAdded' => 'Boolean(1)',
+            'DocumentSort' => 'Int'
         ),
     );
 
@@ -87,6 +88,8 @@ class DMSDocumentSet extends DataObject
                     'Title'
                 );
             } else {
+                $fields->removeByName('DocumentSetSort');
+
                 // Document listing
                 $gridFieldConfig = GridFieldConfig::create()
                     ->addComponents(
@@ -109,12 +112,7 @@ class DMSDocumentSet extends DataObject
                 $gridFieldConfig->addComponent($paginatorComponent);
 
                 if (class_exists('GridFieldSortableRows')) {
-                    $sortableComponent = new GridFieldSortableRows('DocumentSort');
-                    // setUsePagination method removed from newer version of SortableGridField.
-                    if (method_exists($sortableComponent, 'setUsePagination')) {
-                        $sortableComponent->setUsePagination(false)->setForceRedraw(true);
-                    }
-                    $gridFieldConfig->addComponent($sortableComponent);
+                    $gridFieldConfig->addComponent(new GridFieldSortableRows('DocumentSort'));
                 }
 
                 $field = $fields->fieldByName('Root.Main.PageID');
