@@ -123,7 +123,6 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testAddQueryFields()
     {
-
         /** @var DMSDocumentSet $set */
         $set = $this->objFromFixture('DMSDocumentSet', 'ds6');
         /** @var FieldList $fields */
@@ -141,19 +140,21 @@ class DMSDocumentSetTest extends SapphireTest
         );
     }
 
-    public function testAddQueryFieldsIsExtensible()
+    /**
+     * Ensure that the "direction" dropdown field has user friendly field labels
+     */
+    public function testQueryBuilderDirectionFieldHasFriendlyLabels()
     {
+        $fields = $this->objFromFixture('DMSDocumentSet', 'ds1')->getCMSFields();
 
-        DMSDocumentSet::add_extension('StubDocumentSetMockExtension');
+        $dropdown = $fields->fieldByName('Root.QueryBuilder')->FieldList()->filterByCallback(function ($field) {
+            return $field instanceof FieldGroup;
+        })->first()->fieldByName('SortByDirection');
 
-        $fields = new FieldList(new TabSet('Root'));
-        $set = new DMSDocumentSet;
-        $set->addQueryFields($fields);
-
-        $this->assertNotNull(
-            $fields->dataFieldByName('ExtendedField'),
-            'addQueryFields() is extendible as it included the field from the extension'
-        );
+        $this->assertInstanceOf('DropdownField', $dropdown);
+        $source = $dropdown->getSource();
+        $this->assertContains('Ascending', $source);
+        $this->assertContains('Descending', $source);
     }
 
     /**

@@ -192,15 +192,6 @@ class DMSDocumentSet extends DataObject
     /**
      * Adds the query fields to build the document logic to the DMSDocumentSet.
      *
-     * To extend use the following from within an Extension subclass:
-     *
-     * <code>
-     * public function updateQueryFields($result)
-     * {
-     *     // Do something here
-     * }
-     * </code>
-     *
      * @param FieldList $fields
      */
     public function addQueryFields($fields)
@@ -227,12 +218,19 @@ class DMSDocumentSet extends DataObject
                 'Created'     => 'Created',
                 'Title'       => 'Document title',
             ), 'LastEdited'),
-            DropdownField::create('SortByDirection', '', $this->dbObject('SortByDirection')->enumValues(), 'DESC'),
+            DropdownField::create(
+                'SortByDirection',
+                '',
+                array(
+                    'DESC' => _t('DMSDocumentSet.DIRECTION_DESCENDING', 'Descending'),
+                    'ASC' => _t('DMSDocumentSet.DIRECTION_ASCENDING', 'Ascending')
+                ),
+                'DESC'
+            ),
         ));
 
         $sortedBy->setTitle(_t('DMSDocumentSet.SORTED_BY', 'Sort the document set by:'));
         $fields->addFieldsToTab('Root.QueryBuilder', array($keyValPairs, $sortedBy));
-        $this->extend('updateQueryFields', $fields);
     }
 
     public function onBeforeWrite()

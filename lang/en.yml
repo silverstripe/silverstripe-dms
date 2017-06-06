@@ -24,6 +24,8 @@ en:
   DMSDocumentSet:
     ADDDOCUMENTBUTTON: Add Document
     ADDDOCUMENTSBUTTON: Add Documents
+    DIRECTION_ASCENDING: Ascending
+    DIRECTION_DESCENDING: Descending
     GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
     PLURALNAME: Document Sets
     SHOWONPAGE: Show on page
