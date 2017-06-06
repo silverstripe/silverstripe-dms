@@ -57,4 +57,17 @@ class DMSDocumentAdminTest extends FunctionalTest
         $this->assertContains('Home Test Page', $result);
         $this->assertContains('About Us Test Page', $result);
     }
+
+    /**
+     * Checks that the document sets GridField has a data column which links to the DocumentSets tab on
+     * the actual page in the CMS
+     */
+    public function testDocumentSetsGridFieldHasLinkToCMSPageEditor()
+    {
+        $result = (string)$this->get('admin/documents/DMSDocumentSet')->getBody();
+        $this->assertContains(
+            "<a class='dms-doc-sets-link'",
+            $result
+        );
+    }
 }

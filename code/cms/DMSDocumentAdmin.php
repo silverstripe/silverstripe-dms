@@ -13,6 +13,11 @@ class DMSDocumentAdmin extends ModelAdmin
 
     private static $menu_icon = 'dms/images/app_icons/drawer.png';
 
+    public function init()
+    {
+        parent::init();
+        Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
+    }
     /**
      * Remove the default "add" button and replace it with a customised version for DMS
      *
@@ -41,13 +46,29 @@ class DMSDocumentAdmin extends ModelAdmin
 
         if ($this->modelClass === 'DMSDocument') {
             $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
-            $gridFieldConfig->addComponent(new DMSGridFieldAddNewButton('buttons-before-left'), 'GridFieldExportButton');
+            $gridFieldConfig->addComponent(
+                new DMSGridFieldAddNewButton('buttons-before-left'),
+                'GridFieldExportButton'
+            );
         } elseif ($this->modelClass === 'DMSDocumentSet') {
             $dataColumns = $gridFieldConfig->getComponentByType('GridFieldDataColumns');
             $fields = $dataColumns->getDisplayFields($gridField);
             $fields = array('Title' => 'Title', 'Page.Title' => 'Page') + $fields;
-            $dataColumns->setDisplayFields($fields);
-            Requirements::add_i18n_javascript(DMS_DIR.'/javascript/lang');
+            $dataColumns->setDisplayFields($fields)
+                ->setFieldFormatting(
+                    array(
+                        'Page.Title' => function ($value, $item) {
+                            // Link a page click directly to the Document Set on the actual page
+                            if ($page = SiteTree::get()->byID($item->PageID)) {
+                                return sprintf(
+                                    "<a class='dms-doc-sets-link' href='%s/#Root_DocumentSets%s'>$value</a>",
+                                    $page->CMSEditLink(),
+                                    $page->DocumentSets()->count()
+                                );
+                            }
+                        }
+                    )
+                );
         }
 
         return $form;
