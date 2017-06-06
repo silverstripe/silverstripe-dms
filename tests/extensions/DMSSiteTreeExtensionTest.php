@@ -82,4 +82,24 @@ class DMSSiteTreeExtensionTest extends SapphireTest
         }
         $this->assertCount(0, $siteTree->getAllDocuments()->filter('EmbargoedUntilPublished', true));
     }
+
+    /**
+     * Ensure that document sets that are assigned to pages to not show up in "link existing" autocomplete
+     * search results
+     */
+    public function testGetRelatedDocumentsForAutocompleter()
+    {
+        $page = $this->objFromFixture('SiteTree', 's1');
+        $gridField = $page->getCMSFields()->fieldByName('Root.Document Sets (2).Document Sets');
+        $this->assertInstanceOf('GridField', $gridField);
+
+        $autocompleter = $gridField->getConfig()->getComponentByType('GridFieldAddExistingAutocompleter');
+        $jsonResult = $autocompleter->doSearch(
+            $gridField,
+            new SS_HTTPRequest('GET', '/', array('gridfield_relationsearch' => 'Document Set'))
+        );
+
+        $this->assertContains('Document Set not linked', $jsonResult);
+        $this->assertNotContains('Document Set 1', $jsonResult);
+    }
 }
