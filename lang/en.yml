@@ -28,8 +28,10 @@ en:
     DIRECTION_DESCENDING: Descending
     GRIDFIELD_NOTICE: Managing documents will be available once you have created this document set.
     PLURALNAME: Document Sets
+    QUERY_BUILDER_NOTICE: The query builder provides the ability to add documents to a document set based on the filters below. Please note that the set will be built using this criteria when you save the form. This set will not be dynamically updated (see the documentation for more information).
     SHOWONPAGE: Show on page
     SINGULARNAME: Document Set
+    TAGS_RIGHT_TITLE: Tags can be set in the taxonomy area, and can be assigned when editing a document.
   DMSDocumentTaxonomyExtension:
     TAGS: Tags
     NOTAGS: No tags found

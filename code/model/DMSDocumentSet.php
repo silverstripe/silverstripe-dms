@@ -89,7 +89,6 @@ class DMSDocumentSet extends DataObject
                 );
             } else {
                 $fields->removeByName('DocumentSetSort');
-
                 // Document listing
                 $gridFieldConfig = GridFieldConfig::create()
                     ->addComponents(
@@ -207,6 +206,15 @@ class DMSDocumentSet extends DataObject
             if ($field instanceof ListboxField) {
                 $map = ($field->getName() === 'Tags__ID') ? $doc->getAllTagsMap() : $membersMap;
                 $field->setMultiple(true)->setSource($map);
+
+                if ($field->getName() === 'Tags__ID') {
+                    $field->setRightTitle(
+                        _t(
+                            'DMSDocumentSet.TAGS_RIGHT_TITLE',
+                            'Tags can be set in the taxonomy area, and can be assigned when editing a document.'
+                        )
+                    );
+                }
             }
         }
         $keyValPairs = DMSJsonField::create('KeyValuePairs', $dmsDocFields->toArray());
@@ -230,7 +238,22 @@ class DMSDocumentSet extends DataObject
         ));
 
         $sortedBy->setTitle(_t('DMSDocumentSet.SORTED_BY', 'Sort the document set by:'));
-        $fields->addFieldsToTab('Root.QueryBuilder', array($keyValPairs, $sortedBy));
+        $fields->addFieldsToTab(
+            'Root.QueryBuilder',
+            array(
+                LiteralField::create(
+                    'GridFieldNotice',
+                    '<p class="message warning">' . _t(
+                        'DMSDocumentSet.QUERY_BUILDER_NOTICE',
+                        'The query builder provides the ability to add documents to a document set based on the ' .
+                        'filters below. Please note that the set will be built using this criteria when you save the ' .
+                        'form. This set will not be dynamically updated (see the documentation for more information).'
+                    ) . '</p>'
+                ),
+                $keyValPairs,
+                $sortedBy
+            )
+        );
     }
 
     public function onBeforeWrite()
