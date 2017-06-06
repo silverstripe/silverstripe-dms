@@ -47,6 +47,7 @@ class DMSDocumentAdmin extends ModelAdmin
             $fields = $dataColumns->getDisplayFields($gridField);
             $fields = array('Title' => 'Title', 'Page.Title' => 'Page') + $fields;
             $dataColumns->setDisplayFields($fields);
+            Requirements::add_i18n_javascript(DMS_DIR.'/javascript/lang');
         }
 
         return $form;

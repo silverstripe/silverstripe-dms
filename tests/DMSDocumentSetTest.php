@@ -138,6 +138,15 @@ class DMSDocumentSetTest extends SapphireTest
             $keyValuePairs->fieldByName('KeyValuePairs[Title]'),
             'addQueryFields() includes KeyValuePairs composite field'
         );
+
+        // Test that the notification field exists
+        $this->assertNotNull($fields->fieldByName('Root.QueryBuilder.GridFieldNotice'));
+
+        // Test that Tags__ID field exists
+        $this->assertContains(
+            'Tags can be set in the taxonomy area,',
+            $keyValuePairs->fieldByName('KeyValuePairs[Tags__ID]')->RightTitle()
+        );
     }
 
     /**
