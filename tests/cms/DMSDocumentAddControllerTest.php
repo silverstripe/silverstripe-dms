@@ -4,22 +4,45 @@ class DMSDocumentAddControllerTest extends FunctionalTest
 {
     protected static $fixture_file = 'dms/tests/dmstest.yml';
 
+    /**
+     * @var DMSDocumentAddController
+     */
+    protected $controller;
+
     public function setUp()
     {
         parent::setUp();
         $this->logInWithPermission();
+        $this->controller = new DMSDocumentAddController;
+        $this->controller->init();
     }
 
+    /**
+     * Ensure that if no ID is provided then a SiteTree singleton is returned (which will not have an ID). If one is
+     * provided then it should be loaded from the database via versioning.
+     */
     public function testCurrentPageReturnsSiteTree()
     {
-        $controller = new DMSDocumentAddController;
-        $this->assertInstanceOf('SiteTree', $controller->currentPage());
+        $page = $this->objFromFixture('SiteTree', 's1');
+
+        $this->assertInstanceOf('SiteTree', $this->controller->currentPage());
+        $this->assertEmpty($this->controller->currentPage()->ID);
+        $this->controller->setRequest(new SS_HTTPRequest('GET', '/', array('ID' => $page->ID)));
+        $this->assertEquals($page->ID, $this->controller->currentPage()->ID, 'Specified page is loaded and returned');
     }
 
+    /**
+     * Ensure that if no "dsid" is given a singleton is returned (which will not have an ID). If one is provided
+     * it should be loaded from the database
+     */
     public function testGetCurrentDocumentSetReturnsDocumentSet()
     {
-        $controller = new DMSDocumentAddController;
-        $this->assertInstanceOf('DMSDocumentSet', $controller->getCurrentDocumentSet());
+        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+
+        $this->assertInstanceOf('DMSDocumentSet', $this->controller->getCurrentDocumentSet());
+        $this->assertEmpty($this->controller->getCurrentDocumentSet()->ID, 'Singleton does not have an ID');
+        $this->controller->setRequest(new SS_HTTPRequest('GET', '/', array('dsid' => $set->ID)));
+        $this->assertEquals($set->ID, $this->controller->getCurrentDocumentSet()->ID, 'Specified document set is returned');
     }
 
     /**
@@ -27,13 +50,12 @@ class DMSDocumentAddControllerTest extends FunctionalTest
      */
     public function testGetAllowedExtensions()
     {
-        $controller = new DMSDocumentAddController;
         Config::inst()->remove('File', 'allowed_extensions');
         Config::inst()->update('File', 'allowed_extensions', array('jpg', 'gif'));
-        $this->assertSame(array('jpg', 'gif'), $controller->getAllowedExtensions());
+        $this->assertSame(array('jpg', 'gif'), $this->controller->getAllowedExtensions());
 
         Config::inst()->update('DMSDocumentAddController', 'allowed_extensions', array('php', 'php5'));
-        $this->assertSame(array('jpg', 'gif', 'php', 'php5'), $controller->getAllowedExtensions());
+        $this->assertSame(array('jpg', 'gif', 'php', 'php5'), $this->controller->getAllowedExtensions());
     }
 
     /**
@@ -42,13 +64,27 @@ class DMSDocumentAddControllerTest extends FunctionalTest
      */
     public function testBacklink()
     {
-        $controller = new DMSDocumentAddController;
-        $controller->init();
-        $this->assertContains('admin/documents', $controller->Backlink());
+        $this->assertContains('admin/documents', $this->controller->Backlink());
 
         $request = new SS_HTTPRequest('GET', '/', array('dsid' => 123));
-        $controller->setRequest($request);
-        $this->assertContains('EditForm', $controller->Backlink());
-        $this->assertContains('123', $controller->Backlink());
+        $this->controller->setRequest($request);
+        $this->assertContains('EditForm', $this->controller->Backlink());
+        $this->assertContains('123', $this->controller->Backlink());
+    }
+
+    /**
+     * Test that the document autocomplete endpoint returns JSON, matching on ID, title or filename (case insensitive)
+     */
+    public function testDocumentAutocomplete()
+    {
+        $result = (string) $this->get('admin/pages/adddocument/documentautocomplete?term=EXIST')->getBody();
+        $this->assertJson($result, 'Autocompleter should return JSON');
+        $this->assertContains("File That Doesn't Exist (Title)", $result);
+        $this->assertContains('test-file-file-doesnt-exist-1', $result);
+        $this->assertNotContains('doc-logged-in-users', $result);
+
+        $document = $this->objFromFixture('DMSDocument', 'd2');
+        $result = (string) $this->get('admin/pages/adddocument/documentautocomplete?term=' . $document->ID)->getBody();
+        $this->assertContains($document->ID . " - File That Doesn't Exist (Title)", $result);
     }
 }
