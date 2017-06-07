@@ -511,7 +511,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      *
      * @return string
      */
-    public function getFileName()
+    public function getFilename()
     {
         if ($this->getField('Filename')) {
             return $this->getField('Filename');
