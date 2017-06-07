@@ -11,5 +11,14 @@
         return false;
       }
     });
+
+    $('.ss-gridfield-item a.dms-doc-sets-link').entwine({
+      onclick: function (e){
+        // Prevent the initial flash of the gridfield's edit form
+        e.preventDefault();
+        document.location.href=this.attr('href');
+        return false;
+      }
+    });
   });
 }(jQuery));
