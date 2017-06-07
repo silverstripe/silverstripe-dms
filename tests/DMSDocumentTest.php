@@ -254,7 +254,7 @@ class DMSDocumentTest extends SapphireTest
         Config::inst()->update('DMS', 'folder_name', 'assets/_unit-tests');
 
         $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
-        $filename = $document->getStorageFolder() . '/' . $document->getFileName();
+        $filename = $document->getStorageFolder() . '/' . $document->getFilename();
 
         $this->assertTrue(file_exists($filename));
         $document->delete();
