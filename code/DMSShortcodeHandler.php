@@ -8,14 +8,8 @@
  */
 class DMSShortcodeHandler
 {
-
-    public static function handle(
-        $arguments,
-        $content,
-        ShortcodeParser $parser,
-        $tag,
-        array $extra = array()
-    ) {
+    public static function handle($arguments, $content, ShortcodeParser $parser, $tag, array $extra = array())
+    {
         if (!empty($arguments['id'])) {
             $document = DMSDocument::get()->byID($arguments['id']);
 
@@ -26,14 +20,14 @@ class DMSShortcodeHandler
                         $document->Link(),
                         $parser->parse($content)
                     );
-                } else {
-                    if (isset($extra['element'])) {
-                        $extra['element']->setAttribute('data-ext', $document->getExtension());
-                        $extra['element']->setAttribute('data-size', $document->getFileSizeFormatted());
-                    }
-
-                    return $document->Link();
                 }
+
+                if (isset($extra['element'])) {
+                    $extra['element']->setAttribute('data-ext', $document->getExtension());
+                    $extra['element']->setAttribute('data-size', $document->getFileSizeFormatted());
+                }
+
+                return $document->Link();
             }
         }
 
