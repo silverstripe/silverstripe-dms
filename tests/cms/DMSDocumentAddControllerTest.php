@@ -64,11 +64,19 @@ class DMSDocumentAddControllerTest extends FunctionalTest
      */
     public function testBacklink()
     {
+        // No page ID and no document set ID
         $this->assertContains('admin/documents', $this->controller->Backlink());
 
+        // No page ID, has document set ID
         $request = new SS_HTTPRequest('GET', '/', array('dsid' => 123));
         $this->controller->setRequest($request);
         $this->assertContains('EditForm', $this->controller->Backlink());
+        $this->assertContains('123', $this->controller->Backlink());
+
+        // Has page ID and document set ID
+        $request = new SS_HTTPRequest('GET', '/', array('dsid' => 123, 'ID' => 234));
+        $this->controller->setRequest($request);
+        $this->assertContains('admin/pages', $this->controller->Backlink());
         $this->assertContains('123', $this->controller->Backlink());
     }
 

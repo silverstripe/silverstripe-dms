@@ -187,11 +187,21 @@ class DMSDocumentAddController extends LeftAndMain
      */
     public function Backlink()
     {
-        if (!$this->getRequest()->getVar('dsid')) {
+        if (!$this->getRequest()->getVar('dsid') || !$this->currentPageID()) {
             $modelAdmin = new DMSDocumentAdmin;
             $modelAdmin->init();
-            return $modelAdmin->Link();
+
+            if ($this->getRequest()->getVar('dsid')) {
+                return Controller::join_links(
+                    $modelAdmin->Link('DMSDocumentSet'),
+                    'EditForm/field/DMSDocumentSet/item',
+                    $this->getRequest()->getVar('dsid'),
+                    'edit'
+                );
+            }
+            return $modelAdmin->Link('DMSDocumentSet');
         }
+
         return Controller::join_links(
             singleton('CMSPagesController')->Link(),
             'edit/EditForm/field/Document%20Sets/item',
