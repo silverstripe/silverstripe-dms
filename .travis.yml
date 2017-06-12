@@ -1,7 +1,5 @@
 # See https://github.com/silverstripe/silverstripe-travis-support for setup details
 
-sudo: false
-
 language: php
 
 php:
@@ -16,9 +14,13 @@ env:
 matrix:
   include:
     - php: 7.1
+      env: DB=MYSQL CORE_RELEASE=3.6
+    - php: 7.1
       env: DB=MYSQL CORE_RELEASE=3 COVERAGE="--coverage-clover=coverage.xml"
 
 before_script:
+  - echo -e "[server]\nmax_allowed_packet=64M" | sudo tee -a /etc/mysql/conf.d/dms.cnf
+  - sudo service mysql restart
   - composer self-update || true
   - git clone git://github.com/silverstripe/silverstripe-travis-support.git ~/travis-support
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/build/ss --require undefinedoffset/sortablegridfield:~0.6.9
