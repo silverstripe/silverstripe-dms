@@ -3,7 +3,7 @@
 [![Build status](https://travis-ci.org/silverstripe/silverstripe-dms.png?branch=master)](https://travis-ci.org/silverstripe/silverstripe-dms)
 [![Code quality](https://scrutinizer-ci.com/g/silverstripe/silverstripe-dms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-dms/?branch=master)
 [![Code coverage](https://codecov.io/gh/silverstripe/silverstripe-dms/branch/master/graph/badge.svg)](https://codecov.io/gh/silverstripe/silverstripe-dms)
-![Helpful Robot](https://img.shields.io/badge/helpfulrobot-52-yellow.svg?style=flat)
+![Helpful Robot](https://helpfulrobot.io/silverstripe/dms/badge.png?style=flat)
 
 ## Overview
 
