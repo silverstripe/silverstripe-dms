@@ -199,7 +199,7 @@ class DMSDocumentAddController extends LeftAndMain
                     'edit'
                 );
             }
-            return $modelAdmin->Link('DMSDocumentSet');
+            return $modelAdmin->Link();
         }
 
         return Controller::join_links(
