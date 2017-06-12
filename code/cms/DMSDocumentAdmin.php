@@ -17,6 +17,7 @@ class DMSDocumentAdmin extends ModelAdmin
     {
         parent::init();
         Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
+        Requirements::add_i18n_javascript(DMS_DIR . '/javascript/lang');
     }
     /**
      * Remove the default "add" button and replace it with a customised version for DMS
