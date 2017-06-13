@@ -18,7 +18,6 @@ class DMSDocumentAdmin extends ModelAdmin
         parent::init();
         Requirements::javascript(DMS_DIR . '/javascript/DMSGridField.js');
     }
-
     /**
      * Remove the default "add" button and replace it with a customised version for DMS
      *
@@ -44,6 +43,9 @@ class DMSDocumentAdmin extends ModelAdmin
     protected function modifyGridField(CMSForm $form, GridField $gridField)
     {
         $gridFieldConfig = $gridField->getConfig();
+
+        $gridFieldConfig->removeComponentsByType('GridFieldEditButton');
+        $gridFieldConfig->addComponent(new DMSGridFieldEditButton(), 'GridFieldDeleteAction');
 
         if ($this->modelClass === 'DMSDocument') {
             $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');

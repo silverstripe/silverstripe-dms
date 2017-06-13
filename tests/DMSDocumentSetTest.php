@@ -244,4 +244,27 @@ class DMSDocumentSetTest extends SapphireTest
         $fields = $set->getCMSFields();
         $this->assertNull($fields->fieldByName('Root.Main.PageID'));
     }
+
+    /**
+     * Tests all crud permissions
+     */
+    public function testPermissions()
+    {
+        if ($member = Member::currentUser()) {
+            $member->logout();
+        }
+
+        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+
+        $this->assertFalse($set->canCreate());
+        $this->assertFalse($set->canDelete());
+        $this->assertFalse($set->canEdit());
+        $this->assertFalse($set->canView());
+
+        $this->logInWithPermission('CMS_ACCESS_DMSDocumentAdmin');
+        $this->assertTrue($set->canCreate());
+        $this->assertTrue($set->canDelete());
+        $this->assertTrue($set->canEdit());
+        $this->assertTrue($set->canView());
+    }
 }

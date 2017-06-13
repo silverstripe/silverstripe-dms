@@ -316,4 +316,29 @@ class DMSDocumentAddController extends LeftAndMain
             )
         );
     }
+
+    /**
+     * Overrides the parent method to allow users with access to DMS admin to access this controller
+     *
+     * @param Member $member
+     * @return bool
+     */
+    public function canView($member = null)
+    {
+        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+            $member = Member::currentUser();
+        }
+
+        if ($member &&
+            Permission::checkMember(
+                $member,
+                array(
+                    'CMS_ACCESS_DMSDocumentAdmin',
+                )
+            )
+        ) {
+            return true;
+        }
+        return parent::canView($member);
+    }
 }

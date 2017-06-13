@@ -12,9 +12,9 @@ class DMSDocumentAdminTest extends FunctionalTest
     }
 
     /**
-     * Check that the default "add new" button is gone, and replaced with our customised version of it
+     * Check that the default "add new" and "edit" buttons are gone, and replaced with our customised version of it
      */
-    public function testGridFieldHasCustomisedAddNewButton()
+    public function testGridFieldHasCustomisedButtons()
     {
         $modelAdmin = new DMSDocumentAdmin;
         $modelAdmin->init();
@@ -22,22 +22,31 @@ class DMSDocumentAdminTest extends FunctionalTest
         $form = $modelAdmin->getEditForm();
         $gridFieldConfig = $form->Fields()->first()->getConfig();
 
-        // Our button is an instance of the original, so is returned when asking for the original
-        $addNewButtons = $gridFieldConfig->getComponentsByType('GridFieldAddNewButton');
-        foreach ($addNewButtons as $key => $addNewButton) {
-            if ($addNewButton instanceof DMSGridFieldAddNewButton) {
-                // Remove our version for testing's sake
-                $addNewButtons->remove($addNewButton);
-            }
-        }
-
-        $this->assertCount(0, $addNewButtons, 'Original add new button is removed');
-        $this->assertInstanceOf(
-            'DMSGridFieldAddNewButton',
-            $gridFieldConfig->getComponentByType('DMSGridFieldAddNewButton'),
-            'Model admin for documents contains customised DMS add new button'
+        $replacements = array(
+            'GridFieldAddNewButton'=>'DMSGridFieldAddNewButton',
+            'GridFieldEditButton'=>'DMSGridFieldEditButton'
         );
+
+        foreach ($replacements as $oldClass => $newClass) {
+            // Our button is an instance of the original, so is returned when asking for the original
+            $newButtons = $gridFieldConfig->getComponentsByType($oldClass);
+            foreach ($newButtons as $key => $newButton) {
+                if ($newButton instanceof $newClass) {
+                    // Remove our version for testing's sake
+                    $newButtons->remove($newButton);
+                }
+            }
+
+            $this->assertCount(0, $newButtons, 'Original button is removed');
+            $this->assertInstanceOf(
+                $newClass,
+                $gridFieldConfig->getComponentByType($newClass),
+                "Model admin for documents contains customised {$newClass} button"
+            );
+        }
     }
+
+
 
     /**
      * Quick check to ensure that the ModelAdmin endpoint is working
