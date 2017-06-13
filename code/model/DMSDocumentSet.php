@@ -97,7 +97,7 @@ class DMSDocumentSet extends DataObject
                         new GridFieldFilterHeader(),
                         new GridFieldSortableHeader(),
                         new GridFieldDataColumns(),
-                        new GridFieldEditButton(),
+                        new DMSGridFieldEditButton(),
                         // Special delete dialog to handle custom behaviour of unlinking and deleting
                         new GridFieldDeleteAction(true),
                         new GridFieldDetailForm()
@@ -112,6 +112,13 @@ class DMSDocumentSet extends DataObject
 
                 if (class_exists('GridFieldSortableRows')) {
                     $gridFieldConfig->addComponent(new GridFieldSortableRows('DocumentSort'));
+                }
+
+                // Don't show which page this is if we're already editing within a page context
+                if (Controller::curr() instanceof CMSPageEditController) {
+                    $fields->removeByName('PageID');
+                } else {
+                    $fields->fieldByName('Root.Main.PageID')->setTitle(_t('DMSDocumentSet.SHOWONPAGE', 'Show on page'));
                 }
 
                 // Don't show which page this is if we're already editing within a page context
@@ -347,5 +354,64 @@ class DMSDocumentSet extends DataObject
             $result->error(_t('DMSDocumentSet.VALIDATION_NO_TITLE', '\'Title\' is required.'));
         }
         return $result;
+    }
+
+    public function canView($member = null)
+    {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+        return $this->getGlobalPermission($member);
+    }
+
+    public function canCreate($member = null)
+    {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+        return $this->getGlobalPermission($member);
+    }
+
+    public function canEdit($member = null)
+    {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+        return $this->getGlobalPermission($member);
+    }
+
+    public function canDelete($member = null)
+    {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+        return $this->getGlobalPermission($member);
+    }
+
+    /**
+     * Checks if a then given (or logged in) member is either an ADMIN, SITETREE_EDIT_ALL or has access
+     * to the DMSDocumentAdmin module, in which case permissions is granted.
+     *
+     * @param Member $member
+     * @return bool
+     */
+    public function getGlobalPermission(Member $member = null)
+    {
+        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+            $member = Member::currentUser();
+        }
+
+        $result = ($member &&
+            Permission::checkMember(
+                $member,
+                array('ADMIN', 'SITETREE_EDIT_ALL', 'CMS_ACCESS_DMSDocumentAdmin')
+            )
+        );
+
+        return (bool) $result;
     }
 }

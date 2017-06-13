@@ -16,6 +16,15 @@ class DMSSiteTreeExtension extends DataExtension
             return;
         }
 
+        // Hides the DocumentSets tab if the user has no permisions
+        if (!Permission::checkMember(
+            Member::currentUser(),
+            array('ADMIN', 'CMS_ACCESS_DMSDocumentAdmin')
+        )
+        ) {
+            return;
+        }
+
         $gridField = GridField::create(
             'Document Sets',
             false,

@@ -49,7 +49,9 @@ class DMSDocumentTest extends SapphireTest
     public function testDocumentHasCmsFieldForManagingRelatedDocuments()
     {
         $document = $this->objFromFixture('DMSDocument', 'document_with_relations');
-        $gridField = $this->getGridFieldFromDocument($document);
+        $gridField = $this->getRelatedDocumentsGridField($document);
+        $this->assertInstanceOf('GridField', $gridField);
+
         $gridFieldConfig = $gridField->getConfig();
 
         $this->assertNotNull(
@@ -65,12 +67,24 @@ class DMSDocumentTest extends SapphireTest
     }
 
     /**
+     * Ensures that the DMS Document CMS Related and Versions fields are removed if user can't edit
+     */
+    public function testDocumentHasNoCMSFieldsForManagingRelatedDocumentsIfCantEdit()
+    {
+        $this->logInWithPermission('another-user');
+        $document = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $gridField = $this->getRelatedDocumentsGridField($document);
+        $this->assertNull($gridField);
+    }
+
+    /**
      * Ensure that the related documents list does not include the current document itself
      */
     public function testGetRelatedDocumentsForAutocompleter()
     {
         $document = $this->objFromFixture('DMSDocument', 'd1');
-        $gridField = $this->getGridFieldFromDocument($document);
+        $gridField = $this->getRelatedDocumentsGridField($document);
+        $this->assertInstanceOf('GridField', $gridField);
 
         $config = $gridField->getConfig();
 
@@ -90,7 +104,7 @@ class DMSDocumentTest extends SapphireTest
     /**
      * @return GridField
      */
-    protected function getGridFieldFromDocument(DMSDocument $document)
+    protected function getRelatedDocumentsGridField(DMSDocument $document)
     {
         $documentFields = $document->getCMSFields();
         /** @var FieldGroup $actions */
@@ -103,7 +117,6 @@ class DMSDocumentTest extends SapphireTest
                 break;
             }
         }
-        $this->assertInstanceOf('GridField', $gridField);
         return $gridField;
     }
 
@@ -121,6 +134,19 @@ class DMSDocumentTest extends SapphireTest
         $this->assertContains('<li class="ss-ui-button dmsdocument-action" data-panel="', $result);
         $this->assertContains('permission', $result);
         $this->assertContains('Example', $result);
+
+        $actions = array('example', 'embargo','find-usage');
+        foreach ($actions as $action) {
+            // Test remove with string
+            $document->removeActionPanelTask($action);
+        }
+        $result = $document->getActionTaskHtml();
+
+        $this->assertNotContains('Example', $result);
+        $this->assertNotContains('embargo', $result);
+        $this->assertNotContains('find-usage', $result);
+        // Positive test to see some action still remains
+        $this->assertContains('find-references', $result);
     }
 
     /*
@@ -142,11 +168,7 @@ class DMSDocumentTest extends SapphireTest
     {
         /** @var DMSDocument $document */
         $document = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
-        // Make sure user is logged out
-        if ($member = Member::currentUser()) {
-            $member->logOut();
-        }
-
+        $this->logoutMember();
         // Logged out user test
         $this->assertFalse($document->canView());
 
@@ -178,10 +200,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testCanEdit()
     {
-        // Make sure user is logged out
-        if ($member = Member::currentUser()) {
-            $member->logOut();
-        }
+        $this->logoutMember();
 
         /** @var DMSDocument $document1 */
         $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
@@ -202,6 +221,50 @@ class DMSDocumentTest extends SapphireTest
 
         $cableGuy->addToGroupByCode('content-author');
         $this->assertTrue($document2->canEdit($cableGuy));
+    }
+
+    /**
+     * Tests delete permissions
+     */
+    public function testCanDelete()
+    {
+        $this->logoutMember();
+        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+
+        // Logged out user test
+        $this->assertFalse($document1->canDelete());
+
+        // Test editors can delete
+        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $this->assertTrue($document1->canDelete($contentAuthor));
+    }
+
+    /**
+     * Tests create permission
+     */
+    public function testCanCreate()
+    {
+        $this->logoutMember();
+        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $this->logInWithPermission('CMS_ACCESS_DMSDocumentAdmin');
+        // Test CMS access can create
+        $this->assertTrue($document1->canCreate());
+
+        $this->logoutMember();
+
+        // Test editors can create
+        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $this->assertTrue($document1->canCreate($contentAuthor));
+    }
+
+    /**
+     * Logs out any active member
+     */
+    protected function logoutMember()
+    {
+        if ($member = Member::currentUser()) {
+            $member->logOut();
+        }
     }
 
     /**

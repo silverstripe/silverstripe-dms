@@ -116,7 +116,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         if (!$this->CanViewType || $this->CanViewType == 'Anyone') {
             return true;
         }
-
         if ($member && Permission::checkMember($member, array(
                 'ADMIN',
                 'SITETREE_EDIT_ALL',
@@ -198,6 +197,13 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
+        // Do early admin check
+        if ($member &&
+            Permission::checkMember($member, array('CMS_ACCESS_DMSDocumentAdmin'))
+        ) {
+            return true;
+        }
+
         return $this->canEdit($member);
     }
 
@@ -220,7 +226,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             }
         }
 
-        return $this->canView();
+        return $this->canEdit($member);
     }
 
     /**
@@ -838,8 +844,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $this->addActionPanelTask('find-versions', 'Versions');
         }
 
-        $fields->add(LiteralField::create('BottomTaskSelection', $this->getActionTaskHtml()));
-
         $embargoValue = 'None';
         if ($this->EmbargoedIndefinitely) {
             $embargoValue = 'Indefinitely';
@@ -894,12 +898,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             FieldGroup::create($uploadField)->addExtraClass('replace'),
             FieldGroup::create($pagesGrid)->addExtraClass('find-usage'),
             FieldGroup::create($referencesGrid)->addExtraClass('find-references'),
-            FieldGroup::create($versionsGrid)->addExtraClass('find-versions'),
-            FieldGroup::create($this->getRelatedDocumentsGridField())->addExtraClass('find-relateddocuments'),
             FieldGroup::create($this->getPermissionsActionPanel())->addExtraClass('permissions')
         );
 
-        $actionsPanel->setName("ActionsPanel");
+        if ($this->canEdit()) {
+            $actionsPanel->push(FieldGroup::create($versionsGrid)->addExtraClass('find-versions'));
+            $actionsPanel->push(
+                FieldGroup::create($this->getRelatedDocumentsGridField())->addExtraClass('find-relateddocuments')
+            );
+        } else {
+            $this->removeActionPanelTask('find-relateddocuments')->removeActionPanelTask('find-versions');
+        }
+        $fields->add(LiteralField::create('BottomTaskSelection', $this->getActionTaskHtml()));
+        $actionsPanel->setName('ActionsPanel');
         $actionsPanel->addExtraClass('dmsdocument-actionspanel');
         $fields->push($actionsPanel);
 
@@ -1204,6 +1215,10 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             new GridFieldConfig_RelationEditor
         );
 
+        $gridFieldConfig = $gridField->getConfig();
+        $gridFieldConfig->removeComponentsByType('GridFieldEditButton');
+        $gridFieldConfig->addComponent(new DMSGridFieldEditButton(), 'GridFieldDeleteAction');
+
         $gridField->getConfig()->removeComponentsByType('GridFieldAddNewButton');
         // Move the autocompleter to the left
         $gridField->getConfig()->removeComponentsByType('GridFieldAddExistingAutocompleter');
@@ -1219,7 +1234,6 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $addExisting->setResultsFormat('$Filename');
 
         $this->extend('updateRelatedDocumentsGridField', $gridField);
-
         return $gridField;
     }
 
@@ -1322,5 +1336,19 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         $html .= '</ul></div>';
 
         return $html;
+    }
+
+    /**
+     * Removes an "action panel" tasks
+     *
+     * @param  string $panelKey
+     * @return $this
+     */
+    public function removeActionPanelTask($panelKey)
+    {
+        if (array_key_exists($panelKey, $this->actionTasks)) {
+            unset($this->actionTasks[$panelKey]);
+        }
+        return $this;
     }
 }
