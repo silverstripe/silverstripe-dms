@@ -78,6 +78,15 @@ class DMSDocumentAddControllerTest extends FunctionalTest
         $this->controller->setRequest($request);
         $this->assertContains('admin/pages', $this->controller->Backlink());
         $this->assertContains('123', $this->controller->Backlink());
+
+        $urlHandlers = (array) Config::inst()->get('CMSMain', 'url_handlers', Config::UNINHERITED);
+        if (array_key_exists('EditForm/$ID', $urlHandlers)) {
+            // SS 3.6 and above, ensure that the page ID is in the edit URL
+            $this->assertContains('admin/pages/edit/EditForm/234', $this->controller->Backlink());
+        } else {
+            // SS 3.5 and below, the page ID is loaded from the session
+            $this->assertNotContains('234', $this->controller->Backlink());
+        }
     }
 
     /**
