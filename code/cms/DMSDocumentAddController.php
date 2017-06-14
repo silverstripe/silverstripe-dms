@@ -35,26 +35,21 @@ class DMSDocumentAddController extends LeftAndMain
     public function currentPage()
     {
         $id = $this->currentPageID();
-
-        if ($id && is_numeric($id) && $id > 0) {
-            return Versioned::get_by_stage('SiteTree', 'Stage', sprintf(
-                'ID = %s',
-                (int) $id
-            ))->first();
-        } else {
-            // ID is either '0' or 'root'
-            return singleton('SiteTree');
+        if ($id === 0) {
+            return SiteTree::singleton();
         }
+        return parent::currentPage();
     }
 
     /**
-     * Return fake-ID "root" if no ID is found (needed to upload files into the root-folder)
+     * Return fake-ID "root" if no ID is found (needed to upload files into the root-folder). Otherwise the page ID
+     * is passed in from the {@link DMSGridFieldAddNewButton}.
      *
      * @return int
      */
     public function currentPageID()
     {
-        return ($result = parent::currentPageID()) === null ? 0 : $result;
+        return (int) $this->getRequest()->getVar('page_id');
     }
 
     /**
@@ -177,11 +172,11 @@ class DMSDocumentAddController extends LeftAndMain
     }
 
     /**
-     * Returns the link to be used to return the user after uploading a document. If a document set ID (dsid) is present
-     * then it will be redirected back to that document set in a page.
+     * Returns the link to be used to return the user after uploading a document. Scenarios:
      *
-     * If no document set ID is present then we assume that it has been added from the model admin, so redirect back to
-     * that instead.
+     * 1) Page context: page ID and document set ID provided, redirect back to the page and document set
+     * 2) Document set context: no page ID, document set ID provided, redirect back to document set in ModelAdmin
+     * 3) Document context: no page ID and no document set ID provided, redirect back to documents in ModelAdmin
      *
      * @return string
      */
@@ -202,10 +197,26 @@ class DMSDocumentAddController extends LeftAndMain
             return $modelAdmin->Link();
         }
 
+        return $this->getPageEditLink($this->currentPageID(), $this->getRequest()->getVar('dsid'));
+    }
+
+    /**
+     * Return a link to a page. In SS <= 3.5 this is loaded from the session, whereas in SS >= 3.6 this is set
+     * explicitly to a class property on CMSMain. This method checks whether the URL handler to detect this ID
+     * exists on CMSMain, if so include it in the URL.
+     *
+     * @param  int $pageId
+     * @param  int $documentSetId
+     * @return string
+     */
+    protected function getPageEditLink($pageId, $documentSetId)
+    {
+        // Only get configuration from CMSMain, not its descendants or extensions
+        $urlHandlers = (array) Config::inst()->get('CMSMain', 'url_handlers', Config::UNINHERITED);
+        $pageIdSegment = array_key_exists('EditForm/$ID', $urlHandlers) ? $pageId . '/' : '';
         return Controller::join_links(
             singleton('CMSPagesController')->Link(),
-            'edit/EditForm/field/Document%20Sets/item',
-            $this->getRequest()->getVar('dsid')
+            sprintf('edit/EditForm/%sfield/Document Sets/item/%d', $pageIdSegment, $documentSetId)
         );
     }
 

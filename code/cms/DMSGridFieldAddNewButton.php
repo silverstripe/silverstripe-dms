@@ -32,6 +32,14 @@ class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridFiel
         $link = singleton('DMSDocumentAddController')->Link();
         if ($this->getDocumentSetId()) {
             $link = Controller::join_links($link, '?dsid=' . $this->getDocumentSetId());
+
+            // Look for an associated page, but only share it if we're editing in a page context
+            $set = DMSDocumentSet::get()->byId($this->getDocumentSetId());
+            if ($set && $set->exists() && $set->Page()->exists()
+                && Controller::curr() instanceof CMSPageEditController
+            ) {
+                $link = Controller::join_links($link, '?page_id=' . $set->Page()->ID);
+            }
         }
 
         $data = new ArrayData(array(
