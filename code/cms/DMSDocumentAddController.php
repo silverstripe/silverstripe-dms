@@ -201,9 +201,7 @@ class DMSDocumentAddController extends LeftAndMain
     }
 
     /**
-     * Return a link to a page. In SS <= 3.5 this is loaded from the session, whereas in SS >= 3.6 this is set
-     * explicitly to a class property on CMSMain. This method checks whether the URL handler to detect this ID
-     * exists on CMSMain, if so include it in the URL.
+     * Return a link to edit a page, deep linking into the document set given
      *
      * @param  int $pageId
      * @param  int $documentSetId
@@ -211,12 +209,10 @@ class DMSDocumentAddController extends LeftAndMain
      */
     protected function getPageEditLink($pageId, $documentSetId)
     {
-        // Only get configuration from CMSMain, not its descendants or extensions
-        $urlHandlers = (array) Config::inst()->get('CMSMain', 'url_handlers', Config::UNINHERITED);
-        $pageIdSegment = array_key_exists('EditForm/$ID', $urlHandlers) ? $pageId . '/' : '';
         return Controller::join_links(
-            singleton('CMSPagesController')->Link(),
-            sprintf('edit/EditForm/%sfield/Document Sets/item/%d', $pageIdSegment, $documentSetId)
+            CMSPageEditController::singleton()->getEditForm($pageId)->FormAction(),
+            'field/Document Sets/item',
+            $documentSetId
         );
     }
 
