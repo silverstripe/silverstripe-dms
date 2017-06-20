@@ -13,7 +13,7 @@
 
 ## CMS user help
 
-* TBC
+* [DMS user guide](userguide/index.md)
 
 ### Changelogs
 
