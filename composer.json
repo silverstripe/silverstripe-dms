@@ -12,7 +12,7 @@
         "silverstripe/framework": "^3.5",
         "silverstripe/cms": "^3.5",
         "silverstripe-australia/gridfieldextensions": "^1.1.0",
-        "silverstripe/taxonomy": "1.2.x-dev"
+        "silverstripe/taxonomy": "^1.2"
     },
     "suggest": {
         "undefinedoffset/sortablegridfield": "Allow documents to be reordered via drag-and-drop"
