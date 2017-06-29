@@ -134,7 +134,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         if ($this->CanViewType == 'OnlyTheseUsers' && $this->ViewerGroups()->count()) {
-            return ($member && $member->inGroups($this->ViewerGroups()));
+            return ($member && $member->inGroups($this->ViewerGroups()) || $this->canEdit($member));
         }
 
         return $this->canEdit($member);
@@ -155,15 +155,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         }
 
         // Do early admin check
-        if ($member && Permission::checkMember(
-            $member,
-            array(
-                    'ADMIN',
-                    'SITETREE_EDIT_ALL',
-                    'SITETREE_VIEW_ALL',
-                )
-        )
-        ) {
+        if ($member && Permission::checkMember($member, array('ADMIN','SITETREE_EDIT_ALL'))) {
             return true;
         }
 
@@ -175,7 +167,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             return $member && $member->inGroups($this->EditorGroups());
         }
 
-        return ($member && Permission::checkMember($member, array('ADMIN', 'SITETREE_EDIT_ALL')));
+        return false;
     }
 
     /**
