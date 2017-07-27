@@ -15,6 +15,15 @@ class DMSUploadFieldTest extends SapphireTest
     }
 
     /**
+     * SS 3.x injector will return an overloaded parent of a child class if the child is not injected.
+     * This is a sanity check.
+     */
+    public function testDmsUploadFieldIsInjectable()
+    {
+        $this->assertInstanceOf('DMSUploadField', DMSUploadField::create('Stub'));
+    }
+
+    /**
      * The validator is coded to always return true. Replace this test if this behaviour changes in future.
      */
     public function testValidatorAlwaysReturnsTrue()

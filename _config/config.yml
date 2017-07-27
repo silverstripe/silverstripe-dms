@@ -10,3 +10,7 @@ SiteTree:
 HtmlEditorField_Toolbar:
   extensions:
     - DocumentHtmlEditorFieldToolbar
+
+# Ensure that if the parent UploadField is overloaded with the injector, that the DMSUploadField is returned
+Injector:
+  DMSUploadField: DMSUploadField
