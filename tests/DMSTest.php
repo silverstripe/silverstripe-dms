@@ -166,4 +166,18 @@ class DMSTest extends FunctionalTest
         $this->assertCount(2, $sets);
         $this->assertContainsOnlyInstancesOf('DMSDocumentSet', $sets);
     }
+
+    /**
+     * Ensure that assets/* folders are not included in filesystem sync operations
+     */
+    public function testFolderExcludedFromFilesystemSync()
+    {
+        // Undo setup config changes
+        Config::unnest();
+        Config::nest();
+
+        $result = Filesystem::config()->get('sync_blacklisted_patterns');
+        $folderName = substr(DMS::config()->get('folder_name'), 7);
+        $this->assertContains('/^' . $folderName . '$/i', $result);
+    }
 }
