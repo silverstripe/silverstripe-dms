@@ -19,3 +19,9 @@ if ($config->get('DMSDocument_versions', 'enable_versions')) {
     //using the same db relations for the versioned documents, as for the actual documents
     $config->update('DMSDocument_versions', 'db', $config->get('DMSDocument', 'db'));
 }
+
+// add dmsassets folder to file system sync exclusion
+if (strpos($config->get('DMS', 'folder_name'), 'assets/') === 0) {
+    $folderName = str_replace('assets/', '', $config->get('DMS', 'folder_name'));
+    $config->update('Filesystem', 'sync_blacklisted_patterns', array("/^" . $folderName . "$/i",));
+}
