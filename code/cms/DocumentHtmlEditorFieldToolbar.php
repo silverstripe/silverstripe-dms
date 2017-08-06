@@ -26,6 +26,8 @@ class DocumentHtmlEditorFieldToolbar extends Extension
         $addExistingField->setUseFieldClass(false);
         $fieldList->insertAfter($addExistingField, 'Description');
 
+        $fieldList->push(HiddenField::create('DMSShortcodeHandlerKey', false, DMS::inst()->getShortcodeHandlerKey()));
+
 //		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
 //		Requirements::javascript(SAPPHIRE_DIR . "/javascript/tiny_mce_improvements.js");
 //
