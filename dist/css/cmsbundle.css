@@ -172,13 +172,13 @@ form.small .field .TreeDropdownField,
 .ss-add .document-add-existing .treedropdownfield-toggle-panel-link {
   padding: 5px 9px 9px;
   background: #fff;
-  border: 1px solid #B3B3B3;
+  border: 1px solid #b3b3b3;
   float: right;
   z-index: 99999;
   position: relative; }
   .ss-add .document-add-existing .treedropdownfield-toggle-panel-link.treedropdownfield-open-tree {
     background: #fff;
-    border: 1px solid #B3B3B3;
+    border: 1px solid #b3b3b3;
     border-bottom: none;
     border-bottom-right-radius: 0; }
 
@@ -228,16 +228,18 @@ form.small .field .TreeDropdownField,
   font-weight: bold;
   text-shadow: 1px 1px 0 white; }
 
-.ss-add .document-add-existing.link-editor-context .middleColumn {
-  margin-left: 184px; }
-  .ss-add .document-add-existing.link-editor-context .middleColumn input {
-    background: white;
-    border: 1px solid #B3B3B3;
-    line-height: 16px;
-    margin: 0;
-    border-radius: 4px;
-    background-size: 100%;
-    max-width: 512px; }
+.ss-add .document-add-existing.link-editor-context .middleColumn input {
+  background: white;
+  border: 1px solid #b3b3b3;
+  line-height: 16px;
+  border-radius: 4px;
+  background-size: 100%;
+  max-width: 468px; }
+  .ss-add .document-add-existing.link-editor-context .middleColumn input.document-autocomplete {
+    max-width: 365px; }
+
+.ss-add .document-add-existing.link-editor-context .document-list {
+  width: calc(100% - 2px); }
 
 .ss-add .ss-assetuploadfield.link-editor-context label {
   float: left;
@@ -314,7 +316,7 @@ form.small .field .TreeDropdownField,
       margin-top: 13px;
       padding: 10px;
       background: white;
-      border: 1px solid #B3B3B3; }
+      border: 1px solid #b3b3b3; }
     #Form_ItemEditForm ul.SelectionGroup li.selected label.ui-button:after {
       top: 43px; }
   #Form_ItemEditForm ul.SelectionGroup .treedropdownfield-panel {

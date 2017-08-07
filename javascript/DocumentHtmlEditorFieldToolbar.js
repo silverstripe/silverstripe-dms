@@ -92,7 +92,7 @@
         }
 
         // Match a document or call the regular link handling
-        if (href.match(new RegExp("/^\[" + this.getShortcodeKey() + "(\s*|%20|,)?id=([0-9]+)\]?$/", "i"))) {
+        if (href.match(new RegExp('^\\[' + this.getShortcodeKey() + '(\s*|%20|,)?id=([0-9]+)\\]?$', 'i'))) {
           var returnArray = {
             LinkType: 'document',
             DocumentID: RegExp.$2,
