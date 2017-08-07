@@ -37,14 +37,14 @@
     .treedropdownfield-toggle-panel-link {
       padding: 5px 9px 9px;
       background: #fff;
-      border: 1px solid #B3B3B3;
+      border: 1px solid $color-cms-input-border;
       float: right;
       z-index: 99999;
       position: relative;
 
       &.treedropdownfield-open-tree {
         background: #fff;
-        border: 1px solid #B3B3B3;
+        border: 1px solid $color-cms-input-border;
         border-bottom:none;
         border-bottom-right-radius:0;
       }
@@ -100,6 +100,7 @@
       }
     }
 
+    // When inserting a link to a document via the TinyMCE editor
     &.link-editor-context {
       label {
         float: left;
@@ -112,17 +113,22 @@
       }
 
       .middleColumn {
-        margin-left: 184px;
-
         input {
           background: white;
-          border: 1px solid #B3B3B3;
+          border: 1px solid $color-cms-input-border;
           line-height: 16px;
-          margin: 0;
           border-radius: 4px;
           background-size: 100%;
-          max-width: 512px;
+          max-width: 468px;
+
+          &.document-autocomplete {
+            max-width: 365px;
+          }
         }
+      }
+
+      .document-list {
+        width: calc(100% - 2px);
       }
     }
   }
@@ -234,7 +240,7 @@
         margin-top: 13px;
         padding: 10px;
         background: white;
-        border: 1px solid #B3B3B3;
+        border: 1px solid $color-cms-input-border;
       }
 
       &.selected {
