@@ -235,6 +235,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $this->ViewCount = $count;
 
             DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
+            
+            $this->extend('trackView');
         }
 
         return $this;
