@@ -17,9 +17,5 @@
     "suggest": {
         "undefinedoffset/sortablegridfield": "Allow documents to be reordered via drag-and-drop"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.1.x-dev"
-        }
-    }
+    "extra": []
 }
