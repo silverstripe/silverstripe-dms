@@ -26,7 +26,7 @@ class DMSSiteTreeExtension extends DataExtension
         }
 
         $gridField = GridField::create(
-            'Document Sets',
+            'DocumentSets',
             false,
             $this->owner->DocumentSets(), //->Sort('DocumentSort'),
             $config = new GridFieldConfig_RelationEditor
@@ -39,9 +39,17 @@ class DMSSiteTreeExtension extends DataExtension
         );
 
         $fields->addFieldToTab(
-            'Root.Document Sets (' . $this->owner->DocumentSets()->count() . ')',
+            'Root.DocumentSets',
             $gridField
         );
+
+        $fields
+            ->findOrMakeTab('Root.DocumentSets')
+            ->setTitle(_t(
+                __CLASS__ . '.DocumentSetsTabTitle',
+                'Document Sets ({count})',
+                array('count' => $this->owner->DocumentSets()->count())
+            ));
     }
 
     /**

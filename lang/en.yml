@@ -32,6 +32,8 @@ en:
     SHOWONPAGE: Show on page
     SINGULARNAME: Document Set
     TAGS_RIGHT_TITLE: Tags can be set in the taxonomy area, and can be assigned when editing a document.
+  DMSSiteTreeExtension:
+    DocumentSetsTabTitle: 'Document Sets ({count})'
   DMSDocumentTaxonomyExtension:
     TAGS: Tags
     NOTAGS: No tags found

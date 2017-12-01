@@ -22,7 +22,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
     {
         Config::inst()->update('SiteTree', 'documents_enabled', $configSetting);
         $siteTree = $this->objFromFixture('SiteTree', 's2');
-        $this->$assertionMethod($siteTree->getCMSFields()->fieldByName('Root.Document Sets (1).Document Sets'));
+        $this->$assertionMethod($siteTree->getCMSFields()->fieldByName('Root.DocumentSets.DocumentSets'));
     }
 
     /**
@@ -45,7 +45,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
     {
         Config::inst()->update('SiteTree', 'documents_enabled', true);
         $siteTree = $this->objFromFixture('SiteTree', 's2');
-        $gridField = $siteTree->getCMSFields()->fieldByName('Root.Document Sets (1).Document Sets');
+        $gridField = $siteTree->getCMSFields()->fieldByName('Root.DocumentSets.DocumentSets');
 
         $this->assertInstanceOf('GridField', $gridField);
         $this->assertTrue((bool) $gridField->hasClass('documentsets'));
@@ -90,7 +90,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
     public function testGetRelatedDocumentsForAutocompleter()
     {
         $page = $this->objFromFixture('SiteTree', 's1');
-        $gridField = $page->getCMSFields()->fieldByName('Root.Document Sets (2).Document Sets');
+        $gridField = $page->getCMSFields()->fieldByName('Root.DocumentSets.DocumentSets');
         $this->assertInstanceOf('GridField', $gridField);
 
         $autocompleter = $gridField->getConfig()->getComponentByType('GridFieldAddExistingAutocompleter');
