@@ -190,14 +190,14 @@ class DMSDocumentAddController extends LeftAndMain
                 return Controller::join_links(
                     $modelAdmin->Link('DMSDocumentSet'),
                     'EditForm/field/DMSDocumentSet/item',
-                    $this->getRequest()->getVar('dsid'),
+                    (int) $this->getRequest()->getVar('dsid'),
                     'edit'
                 );
             }
             return $modelAdmin->Link();
         }
 
-        return $this->getPageEditLink($this->currentPageID(), $this->getRequest()->getVar('dsid'));
+        return $this->getPageEditLink($this->currentPageID(), (int) $this->getRequest()->getVar('dsid'));
     }
 
     /**
@@ -212,7 +212,7 @@ class DMSDocumentAddController extends LeftAndMain
         return Controller::join_links(
             CMSPageEditController::singleton()->getEditForm($pageId)->FormAction(),
             'field/Document Sets/item',
-            $documentSetId
+            (int) $documentSetId
         );
     }
 
