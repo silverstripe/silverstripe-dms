@@ -1320,6 +1320,9 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             . '<ul>';
 
         foreach ($this->actionTasks as $panelKey => $title) {
+            $panelKey = Convert::raw2xml($panelKey);
+            $title = Convert::raw2xml($title);
+
             $html .= '<li class="ss-ui-button dmsdocument-action" data-panel="' . $panelKey . '">'
                 . _t('DMSDocument.ACTION_' . strtoupper($panelKey), $title)
                 . '</li>';
