@@ -39,10 +39,12 @@ class ShortCodeRelationFinder
     }
 
     /**
+     * @param int $number
      * @return DataList
      */
     public function getList($number)
     {
+        $number = (int) $number;
         $list = DataList::create('SiteTree');
         $where = array();
         $fields = $this->getShortCodeFields('SiteTree');
