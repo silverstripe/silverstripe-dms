@@ -82,6 +82,7 @@ class DMSDocument_Controller extends Controller
                         $finfo = finfo_open(FILEINFO_MIME_TYPE);
                         $mime = finfo_file($finfo, $path);
                     } elseif (is_executable($fileBin)) {
+                        $path = escapeshellarg($path);
                         // try to use the system tool
                         $mime = `$fileBin -i -b $path`;
                         $mime = explode(';', $mime);
@@ -89,7 +90,7 @@ class DMSDocument_Controller extends Controller
                     } else {
                         // make do with what we have
                         $ext = $doc->getExtension();
-                        if ($ext =='pdf') {
+                        if ($ext == 'pdf') {
                             $mime = 'application/pdf';
                         } elseif ($ext == 'html' || $ext =='htm') {
                             $mime = 'text/html';
