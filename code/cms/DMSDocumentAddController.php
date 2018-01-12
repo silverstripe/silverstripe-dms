@@ -211,7 +211,7 @@ class DMSDocumentAddController extends LeftAndMain
     {
         return Controller::join_links(
             CMSPageEditController::singleton()->getEditForm($pageId)->FormAction(),
-            'field/Document Sets/item',
+            'field/DocumentSets/item',
             (int) $documentSetId
         );
     }
