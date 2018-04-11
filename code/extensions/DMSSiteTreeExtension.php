@@ -55,11 +55,14 @@ class DMSSiteTreeExtension extends DataExtension
     /**
      * Get a list of document sets for the owner page
      *
+     * @deprecated 3.0 Use DocumentSets() instead.
+     *
      * @return ArrayList
      */
     public function getDocumentSets()
     {
-        return $this->owner->DocumentSets();
+        Deprecation::notice('3.0', 'Use DocumentSets() instead');
+        return $this->owner->hasManyComponent('DocumentSets');
     }
 
     /**
@@ -71,7 +74,7 @@ class DMSSiteTreeExtension extends DataExtension
     {
         $documents = ArrayList::create();
 
-        foreach ($this->getDocumentSets() as $documentSet) {
+        foreach ($this->owner->DocumentSets() as $documentSet) {
             /** @var DocumentSet $documentSet */
             $documents->merge($documentSet->getDocuments());
         }
