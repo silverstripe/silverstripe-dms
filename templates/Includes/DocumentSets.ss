@@ -1,6 +1,6 @@
-<% if $DocumentSets %>
+<% if $getDocumentSets %>
     <div class="documentsets">
-        <% loop $DocumentSets %>
+        <% loop $getDocumentSets %>
             <% include DocumentSet %>
         <% end_loop %>
     </div>
