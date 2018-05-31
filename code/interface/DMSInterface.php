@@ -37,6 +37,8 @@ interface DMSInterface
      * getByTag(null, "banana");
      * getByTag("fruits", "banana");
      * </code>
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      * @abstract
      * @param null $category The metadata category to search for
      * @param null $value The metadata value to search for

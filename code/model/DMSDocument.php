@@ -164,6 +164,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param SiteTree $pageObject Page object to associate this Document with
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPage($pageObject)
     {
@@ -185,6 +187,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param array $pageIDs
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPages($pageIDs)
     {
@@ -206,6 +210,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param SiteTree $pageObject Page object to remove the association to
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function removePage($pageObject)
     {
@@ -218,6 +224,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @see getPages()
      *
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function Pages()
     {
@@ -231,6 +239,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * Returns a list of the Page objects associated with this Document.
      *
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function getPages()
     {
@@ -241,6 +251,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * Removes all associated Pages from the DMSDocument
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function removeAllPages()
     {
@@ -289,6 +301,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * 					multi-value or single-value (optional)
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function addTag($category, $value, $multiValue = true)
     {
@@ -341,6 +355,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value
      *
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     protected function getTagsObjects($category, $value = null)
     {
@@ -362,6 +378,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value value of the tag to get
      *
      * @return array Strings of all the tags or null if there is no match found
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function getTagsList($category, $value = null)
     {
@@ -393,6 +411,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * @param string $value Value to remove
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeTag($category, $value = null)
     {
@@ -419,6 +439,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      * Deletes all tags associated with this Document.
      *
      * @return DMSDocument
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeAllTags()
     {

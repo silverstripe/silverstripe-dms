@@ -22,6 +22,8 @@ interface DMSDocumentInterface
      * @abstract
      * @param $pageObject Page object to associate this DMSDocument with
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPage($pageObject);
 
@@ -32,6 +34,8 @@ interface DMSDocumentInterface
      * @abstract
      * @param $pageIDs array of page ids used for the page objects associate this DMSDocument with
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function addPages($pageIDs);
 
@@ -48,6 +52,8 @@ interface DMSDocumentInterface
      * Returns a list of the Page objects associated with this DMSDocument
      * @abstract
      * @return DataList
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function getPages();
 
@@ -55,6 +61,8 @@ interface DMSDocumentInterface
      * Removes all associated Pages from the DMSDocument
      * @abstract
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of document sets
      */
     public function removeAllPages();
 
@@ -72,6 +80,8 @@ interface DMSDocumentInterface
      * @param $value String of a metadata value to add (required)
      * @param bool $multiValue Boolean that determines if the category is multi-value or single-value (optional)
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function addTag($category, $value, $multiValue = true);
 
@@ -82,6 +92,8 @@ interface DMSDocumentInterface
      * @param $category String of the metadata category to get
      * @param null $value String of the value of the tag to get
      * @return array of Strings of all the tags or null if there is no match found
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function getTagsList($category, $value = null);
 
@@ -93,6 +105,8 @@ interface DMSDocumentInterface
      * @param $category Category to remove (required)
      * @param null $value Value to remove (optional)
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeTag($category, $value = null);
 
@@ -100,6 +114,8 @@ interface DMSDocumentInterface
      * Deletes all tags associated with this DMSDocument.
      * @abstract
      * @return null
+     *
+     * @deprecated 2.0 Will be removed in future in favour of using silverstripe/taxonomy
      */
     public function removeAllTags();
 
