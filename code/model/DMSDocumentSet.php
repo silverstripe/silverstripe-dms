@@ -112,6 +112,8 @@ class DMSDocumentSet extends DataObject
 
                 if (class_exists('GridFieldSortableRows')) {
                     $gridFieldConfig->addComponent(new GridFieldSortableRows('DocumentSort'));
+                } elseif (class_exists('GridFieldOrderableRows')) {
+                    $gridFieldConfig->addComponent(new GridFieldOrderableRows('DocumentSort'));
                 }
 
                 // Don't show which page this is if we're already editing within a page context
