@@ -1010,7 +1010,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $possibleBehaviors = $this->dbObject('DownloadBehavior')
                 ->enumValues();
 
-            $behavior =$possibleBehaviors[$defaultDownloadBehaviour];
+            $behavior = $possibleBehaviors[$defaultDownloadBehaviour];
             if ($behavior) {
                 $this->DownloadBehavior = $behavior;
             }
