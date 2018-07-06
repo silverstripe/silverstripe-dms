@@ -235,7 +235,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             $this->ViewCount = $count;
 
             DB::query("UPDATE \"DMSDocument\" SET \"ViewCount\"='$count' WHERE \"ID\"={$this->ID}");
-            
+
             $this->extend('trackView');
         }
 
@@ -1002,6 +1002,21 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 $this->CreatedByID = $currentUserID;
             }
             $this->LastEditedByID = $currentUserID;
+        }
+
+        // make sure default DownloadBehavior is respected when initially writing document
+        // in case the default in the enum is different than what's set in an outside config
+        $defaultDownloadBehaviour = Config::inst()->get('DMSDocument', 'default_download_behaviour');
+        if ($this->DownloadBehavior == null && !empty($defaultDownloadBehaviour)) {
+            $possibleBehaviors = $this->dbObject('DownloadBehavior')
+                ->enumValues();
+
+            if (array_key_exists($defaultDownloadBehaviour, $possibleBehaviors)) {
+                $behavior = $possibleBehaviors[$defaultDownloadBehaviour];
+                if ($behavior) {
+                    $this->DownloadBehavior = $behavior;
+                }
+            }
         }
     }
 
