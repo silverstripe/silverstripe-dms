@@ -820,22 +820,26 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 new GridFieldDataColumns(),
                 new GridFieldPaginator(30)
             );
+
+            $link = $this->owner->Link();
+            $filenameWithoutID = $this->owner->FilenameWithoutID;
+            
             $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')
                 ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
                 ->setFieldFormatting(
                     array(
-                        'FilenameWithoutID' => '<a target="_blank" class="file-url" href="$Link">'
-                            . '$FilenameWithoutID</a>'
+                        'FilenameWithoutID' => "<a target=\"_blank\" class=\"file-url\" href=\"$link\">"
+                            . "$filenameWithoutID</a>"
                     )
                 );
 
             $versionsGrid =  GridField::create(
                 'Versions',
                 _t('DMSDocument.Versions', 'Versions'),
-                $this->getVersions(),
+                $this->owner->getVersions(),
                 $versionsGridFieldConfig
             );
-            $this->addActionPanelTask('find-versions', 'Versions');
+            $this->owner->addActionPanelTask('find-versions', 'Versions');
         }
 
         $embargoValue = 'None';
