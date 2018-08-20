@@ -821,8 +821,8 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 new GridFieldPaginator(30)
             );
 
-            $link = $this->owner->Link();
-            $filenameWithoutID = $this->owner->FilenameWithoutID;
+            $link = $this->Link();
+            $filenameWithoutID = $this->FilenameWithoutID;
             
             $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')
                 ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
