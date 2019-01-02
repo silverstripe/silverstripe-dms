@@ -132,7 +132,7 @@ class DMSUploadField extends UploadField
                 // Search for relations that can hold the uploaded files.
                 if ($relationClass = $this->getRelationAutosetClass()) {
                     // Create new object explicitly. Otherwise rely on Upload::load to choose the class.
-                    $fileObject = Object::create($relationClass);
+                    $fileObject = SS_Object::create($relationClass);
                 }
             }
 
