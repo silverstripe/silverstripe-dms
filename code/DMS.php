@@ -1,5 +1,5 @@
 <?php
-class DMS extends Object implements DMSInterface
+class DMS extends SS_Object implements DMSInterface
 {
     /**
      * Folder to store the documents in
