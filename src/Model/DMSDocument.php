@@ -1,5 +1,51 @@
 <?php
 
+namespace Sunnysideup\DMS\Model;
+
+use DataObject;
+use DMSDocumentInterface;
+use Member;
+use Permission;
+use DB;
+use URLSegmentFilter;
+use Controller;
+use Director;
+use Versioned;
+use SS_Datetime;
+use DBField;
+use Exception;
+use DMS;
+use Requirements;
+use FieldList;
+use ShortCodeRelationFinder;
+use TextField;
+use TextareaField;
+use UploadField;
+use Config;
+use OptionsetField;
+use DMSUploadField;
+use GridFieldConfig;
+use GridFieldToolbarHeader;
+use GridFieldSortableHeader;
+use GridFieldDataColumns;
+use GridFieldPaginator;
+use GridFieldDetailForm;
+use GridField;
+use DatetimeField;
+use FieldGroup;
+use LiteralField;
+use DropdownField;
+use CompositeField;
+use File;
+use ReadonlyField;
+use DateField_Disabled;
+use ArrayList;
+use GridFieldConfig_RelationEditor;
+use DMSGridFieldEditButton;
+use GridFieldAddExistingAutocompleter;
+use Convert;
+
+
 /**
  * @package dms
  *

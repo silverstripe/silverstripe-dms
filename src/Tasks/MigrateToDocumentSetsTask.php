@@ -1,4 +1,14 @@
 <?php
+
+namespace Sunnysideup\DMS\Tasks;
+
+use BuildTask;
+use SiteTree;
+use SQLSelect;
+use DMSDocument;
+use DMSDocumentSet;
+use Director;
+
 /**
  * This build task helps to migrate DMS data structures from DMS 1.x to 2.x which introduces document sets.
  *

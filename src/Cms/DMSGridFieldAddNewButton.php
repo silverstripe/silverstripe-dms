@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use GridFieldAddNewButton;
+use GridField_HTMLProvider;
+use Controller;
+use DMSDocumentSet;
+use CMSPageEditController;
+use ArrayData;
+
+
 class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridField_HTMLProvider
 {
     /**

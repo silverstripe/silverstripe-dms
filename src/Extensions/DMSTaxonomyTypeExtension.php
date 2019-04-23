@@ -1,4 +1,11 @@
 <?php
+
+namespace Sunnysideup\DMS\Extensions;
+
+use DataExtension;
+use Config;
+use TaxonomyType;
+
 /**
  * Creates default taxonomy type records if they don't exist already
  */

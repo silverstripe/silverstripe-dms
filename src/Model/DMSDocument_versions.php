@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\DMS\Model;
+
+use DataObject;
+use Controller;
+use Director;
+use DMS;
+use File;
+use DB;
+
+
 /**
  * DataObject to store versions of uploaded Documents.
  *

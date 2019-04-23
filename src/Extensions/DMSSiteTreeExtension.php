@@ -1,5 +1,19 @@
 <?php
 
+namespace Sunnysideup\DMS\Extensions;
+
+use DataExtension;
+use FieldList;
+use Permission;
+use Member;
+use GridField;
+use GridFieldConfig_RelationEditor;
+use DMSDocumentSet;
+use Deprecation;
+use ArrayList;
+use Versioned;
+
+
 /**
  * @package dms
  */

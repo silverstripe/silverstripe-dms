@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\DMS\Model;
+
+use Controller;
+use Versioned;
+use Convert;
+use DataObject;
+use InvalidArgumentException;
+use SS_HTTPRequest;
+
+
 class DMSDocument_Controller extends Controller
 {
     /**

@@ -1,4 +1,15 @@
 <?php
+
+namespace Sunnysideup\DMS;
+
+use SS_Object;
+use DMSInterface;
+use Director;
+use FileNotFoundException;
+use DMSDocument;
+use SiteTree;
+use Config;
+
 class DMS extends SS_Object implements DMSInterface
 {
     /**

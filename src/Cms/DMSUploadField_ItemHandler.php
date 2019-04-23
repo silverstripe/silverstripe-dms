@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use UploadField_ItemHandler;
+use DMSDocument;
+use Form;
+
+
 class DMSUploadField_ItemHandler extends UploadField_ItemHandler
 {
     private static $allowed_actions = array(

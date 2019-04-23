@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use CompositeField;
+use TreeDropdownField;
+use Requirements;
+
+
 class DMSDocumentAddExistingField extends CompositeField
 {
     public $useFieldContext = true;

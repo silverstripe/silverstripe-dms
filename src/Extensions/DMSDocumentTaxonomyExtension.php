@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\DMS\Extensions;
+
+use DataExtension;
+use FieldList;
+use ListboxField;
+use TaxonomyTerm;
+use Config;
+
+
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###

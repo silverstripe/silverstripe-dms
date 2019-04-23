@@ -1,4 +1,12 @@
 <?php
+
+namespace Sunnysideup\DMS\Cms;
+
+use Extension;
+use Form;
+use HiddenField;
+use DMS;
+
 /**
  * Extends the original toolbar with document picking capability - modified lines are commented.
  */

@@ -1,5 +1,27 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use LeftAndMain;
+use SiteTree;
+use DMSDocumentSet;
+use Requirements;
+use Form;
+use FieldList;
+use TabSet;
+use Tab;
+use LiteralField;
+use HiddenField;
+use Controller;
+use ArrayData;
+use CMSPageEditController;
+use Convert;
+use DMSDocument;
+use Config;
+use Member;
+use Permission;
+
+
 /**
  * @package dms
  */

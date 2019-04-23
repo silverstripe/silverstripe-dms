@@ -1,0 +1,25 @@
+mappings:
+  DMS: Sunnysideup\DMS\DMS
+  DMSShortcodeHandler: Sunnysideup\DMS\DMSShortcodeHandler
+  MigrateToDocumentSetsTask: Sunnysideup\DMS\Tasks\MigrateToDocumentSetsTask
+  DMSJsonField: Sunnysideup\DMS\Forms\DMSJsonField
+  DMSGridFieldAddNewButton: Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton
+  DMSUploadField_ItemHandler: Sunnysideup\DMS\Cms\DMSUploadField_ItemHandler
+  DMSGridFieldEditButton: Sunnysideup\DMS\Cms\DMSGridFieldEditButton
+  DMSDocumentAddExistingField: Sunnysideup\DMS\Cms\DMSDocumentAddExistingField
+  DocumentHTMLEditorFieldToolbar: Sunnysideup\DMS\Cms\DocumentHTMLEditorFieldToolbar
+  DMSDocumentAddController: Sunnysideup\DMS\Cms\DMSDocumentAddController
+  DMSUploadField: Sunnysideup\DMS\Cms\DMSUploadField
+  DMSDocumentAdmin: Sunnysideup\DMS\Cms\DMSDocumentAdmin
+  DMSGridFieldDetailForm_ItemRequest: Sunnysideup\DMS\Cms\DMSGridFieldDetailForm_ItemRequest
+  DMSInterface: Sunnysideup\DMS\Interface\DMSInterface
+  DMSDocumentInterface: Sunnysideup\DMS\Interface\DMSDocumentInterface
+  DMSDocumentTaxonomyExtension: Sunnysideup\DMS\Extensions\DMSDocumentTaxonomyExtension
+  DMSTaxonomyTypeExtension: Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension
+  DMSSiteTreeExtension: Sunnysideup\DMS\Extensions\DMSSiteTreeExtension
+  FileNotFoundException: Sunnysideup\DMS\Exceptions\FileNotFoundException
+  DMSDocument_versions: Sunnysideup\DMS\Model\DMSDocument_versions
+  DMSDocument: Sunnysideup\DMS\Model\DMSDocument
+  DMSDocument_Controller: Sunnysideup\DMS\Model\DMSDocument_Controller
+  DMSDocumentSet: Sunnysideup\DMS\Model\DMSDocumentSet
+  ShortCodeRelationFinder: Sunnysideup\DMS\Tools\ShortCodeRelationFinder

@@ -1,4 +1,9 @@
 <?php
+
+namespace Sunnysideup\DMS\Interface;
+
+
+
 /**
  * Interface for a DMSDocument used in the Document Management System. A DMSDocument is create by storing a File
  * object in an instance of the DMSInterface. All write operations on the DMSDocument create a new relation, so we

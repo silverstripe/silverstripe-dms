@@ -1,5 +1,14 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use ModelAdmin;
+use Requirements;
+use CMSForm;
+use GridField;
+use SiteTree;
+
+
 class DMSDocumentAdmin extends ModelAdmin
 {
     private static $managed_models = array(

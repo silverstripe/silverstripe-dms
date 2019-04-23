@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\DMS\Forms;
+
+use CompositeField;
+use FieldList;
+use Convert;
+
+
 /**
  * Combines form inputs into a key-value pair
  */

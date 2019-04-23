@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\DMS;
+
+use ShortcodeParser;
+use DMSDocument;
+use ErrorPage;
+
+
 /**
  * Handles replacing `dms_document_link` shortcodes with links to the actual
  * document.

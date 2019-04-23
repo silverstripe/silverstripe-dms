@@ -1,4 +1,12 @@
 <?php
+
+namespace Sunnysideup\DMS\Tools;
+
+use DataList;
+use DMS;
+use ClassInfo;
+use DataObject;
+
 /**
  * Finds {@link DataObject} instances using certain shortcodes
  * by fulltext-querying only fields which are capable of parsing shortcodes.

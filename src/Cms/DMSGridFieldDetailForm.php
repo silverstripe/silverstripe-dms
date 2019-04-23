@@ -1,5 +1,11 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use GridFieldDetailForm_ItemRequest;
+use ShortCodeRelationFinder;
+
+
 /**
  * Custom ItemRequest class the provides custom delete behaviour for the CMSFields of DMSDocument
  */

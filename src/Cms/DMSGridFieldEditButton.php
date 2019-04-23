@@ -1,5 +1,13 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use GridFieldEditButton;
+use GridField_ColumnProvider;
+use ArrayData;
+use Controller;
+
+
 class DMSGridFieldEditButton extends GridFieldEditButton implements GridField_ColumnProvider
 {
 

@@ -1,5 +1,23 @@
 <?php
 
+namespace Sunnysideup\DMS\Cms;
+
+use UploadField;
+use DMS;
+use DMSDocument;
+use DMSDocumentSet;
+use SS_HTTPRequest;
+use SS_Object;
+use Exception;
+use SS_HTTPResponse;
+use Convert;
+use ArrayList;
+use Requirements;
+use FieldList;
+use FormAction;
+use Validator;
+
+
 /**
  * Field for uploading files into a DMSDocument. Replacing the existing file.
  * Not ideally suited for the purpose, as the base implementation

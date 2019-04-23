@@ -1,4 +1,40 @@
 <?php
+
+namespace Sunnysideup\DMS\Model;
+
+use DataObject;
+use FieldList;
+use LiteralField;
+use GridFieldConfig;
+use GridFieldButtonRow;
+use GridFieldToolbarHeader;
+use GridFieldFilterHeader;
+use GridFieldSortableHeader;
+use GridFieldDataColumns;
+use DMSGridFieldEditButton;
+use GridFieldDeleteAction;
+use GridFieldDetailForm;
+use GridFieldPaginatorWithShowAll;
+use GridFieldPaginator;
+use GridFieldSortableRows;
+use GridFieldOrderableRows;
+use CMSPageEditController;
+use Controller;
+use GridField;
+use DMSGridFieldAddNewButton;
+use HiddenField;
+use DMS;
+use Requirements;
+use Member;
+use ListboxField;
+use DMSJsonField;
+use FieldGroup;
+use DropdownField;
+use Convert;
+use DataList;
+use SS_Datetime;
+use Permission;
+
 /**
  * A document set is attached to Pages, and contains many DMSDocuments
  *
