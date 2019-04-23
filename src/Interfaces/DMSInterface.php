@@ -1,6 +1,6 @@
 <?php
 
-namespace Sunnysideup\DMS\Interface;
+namespace Sunnysideup\DMS\Interfaces;
 
 use SiteTree;
 
