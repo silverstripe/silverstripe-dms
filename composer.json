@@ -26,7 +26,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.4.x-dev"
-        }
+        },
+        "expose": [
+            "client/javascript",
+            "client/images"
+        ]
     },
     "autoload": {
         "psr-4": {
