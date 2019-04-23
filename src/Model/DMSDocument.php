@@ -95,7 +95,7 @@ use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Core\Convert;
 use SilverStripe\ORM\DataObject;
-use Sunnysideup\DMS\Interface\DMSDocumentInterface;
+use Sunnysideup\DMS\Interfaces\DMSDocumentInterface;
 
 
 

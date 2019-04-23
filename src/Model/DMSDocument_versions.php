@@ -9,7 +9,7 @@ namespace Sunnysideup\DMS\Model;
 
 
 use Sunnysideup\DMS\Model\DMSDocument;
-use Sunnysideup\DMS\Interface\DMSDocumentInterface;
+use Sunnysideup\DMS\Interfaces\DMSDocumentInterface;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\Controller;

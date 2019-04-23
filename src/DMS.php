@@ -16,7 +16,7 @@ use Sunnysideup\DMS\Model\DMSDocument;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Config\Config;
 use Sunnysideup\DMS\DMS;
-use Sunnysideup\DMS\Interface\DMSInterface;
+use Sunnysideup\DMS\Interfaces\DMSInterface;
 
 
 class DMS extends SS_Object implements DMSInterface
