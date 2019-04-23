@@ -3,6 +3,7 @@ Name: dmstaxonomy
 Only:
   moduleexists: taxonomy
 ---
+# todo: find out the exact name for taxonomy...
 TaxonomyType:
   extensions:
     - Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension
