@@ -10,7 +10,7 @@ DMSDocument:
 DMSDocumentSet:
   four:
     Title: documentSet4
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   one:
     Title: page1
   two:

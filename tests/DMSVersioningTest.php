@@ -35,7 +35,7 @@ class DMSVersioningTest extends SapphireTest
         self::$dmsEnableVersionsOld = DMSDocument_versions::$enable_versions;
         DMSDocument_versions::$enable_versions = true;
 
-        Config::inst()->update('DMS', 'folder_name', $this->testDmsPath);
+        Config::modify()->update('DMS', 'folder_name', $this->testDmsPath);
         DMSFilesystemTestHelper::delete($this->testDmsPath);
     }
 

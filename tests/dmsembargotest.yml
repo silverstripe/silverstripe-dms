@@ -1,7 +1,7 @@
 DMSDocumentSet:
   ds1:
     Title: Document Set 1
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   s1:
     Title: testPage1
     URLSegment: s1

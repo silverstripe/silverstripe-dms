@@ -1,7 +1,7 @@
 ---
 Name: dmsconfig
 ---
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   extensions:
     - DMSSiteTreeExtension
   # Whether to show the document sets tab in the CMS for the page type this extension is applied to

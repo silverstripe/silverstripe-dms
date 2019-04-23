@@ -1,5 +1,14 @@
 <?php
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD:  extends DataExtension (ignore case)
+  * NEW:  extends DataExtension (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class DMSDocumentTaxonomyExtension extends DataExtension
 {
     private static $many_many = array(
@@ -38,7 +47,7 @@ class DMSDocumentTaxonomyExtension extends DataExtension
             Config::inst()->get('DMSTaxonomyTypeExtension', 'default_record_name')
         );
 
-        $map = array();
+        $map = [];
         foreach ($tags as $tag) {
             $nameParts = array($tag->Name);
             $currentTag = $tag;

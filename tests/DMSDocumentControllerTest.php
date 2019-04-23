@@ -16,7 +16,7 @@ class DMSDocumentControllerTest extends SapphireTest
     {
         parent::setUp();
 
-        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
+        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-test-123');
         $this->logInWithPermission('ADMIN');
 
         $this->controller = $this->getMockBuilder('DMSDocument_Controller')

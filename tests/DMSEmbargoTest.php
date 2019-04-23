@@ -13,7 +13,7 @@ class DMSEmbargoTest extends SapphireTest
     public function testBasicEmbargo()
     {
         $oldTestMode = DMSDocument_Controller::$testMode;
-        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-test-123');
+        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-test-123');
 
         $doc = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
         $doc->CanViewType = 'LoggedInUsers';
@@ -23,18 +23,45 @@ class DMSEmbargoTest extends SapphireTest
         $controller = new DMSDocument_Controller();
         DMSDocument_Controller::$testMode = true;
         $result = $controller->index($this->createFakeHTTPRequest($docID));
-        $this->assertEquals($doc->getFullPath(), $result, 'Correct underlying file returned (in test mode)');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $this->assertEquals($doc->getFilename(), $result, 'Correct underlying file returned (in test mode)');
 
         $doc->embargoIndefinitely();
 
         $this->logInWithPermission('ADMIN');
         $result = $controller->index($this->createFakeHTTPRequest($docID));
-        $this->assertEquals($doc->getFullPath(), $result, 'Admins can still download embargoed files');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $this->assertEquals($doc->getFilename(), $result, 'Admins can still download embargoed files');
 
         $this->logInWithPermission('random-user-group');
         $result = $controller->index($this->createFakeHTTPRequest($docID));
         $this->assertNotEquals(
-            $doc->getFullPath(),
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+            $doc->getFilename(),
             $result,
             'File no longer returned (in test mode) when switching to other user group'
         );

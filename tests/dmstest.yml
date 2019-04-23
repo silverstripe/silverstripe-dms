@@ -1,4 +1,4 @@
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   s1:
     Title: testPage1 has document sets
     URLSegment: s1
@@ -33,7 +33,7 @@ Group:
   cable-guy:
     Code: cable-guy
     Title: "Cable Guy"
-Member:
+SilverStripe\Security\Member:
   editor:
     Name: editor
     Groups: =>Group.content-author

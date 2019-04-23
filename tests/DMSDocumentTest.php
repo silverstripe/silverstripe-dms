@@ -6,12 +6,12 @@ class DMSDocumentTest extends SapphireTest
     public function testDefaultDownloadBehabiourCMSFields()
     {
         $document = singleton('DMSDocument');
-        Config::inst()->update('DMSDocument', 'default_download_behaviour', 'open');
+        Config::modify()->update('DMSDocument', 'default_download_behaviour', 'open');
         $cmsFields = $document->getCMSFields();
         $this->assertEquals('open', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
 
 
-        Config::inst()->update('DMSDocument', 'default_download_behaviour', 'download');
+        Config::modify()->update('DMSDocument', 'default_download_behaviour', 'download');
         $cmsFields = $document->getCMSFields();
         $this->assertEquals('download', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
     }
@@ -314,7 +314,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetStorageFolderThenDelete()
     {
-        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-tests');
+        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-tests');
 
         $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
         $filename = $document->getStorageFolder() . '/' . $document->getFilename();
@@ -332,7 +332,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetLink()
     {
-        Config::inst()->update('DMS', 'folder_name', 'assets/_unit-tests');
+        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-tests');
 
         $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
 

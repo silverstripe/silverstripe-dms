@@ -46,7 +46,7 @@ class ShortCodeRelationFinder
     {
         $number = (int) $number;
         $list = DataList::create('SiteTree');
-        $where = array();
+        $where = [];
         $fields = $this->getShortCodeFields('SiteTree');
         $shortcode = DMS::inst()->getShortcodeHandlerKey();
         foreach ($fields as $ancClass => $ancFields) {
@@ -70,7 +70,7 @@ class ShortCodeRelationFinder
      */
     public function getShortcodeFields($class)
     {
-        $fields = array();
+        $fields = [];
         $ancestry = array_values(ClassInfo::dataClassesFor($class));
 
         foreach ($ancestry as $ancestor) {
@@ -83,7 +83,7 @@ class ShortCodeRelationFinder
                 foreach ($ancFields as $ancFieldName => $ancFieldSpec) {
                     if (preg_match($this->fieldSpecRegex, $ancFieldSpec)) {
                         if (!@$fields[$ancestor]) {
-                            $fields[$ancestor] = array();
+                            $fields[$ancestor] = [];
                         }
                         $fields[$ancestor][$ancFieldName] = $ancFieldSpec;
                     }

@@ -23,6 +23,15 @@ class DMSDocumentSet extends DataObject
     
     private static $table_name = 'DMSDocumentSet';
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $db = (case sensitive)
+  * NEW: private static $db = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $db = array(
         'Title' => 'Varchar(255)',
         'KeyValuePairs' => 'Text',
@@ -30,6 +39,15 @@ class DMSDocumentSet extends DataObject
         'SortByDirection' => "Enum('DESC,ASC')')",
     );
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $has_one = (case sensitive)
+  * NEW: private static $has_one = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $has_one = array(
         'Page' => 'SiteTree',
     );
@@ -206,7 +224,7 @@ class DMSDocumentSet extends DataObject
         Requirements::css(DMS_DIR . '/dist/css/dmsbundle.css');
 
         // Javascript for the link editor pop-up in TinyMCE
-        Requirements::javascript(DMS_DIR . '/javascript/DocumentHtmlEditorFieldToolbar.js');
+        Requirements::javascript(DMS_DIR . '/javascript/DocumentHTMLEditorFieldToolbar.js');
 
         return $this;
     }
@@ -367,12 +385,12 @@ class DMSDocumentSet extends DataObject
         $result = parent::validate();
 
         if (!$this->getTitle()) {
-            $result->error(_t('DMSDocumentSet.VALIDATION_NO_TITLE', '\'Title\' is required.'));
+            $result->addError(_t('DMSDocumentSet.VALIDATION_NO_TITLE', '\'Title\' is required.'));
         }
         return $result;
     }
 
-    public function canView($member = null)
+    public function canView($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -381,7 +399,7 @@ class DMSDocumentSet extends DataObject
         return $this->getGlobalPermission($member);
     }
 
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -390,7 +408,7 @@ class DMSDocumentSet extends DataObject
         return $this->getGlobalPermission($member);
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -399,7 +417,7 @@ class DMSDocumentSet extends DataObject
         return $this->getGlobalPermission($member);
     }
 
-    public function canDelete($member = null)
+    public function canDelete($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {

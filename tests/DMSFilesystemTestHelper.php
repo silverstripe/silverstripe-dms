@@ -22,7 +22,7 @@ class DMSFilesystemTestHelper
             return false;
         }
 
-        $path = BASE_PATH . DIRECTORY_SEPARATOR . $path;
+        $path = Director::baseFolder() . DIRECTORY_SEPARATOR . $path;
         if (is_dir($path)) {
             $files = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),

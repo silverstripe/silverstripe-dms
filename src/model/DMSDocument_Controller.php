@@ -74,7 +74,16 @@ class DMSDocument_Controller extends Controller
             $canView = $doc->canView();
 
             if ($canView) {
-                $path = $doc->getFullPath();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+                $path = $doc->getFilename();
                 if (is_file($path)) {
                     $fileBin = trim(`whereis file`);
                     if (function_exists('finfo_file')) {

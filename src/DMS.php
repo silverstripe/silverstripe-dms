@@ -53,13 +53,13 @@ class DMS extends SS_Object implements DMSInterface
             if (!file_exists($dmsPath . DIRECTORY_SEPARATOR . '.htaccess')) {
                 // Restrict access to the storage folder
                 copy(
-                    BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                    Director::baseFolder() . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
                     . 'resources' . DIRECTORY_SEPARATOR . '.htaccess',
                     $dmsPath . DIRECTORY_SEPARATOR . '.htaccess'
                 );
 
                 copy(
-                    BASE_PATH . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
+                    Director::baseFolder() . DIRECTORY_SEPARATOR . DMS_DIR . DIRECTORY_SEPARATOR
                     . 'resources' . DIRECTORY_SEPARATOR . 'web.config',
                     $dmsPath . DIRECTORY_SEPARATOR . 'web.config'
                 );
@@ -75,7 +75,7 @@ class DMS extends SS_Object implements DMSInterface
      */
     public function getStoragePath()
     {
-        return BASE_PATH . DIRECTORY_SEPARATOR . $this->config()->get('folder_name');
+        return Director::baseFolder() . DIRECTORY_SEPARATOR . $this->config()->get('folder_name');
     }
 
     /**

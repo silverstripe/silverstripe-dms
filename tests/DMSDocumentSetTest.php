@@ -91,7 +91,7 @@ class DMSDocumentSetTest extends SapphireTest
         $document = $this->objFromFixture('DMSDocumentSet', 'ds1');
         $this->assertInternalType('array', $document->getDocumentDisplayFields());
 
-        Config::inst()->update('DMSDocument', 'display_fields', array('apple' => 'Apple', 'orange' => 'Orange'));
+        Config::modify()->update('DMSDocument', 'display_fields', array('apple' => 'Apple', 'orange' => 'Orange'));
         $displayFields = $document->getDocumentDisplayFields();
         $this->assertContains('Apple', $displayFields);
         $this->assertContains('Orange', $displayFields);
@@ -171,7 +171,7 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testShortcodeHandlerKeyFieldExists()
     {
-        Config::inst()->update('DMS', 'shortcode_handler_key', 'unit-test');
+        Config::modify()->update('DMS', 'shortcode_handler_key', 'unit-test');
 
         $set = DMSDocumentSet::create(array('Title' => 'TestSet'));
         $set->write();

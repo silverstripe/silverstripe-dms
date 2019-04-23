@@ -2,7 +2,16 @@
 /**
  * Extends the original toolbar with document picking capability - modified lines are commented.
  */
-class DocumentHtmlEditorFieldToolbar extends Extension
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD:  extends Extension (ignore case)
+  * NEW:  extends Extension (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+class DocumentHTMLEditorFieldToolbar extends Extension
 {
     public function updateLinkForm(Form $form)
     {

@@ -18,7 +18,7 @@ class DMSDocumentAddController extends LeftAndMain
      * @config
      * @var array
      */
-    private static $allowed_extensions = array();
+    private static $allowed_extensions = [];
 
     private static $allowed_actions = array(
         'getEditForm',
@@ -71,8 +71,26 @@ class DMSDocumentAddController extends LeftAndMain
      */
     public function getEditForm($id = null, $fields = null)
     {
-        Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
-        Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: FRAMEWORK_DIR (ignore case)
+  * NEW: SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() (COMPLEX)
+  * EXP: Please review update and fix as required
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        Requirements::javascript(SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() . '/javascript/AssetUploadField.js');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: FRAMEWORK_DIR (ignore case)
+  * NEW: SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() (COMPLEX)
+  * EXP: Please review update and fix as required
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        Requirements::css(SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() . '/css/AssetUploadField.css');
         Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 
         /** @var SiteTree $page */
@@ -228,7 +246,7 @@ class DMSDocumentAddController extends LeftAndMain
             ->sort('ID ASC')
             ->limit(20);
 
-        $return = array();
+        $return = [];
         foreach ($data as $doc) {
             $return[] = array(
                 'label' => $doc->ID . ' - ' . $doc->Title,
@@ -330,7 +348,7 @@ class DMSDocumentAddController extends LeftAndMain
      * @param Member $member
      * @return bool
      */
-    public function canView($member = null)
+    public function canView($member = null, $context = [])
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
             $member = Member::currentUser();

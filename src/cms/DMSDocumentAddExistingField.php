@@ -55,7 +55,7 @@ class DMSDocumentAddExistingField extends CompositeField
     public function Field($properties = array())
     {
         Requirements::javascript(DMS_DIR . '/javascript/DMSDocumentAddExistingField.js');
-        Requirements::javascript(DMS_DIR . '/javascript/DocumentHtmlEditorFieldToolbar.js');
+        Requirements::javascript(DMS_DIR . '/javascript/DocumentHTMLEditorFieldToolbar.js');
         Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 
         return $this->renderWith('DMSDocumentAddExistingField');

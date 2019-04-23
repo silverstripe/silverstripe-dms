@@ -38,7 +38,7 @@ class MigrateToDocumentSetsTask extends BuildTask
      *
      * @var array
      */
-    protected $results = array();
+    protected $results = [];
 
     public function run($request)
     {

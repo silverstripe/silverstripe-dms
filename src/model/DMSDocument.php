@@ -42,6 +42,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     
     private static $table_name = 'DMSDocument';
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $db = (case sensitive)
+  * NEW: private static $db = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $db = array(
         "Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
         "Folder" => "Varchar(255)",    // eg.	0
@@ -61,6 +70,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'Sets' => 'DMSDocumentSet'
     );
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $has_one = (case sensitive)
+  * NEW: private static $has_one = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $has_one = array(
         'CoverImage' => 'Image',
         'CreatedBy' => 'Member',
@@ -112,7 +130,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         'permissions' => 'Permissions'
     );
 
-    public function canView($member = null)
+    public function canView($member = null, $context = [])
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
             $member = Member::currentUser();
@@ -154,7 +172,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         return $this->canEdit($member);
     }
 
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
             $member = Member::currentUser();
@@ -189,7 +207,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      *
      * @return boolean
      */
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
             $member = Member::currentUser();
@@ -218,7 +236,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      *
      * @return boolean
      */
-    public function canDelete($member = null)
+    public function canDelete($member = null, $context = [])
     {
         if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
             $member = Member::currentUser();
@@ -572,7 +590,7 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     public function delete()
     {
         // delete the file (and previous versions of files)
-        $filesToDelete = array();
+        $filesToDelete = [];
         $storageFolder = $this->getStorageFolder();
 
         if (file_exists($storageFolder)) {
@@ -635,13 +653,22 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         DMS::inst()->createStorageFolder(DMS::inst()->getStoragePath() . DIRECTORY_SEPARATOR . $toFolder);
 
         //copy the file into place
-        $fromPath = BASE_PATH . DIRECTORY_SEPARATOR . $filePath;
+        $fromPath = Director::baseFolder() . DIRECTORY_SEPARATOR . $filePath;
 
         //version the existing file (copy it to a new "very specific" filename
         if (DMSDocument_versions::$enable_versions) {
             DMSDocument_versions::create_version($this);
         } else {    //otherwise delete the old document file
-            $oldPath = $this->getFullPath();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+            $oldPath = $this->getFilename();
             if (file_exists($oldPath)) {
                 unlink($oldPath);
             }
@@ -1081,7 +1108,16 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
      */
     public function getAbsoluteSize()
     {
-        return file_exists($this->getFullPath()) ? filesize($this->getFullPath()) : null;
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        return file_exists($this->getFilename()) ? filesize($this->getFilename()) : null;
     }
 
     /**
@@ -1167,6 +1203,15 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
         );
 
         $fields->addExtraClass('dmsdocument-documentdetails');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->dontEscape (case sensitive)
+  * NEW: ->dontEscape (COMPLEX)
+  * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
         $urlField->dontEscape = true;
 
         $this->extend('updateFieldsForFile', $fields);

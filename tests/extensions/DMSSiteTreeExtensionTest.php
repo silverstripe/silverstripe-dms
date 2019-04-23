@@ -20,7 +20,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
      */
     public function testCanDisableDocumentSetsTab($configSetting, $assertionMethod)
     {
-        Config::inst()->update('SiteTree', 'documents_enabled', $configSetting);
+        Config::modify()->update('SiteTree', 'documents_enabled', $configSetting);
         $siteTree = $this->objFromFixture('SiteTree', 's2');
         $this->$assertionMethod($siteTree->getCMSFields()->fieldByName('Root.DocumentSets.DocumentSets'));
     }
@@ -43,7 +43,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
      */
     public function testDocumentSetsGridFieldIsCorrectlyConfigured()
     {
-        Config::inst()->update('SiteTree', 'documents_enabled', true);
+        Config::modify()->update('SiteTree', 'documents_enabled', true);
         $siteTree = $this->objFromFixture('SiteTree', 's2');
         $gridField = $siteTree->getCMSFields()->fieldByName('Root.DocumentSets.DocumentSets');
 

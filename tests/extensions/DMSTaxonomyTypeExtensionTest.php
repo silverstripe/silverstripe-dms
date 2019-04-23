@@ -13,7 +13,7 @@ class DMSTaxonomyTypeExtensionTest extends SapphireTest
      */
     public function testDefaultRecordsAreCreated()
     {
-        Config::inst()->update('DMSTaxonomyTypeExtension', 'default_records', array('Food', 'Beverage', 'Books'));
+        Config::modify()->update('DMSTaxonomyTypeExtension', 'default_records', array('Food', 'Beverage', 'Books'));
 
         TaxonomyType::create()->requireDefaultRecords();
 

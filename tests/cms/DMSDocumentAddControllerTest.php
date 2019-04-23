@@ -51,10 +51,10 @@ class DMSDocumentAddControllerTest extends FunctionalTest
     public function testGetAllowedExtensions()
     {
         Config::inst()->remove('File', 'allowed_extensions');
-        Config::inst()->update('File', 'allowed_extensions', array('jpg', 'gif'));
+        Config::modify()->update('File', 'allowed_extensions', array('jpg', 'gif'));
         $this->assertSame(array('jpg', 'gif'), $this->controller->getAllowedExtensions());
 
-        Config::inst()->update('DMSDocumentAddController', 'allowed_extensions', array('php', 'php5'));
+        Config::modify()->update('DMSDocumentAddController', 'allowed_extensions', array('php', 'php5'));
         $this->assertSame(array('jpg', 'gif', 'php', 'php5'), $this->controller->getAllowedExtensions());
     }
 

@@ -32,11 +32,29 @@ class DMSDocument_versions extends DataObject
     
     private static $table_name = 'DMSDocument_versions';
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $db = (case sensitive)
+  * NEW: private static $db = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $db = array(
         'VersionCounter' => 'Int',
         'VersionViewCount' => 'Int'
     );
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: private static $has_one = (case sensitive)
+  * NEW: private static $has_one = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $has_one = array(
         'Document' => 'DMSDocument'
     );
@@ -81,7 +99,16 @@ class DMSDocument_versions extends DataObject
     {
         $success = false;
 
-        $existingPath = $doc->getFullPath();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $existingPath = $doc->getFilename();
         if (is_file($existingPath)) {
             $docData = $doc->toMap();
             unset($docData['ID']);
@@ -103,7 +130,16 @@ class DMSDocument_versions extends DataObject
             $id = $version->write();
 
             if (!empty($id)) {
-                rename($existingPath, $version->getFullPath());
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+                rename($existingPath, $version->getFilename());
                 $success = true;
             }
         }
@@ -113,7 +149,16 @@ class DMSDocument_versions extends DataObject
 
     public function delete()
     {
-        $path = $this->getFullPath();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $path = $this->getFilename();
 
         if (file_exists($path)) {
             unlink($path);
@@ -263,7 +308,16 @@ class DMSDocument_versions extends DataObject
      */
     public function getAbsoluteSize()
     {
-        return filesize($this->getFullPath());
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        return filesize($this->getFilename());
     }
 
     /**

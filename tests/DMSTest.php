@@ -31,7 +31,7 @@ class DMSTest extends FunctionalTest
     public function setUp()
     {
         parent::setUp();
-        Config::inst()->update('DMS', 'folder_name', $this->testDmsPath);
+        Config::modify()->update('DMS', 'folder_name', $this->testDmsPath);
         DMSFilesystemTestHelper::delete($this->testDmsPath);
         $this->dms = DMS::inst();
     }
@@ -64,23 +64,41 @@ class DMSTest extends FunctionalTest
 
     public function testDMSFolderSpanning()
     {
-        Config::inst()->update('DMS', 'folder_size', 5);
+        Config::modify()->update('DMS', 'folder_size', 5);
         $file = self::$testFile;
 
-        $documents = array();
+        $documents = [];
         for ($i = 0; $i <= 16; $i++) {
             $document = $this->dms->storeDocument($file);
             $this->assertNotNull($document, "Document object created on run number: $i");
-            $this->assertTrue(file_exists($document->getFullPath()));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+            $this->assertTrue(file_exists($document->getFilename()));
             $documents[] = $document;
         }
 
         // Test document objects have their folders set
-        $folders = array();
+        $folders = [];
         for ($i = 0; $i <= 16; $i++) {
             $folderName = $documents[$i]->Folder;
             $this->assertTrue(
-                strpos($documents[$i]->getFullPath(), DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR) !== false,
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: upgrade to SS4
+  * OLD: ->getFullPath() (case sensitive)
+  * NEW: ->getFilename() (COMPLEX)
+  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+                strpos($documents[$i]->getFilename(), DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR) !== false,
                 "Correct folder name for the documents. Document path contains reference to folder name '$folderName'"
             );
             $folders[] = $folderName;
@@ -152,7 +170,7 @@ class DMSTest extends FunctionalTest
      */
     public function testShortcodeHandlerKeyIsConfigurable()
     {
-        Config::inst()->update('DMS', 'shortcode_handler_key', 'testing');
+        Config::modify()->update('DMS', 'shortcode_handler_key', 'testing');
         $this->assertSame('testing', DMS::inst()->getShortcodeHandlerKey());
     }
 
