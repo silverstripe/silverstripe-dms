@@ -9,8 +9,7 @@ namespace Sunnysideup\DMS\Interfaces;
  * object in an instance of the DMSInterface. All write operations on the DMSDocument create a new relation, so we
  * never need to explicitly call the write() method on the DMSDocument DataObject
  */
-interface DMSDocumentInterface
-{
+interface DMSDocumentInterface {
     /**
      * Returns a link to download this DMSDocument from the DMS store
      * @return String

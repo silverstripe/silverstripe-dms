@@ -15,8 +15,7 @@ use SilverStripe\CMS\Model\SiteTree;
  * 10000 files per folder is a good amount)
  *
  */
-interface DMSInterface
-{
+interface DMSInterface {
     /**
      * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
      * @static
