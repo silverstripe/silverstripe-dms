@@ -2,8 +2,11 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use GridFieldDetailForm_ItemRequest;
-use ShortCodeRelationFinder;
+
+
+use Sunnysideup\DMS\Tools\ShortCodeRelationFinder;
+use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
+
 
 
 /**

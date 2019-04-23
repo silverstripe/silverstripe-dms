@@ -2,9 +2,13 @@
 
 namespace Sunnysideup\DMS;
 
-use ShortcodeParser;
-use DMSDocument;
-use ErrorPage;
+
+
+
+use SilverStripe\View\Parsers\ShortcodeParser;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\ErrorPage\ErrorPage;
+
 
 
 /**

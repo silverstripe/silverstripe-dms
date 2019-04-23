@@ -2,18 +2,30 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use ModelAdmin;
-use Requirements;
+
+
 use CMSForm;
-use GridField;
-use SiteTree;
+
+
+use Sunnysideup\DMS\Model\DMSDocument;
+use Sunnysideup\DMS\Model\DMSDocumentSet;
+use SilverStripe\View\Requirements;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Admin\ModelAdmin;
+
 
 
 class DMSDocumentAdmin extends ModelAdmin
 {
     private static $managed_models = array(
-        'DMSDocument',
-        'DMSDocumentSet'
+        DMSDocument::class,
+        DMSDocumentSet::class
     );
 
     private static $url_segment = 'documents';
@@ -53,17 +65,17 @@ class DMSDocumentAdmin extends ModelAdmin
     {
         $gridFieldConfig = $gridField->getConfig();
 
-        $gridFieldConfig->removeComponentsByType('GridFieldEditButton');
-        $gridFieldConfig->addComponent(new DMSGridFieldEditButton(), 'GridFieldDeleteAction');
+        $gridFieldConfig->removeComponentsByType(GridFieldEditButton::class);
+        $gridFieldConfig->addComponent(new DMSGridFieldEditButton(), GridFieldDeleteAction::class);
 
-        if ($this->modelClass === 'DMSDocument') {
-            $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton');
+        if ($this->modelClass === DMSDocument::class) {
+            $gridFieldConfig->removeComponentsByType(GridFieldAddNewButton::class);
             $gridFieldConfig->addComponent(
                 new DMSGridFieldAddNewButton('buttons-before-left'),
-                'GridFieldExportButton'
+                GridFieldExportButton::class
             );
-        } elseif ($this->modelClass === 'DMSDocumentSet') {
-            $dataColumns = $gridFieldConfig->getComponentByType('GridFieldDataColumns');
+        } elseif ($this->modelClass === DMSDocumentSet::class) {
+            $dataColumns = $gridFieldConfig->getComponentByType(GridFieldDataColumns::class);
             $fields = $dataColumns->getDisplayFields($gridField);
             $fields = array('Title' => 'Title', 'Page.Title' => 'Page') + $fields;
             $dataColumns->setDisplayFields($fields)

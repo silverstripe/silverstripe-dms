@@ -1,17 +1,28 @@
 <?php
+
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Forms\CompositeField;
+use SilverStripe\Security\Member;
+use Sunnysideup\DMS\DMS;
+use SilverStripe\Dev\SapphireTest;
 class DMSDocumentTest extends SapphireTest
 {
     protected static $fixture_file = 'dmstest.yml';
 
     public function testDefaultDownloadBehabiourCMSFields()
     {
-        $document = singleton('DMSDocument');
-        Config::modify()->update('DMSDocument', 'default_download_behaviour', 'open');
+        $document = singleton(DMSDocument::class);
+        Config::modify()->update(DMSDocument::class, 'default_download_behaviour', 'open');
         $cmsFields = $document->getCMSFields();
         $this->assertEquals('open', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
 
 
-        Config::modify()->update('DMSDocument', 'default_download_behaviour', 'download');
+        Config::modify()->update(DMSDocument::class, 'default_download_behaviour', 'download');
         $cmsFields = $document->getCMSFields();
         $this->assertEquals('download', $cmsFields->dataFieldByName('DownloadBehavior')->Value());
     }
@@ -21,7 +32,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testRelatedDocuments()
     {
-        $document = $this->objFromFixture('DMSDocument', 'document_with_relations');
+        $document = $this->objFromFixture(DMSDocument::class, 'document_with_relations');
         $this->assertGreaterThan(0, $document->RelatedDocuments()->count());
         $this->assertEquals(
             array('test-file-file-doesnt-exist-1', 'test-file-file-doesnt-exist-2'),
@@ -48,20 +59,20 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testDocumentHasCmsFieldForManagingRelatedDocuments()
     {
-        $document = $this->objFromFixture('DMSDocument', 'document_with_relations');
+        $document = $this->objFromFixture(DMSDocument::class, 'document_with_relations');
         $gridField = $this->getRelatedDocumentsGridField($document);
-        $this->assertInstanceOf('GridField', $gridField);
+        $this->assertInstanceOf(GridField::class, $gridField);
 
         $gridFieldConfig = $gridField->getConfig();
 
         $this->assertNotNull(
-            'GridFieldAddExistingAutocompleter',
-            $addExisting = $gridFieldConfig->getComponentByType('GridFieldAddExistingAutocompleter'),
+            GridFieldAddExistingAutocompleter::class,
+            $addExisting = $gridFieldConfig->getComponentByType(GridFieldAddExistingAutocompleter::class),
             'Related documents GridField has an "add existing" autocompleter'
         );
 
         $this->assertNull(
-            $gridFieldConfig->getComponentByType('GridFieldAddNewButton'),
+            $gridFieldConfig->getComponentByType(GridFieldAddNewButton::class),
             'Related documents GridField does not have an "add new" button'
         );
     }
@@ -72,7 +83,7 @@ class DMSDocumentTest extends SapphireTest
     public function testDocumentHasNoCMSFieldsForManagingRelatedDocumentsIfCantEdit()
     {
         $this->logInWithPermission('another-user');
-        $document = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $document = $this->objFromFixture(DMSDocument::class, 'doc-only-these-users');
         $gridField = $this->getRelatedDocumentsGridField($document);
         $this->assertNull($gridField);
     }
@@ -82,18 +93,18 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetRelatedDocumentsForAutocompleter()
     {
-        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $document = $this->objFromFixture(DMSDocument::class, 'd1');
         $gridField = $this->getRelatedDocumentsGridField($document);
-        $this->assertInstanceOf('GridField', $gridField);
+        $this->assertInstanceOf(GridField::class, $gridField);
 
         $config = $gridField->getConfig();
 
-        $autocompleter = $config->getComponentByType('GridFieldAddExistingAutocompleter');
+        $autocompleter = $config->getComponentByType(GridFieldAddExistingAutocompleter::class);
         $autocompleter->setResultsFormat('$Filename');
 
         $jsonResult = $autocompleter->doSearch(
             $gridField,
-            new SS_HTTPRequest('GET', '/', array('gridfield_relationsearch' => 'test'))
+            new HTTPRequest('GET', '/', array('gridfield_relationsearch' => 'test'))
         );
 
         $this->assertNotContains('test-file-file-doesnt-exist-1', $jsonResult);
@@ -125,7 +136,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetActionTaskHtml()
     {
-        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $document = $this->objFromFixture(DMSDocument::class, 'd1');
         $document->addActionPanelTask('example', 'Example');
 
         $result = $document->getActionTaskHtml();
@@ -154,9 +165,9 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetPermissionsActionPanel()
     {
-        $result = $this->objFromFixture('DMSDocument', 'd1')->getPermissionsActionPanel();
+        $result = $this->objFromFixture(DMSDocument::class, 'd1')->getPermissionsActionPanel();
 
-        $this->assertInstanceOf('CompositeField', $result);
+        $this->assertInstanceOf(CompositeField::class, $result);
         $this->assertNotNull($result->getChildren()->fieldByName('CanViewType'));
         $this->assertNotNull($result->getChildren()->fieldByName('ViewerGroups'));
     }
@@ -167,7 +178,7 @@ class DMSDocumentTest extends SapphireTest
     public function testCanView()
     {
         /** @var DMSDocument $document */
-        $document = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $document = $this->objFromFixture(DMSDocument::class, 'doc-logged-in-users');
         $this->logoutMember();
         // Logged out user test
         $this->assertFalse($document->canView());
@@ -180,11 +191,11 @@ class DMSDocumentTest extends SapphireTest
         $admin->logout();
 
         // Check anyone
-        $document = $this->objFromFixture('DMSDocument', 'doc-anyone');
+        $document = $this->objFromFixture(DMSDocument::class, 'doc-anyone');
         $this->assertTrue($document->canView());
 
         // Check OnlyTheseUsers
-        $document = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $document = $this->objFromFixture(DMSDocument::class, 'doc-only-these-users');
         $reportAdminID = $this->logInWithPermission('cable-guy');
         /** @var Member $reportAdmin */
         $reportAdmin = Member::get()->byID($reportAdminID);
@@ -203,20 +214,20 @@ class DMSDocumentTest extends SapphireTest
         $this->logoutMember();
 
         /** @var DMSDocument $document1 */
-        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $document1 = $this->objFromFixture(DMSDocument::class, 'doc-logged-in-users');
 
         // Logged out user test
         $this->assertFalse($document1->canEdit());
 
         //Logged in user test
-        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $contentAuthor = $this->objFromFixture(Member::class, 'editor');
         $this->assertTrue($document1->canEdit($contentAuthor));
 
         // Check OnlyTheseUsers
         /** @var DMSDocument $document2 */
-        $document2 = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $document2 = $this->objFromFixture(DMSDocument::class, 'doc-only-these-users');
         /** @var Member $cableGuy */
-        $cableGuy = $this->objFromFixture('Member', 'non-editor');
+        $cableGuy = $this->objFromFixture(Member::class, 'non-editor');
         $this->assertFalse($document2->canEdit($cableGuy));
 
         $cableGuy->addToGroupByCode('content-author');
@@ -229,13 +240,13 @@ class DMSDocumentTest extends SapphireTest
     public function testCanDelete()
     {
         $this->logoutMember();
-        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $document1 = $this->objFromFixture(DMSDocument::class, 'doc-logged-in-users');
 
         // Logged out user test
         $this->assertFalse($document1->canDelete());
 
         // Test editors can delete
-        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $contentAuthor = $this->objFromFixture(Member::class, 'editor');
         $this->assertTrue($document1->canDelete($contentAuthor));
     }
 
@@ -245,7 +256,7 @@ class DMSDocumentTest extends SapphireTest
     public function testCanCreate()
     {
         $this->logoutMember();
-        $document1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $document1 = $this->objFromFixture(DMSDocument::class, 'doc-logged-in-users');
         $this->logInWithPermission('CMS_ACCESS_DMSDocumentAdmin');
         // Test CMS access can create
         $this->assertTrue($document1->canCreate());
@@ -253,7 +264,7 @@ class DMSDocumentTest extends SapphireTest
         $this->logoutMember();
 
         // Test editors can create
-        $contentAuthor = $this->objFromFixture('Member', 'editor');
+        $contentAuthor = $this->objFromFixture(Member::class, 'editor');
         $this->assertTrue($document1->canCreate($contentAuthor));
     }
 
@@ -273,15 +284,15 @@ class DMSDocumentTest extends SapphireTest
     public function testGetPermissionDeniedReason()
     {
         /** @var DMSDocument $document1 */
-        $doc1 = $this->objFromFixture('DMSDocument', 'doc-logged-in-users');
+        $doc1 = $this->objFromFixture(DMSDocument::class, 'doc-logged-in-users');
         $this->assertContains('Please log in to view this document', $doc1->getPermissionDeniedReason());
 
         /** @var DMSDocument $doc2 */
-        $doc2 = $this->objFromFixture('DMSDocument', 'doc-only-these-users');
+        $doc2 = $this->objFromFixture(DMSDocument::class, 'doc-only-these-users');
         $this->assertContains('You are not authorised to view this document', $doc2->getPermissionDeniedReason());
 
         /** @var DMSDocument $doc3 */
-        $doc3 = $this->objFromFixture('DMSDocument', 'doc-anyone');
+        $doc3 = $this->objFromFixture(DMSDocument::class, 'doc-anyone');
         $this->assertEquals('', $doc3->getPermissionDeniedReason());
     }
 
@@ -290,7 +301,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetRelatedPages()
     {
-        $document = $this->objFromFixture('DMSDocument', 'd1');
+        $document = $this->objFromFixture(DMSDocument::class, 'd1');
         $result = $document->getRelatedPages();
         $this->assertCount(3, $result, 'Document 1 is related to 3 Pages');
         $this->assertSame(array('s1', 's2', 's3'), $result->column('URLSegment'));
@@ -301,10 +312,10 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetTitleOrFilenameWithoutId()
     {
-        $d1 = $this->objFromFixture('DMSDocument', 'd1');
+        $d1 = $this->objFromFixture(DMSDocument::class, 'd1');
         $this->assertSame('test-file-file-doesnt-exist-1', $d1->getTitle());
 
-        $d2 = $this->objFromFixture('DMSDocument', 'd2');
+        $d2 = $this->objFromFixture(DMSDocument::class, 'd2');
         $this->assertSame('File That Doesn\'t Exist (Title)', $d2->getTitle());
     }
 
@@ -314,7 +325,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetStorageFolderThenDelete()
     {
-        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-tests');
+        Config::modify()->update(DMS::class, 'folder_name', 'assets/_unit-tests');
 
         $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
         $filename = $document->getStorageFolder() . '/' . $document->getFilename();
@@ -332,7 +343,7 @@ class DMSDocumentTest extends SapphireTest
      */
     public function testGetLink()
     {
-        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-tests');
+        Config::modify()->update(DMS::class, 'folder_name', 'assets/_unit-tests');
 
         $document = DMS::inst()->storeDocument('dms/tests/DMS-test-lorum-file.pdf');
 

@@ -5,21 +5,16 @@ Only:
 ---
 TaxonomyType:
   extensions:
-    - DMSTaxonomyTypeExtension
-
-DMSDocument:
+    - Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension
+Sunnysideup\DMS\Model\DMSDocument:
   extensions:
-    - DMSDocumentTaxonomyExtension
-  # Add query builder filter for tags
+    - Sunnysideup\DMS\Extensions\DMSDocumentTaxonomyExtension
   searchable_fields:
     Tags.ID:
-      title: Document has tags
-      field: ListboxField
+      title: 'Document has tags'
+      field: SilverStripe\Forms\ListboxField
       filter: ExactMatchFilter
-
-DMSTaxonomyTypeExtension:
-  # Referenced to filter taxonomy terms for DMS Documents.
-  # To change, update the default_records array too.
+Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension:
   default_record_name: Document
   default_records:
     - Document

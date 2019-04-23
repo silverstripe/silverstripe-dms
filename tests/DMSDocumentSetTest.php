@@ -1,5 +1,23 @@
 <?php
 
+use Sunnysideup\DMS\Model\DMSDocumentSet;
+use SilverStripe\CMS\Model\SiteTree;
+use Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldPaginator;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Forms\TabSet;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\FieldGroup;
+use SilverStripe\Forms\DropdownField;
+use Sunnysideup\DMS\DMS;
+use SilverStripe\Forms\HiddenField;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
+use SilverStripe\Security\Member;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSDocumentSetTest extends SapphireTest
 {
     protected static $fixture_file = 'dmstest.yml';
@@ -42,13 +60,13 @@ class DMSDocumentSetTest extends SapphireTest
 
     public function testRelations()
     {
-        $s1 = $this->objFromFixture('SiteTree', 's1');
-        $s2 = $this->objFromFixture('SiteTree', 's2');
-        $s4 = $this->objFromFixture('SiteTree', 's4');
+        $s1 = $this->objFromFixture(SiteTree::class, 's1');
+        $s2 = $this->objFromFixture(SiteTree::class, 's2');
+        $s4 = $this->objFromFixture(SiteTree::class, 's4');
 
-        $ds1 = $this->objFromFixture('DMSDocumentSet', 'ds1');
-        $ds2 = $this->objFromFixture('DMSDocumentSet', 'ds2');
-        $ds3 = $this->objFromFixture('DMSDocumentSet', 'ds3');
+        $ds1 = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
+        $ds2 = $this->objFromFixture(DMSDocumentSet::class, 'ds2');
+        $ds3 = $this->objFromFixture(DMSDocumentSet::class, 'ds3');
 
         $this->assertCount(0, $s4->DocumentSets(), 'Page 4 has no document sets associated');
         $this->assertCount(2, $s1->DocumentSets(), 'Page 1 has 2 document sets');
@@ -60,7 +78,7 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testDocumentGridFieldConfig()
     {
-        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
         $fields = $set->getCMSFields();
         $gridField = $fields->fieldByName('Root.Main.Documents');
         $this->assertTrue((bool) $gridField->hasClass('documents'));
@@ -68,13 +86,13 @@ class DMSDocumentSetTest extends SapphireTest
         /** @var GridFieldConfig $config */
         $config = $gridField->getConfig();
 
-        $this->assertNotNull($addNew = $config->getComponentByType('DMSGridFieldAddNewButton'));
+        $this->assertNotNull($addNew = $config->getComponentByType(DMSGridFieldAddNewButton::class));
         $this->assertSame($set->ID, $addNew->getDocumentSetId());
 
         if (class_exists('GridFieldPaginatorWithShowAll')) {
             $this->assertNotNull($config->getComponentByType('GridFieldPaginatorWithShowAll'));
         } else {
-            $paginator = $config->getComponentByType('GridFieldPaginator');
+            $paginator = $config->getComponentByType(GridFieldPaginator::class);
             $this->assertNotNull($paginator);
             $this->assertSame(15, $paginator->getItemsPerPage());
         }
@@ -88,10 +106,10 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testGetDocumentDisplayFields()
     {
-        $document = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $document = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
         $this->assertInternalType('array', $document->getDocumentDisplayFields());
 
-        Config::modify()->update('DMSDocument', 'display_fields', array('apple' => 'Apple', 'orange' => 'Orange'));
+        Config::modify()->update(DMSDocument::class, 'display_fields', array('apple' => 'Apple', 'orange' => 'Orange'));
         $displayFields = $document->getDocumentDisplayFields();
         $this->assertContains('Apple', $displayFields);
         $this->assertContains('Orange', $displayFields);
@@ -104,11 +122,11 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testNiceFormattingForManuallyAddedInGridField()
     {
-        $fieldFormatting = $this->objFromFixture('DMSDocumentSet', 'ds1')
+        $fieldFormatting = $this->objFromFixture(DMSDocumentSet::class, 'ds1')
             ->getCMSFields()
             ->fieldByName('Root.Main.Documents')
             ->getConfig()
-            ->getComponentByType('GridFieldDataColumns')
+            ->getComponentByType(GridFieldDataColumns::class)
             ->getFieldFormatting();
 
         $this->assertArrayHasKey('ManuallyAdded', $fieldFormatting);
@@ -124,7 +142,7 @@ class DMSDocumentSetTest extends SapphireTest
     public function testAddQueryFields()
     {
         /** @var DMSDocumentSet $set */
-        $set = $this->objFromFixture('DMSDocumentSet', 'ds6');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'ds6');
         /** @var FieldList $fields */
         $fields = new FieldList(new TabSet('Root'));
         /** @var FieldList $fields */
@@ -154,13 +172,13 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testQueryBuilderDirectionFieldHasFriendlyLabels()
     {
-        $fields = $this->objFromFixture('DMSDocumentSet', 'ds1')->getCMSFields();
+        $fields = $this->objFromFixture(DMSDocumentSet::class, 'ds1')->getCMSFields();
 
         $dropdown = $fields->fieldByName('Root.QueryBuilder')->FieldList()->filterByCallback(function ($field) {
             return $field instanceof FieldGroup;
         })->first()->fieldByName('SortByDirection');
 
-        $this->assertInstanceOf('DropdownField', $dropdown);
+        $this->assertInstanceOf(DropdownField::class, $dropdown);
         $source = $dropdown->getSource();
         $this->assertContains('Ascending', $source);
         $this->assertContains('Descending', $source);
@@ -171,7 +189,7 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testShortcodeHandlerKeyFieldExists()
     {
-        Config::modify()->update('DMS', 'shortcode_handler_key', 'unit-test');
+        Config::modify()->update(DMS::class, 'shortcode_handler_key', 'unit-test');
 
         $set = DMSDocumentSet::create(array('Title' => 'TestSet'));
         $set->write();
@@ -179,7 +197,7 @@ class DMSDocumentSetTest extends SapphireTest
         $fields = $set->getCMSFields();
         $field = $fields->fieldByName('Root.Main.DMSShortcodeHandlerKey');
 
-        $this->assertInstanceOf('HiddenField', $field);
+        $this->assertInstanceOf(HiddenField::class, $field);
         $this->assertSame('unit-test', $field->Value());
     }
 
@@ -192,10 +210,10 @@ class DMSDocumentSetTest extends SapphireTest
             $this->markTestSkipped('Test requires undefinedoffset/sortablegridfield installed.');
         }
 
-        $fields = $this->objFromFixture('DMSDocumentSet', 'ds1')->getCMSFields();
+        $fields = $this->objFromFixture(DMSDocumentSet::class, 'ds1')->getCMSFields();
 
         $gridField = $fields->fieldByName('Root.Main.Documents');
-        $this->assertInstanceOf('GridField', $gridField);
+        $this->assertInstanceOf(GridField::class, $gridField);
 
         $this->assertInstanceOf(
             'GridFieldSortableRows',
@@ -209,7 +227,7 @@ class DMSDocumentSetTest extends SapphireTest
     public function testSaveLinkedDocuments()
     {
         /** @var DMSDocumentSet $set */
-        $set = $this->objFromFixture('DMSDocumentSet', 'dsSaveLinkedDocuments');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'dsSaveLinkedDocuments');
         // Assert initially docs
         $this->assertEquals(1, $set->getDocuments()->count(), 'Set has 1 document');
         // Now apply the query and see if 2 extras were added with CreatedByID filter
@@ -233,10 +251,10 @@ class DMSDocumentSetTest extends SapphireTest
      */
     public function testPageFieldRemovedWhenEditingInPageContext()
     {
-        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
 
         $fields = $set->getCMSFields();
-        $this->assertInstanceOf('DropdownField', $fields->fieldByName('Root.Main.PageID'));
+        $this->assertInstanceOf(DropdownField::class, $fields->fieldByName('Root.Main.PageID'));
 
         $pageController = new CMSPageEditController;
         $pageController->pushCurrent();
@@ -254,7 +272,7 @@ class DMSDocumentSetTest extends SapphireTest
             $member->logout();
         }
 
-        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
 
         $this->assertFalse($set->canCreate());
         $this->assertFalse($set->canDelete());

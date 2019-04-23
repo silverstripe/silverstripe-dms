@@ -3,12 +3,21 @@
 namespace Sunnysideup\DMS;
 
 use SS_Object;
-use DMSInterface;
-use Director;
-use FileNotFoundException;
-use DMSDocument;
-use SiteTree;
-use Config;
+
+
+
+
+
+
+use SilverStripe\Control\Director;
+use SilverStripe\Assets\File;
+use Sunnysideup\DMS\Exceptions\FileNotFoundException;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\DMS\DMS;
+use Sunnysideup\DMS\Interface\DMSInterface;
+
 
 class DMS extends SS_Object implements DMSInterface
 {
@@ -102,7 +111,7 @@ class DMS extends SS_Object implements DMSInterface
         $filePath = null;
         if (is_string($file)) {
             $filePath = $file;
-        } elseif (is_object($file) && $file->is_a("File")) {
+        } elseif (is_object($file) && $file->is_a(File::class)) {
             $filePath = $file->Filename;
         }
 
@@ -196,6 +205,6 @@ class DMS extends SS_Object implements DMSInterface
      */
     public function getShortcodeHandlerKey()
     {
-        return (string) Config::inst()->get('DMS', 'shortcode_handler_key');
+        return (string) Config::inst()->get(DMS::class, 'shortcode_handler_key');
     }
 }

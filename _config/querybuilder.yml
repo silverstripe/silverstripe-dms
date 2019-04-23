@@ -1,16 +1,16 @@
-DMSDocument:
+Sunnysideup\DMS\Model\DMSDocument:
   searchable_fields:
     Title:
-      title: Document title matches
+      title: 'Document title matches'
     Description:
-      title: Document summary matches
+      title: 'Document summary matches'
     CreatedByID:
-      title: Document created by
-      field: ListboxField
+      title: 'Document created by'
+      field: SilverStripe\Forms\ListboxField
       filter: ExactMatchFilter
     LastEditedByID:
-      title: Document last changed by
-      field: ListboxField
+      title: 'Document last changed by'
+      field: SilverStripe\Forms\ListboxField
       filter: ExactMatchFilter
     Filename:
-      title: File name
+      title: 'File name'

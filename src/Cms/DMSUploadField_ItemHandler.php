@@ -3,8 +3,11 @@
 namespace Sunnysideup\DMS\Cms;
 
 use UploadField_ItemHandler;
-use DMSDocument;
-use Form;
+
+
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Forms\Form;
+
 
 
 class DMSUploadField_ItemHandler extends UploadField_ItemHandler

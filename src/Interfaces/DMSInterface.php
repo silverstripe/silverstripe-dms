@@ -2,7 +2,9 @@
 
 namespace Sunnysideup\DMS\Interfaces;
 
-use SiteTree;
+
+use SilverStripe\CMS\Model\SiteTree;
+
 
 /**
  * When storing a document, the DMS sucks up the file and stores it separately from the assets section.

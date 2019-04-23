@@ -2,20 +2,33 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use UploadField;
-use DMS;
-use DMSDocument;
-use DMSDocumentSet;
-use SS_HTTPRequest;
+
+
+
+
+
 use SS_Object;
 use Exception;
-use SS_HTTPResponse;
-use Convert;
-use ArrayList;
-use Requirements;
-use FieldList;
-use FormAction;
-use Validator;
+
+
+
+
+
+
+
+use Sunnysideup\DMS\DMS;
+use Sunnysideup\DMS\Model\DMSDocument;
+use Sunnysideup\DMS\Model\DMSDocumentSet;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Core\Convert;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\Requirements;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\Validator;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+
 
 
 /**
@@ -83,7 +96,7 @@ class DMSUploadField extends UploadField
      * @param SS_HTTPRequest $request
      * @return string json
      */
-    public function upload(SS_HTTPRequest $request)
+    public function upload(HTTPRequest $request)
     {
         if ($recordId = $request->postVar('ID')) {
             $this->setRecord(DMSDocumentSet::get()->byId($recordId));
@@ -186,7 +199,7 @@ class DMSUploadField extends UploadField
                 }
             }
         }
-        $response = new SS_HTTPResponse(Convert::raw2json(array($return)));
+        $response = new HTTPResponse(Convert::raw2json(array($return)));
         $response->addHeader('Content-Type', 'text/plain');
         return $response;
     }

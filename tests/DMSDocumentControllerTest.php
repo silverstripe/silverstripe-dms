@@ -1,5 +1,11 @@
 <?php
 
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\DMS\DMS;
+use Sunnysideup\DMS\Model\DMSDocument_Controller;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Dev\SapphireTest;
+
 /**
  * Class DMSDocumentControllerTest
  */
@@ -16,10 +22,10 @@ class DMSDocumentControllerTest extends SapphireTest
     {
         parent::setUp();
 
-        Config::modify()->update('DMS', 'folder_name', 'assets/_unit-test-123');
+        Config::modify()->update(DMS::class, 'folder_name', 'assets/_unit-test-123');
         $this->logInWithPermission('ADMIN');
 
-        $this->controller = $this->getMockBuilder('DMSDocument_Controller')
+        $this->controller = $this->getMockBuilder(DMSDocument_Controller::class)
             ->setMethods(array('sendFile'))
             ->getMock();
     }
@@ -53,7 +59,7 @@ class DMSDocumentControllerTest extends SapphireTest
         $openDoc->clearEmbargo(false);
         $openDoc->write();
 
-        $request = new SS_HTTPRequest('GET', $openDoc->Link());
+        $request = new HTTPRequest('GET', $openDoc->Link());
         $request->match('dmsdocument/$ID');
         $this->controller->index($request);
     }

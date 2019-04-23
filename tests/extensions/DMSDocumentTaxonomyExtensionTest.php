@@ -1,5 +1,8 @@
 <?php
 
+use Sunnysideup\DMS\Extensions\DMSDocumentTaxonomyExtension;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSDocumentTaxonomyExtensionTest extends SapphireTest
 {
     protected static $fixture_file = 'DMSDocumentTaxonomyExtensionTest.yml';

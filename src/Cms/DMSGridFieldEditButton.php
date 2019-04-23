@@ -2,10 +2,16 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use GridFieldEditButton;
-use GridField_ColumnProvider;
-use ArrayData;
-use Controller;
+
+
+
+
+use SilverStripe\Control\Controller;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
+use SilverStripe\Forms\GridField\GridFieldViewButton;
+use SilverStripe\Forms\GridField\GridField_ColumnProvider;
+
 
 
 class DMSGridFieldEditButton extends GridFieldEditButton implements GridField_ColumnProvider
@@ -27,7 +33,7 @@ class DMSGridFieldEditButton extends GridFieldEditButton implements GridField_Co
             'Link' => Controller::join_links($gridField->Link('item'), $record->ID, 'edit')
         ));
 
-        $template = $record->canEdit() ? 'GridFieldEditButton' : 'GridFieldViewButton';
+        $template = $record->canEdit() ? GridFieldEditButton::class : GridFieldViewButton::class;
 
         return $data->renderWith($template);
     }

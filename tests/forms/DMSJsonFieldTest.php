@@ -1,5 +1,11 @@
 <?php
 
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\FieldList;
+use Sunnysideup\DMS\Forms\DMSJsonField;
+use SilverStripe\Core\Convert;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSJsonFieldTest extends SapphireTest
 {
     public function testJsonFieldConstructorMultiWays()

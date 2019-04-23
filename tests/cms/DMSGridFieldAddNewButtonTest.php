@@ -1,5 +1,13 @@
 <?php
 
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Forms\GridField\GridField;
+use Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton;
+use Sunnysideup\DMS\Model\DMSDocumentSet;
+use SilverStripe\CMS\Controllers\ContentController;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSGridFieldAddNewButtonTest extends SapphireTest
 {
     protected static $fixture_file = 'dms/tests/dmstest.yml';
@@ -46,7 +54,7 @@ class DMSGridFieldAddNewButtonTest extends SapphireTest
      */
     public function testPageIdIsAddedWhenAvailableViaDocumentSetRelationship()
     {
-        $set = $this->objFromFixture('DMSDocumentSet', 'ds1');
+        $set = $this->objFromFixture(DMSDocumentSet::class, 'ds1');
         $this->button->setDocumentSetId($set->ID);
 
         $controller = new ContentController;

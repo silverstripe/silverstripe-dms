@@ -1,5 +1,9 @@
 <?php
 
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Dev\TestOnly;
+
 /**
  * Class StubRelatedDocumentExtension
  *

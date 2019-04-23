@@ -3,14 +3,9 @@ Name: dmsconfig
 ---
 SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - DMSSiteTreeExtension
-  # Whether to show the document sets tab in the CMS for the page type this extension is applied to
+    - Sunnysideup\DMS\Extensions\DMSSiteTreeExtension
   documents_enabled: true
-
 HtmlEditorField_Toolbar:
   extensions:
     - DocumentHtmlEditorFieldToolbar
-
-# Ensure that if the parent UploadField is overloaded with the injector, that the DMSUploadField is returned
-Injector:
-  DMSUploadField: DMSUploadField
+SilverStripe\Core\Injector\Injector: {  }

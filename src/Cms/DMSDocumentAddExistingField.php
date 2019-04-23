@@ -2,9 +2,16 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use CompositeField;
-use TreeDropdownField;
-use Requirements;
+
+
+
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Forms\TreeDropdownField;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\Requirements;
+use Sunnysideup\DMS\Cms\DMSDocumentAddExistingField;
+use SilverStripe\Forms\CompositeField;
+
 
 
 class DMSDocumentAddExistingField extends CompositeField
@@ -20,7 +27,7 @@ class DMSDocumentAddExistingField extends CompositeField
             new TreeDropdownField(
                 'PageSelector',
                 'Add from another page',
-                'SiteTree',
+                SiteTree::class,
                 'ID',
                 'TitleWithNumberOfDocuments'
             )
@@ -44,10 +51,10 @@ class DMSDocumentAddExistingField extends CompositeField
     public function getRecord()
     {
         if (!$this->record && $this->form) {
-            if ($this->form->getRecord() && is_a($this->form->getRecord(), 'DataObject')) {
+            if ($this->form->getRecord() && is_a($this->form->getRecord(), DataObject::class)) {
                 $this->record = $this->form->getRecord();
             } elseif ($this->form->Controller() && $this->form->Controller()->hasMethod('data')
-                    && $this->form->Controller()->data() && is_a($this->form->Controller()->data(), 'DataObject')) {
+                    && $this->form->Controller()->data() && is_a($this->form->Controller()->data(), DataObject::class)) {
                 $this->record = $this->form->Controller()->data();
             }
         }
@@ -65,7 +72,7 @@ class DMSDocumentAddExistingField extends CompositeField
         Requirements::javascript(DMS_DIR . '/javascript/DocumentHTMLEditorFieldToolbar.js');
         Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 
-        return $this->renderWith('DMSDocumentAddExistingField');
+        return $this->renderWith(DMSDocumentAddExistingField::class);
     }
 
     /**

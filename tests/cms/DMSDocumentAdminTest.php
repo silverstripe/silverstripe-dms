@@ -1,5 +1,10 @@
 <?php
 
+use Sunnysideup\DMS\Cms\DMSDocumentAdmin;
+use Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton;
+use Sunnysideup\DMS\Cms\DMSGridFieldEditButton;
+use SilverStripe\Dev\FunctionalTest;
+
 class DMSDocumentAdminTest extends FunctionalTest
 {
     protected static $fixture_file = 'DMSDocumentAdminTest.yml';
@@ -23,8 +28,8 @@ class DMSDocumentAdminTest extends FunctionalTest
         $gridFieldConfig = $form->Fields()->first()->getConfig();
 
         $replacements = array(
-            'GridFieldAddNewButton'=>'DMSGridFieldAddNewButton',
-            'GridFieldEditButton'=>'DMSGridFieldEditButton'
+            'GridFieldAddNewButton'=>DMSGridFieldAddNewButton::class,
+            'GridFieldEditButton'=>DMSGridFieldEditButton::class
         );
 
         foreach ($replacements as $oldClass => $newClass) {

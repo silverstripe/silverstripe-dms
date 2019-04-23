@@ -2,24 +2,45 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use LeftAndMain;
-use SiteTree;
-use DMSDocumentSet;
-use Requirements;
-use Form;
-use FieldList;
-use TabSet;
-use Tab;
-use LiteralField;
-use HiddenField;
-use Controller;
-use ArrayData;
-use CMSPageEditController;
-use Convert;
-use DMSDocument;
-use Config;
-use Member;
-use Permission;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\CMS\Controllers\CMSMain;
+use Sunnysideup\DMS\Model\DMSDocumentSet;
+use SilverStripe\View\Requirements;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TabSet;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
+use SilverStripe\Forms\HiddenField;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
+use SilverStripe\Control\Controller;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Core\Convert;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Assets\File;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+use SilverStripe\Admin\LeftAndMain;
+
 
 
 /**
@@ -31,8 +52,8 @@ class DMSDocumentAddController extends LeftAndMain
     private static $url_priority = 60;
     private static $required_permission_codes = 'CMS_ACCESS_AssetAdmin';
     private static $menu_title = 'Edit Page';
-    private static $tree_class = 'SiteTree';
-    private static $session_namespace = 'CMSMain';
+    private static $tree_class = SiteTree::class;
+    private static $session_namespace = CMSMain::class;
 
     /**
      * Allowed file upload extensions, will be merged with `$allowed_extensions` from {@link File}
@@ -84,7 +105,7 @@ class DMSDocumentAddController extends LeftAndMain
         if ($id = $this->getRequest()->getVar('dsid')) {
             return DMSDocumentSet::get()->byId($id);
         }
-        return singleton('DMSDocumentSet');
+        return singleton(DMSDocumentSet::class);
     }
 
     /**
@@ -193,13 +214,13 @@ class DMSDocumentAddController extends LeftAndMain
         $items = parent::Breadcrumbs($unlinked);
 
         // The root element should explicitly point to the root node.
-        $items[0]->Link = Controller::join_links(singleton('CMSPageEditController')->Link('show'), 0);
+        $items[0]->Link = Controller::join_links(singleton(CMSPageEditController::class)->Link('show'), 0);
 
         // Enforce linkage of hierarchy to AssetAdmin
         foreach ($items as $item) {
             $baselink = $this->Link('show');
             if (strpos($item->Link, $baselink) !== false) {
-                $item->Link = str_replace($baselink, singleton('CMSPageEditController')->Link('show'), $item->Link);
+                $item->Link = str_replace($baselink, singleton(CMSPageEditController::class)->Link('show'), $item->Link);
             }
         }
 
@@ -228,7 +249,7 @@ class DMSDocumentAddController extends LeftAndMain
 
             if ($this->getRequest()->getVar('dsid')) {
                 return Controller::join_links(
-                    $modelAdmin->Link('DMSDocumentSet'),
+                    $modelAdmin->Link(DMSDocumentSet::class),
                     'EditForm/field/DMSDocumentSet/item',
                     (int) $this->getRequest()->getVar('dsid'),
                     'edit'
@@ -358,7 +379,7 @@ class DMSDocumentAddController extends LeftAndMain
     {
         return array_filter(
             array_merge(
-                (array) Config::inst()->get('File', 'allowed_extensions'),
+                (array) Config::inst()->get(File::class, 'allowed_extensions'),
                 (array) $this->config()->get('allowed_extensions')
             )
         );
@@ -372,7 +393,7 @@ class DMSDocumentAddController extends LeftAndMain
      */
     public function canView($member = null, $context = [])
     {
-        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+        if (!$member || !(is_a($member, Member::class)) || is_numeric($member)) {
             $member = Member::currentUser();
         }
 

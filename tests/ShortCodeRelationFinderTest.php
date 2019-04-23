@@ -1,14 +1,21 @@
 <?php
+
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\DMS\DMS;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\CMS\Model\SiteTree;
+use Sunnysideup\DMS\Tools\ShortCodeRelationFinder;
+use SilverStripe\Dev\SapphireTest;
 class ShortCodeRelationFinderTest extends SapphireTest
 {
     protected static $fixture_file = 'dmstest.yml';
 
     public function testFindInRate()
     {
-        Config::modify()->update('DMS', 'shortcode_handler_key', 'dms_document_link');
+        Config::modify()->update(DMS::class, 'shortcode_handler_key', 'dms_document_link');
 
-        $d1 = $this->objFromFixture('DMSDocument', 'd1');
-        $d2 = $this->objFromFixture('DMSDocument', 'd2');
+        $d1 = $this->objFromFixture(DMSDocument::class, 'd1');
+        $d2 = $this->objFromFixture(DMSDocument::class, 'd2');
 
         $page1 = new SiteTree();
         $page1->Content = 'Condition:  <a title="document test 1" href="[dms_document_link,id=' . $d1->ID . ']">';

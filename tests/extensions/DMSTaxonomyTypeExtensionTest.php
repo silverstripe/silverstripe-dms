@@ -1,11 +1,15 @@
 <?php
 
+use Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSTaxonomyTypeExtensionTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
     protected $requiredExtensions = array(
-        'TaxonomyType' => array('DMSTaxonomyTypeExtension')
+        'TaxonomyType' => array(DMSTaxonomyTypeExtension::class)
     );
 
     /**
@@ -13,7 +17,7 @@ class DMSTaxonomyTypeExtensionTest extends SapphireTest
      */
     public function testDefaultRecordsAreCreated()
     {
-        Config::modify()->update('DMSTaxonomyTypeExtension', 'default_records', array('Food', 'Beverage', 'Books'));
+        Config::modify()->update(DMSTaxonomyTypeExtension::class, 'default_records', array('Food', 'Beverage', 'Books'));
 
         TaxonomyType::create()->requireDefaultRecords();
 

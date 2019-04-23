@@ -4,7 +4,6 @@ After: framework/routes#coreroutes
 ---
 SilverStripe\Control\Director:
   rules:
-    'dmsdocument/$ID' : 'DMSDocumentController'
-
-DMSDocument_versions:
+    dmsdocument/$ID: DMSDocumentController
+Sunnysideup\DMS\Model\DMSDocument_versions:
   enable_versions: true

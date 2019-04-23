@@ -2,11 +2,17 @@
 
 namespace Sunnysideup\DMS\Extensions;
 
-use DataExtension;
-use FieldList;
-use ListboxField;
+
+
+
 use TaxonomyTerm;
-use Config;
+
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\ListboxField;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -53,7 +59,7 @@ class DMSDocumentTaxonomyExtension extends DataExtension
     {
         $tags = TaxonomyTerm::get()->filter(
             'Type.Name:ExactMatch',
-            Config::inst()->get('DMSTaxonomyTypeExtension', 'default_record_name')
+            Config::inst()->get(DMSTaxonomyTypeExtension::class, 'default_record_name')
         );
 
         $map = [];

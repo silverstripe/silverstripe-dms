@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\Control\Director;
+
 class DMSFilesystemTestHelper
 {
     /**

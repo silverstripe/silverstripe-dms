@@ -2,38 +2,72 @@
 
 namespace Sunnysideup\DMS\Model;
 
-use DataObject;
-use FieldList;
-use LiteralField;
-use GridFieldConfig;
-use GridFieldButtonRow;
-use GridFieldToolbarHeader;
-use GridFieldFilterHeader;
-use GridFieldSortableHeader;
-use GridFieldDataColumns;
-use DMSGridFieldEditButton;
-use GridFieldDeleteAction;
-use GridFieldDetailForm;
+
+
+
+
+
+
+
+
+
+
+
+
 use GridFieldPaginatorWithShowAll;
-use GridFieldPaginator;
+
 use GridFieldSortableRows;
 use GridFieldOrderableRows;
-use CMSPageEditController;
-use Controller;
-use GridField;
-use DMSGridFieldAddNewButton;
-use HiddenField;
-use DMS;
-use Requirements;
-use Member;
-use ListboxField;
-use DMSJsonField;
-use FieldGroup;
-use DropdownField;
-use Convert;
-use DataList;
-use SS_Datetime;
-use Permission;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use SilverStripe\CMS\Model\SiteTree;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\GridField\GridFieldConfig;
+use SilverStripe\Forms\GridField\GridFieldButtonRow;
+use SilverStripe\Forms\GridField\GridFieldToolbarHeader;
+use SilverStripe\Forms\GridField\GridFieldFilterHeader;
+use SilverStripe\Forms\GridField\GridFieldSortableHeader;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use Sunnysideup\DMS\Cms\DMSGridFieldEditButton;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridFieldDetailForm;
+use SilverStripe\Forms\GridField\GridFieldPaginator;
+use SilverStripe\Control\Controller;
+use SilverStripe\CMS\Controllers\CMSPageEditController;
+use Sunnysideup\DMS\Cms\DMSGridFieldDetailForm_ItemRequest;
+use SilverStripe\Forms\GridField\GridField;
+use Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use Sunnysideup\DMS\DMS;
+use SilverStripe\Forms\HiddenField;
+use SilverStripe\View\Requirements;
+use SilverStripe\Security\Member;
+use SilverStripe\Forms\ListboxField;
+use Sunnysideup\DMS\Forms\DMSJsonField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldGroup;
+use SilverStripe\Core\Convert;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Security\Permission;
+use SilverStripe\ORM\DataObject;
+
 
 /**
  * A document set is attached to Pages, and contains many DMSDocuments
@@ -85,11 +119,11 @@ class DMSDocumentSet extends DataObject
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
     private static $has_one = array(
-        'Page' => 'SiteTree',
+        'Page' => SiteTree::class,
     );
 
     private static $many_many = array(
-        'Documents' => 'DMSDocument',
+        'Documents' => DMSDocument::class,
     );
 
     private static $many_many_extraFields = array(
@@ -198,7 +232,7 @@ class DMSDocumentSet extends DataObject
                     $fields->fieldByName('Root.Main.PageID')->setTitle(_t('DMSDocumentSet.SHOWONPAGE', 'Show on page'));
                 }
 
-                $gridFieldConfig->getComponentByType('GridFieldDataColumns')
+                $gridFieldConfig->getComponentByType(GridFieldDataColumns::class)
                     ->setDisplayFields($self->getDocumentDisplayFields())
                     ->setFieldCasting(array('LastEdited' => 'Datetime->Ago'))
                     ->setFieldFormatting(
@@ -215,20 +249,20 @@ class DMSDocumentSet extends DataObject
                     );
 
                 // Override delete functionality with this class
-                $gridFieldConfig->getComponentByType('GridFieldDetailForm')
-                    ->setItemRequestClass('DMSGridFieldDetailForm_ItemRequest');
+                $gridFieldConfig->getComponentByType(GridFieldDetailForm::class)
+                    ->setItemRequestClass(DMSGridFieldDetailForm_ItemRequest::class);
                 $gridField = GridField::create(
                     'Documents',
                     false,
                     $self->Documents(),
                     $gridFieldConfig
                 );
-                $gridField->setModelClass('DMSDocument');
+                $gridField->setModelClass(DMSDocument::class);
                 $gridField->addExtraClass('documents');
 
                 $gridFieldConfig->addComponent(
                     $addNewButton = new DMSGridFieldAddNewButton('buttons-before-left'),
-                    'GridFieldExportButton'
+                    GridFieldExportButton::class
                 );
                 $addNewButton->setDocumentSetId($self->ID);
 
@@ -273,7 +307,7 @@ class DMSDocumentSet extends DataObject
     public function addQueryFields($fields)
     {
         /** @var DMSDocument $doc */
-        $doc = singleton('DMSDocument');
+        $doc = singleton(DMSDocument::class);
         /** @var FormField $field */
         $dmsDocFields = $doc->scaffoldSearchFields(array('fieldClasses' => true));
         $membersMap = Member::get()->map('ID', 'Name')->toArray();
@@ -352,7 +386,7 @@ class DMSDocumentSet extends DataObject
         $keyValuesPair = Convert::json2array($this->KeyValuePairs);
 
         /** @var DMSDocument $dmsDoc */
-        $dmsDoc = singleton('DMSDocument');
+        $dmsDoc = singleton(DMSDocument::class);
         $context = $dmsDoc->getDefaultSearchContext();
 
         $sortBy = $this->SortBy ? $this->SortBy : 'LastEdited';
@@ -373,7 +407,7 @@ class DMSDocumentSet extends DataObject
      */
     protected function addEmbargoConditions(DataList $documents)
     {
-        $now = SS_Datetime::now()->Rfc2822();
+        $now = DBDatetime::now()->Rfc2822();
 
         return $documents->where(
             "\"EmbargoedIndefinitely\" = 0 AND "
@@ -471,7 +505,7 @@ class DMSDocumentSet extends DataObject
      */
     public function getGlobalPermission(Member $member = null)
     {
-        if (!$member || !(is_a($member, 'Member')) || is_numeric($member)) {
+        if (!$member || !(is_a($member, Member::class)) || is_numeric($member)) {
             $member = Member::currentUser();
         }
 

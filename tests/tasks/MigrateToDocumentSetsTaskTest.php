@@ -1,5 +1,12 @@
 <?php
 
+use Sunnysideup\DMS\Tasks\MigrateToDocumentSetsTask;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\ORM\DB;
+use Sunnysideup\DMS\Model\DMSDocument;
+use SilverStripe\Dev\SapphireTest;
+
 class MigrateToDocumentSetsTaskTest extends SapphireTest
 {
     protected static $fixture_file = 'MigrateToDocumentSetsTaskTest.yml';
@@ -15,7 +22,7 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
     {
         $lines = array('Test', 'Test line 2');
 
-        $mock = $this->getMockBuilder('MigrateToDocumentSetsTask')
+        $mock = $this->getMockBuilder(MigrateToDocumentSetsTask::class)
             ->setMethods(array('isCli'))
             ->getMock();
 
@@ -65,9 +72,9 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
         $this->assertContains('Skipped: already has a set: 1', $result);
 
         // Test that some of the relationship records were written correctly
-        $this->assertCount(1, $firstPageSets = $this->objFromFixture('SiteTree', 'one')->DocumentSets());
+        $this->assertCount(1, $firstPageSets = $this->objFromFixture(SiteTree::class, 'one')->DocumentSets());
         $this->assertSame('Default', $firstPageSets->first()->Title);
-        $this->assertCount(1, $this->objFromFixture('SiteTree', 'two')->DocumentSets());
+        $this->assertCount(1, $this->objFromFixture(SiteTree::class, 'two')->DocumentSets());
 
         // With dryrun enabled and being run the second time, nothing should be done
         $result = $this->runTask(array('action' => 'create-default-document-set', 'dryrun' => '1'));
@@ -96,9 +103,9 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
         $this->assertContains('Reassigned to document set: 3', $result);
 
         // Smoke ORM checks
-        $this->assertCount(1, $this->objFromFixture('SiteTree', 'one')->getAllDocuments());
-        $this->assertCount(1, $this->objFromFixture('SiteTree', 'two')->getAllDocuments());
-        $this->assertCount(0, $this->objFromFixture('SiteTree', 'four')->getAllDocuments());
+        $this->assertCount(1, $this->objFromFixture(SiteTree::class, 'one')->getAllDocuments());
+        $this->assertCount(1, $this->objFromFixture(SiteTree::class, 'two')->getAllDocuments());
+        $this->assertCount(0, $this->objFromFixture(SiteTree::class, 'four')->getAllDocuments());
     }
 
     /**
@@ -110,7 +117,7 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
     protected function runTask(array $getVars)
     {
         $task = new MigrateToDocumentSetsTask;
-        $request = new SS_HTTPRequest('GET', '/', $getVars);
+        $request = new HTTPRequest('GET', '/', $getVars);
 
         ob_start();
         $task->run($request);
@@ -129,8 +136,8 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
             ));
         }
 
-        $documentIds = $this->getFixtureFactory()->getIds('DMSDocument');
-        $pageIds = $this->getFixtureFactory()->getIds('SiteTree');
+        $documentIds = $this->getFixtureFactory()->getIds(DMSDocument::class);
+        $pageIds = $this->getFixtureFactory()->getIds(SiteTree::class);
         foreach (array('one', 'two', 'three') as $fixtureName) {
             $this->getFixtureFactory()->createRaw(
                 'DMSDocument_Pages',

@@ -1,5 +1,9 @@
 <?php
 
+use Sunnysideup\DMS\Cms\DMSUploadField;
+use Sunnysideup\DMS\Cms\DMSUploadField_ItemHandler;
+use SilverStripe\Dev\SapphireTest;
+
 class DMSUploadFieldTest extends SapphireTest
 {
     /**
@@ -20,7 +24,7 @@ class DMSUploadFieldTest extends SapphireTest
      */
     public function testDmsUploadFieldIsInjectable()
     {
-        $this->assertInstanceOf('DMSUploadField', DMSUploadField::create('Stub'));
+        $this->assertInstanceOf(DMSUploadField::class, DMSUploadField::create('Stub'));
     }
 
     /**
@@ -33,7 +37,7 @@ class DMSUploadFieldTest extends SapphireTest
 
     public function testGetItemHandler()
     {
-        $this->assertInstanceOf('DMSUploadField_ItemHandler', $this->field->getItemHandler(123));
+        $this->assertInstanceOf(DMSUploadField_ItemHandler::class, $this->field->getItemHandler(123));
     }
 
     /**

@@ -2,12 +2,21 @@
 
 namespace Sunnysideup\DMS\Model;
 
-use DataObject;
-use Controller;
-use Director;
-use DMS;
-use File;
-use DB;
+
+
+
+
+
+
+use Sunnysideup\DMS\Model\DMSDocument;
+use Sunnysideup\DMS\Interface\DMSDocumentInterface;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Controller;
+use Sunnysideup\DMS\DMS;
+use SilverStripe\Assets\File;
+use SilverStripe\ORM\DB;
+
 
 
 /**
@@ -66,7 +75,7 @@ class DMSDocument_versions extends DataObject
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
     private static $has_one = array(
-        'Document' => 'DMSDocument'
+        'Document' => DMSDocument::class
     );
 
     private static $defaults = array(
@@ -198,7 +207,7 @@ class DMSDocument_versions extends DataObject
     {
         //check what the constructor was passed
         $dmsObject = null;
-        if ($record && is_subclass_of($record, 'DMSDocumentInterface')) {
+        if ($record && is_subclass_of($record, DMSDocumentInterface::class)) {
             $dmsObject = $record;
             $record = null; //cancel the record creation to just create an empty object
         }
