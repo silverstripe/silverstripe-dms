@@ -2,9 +2,6 @@
 
 namespace Sunnysideup\DMS\Extensions;
 
-
-
-
 use TaxonomyTerm;
 
 use SilverStripe\Forms\FieldList;
@@ -12,9 +9,6 @@ use SilverStripe\Forms\ListboxField;
 use SilverStripe\Core\Config\Config;
 use Sunnysideup\DMS\Extensions\DMSTaxonomyTypeExtension;
 use SilverStripe\ORM\DataExtension;
-
-
-
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###

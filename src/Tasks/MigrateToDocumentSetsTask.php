@@ -2,19 +2,12 @@
 
 namespace Sunnysideup\DMS\Tasks;
 
-
-
-
-
-
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\ORM\Queries\SQLSelect;
 use Sunnysideup\DMS\Model\DMSDocument;
 use Sunnysideup\DMS\Model\DMSDocumentSet;
 use SilverStripe\Control\Director;
 use SilverStripe\Dev\BuildTask;
-
 
 /**
  * This build task helps to migrate DMS data structures from DMS 1.x to 2.x which introduces document sets.

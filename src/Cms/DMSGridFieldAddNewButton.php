@@ -2,12 +2,6 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
-
-
-
 use Sunnysideup\DMS\Cms\DMSDocumentAddController;
 use SilverStripe\Control\Controller;
 use Sunnysideup\DMS\Model\DMSDocumentSet;
@@ -16,8 +10,6 @@ use SilverStripe\View\ArrayData;
 use Sunnysideup\DMS\Cms\DMSGridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridField_HTMLProvider;
-
-
 
 class DMSGridFieldAddNewButton extends GridFieldAddNewButton implements GridField_HTMLProvider
 {

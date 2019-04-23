@@ -2,7 +2,6 @@
 
 namespace Sunnysideup\DMS;
 
-
 use SilverStripe\Core\Injector\Injector;
 
 
@@ -18,7 +17,6 @@ use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Config\Config;
 use Sunnysideup\DMS\DMS;
 use Sunnysideup\DMS\Interfaces\DMSInterface;
-
 
 class DMS extends ViewableData implements DMSInterface
 {

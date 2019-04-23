@@ -2,12 +2,8 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
 use Sunnysideup\DMS\Tools\ShortCodeRelationFinder;
 use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
-
-
 
 /**
  * Custom ItemRequest class the provides custom delete behaviour for the CMSFields of DMSDocument

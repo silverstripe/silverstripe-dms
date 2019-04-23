@@ -2,17 +2,6 @@
 
 namespace Sunnysideup\DMS\Model;
 
-
-
-
-
-
-
-
-
-
-
-
 use Exception;
 
 
@@ -97,8 +86,6 @@ use SilverStripe\Core\Convert;
 use SilverStripe\ORM\DataObject;
 use Sunnysideup\DMS\Interfaces\DMSDocumentInterface;
 
-
-
 /**
  * @package dms
  *
@@ -142,14 +129,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     private static $table_name = 'DMSDocument';
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $db = (case sensitive)
-  * NEW: private static $db = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $db = (case sensitive)
+      * NEW: private static $db = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $db = array(
         "Filename" => "Varchar(255)", // eg. 3469~2011-energysaving-report.pdf
         "Folder" => "Varchar(255)",    // eg.	0
@@ -170,14 +157,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
     );
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $has_one = (case sensitive)
-  * NEW: private static $has_one = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $has_one = (case sensitive)
+      * NEW: private static $has_one = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $has_one = array(
         'CoverImage' => Image::class,
         'CreatedBy' => Member::class,
@@ -759,14 +746,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
             DMSDocument_versions::create_version($this);
         } else {    //otherwise delete the old document file
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: ->getFullPath() (case sensitive)
-  * NEW: ->getFilename() (COMPLEX)
-  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+            /**
+              * ### @@@@ START REPLACEMENT @@@@ ###
+              * WHY: upgrade to SS4
+              * OLD: ->getFullPath() (case sensitive)
+              * NEW: ->getFilename() (COMPLEX)
+              * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+              * ### @@@@ STOP REPLACEMENT @@@@ ###
+              */
             $oldPath = $this->getFilename();
             if (file_exists($oldPath)) {
                 unlink($oldPath);
@@ -1303,14 +1290,14 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
 
         $fields->addExtraClass('dmsdocument-documentdetails');
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: ->dontEscape (case sensitive)
-  * NEW: ->dontEscape (COMPLEX)
-  * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+        /**
+          * ### @@@@ START REPLACEMENT @@@@ ###
+          * WHY: upgrade to SS4
+          * OLD: ->dontEscape (case sensitive)
+          * NEW: ->dontEscape (COMPLEX)
+          * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
+          * ### @@@@ STOP REPLACEMENT @@@@ ###
+          */
         $urlField->dontEscape = true;
 
         $this->extend('updateFieldsForFile', $fields);

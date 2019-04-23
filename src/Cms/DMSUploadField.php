@@ -2,11 +2,6 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
-
-
 use Exception;
 
 
@@ -27,8 +22,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\Validator;
 use SilverStripe\AssetAdmin\Forms\UploadField;
-
-
 
 /**
  * Field for uploading files into a DMSDocument. Replacing the existing file.

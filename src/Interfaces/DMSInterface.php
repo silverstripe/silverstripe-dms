@@ -2,30 +2,13 @@
 
 namespace Sunnysideup\DMS\Interfaces;
 
-
 use SilverStripe\CMS\Model\SiteTree;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  *
  */
-interface DMSInterface {
+interface DMSInterface
+{
     /**
      * Factory method that returns an instance of the DMS. This could be any class that implements the DMSInterface.
      * @static

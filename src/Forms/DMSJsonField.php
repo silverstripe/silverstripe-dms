@@ -2,14 +2,9 @@
 
 namespace Sunnysideup\DMS\Forms;
 
-
-
-
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\CompositeField;
-
-
 
 /**
  * Combines form inputs into a key-value pair
@@ -106,7 +101,7 @@ class DMSJsonField extends CompositeField
      *
      * @return $this
      */
-    public function setValue($value, $data = NULL)
+    public function setValue($value, $data = null)
     {
         $this->value = $value;
         if (is_string($value) && !empty($value)) {

@@ -2,24 +2,6 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\CMS\Controllers\CMSMain;
 use Sunnysideup\DMS\Model\DMSDocumentSet;
@@ -40,8 +22,6 @@ use SilverStripe\Assets\File;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 use SilverStripe\Admin\LeftAndMain;
-
-
 
 /**
  * @package dms
@@ -125,14 +105,14 @@ class DMSDocumentAddController extends LeftAndMain
   */
         Requirements::javascript(SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() . '/javascript/AssetUploadField.js');
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: FRAMEWORK_DIR (ignore case)
-  * NEW: SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() (COMPLEX)
-  * EXP: Please review update and fix as required
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+        /**
+          * ### @@@@ START REPLACEMENT @@@@ ###
+          * WHY: upgrade to SS4
+          * OLD: FRAMEWORK_DIR (ignore case)
+          * NEW: SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() (COMPLEX)
+          * EXP: Please review update and fix as required
+          * ### @@@@ STOP REPLACEMENT @@@@ ###
+          */
         Requirements::css(SilverStripe\Core\Manifest\ModuleLoader::getModule('silverstripe/framework')->getResource('UPGRADE-FIX-REQUIRED.php')->getRelativePath() . '/css/AssetUploadField.css');
         Requirements::css(DMS_DIR . '/dist/css/cmsbundle.css');
 

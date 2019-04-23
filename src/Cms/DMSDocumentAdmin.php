@@ -2,8 +2,6 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
 use CMSForm;
 
 
@@ -18,8 +16,6 @@ use SilverStripe\Forms\GridField\GridFieldExportButton;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Admin\ModelAdmin;
-
-
 
 class DMSDocumentAdmin extends ModelAdmin
 {

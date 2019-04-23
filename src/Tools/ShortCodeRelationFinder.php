@@ -2,17 +2,12 @@
 
 namespace Sunnysideup\DMS\Tools;
 
-
-
-
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\ORM\DataList;
 use Sunnysideup\DMS\DMS;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Dev\TestOnly;
 use SilverStripe\ORM\DataObject;
-
 
 /**
  * Finds {@link DataObject} instances using certain shortcodes

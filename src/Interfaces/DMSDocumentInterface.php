@@ -2,14 +2,13 @@
 
 namespace Sunnysideup\DMS\Interfaces;
 
-
-
 /**
  * Interface for a DMSDocument used in the Document Management System. A DMSDocument is create by storing a File
  * object in an instance of the DMSInterface. All write operations on the DMSDocument create a new relation, so we
  * never need to explicitly call the write() method on the DMSDocument DataObject
  */
-interface DMSDocumentInterface {
+interface DMSDocumentInterface
+{
     /**
      * Returns a link to download this DMSDocument from the DMS store
      * @return String

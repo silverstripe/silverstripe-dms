@@ -2,17 +2,11 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
-
 use SilverStripe\Control\Controller;
 use SilverStripe\View\ArrayData;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\GridField\GridFieldViewButton;
 use SilverStripe\Forms\GridField\GridField_ColumnProvider;
-
-
 
 class DMSGridFieldEditButton extends GridFieldEditButton implements GridField_ColumnProvider
 {

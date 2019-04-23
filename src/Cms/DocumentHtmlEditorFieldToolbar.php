@@ -2,15 +2,10 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
-
 use SilverStripe\Forms\Form;
 use Sunnysideup\DMS\DMS;
 use SilverStripe\Forms\HiddenField;
 use SilverStripe\Core\Extension;
-
 
 /**
  * Extends the original toolbar with document picking capability - modified lines are commented.
@@ -50,7 +45,7 @@ class DocumentHTMLEditorFieldToolbar extends Extension
 
         $fieldList->push(HiddenField::create('DMSShortcodeHandlerKey', false, DMS::inst()->getShortcodeHandlerKey()));
 
-//		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
+        //		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
 //		Requirements::javascript(SAPPHIRE_DIR . "/javascript/tiny_mce_improvements.js");
 //
 //		// create additional field, rebase to 'documents' directory

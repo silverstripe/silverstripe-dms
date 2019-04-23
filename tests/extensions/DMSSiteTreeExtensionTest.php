@@ -12,7 +12,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
 {
     protected static $fixture_file = 'dms/tests/dmstest.yml';
 
-    protected $required_extensions = array(
+    protected static $required_extensions = array(
         'SiteTree' => array(DMSSiteTreeExtension::class)
     );
 

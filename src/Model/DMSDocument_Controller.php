@@ -2,10 +2,6 @@
 
 namespace Sunnysideup\DMS\Model;
 
-
-
-
-
 use InvalidArgumentException;
 
 use SilverStripe\Versioned\Versioned;
@@ -15,8 +11,6 @@ use SilverStripe\ORM\DataObject;
 use Sunnysideup\DMS\Model\DMSDocument;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Controller;
-
-
 
 class DMSDocument_Controller extends Controller
 {

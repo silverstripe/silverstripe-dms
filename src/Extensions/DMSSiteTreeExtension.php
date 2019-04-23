@@ -2,16 +2,6 @@
 
 namespace Sunnysideup\DMS\Extensions;
 
-
-
-
-
-
-
-
-
-
-
 use Sunnysideup\DMS\Model\DMSDocumentSet;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Security\Member;
@@ -23,8 +13,6 @@ use SilverStripe\Dev\Deprecation;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\ORM\DataExtension;
-
-
 
 /**
  * @package dms

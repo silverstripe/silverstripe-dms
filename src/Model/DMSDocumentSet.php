@@ -2,18 +2,6 @@
 
 namespace Sunnysideup\DMS\Model;
 
-
-
-
-
-
-
-
-
-
-
-
-
 use GridFieldPaginatorWithShowAll;
 
 use GridFieldSortableRows;
@@ -68,7 +56,6 @@ use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\Security\Permission;
 use SilverStripe\ORM\DataObject;
 
-
 /**
  * A document set is attached to Pages, and contains many DMSDocuments
  *
@@ -94,14 +81,14 @@ class DMSDocumentSet extends DataObject
     private static $table_name = 'DMSDocumentSet';
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $db = (case sensitive)
-  * NEW: private static $db = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $db = (case sensitive)
+      * NEW: private static $db = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $db = array(
         'Title' => 'Varchar(255)',
         'KeyValuePairs' => 'Text',
@@ -110,14 +97,14 @@ class DMSDocumentSet extends DataObject
     );
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $has_one = (case sensitive)
-  * NEW: private static $has_one = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $has_one = (case sensitive)
+      * NEW: private static $has_one = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $has_one = array(
         'Page' => SiteTree::class,
     );
@@ -509,7 +496,8 @@ class DMSDocumentSet extends DataObject
             $member = Member::currentUser();
         }
 
-        $result = ($member &&
+        $result = (
+            $member &&
             Permission::checkMember(
                 $member,
                 array('ADMIN', 'SITETREE_EDIT_ALL', 'CMS_ACCESS_DMSDocumentAdmin')

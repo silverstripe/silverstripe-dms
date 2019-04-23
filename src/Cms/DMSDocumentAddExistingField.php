@@ -2,17 +2,12 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-
-
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\Requirements;
 use Sunnysideup\DMS\Cms\DMSDocumentAddExistingField;
 use SilverStripe\Forms\CompositeField;
-
-
 
 class DMSDocumentAddExistingField extends CompositeField
 {

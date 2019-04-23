@@ -2,12 +2,9 @@
 
 namespace Sunnysideup\DMS\Extensions;
 
-
-
 use TaxonomyType;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataExtension;
-
 
 /**
  * Creates default taxonomy type records if they don't exist already

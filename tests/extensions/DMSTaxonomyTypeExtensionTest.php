@@ -8,7 +8,7 @@ class DMSTaxonomyTypeExtensionTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
-    protected $required_extensions = array(
+    protected static $required_extensions = array(
         'TaxonomyType' => array(DMSTaxonomyTypeExtension::class)
     );
 

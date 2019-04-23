@@ -9,8 +9,6 @@ namespace Sunnysideup\DMS\Cms;
 use Sunnysideup\DMS\Model\DMSDocument;
 use SilverStripe\Forms\Form;
 
-
-
 class DMSUploadField_ItemHandler
 {
     private static $allowed_actions = array(

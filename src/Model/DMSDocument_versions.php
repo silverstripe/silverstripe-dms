@@ -2,12 +2,6 @@
 
 namespace Sunnysideup\DMS\Model;
 
-
-
-
-
-
-
 use Sunnysideup\DMS\Model\DMSDocument;
 use Sunnysideup\DMS\Interfaces\DMSDocumentInterface;
 use SilverStripe\ORM\DataObject;
@@ -16,8 +10,6 @@ use SilverStripe\Control\Controller;
 use Sunnysideup\DMS\DMS;
 use SilverStripe\Assets\File;
 use SilverStripe\ORM\DB;
-
-
 
 /**
  * DataObject to store versions of uploaded Documents.
@@ -38,42 +30,42 @@ class DMSDocument_versions extends DataObject
     public static $enable_versions = true;
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * OLD: private static $db (case sensitive)
-  * NEW: 
-    private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
-
-    private static $db (COMPLEX)
-  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * OLD: private static $db (case sensitive)
+      * NEW:
+        private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
+    
+        private static $db (COMPLEX)
+      * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     
     private static $table_name = 'DMSDocument_versions';
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $db = (case sensitive)
-  * NEW: private static $db = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $db = (case sensitive)
+      * NEW: private static $db = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $db = array(
         'VersionCounter' => 'Int',
         'VersionViewCount' => 'Int'
     );
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: private static $has_one = (case sensitive)
-  * NEW: private static $has_one = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+    /**
+      * ### @@@@ START REPLACEMENT @@@@ ###
+      * WHY: upgrade to SS4
+      * OLD: private static $has_one = (case sensitive)
+      * NEW: private static $has_one = (COMPLEX)
+      * EXP: Make sure to add a private static $table_name!
+      * ### @@@@ STOP REPLACEMENT @@@@ ###
+      */
     private static $has_one = array(
         'Document' => DMSDocument::class
     );
@@ -119,14 +111,14 @@ class DMSDocument_versions extends DataObject
         $success = false;
 
 
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: upgrade to SS4
-  * OLD: ->getFullPath() (case sensitive)
-  * NEW: ->getFilename() (COMPLEX)
-  * EXP: You may need to add ASSETS_PATH."/" in front of this ...
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
+        /**
+          * ### @@@@ START REPLACEMENT @@@@ ###
+          * WHY: upgrade to SS4
+          * OLD: ->getFullPath() (case sensitive)
+          * NEW: ->getFilename() (COMPLEX)
+          * EXP: You may need to add ASSETS_PATH."/" in front of this ...
+          * ### @@@@ STOP REPLACEMENT @@@@ ###
+          */
         $existingPath = $doc->getFilename();
         if (is_file($existingPath)) {
             $docData = $doc->toMap();
