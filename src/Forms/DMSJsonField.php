@@ -106,7 +106,7 @@ class DMSJsonField extends CompositeField
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue($value, $data = NULL)
     {
         $this->value = $value;
         if (is_string($value) && !empty($value)) {
