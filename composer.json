@@ -2,14 +2,20 @@
     "name": "sunnysideup/dms",
     "description": "Adds a Document Management System to SilverStripe ",
     "type": "silverstripe-module",
-    "keywords": ["silverstripe", "dms", "document", "document management system"],
+    "keywords": [
+        "silverstripe",
+        "dms",
+        "document",
+        "document management system"
+    ],
     "license": "BSD-3-Clause",
-    "authors": [{
-        "name": "Julian Seidenberg",
-        "email": "julian@silverstripe.com"
-    }],
+    "authors": [
+        {
+            "name": "Julian Seidenberg",
+            "email": "julian@silverstripe.com"
+        }
+    ],
     "require": {
-        "silverstripe/framework": "^3.5",
         "silverstripe/cms": "^3.5",
         "symbiote/silverstripe-gridfieldextensions": "^2.0",
         "silverstripe/taxonomy": "^1.2"
