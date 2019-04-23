@@ -7,12 +7,11 @@ namespace Sunnysideup\DMS\Cms;
 
 
 
-use SS_Object;
 use Exception;
 
 
 
-
+use SilverStripe\Core\Injector\Injector;
 
 
 
@@ -163,7 +162,7 @@ class DMSUploadField extends UploadField
                 // Search for relations that can hold the uploaded files.
                 if ($relationClass = $this->getRelationAutosetClass()) {
                     // Create new object explicitly. Otherwise rely on Upload::load to choose the class.
-                    $fileObject = SS_Object::create($relationClass);
+                    $fileObject = Injector::inst()->create($relationClass);
                 }
             }
 

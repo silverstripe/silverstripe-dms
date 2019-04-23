@@ -2,10 +2,11 @@
 
 namespace Sunnysideup\DMS;
 
-use SS_Object;
+
+use SilverStripe\Core\Injector\Injector;
 
 
-
+use SilverStripe\View\ViewableData;
 
 
 
@@ -19,7 +20,7 @@ use Sunnysideup\DMS\DMS;
 use Sunnysideup\DMS\Interfaces\DMSInterface;
 
 
-class DMS extends SS_Object implements DMSInterface
+class DMS extends ViewableData implements DMSInterface
 {
     /**
      * Folder to store the documents in
