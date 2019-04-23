@@ -182,7 +182,7 @@ class DMSEmbargoTest extends SapphireTest
         $s1->DocumentSets()->first()->getDocuments()->add($doc);
 
         $s1->publish('Stage', 'Live');
-        $s1->doPublish();
+        $s1->publishRecursive();
         $this->assertFalse($doc->isHidden(), "Document is not hidden");
         $this->assertFalse($doc->isEmbargoed(), "Document is not embargoed");
         $this->assertFalse($doc->isExpired(), "Document is not expired");
@@ -193,7 +193,7 @@ class DMSEmbargoTest extends SapphireTest
         $this->assertFalse($doc->isExpired(), "Document is not expired");
 
         $s1->publish('Stage', 'Live');
-        $s1->doPublish();
+        $s1->publishRecursive();
         $doc = DataObject::get_by_id(DMSDocument::class, $dID);
         $this->assertFalse($doc->isHidden(), "Document is not hidden");
         $this->assertFalse($doc->isEmbargoed(), "Document is not embargoed");
@@ -212,7 +212,7 @@ class DMSEmbargoTest extends SapphireTest
         $this->assertFalse($doc->isExpired(), "Document is not expired");
 
         $s1->publish('Stage', 'Live');
-        $s1->doPublish();
+        $s1->publishRecursive();
         $doc = DataObject::get_by_id(DMSDocument::class, $dID);
         $this->assertTrue(
             $doc->isHidden(),

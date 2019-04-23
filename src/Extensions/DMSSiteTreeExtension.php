@@ -97,7 +97,7 @@ class DMSSiteTreeExtension extends DataExtension
     public function getDocumentSets()
     {
         Deprecation::notice('3.0', 'Use DocumentSets() instead');
-        return $this->owner->hasManyComponent('DocumentSets');
+        return $this->owner->getSchema()->hasManyComponent('DocumentSets');
     }
 
     /**
@@ -120,7 +120,7 @@ class DMSSiteTreeExtension extends DataExtension
 
     public function onBeforeDelete()
     {
-        if (Versioned::current_stage() == 'Live') {
+        if (Versioned::get_stage() == 'Live') {
             $existsOnOtherStage = !$this->owner->getIsDeletedFromStage();
         } else {
             $existsOnOtherStage = $this->owner->getExistsOnLive();

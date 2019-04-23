@@ -12,7 +12,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
 {
     protected static $fixture_file = 'dms/tests/dmstest.yml';
 
-    protected $requiredExtensions = array(
+    protected $required_extensions = array(
         'SiteTree' => array(DMSSiteTreeExtension::class)
     );
 
@@ -77,7 +77,7 @@ class DMSSiteTreeExtensionTest extends SapphireTest
     public function testOnBeforePublishUnEmbargoesDocumentsSetAsEmbargoedUntilPublish()
     {
         $siteTree = $this->objFromFixture(SiteTree::class, 's7');
-        $siteTree->doPublish();
+        $siteTree->publishRecursive();
 
         // Fixture defines this page as having two documents via one set
         foreach (array('embargo-until-publish1', 'embargo-until-publish2') as $filename) {

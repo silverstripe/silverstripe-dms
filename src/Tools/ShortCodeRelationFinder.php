@@ -93,7 +93,7 @@ class ShortCodeRelationFinder
                 continue;
             }
 
-            $ancFields = DataObject::custom_database_fields($ancestor);
+            $ancFields = DataObject::getSchema()->databaseFields($ancestor);
             if ($ancFields) {
                 foreach ($ancFields as $ancFieldName => $ancFieldSpec) {
                     if (preg_match($this->fieldSpecRegex, $ancFieldSpec)) {

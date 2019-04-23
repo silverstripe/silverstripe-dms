@@ -217,7 +217,7 @@ class DMSDocument_versions extends DataObject
 
         //copy the DMSDocument object, if passed into the constructor
         if ($dmsObject) {
-            foreach (array_keys(DataObject::custom_database_fields($dmsObject->ClassName)) as $key) {
+            foreach (array_keys(DataObject::getSchema()->databaseFields($dmsObject->ClassName)) as $key) {
                 $this->$key = $dmsObject->$key;
             }
         }

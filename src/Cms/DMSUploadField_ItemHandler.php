@@ -2,7 +2,8 @@
 
 namespace Sunnysideup\DMS\Cms;
 
-use UploadField_ItemHandler;
+// todo: UPGRADE: we need to replace this ...
+// use UploadField_ItemHandler;
 
 
 use Sunnysideup\DMS\Model\DMSDocument;
@@ -10,7 +11,7 @@ use SilverStripe\Forms\Form;
 
 
 
-class DMSUploadField_ItemHandler extends UploadField_ItemHandler
+class DMSUploadField_ItemHandler
 {
     private static $allowed_actions = array(
         'delete',
