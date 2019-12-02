@@ -2,22 +2,20 @@
 
 language: php
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
+dist: trusty
 
-dist: precise
-
-env:
-  - DB=MYSQL CORE_RELEASE=3.5
+before_install:
+  - sudo apt-get update
 
 matrix:
   include:
-    - php: 7.1
+    - php: 5.6
       env: DB=MYSQL CORE_RELEASE=3.6
     - php: 7.1
+      env: DB=MYSQL CORE_RELEASE=3.7
+    - php: 7.2
+      env: DB=MYSQL CORE_RELEASE=3.7 NPM_TEST=1
+    - php: 7.3
       env: DB=MYSQL CORE_RELEASE=3 COVERAGE="--coverage-clover=coverage.xml"
 
 before_script:
@@ -28,9 +26,13 @@ before_script:
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/build/ss --require undefinedoffset/sortablegridfield:~0.6.9
   - cd ~/build/ss
   - composer install
+  - if [[ $NPM_TEST ]]; then npm install -g yarn && yarn install --network-concurrency 1; fi
 
 script:
   - vendor/bin/phpunit "$COVERAGE" dms/tests
+  - if [[ $NPM_TEST ]]; then yarn run build; fi
+  - if [[ $NPM_TEST ]]; then git diff-files --quiet -w --relative=client; fi
+  - if [[ $NPM_TEST ]]; then git diff --name-status --relative=client; fi
 
 after_success:
   - >
