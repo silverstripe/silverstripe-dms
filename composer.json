@@ -12,7 +12,8 @@
         "silverstripe/framework": "^3.5",
         "silverstripe/cms": "^3.5",
         "symbiote/silverstripe-gridfieldextensions": "^2.0",
-        "silverstripe/taxonomy": "^1.2"
+        "silverstripe/taxonomy": "^1.2",
+        "mustangostang/spyc": "<=0.6.2"
     },
     "suggest": {
         "undefinedoffset/sortablegridfield": "Allow documents to be reordered via drag-and-drop"

@@ -151,7 +151,7 @@ class DMS extends SS_Object implements DMSInterface
 
     public function getDocumentSetsByPage(SiteTree $page)
     {
-        return $page->DocumentSets();
+        return $page->getDocumentSets();
     }
 
     /**

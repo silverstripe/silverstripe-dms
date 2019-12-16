@@ -820,12 +820,12 @@ class DMSDocument extends DataObject implements DMSDocumentInterface
                 new GridFieldDataColumns(),
                 new GridFieldPaginator(30)
             );
+
             $versionsGridFieldConfig->getComponentByType('GridFieldDataColumns')
                 ->setDisplayFields(Config::inst()->get('DMSDocument_versions', 'display_fields'))
                 ->setFieldFormatting(
                     array(
-                        'FilenameWithoutID' => '<a target="_blank" class="file-url" href="$Link">'
-                            . '$FilenameWithoutID</a>'
+                        'FilenameWithoutID' => '<a target=\"_blank\" class=\"file-url\" href=\"$Link\">$FilenameWithoutID</a>'
                     )
                 );
 
