@@ -65,9 +65,9 @@ class MigrateToDocumentSetsTaskTest extends SapphireTest
         $this->assertContains('Skipped: already has a set: 1', $result);
 
         // Test that some of the relationship records were written correctly
-        $this->assertCount(1, $firstPageSets = $this->objFromFixture('SiteTree', 'one')->DocumentSets());
+        $this->assertCount(1, $firstPageSets = $this->objFromFixture('SiteTree', 'one')->getDocumentSets());
         $this->assertSame('Default', $firstPageSets->first()->Title);
-        $this->assertCount(1, $this->objFromFixture('SiteTree', 'two')->DocumentSets());
+        $this->assertCount(1, $this->objFromFixture('SiteTree', 'two')->getDocumentSets());
 
         // With dryrun enabled and being run the second time, nothing should be done
         $result = $this->runTask(array('action' => 'create-default-document-set', 'dryrun' => '1'));
