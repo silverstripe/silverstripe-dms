@@ -16,7 +16,7 @@ matrix:
     - php: 7.2
       env: DB=MYSQL CORE_RELEASE=3.7 NPM_TEST=1
     - php: 7.3
-      env: DB=MYSQL CORE_RELEASE=3 COVERAGE="--coverage-clover=coverage.xml"
+      env: DB=MYSQL CORE_RELEASE=3.7 COVERAGE="--coverage-clover=coverage.xml"
 
 before_script:
   - echo -e "[server]\nmax_allowed_packet=64M" | sudo tee -a /etc/mysql/conf.d/dms.cnf
@@ -30,9 +30,12 @@ before_script:
 
 script:
   - vendor/bin/phpunit "$COVERAGE" dms/tests
+  - if [[ $NPM_TEST ]]; then cd dms; fi
+  - if [[ $NPM_TEST ]]; then yarn install --production=false; fi
   - if [[ $NPM_TEST ]]; then yarn run build; fi
   - if [[ $NPM_TEST ]]; then git diff-files --quiet -w --relative=client; fi
   - if [[ $NPM_TEST ]]; then git diff --name-status --relative=client; fi
+  - if [[ $NPM_TEST ]]; then cd ..; fi
 
 after_success:
   - >
