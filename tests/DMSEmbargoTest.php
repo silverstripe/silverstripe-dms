@@ -73,7 +73,7 @@ class DMSEmbargoTest extends SapphireTest
         $this->assertFalse($doc->isEmbargoed(), "Document is not embargoed");
         $this->assertTrue($doc->isExpired(), "Document is expired");
 
-        $expireTime = "2019-04-05 11:43:13";
+        $expireTime = "2069-12-12 17:10:13";
         $doc->expireAtDate($expireTime);
         $this->assertFalse($doc->isHidden(), "Document is not hidden");
         $this->assertFalse($doc->isEmbargoed(), "Document is not embargoed");
@@ -114,7 +114,7 @@ class DMSEmbargoTest extends SapphireTest
         $this->assertFalse($doc->isEmbargoed(), "Document is not embargoed");
         $this->assertFalse($doc->isExpired(), "Document is not expired");
 
-        $embargoTime = "2019-04-05 11:43:13";
+        $embargoTime = "2069-12-12 17:10:13";
         $doc->embargoUntilDate($embargoTime);
         $this->assertTrue($doc->isHidden(), "Document is hidden");
         $this->assertTrue($doc->isEmbargoed(), "Document is embargoed");
