@@ -1,5 +1,7 @@
+---
 title: Document Management System
 summary: Using the Document Management System module in the SilverStripe CMS
+---
 
 # Using the Document Management System
 
